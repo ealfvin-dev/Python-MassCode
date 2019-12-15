@@ -1,7 +1,7 @@
 #Author: Erik Alfvin
-#Run with Python 3.7
+#Run with Python 3.7, numpy 1.17.2
 #PyMac Version 1
-#Release date: 2019-11-27
+#Version Date: 2019-12-15
 #Results are for experimental purposes only
 
 import sys
@@ -281,7 +281,7 @@ class MatrixSolution:
         averageSensitivities[nominal] = mean(nominalSensitivity)
 
         #Iterate 3 times through solution, update calculated masses matrix each time and repeat:
-        for i in range(3):
+        for i in range(5):
             self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
             matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
             self.calculatedMasses = np.matrix.transpose(matrixBHat)
@@ -302,11 +302,17 @@ class MatrixSolution:
         
         sw = sqrt(sumOfResiduals / self.df) * 1000 #mg
 
-        alpha = 0.0455
+        alpha = 0.05
+
+        fCritical = scipy.stats.f.ppf(1 - alpha, self.df, 1000)
+        f = sw**2 / self.sigmaW**2
 
         print("sw =", str(sw), "mg")
         print("df =", str(self.df))
         print("")
+
+        print("F-critical =", str(fCritical))
+        print("F-observed =", str(f))
 
 
 fileName = input("Enter configuration file name: ")
