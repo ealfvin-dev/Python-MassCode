@@ -1,0 +1,82 @@
+@PyMac
+
+#Write as many lines up here as you want for notes, as long as they start with a "#"
+#Make sure that the top-most line is "#@PyMac" if using this template
+#All masses and mass corrections are entered as true mass.
+#Do not include any spaces in weight IDs
+#Entry tags must not be changed
+
+#Units: Temperature[degrees C], Pressure[mmHg], Humidity[%], density[g/cm^3], CCE[/degree C], sigmas[mg], sw-Mass[mg], Unc[mg]
+#       Gravity-Gradient[m/ms^2], COM-Difference[cm](B-A)
+
+#PyMac is backwards-compatible with old MassCode input files.
+#Do not put "#@PyMac" at top in this case and simply import the old input file.
+
+
+              Report-Number: 999999
+
+               Restraint-ID: 24
+              Unc-Restraint: 0.120
+      Reference-Temperature: 20
+               Random-Error: 0
+
+@SERIES
+
+                       Date: 11 28 2019
+              Technician-ID: 19
+                 Balance-ID: 22
+          Check-Standard-ID: 27
+
+                  Design-ID: 021
+                  Positions: 5
+               Observations: 7
+
+            Direct-Readings: 0
+         Direct-Readings-SF: 1
+         Nominals-In-Pounds: 0
+
+                                  ID         Nominal(g/lb)   Density     CCE     Reference-Value(mg)
+                   Position: 5kg                 5000             8.00    0.000045
+                   Position: 2kg                 2000             8.00    0.000045
+                   Position: 2.kg                2000             8.00    0.000045
+                   Position: MetA_1kg            1000             8.0066  0.000045 1.3052
+                   Position: MetE_1kg            1000             8.0063  0.000045 1.34116
+
+              Design-Matrix: 1 -1 -1 -1  0
+              Design-Matrix: 0  1 -1  1 -1
+              Design-Matrix: 0  1 -1 -1  1
+              Design-Matrix: 0  1 -1  0  0
+              Design-Matrix: 0  1  0 -1 -1
+              Design-Matrix: 0  0  1 -1 -1
+              Design-Matrix: 0  0  0  1 -1
+
+                  Restraint: 0 0 0 0 1
+             Check-Standard: 0 0 0 1 0
+               Linear-Combo: 0 0 0 0 0
+
+      Next-Series-Restraint: 0 0 0 0 1
+
+                    Sigma-w: 0.2261
+                    Sigma-t: 0.35
+
+    Sensitivity-Weight-Mass: 1000.00601
+ Sensitivity-Weight-Density: 8.00
+     Sensitivity-Weight-CCE: 0.000045
+
+           Balance-Readings:  -0.2 9.9 1010.4 999.0
+           Balance-Readings:  0.0  0.1 1000.1 999.5
+           Balance-Readings:  -0.6 0.0 1000.4 999.2
+           Balance-Readings:  0.0  0.6 1000.9 1000.2
+           Balance-Readings:  -0.5 2.8 1003.2 1000.0
+           Balance-Readings:  -0.1 2.2 1002.5 999.8
+           Balance-Readings:  0.0 -0.2 1000.2 1000.4
+
+             Environmentals: 20.935 751.725 56.25
+             Environmentals: 20.935 751.725 56.25
+             Environmentals: 20.935 751.725 56.25
+             Environmentals: 20.935 751.725 56.25
+             Environmentals: 20.935 751.725 56.25
+             Environmentals: 20.935 751.725 56.25
+             Environmentals: 20.935 751.725 56.25
+
+                Corrections: 0.02 0.08 0.18
