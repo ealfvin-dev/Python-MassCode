@@ -1,14 +1,24 @@
-#Author: Erik Alfvin
-#Run with Python 3.7, numpy 1.17.2
-#PyMac Version 1
-#Version Date: 2019-12-15
-#Results are for experimental purposes only
+"""
+Author: Erik Alfvin
+Run with Python 3.7, numpy 1.17.2
+PyMac Version 1
+Version Date: 2019-12-15
+Results are for experimental purposes only
+
+This program is designed to reduce data from weighing designs using a least squares
+best fit. The program returns best fit mass values and within process standard deviations.
+
+The T-test tests the observed value of the check standard against its accepted value.
+The F-test tests the within-process standard deviation agianst the accepted standard deviation.
+"""
 
 import sys
 import numpy as np
 import scipy.stats
 from statistics import mean, stdev
 from math import sqrt, exp
+
+import parser
 
 #Can get set to "old" later to determine how to parse user input file...maybe removing this feature:
 massCodeVersion = "new"
@@ -23,6 +33,15 @@ randomError = 0
 referenceTemperature = 0
 
 class MatrixSolution:
+    """
+    The MatrixSolution class holds all calibration data and data reduction results for a given series.
+    The vector self.nextRestraint contains the position of the weights to be passed down to the next series.
+
+    The parser needs to push read data into MatrixSolution class instance variables for each series.
+    The variable self.seriesNumber holds the series number 1 = first series
+
+    Functions: calculateAirDensity, calculateDoubleSubs, solution, doStatistics
+    """
     def __init__(self):
         self.seriesNumber = 0
         self.designMatrix = None
@@ -78,9 +97,13 @@ class MatrixSolution:
         self.df = 0
 
     def calculateAirDensity(self, t, p, rh):
-        #CIPM 2007 air density equation, Picard et al.: https://iopscience.iop.org/article/10.1088/0026-1394/45/2/004
+        """
+        Calculates the air density using the CIPM 2007 air density equation
+        Picard et al.: https://iopscience.iop.org/article/10.1088/0026-1394/45/2/004
+        """
+
         tKelvin = t + 273.15
-        humidity = rh / 100
+        humidity = rh / 100.0
         pressurePa = p * 133.322368421053
 
         a = 1.2378847*10**-5
@@ -120,8 +143,65 @@ class MatrixSolution:
         #es = 1.3146*10**9*exp(-5315.56/(t + 273.15))
         #airDensity = (0.46460 / (t + 273.15)) * (p - 0.0037960 * rh * es) * 10**-3
 
+    def calculateSensitivities(self):
+        """Calculate the average sensitivity factors for each load in the weighing design if doing double subs. Function is called in solution function if doing double substitutions.
+        Returns a dictionary of load:sensitivity pairs.
+        """
+        averageSensitivities = {}
+        nominalSensitivity = []
+
+        firstDesignLine = self.designMatrix[0:1]
+
+        #Initialize positionMassOne vector to position of first line of design:
+        positionMassOne = np.zeros(shape=(1, self.positions))
+        for position in range(np.shape(firstDesignLine)[1]):
+            if firstDesignLine[0, position] == 1:
+                positionMassOne[0, position] = 1
+
+        #Initialize nominal variable to the nominal of the first weighing:
+        nominal = int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+
+        for i in range(len(self.balanceReadings)):
+            obsOne = self.balanceReadings[i][0]
+            obsTwo = self.balanceReadings[i][1]
+            obsThree = self.balanceReadings[i][2]
+            obsFour = self.balanceReadings[i][3]
+
+            swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((self.environmentals[i][0] - self.envCorrections[0]) - referenceTemperature))
+
+            airDensity = self.calculateAirDensity(\
+                self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
+
+            swDrift = ((obsFour - obsOne) - (obsThree - obsTwo)) / 2
+            sensitivity = (self.swMass / 1000) * (1 - airDensity / swDensityAdjusted) / ((obsThree - obsTwo) - swDrift)
+
+            designLine = self.designMatrix[i:i+1]
+            positionMassOne = np.zeros(shape=(1, self.positions))
+
+            #Set position of massOne for the given line of the design to figure out the nominal we're working at:
+            for position in range(np.shape(designLine)[1]):
+                if designLine[0, position] == 1:
+                    positionMassOne[0, position] = 1
+
+            #Check if current nominal is the same as last nominal, if not, add average sensitivity to sensitivities dictionary:
+            if int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))) != nominal:
+                averageSensitivities[nominal] = mean(nominalSensitivity)
+                nominalSensitivity = []
+                nominal = int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+                nominalSensitivity.append(sensitivity)
+            else:
+                nominalSensitivity.append(sensitivity)
+
+        #Add last stored value to sensitivities dictionary:
+        averageSensitivities[nominal] = mean(nominalSensitivity)
+        return averageSensitivities
+
     def calculateDoubleSubs(self, estimateMasses, averageSensitivities):
-        #First pass through the solution: Use nominal masses for ABC. Second, third passes uses calculated masses.
+        """
+        Calculates resulting "a" values of double subs. This function is called iteratively, passing the latest calculated values (estimateMasses) in to do line-by-line air buoyancy corrections.
+        The first pass through uses the nominal values as a first guess at masses. Sensitivity is passed in and the average sensitivity for each load is used. Automated balances use Direct-Readings-SF 
+        as the sensitivity factor. 
+        """
         
         for i in range(len(self.balanceReadings)):
             airDensity = self.calculateAirDensity(\
@@ -214,6 +294,7 @@ class MatrixSolution:
             rStar = np.matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, np.matrix.transpose(seriesObjects[self.seriesNumber - 1].calculatedMasses))
 
         #If direct readings entered (a values), set sesitivity to Direct-Readings-SF, put this in averageSensitivities dictionary and pass to calculateDoubleSubs:
+
         if self.directReadings == 1:
             averageSensitivities = {'balance':self.directReadingsSF}
 
@@ -224,69 +305,17 @@ class MatrixSolution:
                 self.calculatedMasses = np.matrix.transpose(matrixBHat)
 
             print(matrixBHat, "\n")
+            
+        #If doing double subs:
+        else:
+            averageSensitivities = self.calculateSensitivities()
 
-            self.doStatistics(matrixQ)
+            for i in range(3):
+                self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
+                matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
+                self.calculatedMasses = np.matrix.transpose(matrixBHat)
 
-            return None
-
-        #If doing a double substitution, calculate average sensitivity of the balance at each nominal, use these as sensitivity factors in calculateDoubleSubs:
-        #Initialize holder for sensitivities at a given nominal and sensitivities dictionary key = nominal, value = ave sensitivity at that nominal:
-        averageSensitivities = {}
-        nominalSensitivity = []
-
-        firstDesignLine = self.designMatrix[0:1]
-
-        #Initialize positionMassOne vector to position of first line of design:
-        positionMassOne = np.zeros(shape=(1, self.positions))
-        for position in range(np.shape(firstDesignLine)[1]):
-            if firstDesignLine[0, position] == 1:
-                positionMassOne[0, position] = 1
-
-        #Initialize nominal variable to the nominal of the first weighing:
-        nominal = int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
-
-        #Calculate sensitivities for each line in balance readings, calculate the average for each nominal:
-        for i in range(len(self.balanceReadings)):
-            obsOne = self.balanceReadings[i][0]
-            obsTwo = self.balanceReadings[i][1]
-            obsThree = self.balanceReadings[i][2]
-            obsFour = self.balanceReadings[i][3]
-
-            swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((self.environmentals[i][0] - self.envCorrections[0]) - referenceTemperature))
-
-            airDensity = self.calculateAirDensity(\
-                self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
-
-            swDrift = ((obsFour - obsOne) - (obsThree - obsTwo)) / 2
-            sensitivity = (self.swMass / 1000) * (1 - airDensity / swDensityAdjusted) / ((obsThree - obsTwo) - swDrift)
-
-            designLine = self.designMatrix[i:i+1]
-            positionMassOne = np.zeros(shape=(1, self.positions))
-
-            #Set position of massOne for the given line of the design to figure out the nominal we're working at:
-            for position in range(np.shape(designLine)[1]):
-                if designLine[0, position] == 1:
-                    positionMassOne[0, position] = 1
-
-            #Check if current nominal is the same as last nominal, if not, add average sensitivity to sensitivities dictionary:
-            if int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))) != nominal:
-                averageSensitivities[nominal] = mean(nominalSensitivity)
-                nominalSensitivity = []
-                nominal = int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
-                nominalSensitivity.append(sensitivity)
-            else:
-                nominalSensitivity.append(sensitivity)
-
-        #Add last stored value to sensitivities dictionary:
-        averageSensitivities[nominal] = mean(nominalSensitivity)
-
-        #Iterate 3 times through solution, update calculated masses matrix each time and repeat:
-        for i in range(5):
-            self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
-            matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
-            self.calculatedMasses = np.matrix.transpose(matrixBHat)
-
-        print(matrixBHat, "\n")
+            print(matrixBHat, "\n")
 
         self.doStatistics(matrixQ)
 
@@ -307,12 +336,24 @@ class MatrixSolution:
         fCritical = scipy.stats.f.ppf(1 - alpha, self.df, 1000)
         f = sw**2 / self.sigmaW**2
 
+        if f < fCritical:
+            fPass = True
+        else:
+            fPass = False
+
+        tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
+        t = 0
+
         print("sw =", str(sw), "mg")
         print("df =", str(self.df))
         print("")
 
         print("F-critical =", str(fCritical))
         print("F-observed =", str(f))
+        print("F-test Passed =", str(fPass))
+        print("")
+
+        print("T-critical =", str(tCritical))
 
 
 fileName = input("Enter configuration file name: ")
