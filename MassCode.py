@@ -18,8 +18,6 @@ import scipy.stats
 from statistics import mean, stdev
 from math import sqrt, exp
 
-import parser
-
 #Can get set to "old" later to determine how to parse user input file...maybe removing this feature:
 massCodeVersion = "new"
 
