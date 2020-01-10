@@ -10,9 +10,39 @@ from kivy.uix.button import Button
 textFile = TextInput(font_size=30, background_normal = '', text="#PyMac\n#Comments")
 
 class MainLayout(BoxLayout):
+
+    def getID(self, instance):
+        for idName, element in self.ids.items():
+            if(instance == element):
+                return str(idName)
+
     def addToTextBox(self, btn):
-        tags = {"Report #": "Report-Number: "}
-        self.ids.userText.text += tags[btn.text]
+        tags = {"reportNumButton": "Report-Number: ",
+                "restraintIdButton": "Restraint-ID: ",
+                "referenceTempButton": "Reference-Temperature: ",
+                "uncRestraintButton": "Unc-Restraint: ",
+                "designIdButton": "Design-ID: ",
+                "observationsButton": "Observations: ",
+                "numWeightsButton": "Positions: ",
+                "dateButton": "Date: ",
+                "techIDButton": "Technition-ID: ",
+                "balanceIDButton": "Balance-ID: ",
+                "checkIDButton": "Check-Standard-ID: ",
+                "restraintPositionButton": "Restraint: ",
+                "checkPositionButton": "Check-Standard: ",
+                "linearComboPositionButton": "Linear-Combo: ",
+                "nextRestraintPositionButton": "Next-Series-Restraint: ",
+                "randomErrorButton": "Random-Error: ",
+                "swMassButton": "sw-Mass: ",
+                "swDensityButton": "sw-Density: ",
+                "swCCEButton": "sw-CCE: ",
+                "sigmawButton": "Sigma-w: ",
+                "sigmatButton": "Sigma-t: "}
+
+        tag = tags[self.getID(btn)]
+        self.ids.userText.text += (tag + "\n")
+
+        btn.background_color = 0.6, 0.6, 0.6, 0.6
 
 class PyMac(App):
     def build(self):
