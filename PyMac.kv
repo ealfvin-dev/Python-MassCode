@@ -1,0 +1,85 @@
+#:set buttonFontSize 32
+#:set buttonColor (0.145, 0.5725, 0.967, 0.97)
+
+<MainLayout>:
+    id: mainBox
+    orientation: 'horizontal'
+    spacing: 10
+    padding: (0, 30, 30, 30)
+
+    BoxLayout:
+        id: "menu"
+
+        BoxLayout:
+            id: menuCol1
+            orientation: 'vertical'
+            spacing: 100
+            padding: (100, 0, 100, 0)
+
+            Label:
+                text: "[color=#CCD3D9][size=56][b]HEADER[/b][/size][/color]"
+                markup: True
+
+            Button:
+                id: reportButton
+                text: "Report #"
+                background_normal: ''
+                background_color: buttonColor
+                font_size: buttonFontSize
+                on_press: root.addToTextBox(self)
+
+            Button:
+                text: "Restraint ID"
+                background_normal: ''
+                background_color: buttonColor
+                font_size:buttonFontSize
+
+            Button:
+                text: "Reference Temp \n(" + u"\u00b0" + "C)"
+                background_normal: ''
+                background_color: buttonColor
+                font_size: buttonFontSize
+
+        BoxLayout:
+            id: menuCol2
+            orientation: "vertical"
+            spacing: 100
+            padding: (100, 0, 100, 0)
+
+            Label:
+                text: "[color=#CCD3D9][size=56][b]DESIGN[/b][/size][/color]"
+                markup: True
+
+            Button:
+                text: "Design"
+                background_normal: ''
+                background_color: buttonColor
+                font_size: buttonFontSize
+
+            Button:
+                text: "# Observations"
+                background_normal: ''
+                background_color: buttonColor
+                font_size: buttonFontSize
+
+            Button:
+                text: "# Weights"
+                background_normal: ''
+                background_color: buttonColor
+                font_size: buttonFontSize
+
+    BoxLayout:
+        id: textArea
+        orientation: "vertical"
+        spacing: 20
+
+        TextInput:
+            id: userText
+            font_size: 30
+            background_normal: ''
+            text: "#PyMac\n#Comments"
+
+        TextInput:
+            id: errors
+            background_normal: ''
+            text: "Errors:"
