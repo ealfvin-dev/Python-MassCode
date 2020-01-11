@@ -23,7 +23,7 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.20, 0.20, 0.22, 0.6)
+            Color(0.25, 0.25, 0.28, 0.65)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
             self.bind(size=self._update_rect, pos=self._update_rect)
