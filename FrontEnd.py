@@ -1,5 +1,8 @@
 import kivy
 
+from kivy.config import Config
+from kivy.graphics import Color, Rectangle
+
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
@@ -7,9 +10,27 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
-textFile = TextInput(font_size=30, background_normal = '', text="#PyMac\n#Comments")
+Config.set('graphics', 'fullscreen', 0)
+Config.set('graphics', 'window_state', 'maximized')
+
+#Config.set('graphics', 'height', '500')
+#Config.set('graphics', 'width', '1000')
+Config.write()
 
 class MainLayout(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        with self.canvas.before:
+            Color(0.20, 0.20, 0.22, 0.6)
+            self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
+
+            self.bind(size=self._update_rect, pos=self._update_rect)
+
+    def _update_rect(self, instance, value):
+        self.backgroundRect.pos = instance.pos
+        self.backgroundRect.size = instance.size
 
     def getID(self, instance):
         for idName, element in self.ids.items():

@@ -1,371 +1,429 @@
-#:set buttonFontSize 32
-#:set buttonColor (0.145, 0.5725, 0.967, 0.97)
+#:set buttonFontSize dp(14)
+#:set labelFontSize dp(25)
+#:set buttonColor (0.08, 0.55, 1, 1)
 
 <MainLayout>:
     id: mainBox
-    orientation: 'horizontal'
+    orientation: 'vertical'
     spacing: 10
-    padding: (0, 20, 50, 20)
 
     BoxLayout:
-        id: "menu"
-        spacing: 50
+        id: navBar
+        orientation: 'horizontal'
+        size_hint: (1.0, 0.05)
+        padding: (60, 0, 60, 0)
 
-        BoxLayout:
-            id: menuCol1
-            orientation: 'vertical'
-            spacing: 50
-            padding: (50, 0, 50, 0)
+        Label:
+            text: "[color=#FCEC0C][size=64][b]PyMac[/b][/size][/color]"
+            markup: True
 
-            Label:
-                text: "[color=#CCD3D9][size=56][b]SERIES 1\nHEADER[/b][/size][/color]"
-                markup: True
+        Button:
+            id: openFile
+            text: "Open File"
 
-            Button:
-                id: reportNumButton
-                text: "[b]Report #[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
+        Button:
+            id: newFile
+            text: "New File"
 
-            Button:
-                id: restraintIdButton
-                text: "[b]Restraint ID[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size:buttonFontSize
-                on_press: root.addToTextBox(self)
+        Button:
+            id: validation
+            text: "Run Validation"
 
-            Button:
-                id: uncRestraintButton
-                text: "[b]Restraint\nUncertainty (mg)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size:buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: referenceTempButton
-                text: "[b]Reference Temp\n(" + u"\u00b0" + "C)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Label:
-                text: "[color=#CCD3D9][size=56][b]CAL SETUP[/b][/size][/color]"
-                markup: True
-
-            Button:
-                id: dateButton
-                text: "[b]Cal Date[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: techIDButton
-                text: "[b]Technition\nID[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: balanceIDButton
-                text: "[b]Balance\nID[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: checkIDButton
-                text: "[b]Check\nID[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-        BoxLayout:
-            id: menuCol2
-            orientation: "vertical"
-            spacing: 50
-
-            Label:
-                text: "[color=#CCD3D9][size=56][b]DESIGN[/b][/size][/color]"
-                markup: True
-
-            Button:
-                id: designIdButton
-                text: "[b]Design ID[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: numWeightsButton
-                text: "[b]# Positions[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: observationsButton
-                text: "[b]# Observations[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: designMatrixButton
-                text: "[b]Set Design\nMatrix[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: weightPositionsButton
-                text: "[b]Set Weight\nPositions[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Label:
-                text: "[color=#CCD3D9][size=56][b]Position\nVectors[/b][/size][/color]"
-                markup: True
-
-            Button:
-                id: restraintPositionButton
-                text: "[b]Restraint\nPosition[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: checkPositionButton
-                text: "[b]Check\nPosition[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: linearComboPositionButton
-                text: "[b]Linear Combo\nPosition[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: nextRestraintPositionButton
-                text: "[b]Next Restraint\nPosition[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-        BoxLayout:
-            id: menuCol3
-            orientation: "vertical"
-            spacing: 50
-            padding: (50, 0, 50, 0)
-
-            Label:
-                text: "[color=#CCD3D9][size=56][b]sw[/b][/size][/color]"
-                markup: True
-
-            Button:
-                id: swMassButton
-                text: "[b]sw Mass\n(mg)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: swDensityButton
-                text: "[b]sw Density\n(g/cm^3)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: swCCEButton
-                text: "[b]sw CCE\n(/" + u"\u00b0" +"C)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Label:
-                text: "[color=#CCD3D9][size=56][b]Statistics[/b][/size][/color]"
-                markup: True
-
-            Button:
-                id: sigmawButton
-                text: "[b]sw (mg)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: sigmatButton
-                text: "[b]st (mg)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Label:
-                text: "[color=#CCD3D9][size=56][b]Calibration\nData[/b][/size][/color]"
-                markup: True
-
-            Button:
-                id: balanceReadingsButton
-                text: "[b]Enter Balance\nReadings[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: environmentalsButton
-                text: "[b]Enter\nEnvironmentals[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: environmentalCorrectionsButton
-                text: "[b]Enter Environmental\nCorrections[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-        BoxLayout:
-            id: menuCol4
-            orientation: "vertical"
-            spacing: 50
-            padding: (50, 0, 50, 0)
-
-            Button:
-                id: directReadingsButton
-                text: "[b]Direct Readings?[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: directReadingsSFButton
-                text: "[b]Direct Readings\nSF (mg/div)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: nominalsInPoundsButton
-                text: "[b]Nominals In\nPounds?[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Label:
-                text: "[color=#CCD3D9][size=56][b]OPTIONALS[/b][/size][/color]"
-                markup: True
-
-            Button:
-                id: gravityGradientButton
-                text: "[b]Gravity Gradient\n(s^-2)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: comHeightsButton
-                text: "[b]COM Heights\n(cm)[/b]"
-                markup: True
-                background_normal: ''
-                background_color: buttonColor
-                font_size: buttonFontSize
-                on_press: root.addToTextBox(self)
-
-            Button:
-                id: saveButton
-                text: "[color=#000000][b]SAVE[/b][/color]"
-                markup: True
-                background_normal: ''
-                background_color: (0.988, 0.9255, 0.047, 0.95)
-                font_size: buttonFontSize
-
-            Button:
-                id: runButton
-                text: "[color=#000000][b]RUN[/b][/color]"
-                markup: True
-                background_normal: ''
-                background_color: (0.1, 0.90, 0.05, 0.95)
-                font_size: buttonFontSize
-
+        Button:
+            id: help
+            text: "Help"
 
     BoxLayout:
-        id: textArea
-        orientation: "vertical"
-        spacing: 20
-        padding: (50, 0, 0, 0)
+        id: content
+        orientation: 'horizontal'
+        spacing: 150
+        padding: (60, 15, 60, 30)
 
-        TextInput:
-            id: userText
-            font_size: 30
-            background_normal: ''
-            text: "#PyMac\n#Comments\n"
+        BoxLayout:
+            id: menu
+            spacing: 70
 
-        TextInput:
-            id: errors
-            background_normal: ''
-            text: "Errors:"
+            BoxLayout:
+                id: menuCol1
+                orientation: 'vertical'
+                spacing: 60
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]Series 1\nHeader[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: reportNumButton
+                    text: "[b]Report #[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    on_press: root.addToTextBox(self)
+                    text_size: self.width, None
+                    halign: 'center'
+
+                Button:
+                    id: restraintIdButton
+                    text: "[b]Restraint ID[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size:buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: uncRestraintButton
+                    text: "[b]Restraint\nUncertainty (mg)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size:buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: referenceTempButton
+                    text: "[b]Reference Temp\n(" + u"\u00b0" + "C)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]Cal Setup[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: dateButton
+                    text: "[b]Cal Date[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: techIDButton
+                    text: "[b]Technition\nID[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: balanceIDButton
+                    text: "[b]Balance\nID[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: checkIDButton
+                    text: "[b]Check\nID[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+            BoxLayout:
+                id: menuCol2
+                orientation: "vertical"
+                spacing: 60
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]Design[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: designIdButton
+                    text: "[b]Design ID[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: numWeightsButton
+                    text: "[b]# Positions[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: observationsButton
+                    text: "[b]# Observations[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: designMatrixButton
+                    text: "[b]Set Design\nMatrix[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: weightPositionsButton
+                    text: "[b]Set Weight\nPositions[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]Position\nVectors[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: restraintPositionButton
+                    text: "[b]Restraint\nPosition[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: checkPositionButton
+                    text: "[b]Check\nPosition[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: linearComboPositionButton
+                    text: "[b]Linear Combo\nPosition[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: nextRestraintPositionButton
+                    text: "[b]Next Restraint\nPosition[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+            BoxLayout:
+                id: menuCol3
+                orientation: "vertical"
+                spacing: 60
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]sw[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: swMassButton
+                    text: "[b]sw Mass\n(mg)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: swDensityButton
+                    text: "[b]sw Density\n(g/cm^3)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: swCCEButton
+                    text: "[b]sw CCE\n(/" + u"\u00b0" +"C)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]Statistics[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: sigmawButton
+                    text: "[b]sw (mg)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: sigmatButton
+                    text: "[b]st (mg)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]Calibration\nData[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: balanceReadingsButton
+                    text: "[b]Enter Balance\nReadings[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: environmentalsButton
+                    text: "[b]Enter\nEnvironmentals[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: environmentalCorrectionsButton
+                    text: "[b]Enter Environmental\nCorrections[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+            BoxLayout:
+                id: menuCol4
+                orientation: "vertical"
+                spacing: 50
+
+                Button:
+                    id: directReadingsButton
+                    text: "[b]Direct Readings?[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: directReadingsSFButton
+                    text: "[b]Direct Readings\nSF (mg/div)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: nominalsInPoundsButton
+                    text: "[b]Nominals In\nPounds?[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]Optionals[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: gravityGradientButton
+                    text: "[b]Gravity Gradient\n(s^-2)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Button:
+                    id: comHeightsButton
+                    text: "[b]COM Heights\n(cm)[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: buttonFontSize
+                    on_press: root.addToTextBox(self)
+
+                Label:
+                    text: "[color=#CCD3D9][size=56][b]Actions[/b][/size][/color]"
+                    markup: True
+
+                Button:
+                    id: saveButton
+                    text: "[color=#000000][b]SAVE[/b][/color]"
+                    markup: True
+                    background_normal: ''
+                    background_color: (1, 0.85, 0.02, 1)
+                    font_size: sp(18)
+
+                Button:
+                    id: addSeriesButton
+                    text: "[color=#000000][b]ADD\nSERIES[/b][/color]"
+                    markup: True
+                    background_normal: ''
+                    background_color: (0.988, 0.9255, 0.047, 0.95)
+                    font_size: sp(18)
+
+                Button:
+                    id: goToSeriesButton
+                    text: "[color=#000000][b]GO TO\nSERIES[/b][/color]"
+                    markup: True
+                    background_normal: ''
+                    background_color: (0.988, 0.9255, 0.047, 0.95)
+                    font_size: sp(18)
+
+                Button:
+                    id: runButton
+                    text: "[color=#FFFFFF][b]RUN[/b][/color]"
+                    markup: True
+                    background_normal: ''
+                    background_color: (0.20, 0.68, 0.27, 0.98)
+                    font_size: sp(18)
+
+
+        BoxLayout:
+            id: textArea
+            orientation: "vertical"
+            spacing: 20
+            padding: (0, 0, 0, 0)
+
+            TextInput:
+                id: userText
+                font_size: sp(15)
+                background_normal: ''
+                text: "#PyMac\n#Comments\n"
+
+            TextInput:
+                id: errors
+                font_size: sp(15)
+                background_normal: ''
+                text: "ERRORS:\n"
+                size_hint: (1.0, 0.2)
+
+    Label:
+        id: footer
+        text: "[size=20]Copywrite Erik Alfvin, 2020[/size]"
+        markup: True
+        size_hint: (1.0, 0.01)
