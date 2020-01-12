@@ -4,7 +4,7 @@ from kivy.config import Config
 from kivy.graphics import Color, Rectangle
 
 from kivy.app import App
-from kivy.uix.widget import Widget
+from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -23,7 +23,7 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.25, 0.25, 0.28, 0.65)
+            Color(0.25, 0.25, 0.28, 0.55)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
             self.bind(size=self._update_rect, pos=self._update_rect)
@@ -63,7 +63,7 @@ class MainLayout(BoxLayout):
         tag = tags[self.getID(btn)]
         self.ids.userText.text += (tag + "\n")
 
-        btn.background_color = 0.6, 0.6, 0.6, 0.6
+        btn.background_color = 0.62, 0.62, 0.62, 0.62
 
 class PyMac(App):
     def build(self):

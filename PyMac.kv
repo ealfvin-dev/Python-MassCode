@@ -1,8 +1,8 @@
-#:set buttonFontSize dp(14)
-#:set labelFontSize dp(25)
-
 #:set buttonColor (0.08, 0.55, 1, 1)
 #:set labelColor (0.95, 0.95, 0.96, 1)
+
+#:set buttonSizer 20
+#:set labelSizer 12
 
 <MainLayout>:
     id: mainBox
@@ -51,10 +51,11 @@
                 spacing: 60
 
                 Label:
-                    text: "[size=56][b]Series 1\nHeader[/b][/size]"
+                    text: "[b]Series 1\nHeader[/b]"
                     markup: True
                     color: labelColor
-
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: reportNumButton
@@ -62,9 +63,9 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    on_press: root.addToTextBox(self)
-                    text_size: self.width, None
+                    font_size: dp(self.width) / buttonSizer
                     halign: 'center'
+                    on_press: root.addToTextBox(self)
 
                 Button:
                     id: restraintIdButton
@@ -72,7 +73,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size:buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -81,7 +83,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size:buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -90,13 +93,16 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Label:
-                    text: "[size=56][b]Cal Setup[/b][/size]"
+                    text: "[b]Cal Setup[/b]"
                     markup: True
                     color: labelColor
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: dateButton
@@ -104,7 +110,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -113,7 +120,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -122,7 +130,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -131,7 +140,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
             BoxLayout:
@@ -140,9 +150,11 @@
                 spacing: 60
 
                 Label:
-                    text: "[size=56][b]Design[/b][/size]"
+                    text: "[b]Design[/b]"
                     markup: True
                     color: labelColor
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: designIdButton
@@ -150,7 +162,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -159,7 +172,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -168,31 +182,36 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
                     id: designMatrixButton
-                    text: "[b]Set Design\nMatrix[/b]"
+                    text: "[b]Design Matrix[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
                     id: weightPositionsButton
-                    text: "[b]Set Weight\nPositions[/b]"
+                    text: "[b]Weight\nPositions[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Label:
-                    text: "[size=56][b]Position\nVectors[/b][/size]"
+                    text: "[b]Position\nVectors[/b]"
                     markup: True
                     color: labelColor
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: restraintPositionButton
@@ -200,7 +219,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -209,7 +229,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -218,7 +239,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -227,7 +249,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
             BoxLayout:
@@ -236,9 +259,11 @@
                 spacing: 60
 
                 Label:
-                    text: "[size=56][b]sw[/b][/size]"
+                    text: "[b]sw[/b]"
                     markup: True
                     color: labelColor
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: swMassButton
@@ -246,7 +271,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -255,7 +281,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -264,13 +291,16 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Label:
-                    text: "[size=56][b]Statistics[/b][/size]"
+                    text: "[b]Statistics[/b]"
                     markup: True
                     color: labelColor
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: sigmawButton
@@ -278,7 +308,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -287,39 +318,45 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Label:
-                    text: "[size=56][b]Calibration\nData[/b][/size]"
+                    text: "[b]Calibration\nData[/b]"
                     markup: True
                     color: labelColor
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: balanceReadingsButton
-                    text: "[b]Enter Balance\nReadings[/b]"
+                    text: "[b]Balance\nReadings[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
                     id: environmentalsButton
-                    text: "[b]Enter\nEnvironmentals[/b]"
+                    text: "[b]Environmentals[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
                     id: environmentalCorrectionsButton
-                    text: "[b]Enter Environmental\nCorrections[/b]"
+                    text: "[b]Environmental\nCorrections[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
             BoxLayout:
@@ -329,11 +366,12 @@
 
                 Button:
                     id: directReadingsButton
-                    text: "[b]Direct Readings?[/b]"
+                    text: "[b]Direct Readings[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -342,7 +380,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -351,13 +390,16 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Label:
-                    text: "[size=56][b]Optionals[/b][/size]"
+                    text: "[b]Optionals[/b]"
                     markup: True
                     color: labelColor
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: gravityGradientButton
@@ -365,7 +407,8 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Button:
@@ -374,29 +417,34 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: buttonFontSize
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
                     on_press: root.addToTextBox(self)
 
                 Label:
-                    text: "[size=56][b]Actions[/b][/size]"
+                    text: "[b]Actions[/b]"
                     markup: True
                     color: labelColor
+                    font_size: dp(self.width) / labelSizer
+                    halign: 'center'
 
                 Button:
                     id: addSeriesButton
                     text: "[color=#FFFFFF][b]ADD\nSERIES[/b][/color]"
                     markup: True
                     background_normal: ''
-                    background_color: (0.86, 0.21, 0.27, 0.97)
-                    font_size: sp(18)
+                    background_color: (0.09, 0.64, 0.72, 0.95)
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
 
                 Button:
                     id: goToSeriesButton
                     text: "[color=#FFFFFF][b]GO TO\nSERIES[/b][/color]"
                     markup: True
                     background_normal: ''
-                    background_color: (0.86, 0.21, 0.27, 0.97)
-                    font_size: sp(18)
+                    background_color: (0.09, 0.64, 0.72, 0.95)
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
 
                 Button: 
                     id: saveButton
@@ -404,7 +452,8 @@
                     markup: True
                     background_normal: ''
                     background_color: (1, 0.85, 0.02, 1)
-                    font_size: sp(18)
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
 
                 Button:
                     id: runButton
@@ -412,7 +461,8 @@
                     markup: True
                     background_normal: ''
                     background_color: (0.20, 0.68, 0.27, 0.98)
-                    font_size: sp(18)
+                    font_size: dp(self.width) / buttonSizer
+                    halign: 'center'
 
 
         BoxLayout:
@@ -423,13 +473,13 @@
 
             TextInput:
                 id: userText
-                font_size: sp(15)
+                font_size: dp(15)
                 background_normal: ''
                 text: "#PyMac\n#Comments\n"
 
             TextInput:
                 id: errors
-                font_size: sp(15)
+                font_size: dp(15)
                 background_normal: ''
                 text: "ERRORS:\n"
                 size_hint: (1.0, 0.2)
