@@ -3,6 +3,9 @@ import kivy
 from kivy.config import Config
 from kivy.graphics import Color, Rectangle
 
+from kivy.uix.popup import Popup
+from kivy.factory import Factory
+
 from kivy.app import App
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
@@ -64,6 +67,46 @@ class MainLayout(BoxLayout):
         self.ids.userText.text += (tag + "\n")
 
         btn.background_color = 0.62, 0.62, 0.62, 0.62
+
+    def openPopUp(self):
+        popupLayout = BoxLayout()
+        popupLayout.orientation = "horizontal"
+
+        col1 = BoxLayout()
+        col1.orientation = "vertical"
+        col2 = BoxLayout()
+        col2.orientation = "vertical"
+
+        label1 = Label()
+        label2 = Label()
+
+        label1.text = "text1"
+        label2.text = "text2"
+
+        input1 = TextInput()
+        input2 = TextInput()
+
+        doneButton = Button()
+        cancelButton = Button()
+
+        col1.add_widget(label1)
+        col1.add_widget(input1)
+        col1.add_widget(cancelButton)
+
+        col2.add_widget(label2)
+        col2.add_widget(input2)
+        col2.add_widget(doneButton)
+
+        popupLayout.add_widget(col1)
+        popupLayout.add_widget(col2)
+
+        popup = Popup()
+        popup.auto_dismiss = False
+        popup.title="First Popup"
+        popup.size_hint=(0.5, 0.5)
+        popup.content=popupLayout
+
+        popup.open()
 
 class PyMac(App):
     def build(self):

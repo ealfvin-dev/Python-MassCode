@@ -1,3 +1,5 @@
+#:import Factory kivy.factory.Factory
+
 #:set buttonColor (0.08, 0.55, 1, 1)
 #:set labelColor (0.95, 0.95, 0.96, 1)
 
@@ -54,7 +56,7 @@
                     text: "[b]Series 1\nHeader[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -63,9 +65,9 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: root.addToTextBox(self)
+                    on_press: Factory.LabDataPopup().open()
 
                 Button:
                     id: restraintIdButton
@@ -73,7 +75,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -83,7 +85,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -93,7 +95,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -101,7 +103,7 @@
                     text: "[b]Cal Setup[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -110,7 +112,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -120,7 +122,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -130,7 +132,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -140,7 +142,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -153,7 +155,7 @@
                     text: "[b]Design[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -162,7 +164,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -172,7 +174,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -182,7 +184,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -192,7 +194,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -202,7 +204,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -210,7 +212,7 @@
                     text: "[b]Position\nVectors[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -219,7 +221,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -229,7 +231,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -239,7 +241,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -249,7 +251,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -262,7 +264,7 @@
                     text: "[b]sw[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -271,7 +273,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -281,7 +283,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -291,7 +293,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -299,7 +301,7 @@
                     text: "[b]Statistics[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -308,7 +310,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -318,7 +320,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -326,7 +328,7 @@
                     text: "[b]Calibration\nData[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -335,7 +337,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -345,7 +347,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -355,7 +357,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -370,7 +372,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -380,7 +382,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -390,7 +392,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -398,7 +400,7 @@
                     text: "[b]Optionals[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -407,7 +409,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -417,7 +419,7 @@
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
 
@@ -425,7 +427,7 @@
                     text: "[b]Actions[/b]"
                     markup: True
                     color: labelColor
-                    font_size: dp(self.width) / labelSizer
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
                 Button:
@@ -434,7 +436,7 @@
                     markup: True
                     background_normal: ''
                     background_color: (0.09, 0.64, 0.72, 0.95)
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
 
                 Button:
@@ -443,7 +445,7 @@
                     markup: True
                     background_normal: ''
                     background_color: (0.09, 0.64, 0.72, 0.95)
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
 
                 Button: 
@@ -452,7 +454,7 @@
                     markup: True
                     background_normal: ''
                     background_color: (1, 0.85, 0.02, 1)
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
 
                 Button:
@@ -461,7 +463,7 @@
                     markup: True
                     background_normal: ''
                     background_color: (0.20, 0.68, 0.27, 0.98)
-                    font_size: dp(self.width) / buttonSizer
+                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
 
 
@@ -473,13 +475,13 @@
 
             TextInput:
                 id: userText
-                font_size: dp(15)
+                font_size: dp(14)
                 background_normal: ''
                 text: "#PyMac\n#Comments\n"
 
             TextInput:
                 id: errors
-                font_size: dp(15)
+                font_size: dp(14)
                 background_normal: ''
                 text: "ERRORS:\n"
                 size_hint: (1.0, 0.2)
@@ -489,3 +491,42 @@
         text: "[size=20]Copywrite Erik Alfvin, 2020[/size]"
         markup: True
         size_hint: (1.0, 0.01)
+
+<LabDataPopup@Popup>:
+    auto_dismiss: False
+    title: "Enter Laboratory Information"
+    size_hint: (0.5, 0.6)
+
+    BoxLayout:
+        id: LabDataPLayout
+        orientation: "vertical"
+        spacing: 100
+        padding: 20, 50, 20, 20
+        
+        TextInput:
+            hint_text: "Calibration Lab Name\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes"
+            font_size: dp(16)
+            background_normal: ''
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: 450
+            padding: (10, 10)
+            size_hint: (1, 0.25)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Save"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
