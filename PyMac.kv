@@ -40,17 +40,18 @@
     BoxLayout:
         id: content
         orientation: 'horizontal'
-        spacing: 150
+        spacing: self.width / 20
         padding: (60, 15, 60, 30)
 
         BoxLayout:
             id: menu
-            spacing: 70
+            orientation: 'horizontal'
+            spacing: self.width / 20
 
             BoxLayout:
                 id: menuCol1
                 orientation: 'vertical'
-                spacing: 60
+                spacing: self.height / 28
 
                 Label:
                     text: "[b]Report\nHeader[/b]"
@@ -61,23 +62,13 @@
 
                 Button:
                     id: labInfoButton
-                    text: "[b]Lab Info\n& Notes[/b]"
+                    text: "[b]Lab Info &\nCal Notes[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: app.openLabInfoPop()
-
-                Button:
-                    id: reportNumButton
-                    text: "[b]Report #[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.openPopup()
 
                 Button:
                     id: restraintIdButton
@@ -159,7 +150,7 @@
             BoxLayout:
                 id: menuCol2
                 orientation: "vertical"
-                spacing: 60
+                spacing: self.height / 28
 
                 Label:
                     text: "[b]Design[/b]"
@@ -268,7 +259,7 @@
             BoxLayout:
                 id: menuCol3
                 orientation: "vertical"
-                spacing: 60
+                spacing: self.height / 28
 
                 Label:
                     text: "[b]sw[/b]"
@@ -374,7 +365,7 @@
             BoxLayout:
                 id: menuCol4
                 orientation: "vertical"
-                spacing: 50
+                spacing: self.height / 28
 
                 Button:
                     id: directReadingsButton
@@ -487,6 +478,7 @@
                 id: userText
                 font_size: dp(14)
                 background_normal: ''
+                hint_text: "Input text file"
                 text: ""
 
             TextInput:
@@ -517,7 +509,7 @@
         
         TextInput:
             id: labInfoText
-            hint_text: "Calibration Lab Name\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes"
+            hint_text: "Calibration Laboratory\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes\n\nReport #"
             font_size: dp(16)
             background_normal: ''
 

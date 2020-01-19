@@ -69,19 +69,24 @@ class MainLayout(BoxLayout):
         btn.background_color = 0.62, 0.62, 0.62, 0.62
 
 class LabInfoPopup(Popup):
+    orderId = 1
+    
     def writeText(self):
-        userText = self.ids.labInfoText.text.split("\n")
+        inputFileText = self.parent.children[1].ids.userText.text
+        labInfoText = ""
 
-        finalText = ""
+        userText = self.ids.labInfoText.text.split("\n")
 
         for line in userText:
             if(line == ""):
-                finalText += "\n"
+                labInfoText += "\n"
 
             else:
-                finalText += "#" + line + "\n"
+                labInfoText += "#" + line + "\n"
 
-        self.parent.children[1].ids.userText.text += finalText
+        labInfoText += "\n"
+
+        self.parent.children[1].ids.userText.text = labInfoText + inputFileText
         self.parent.children[1].ids.labInfoButton.background_color = 0.62, 0.62, 0.62, 0.62
 
         self.dismiss()
