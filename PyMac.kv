@@ -53,11 +53,21 @@
                 spacing: 60
 
                 Label:
-                    text: "[b]Series 1\nHeader[/b]"
+                    text: "[b]Report\nHeader[/b]"
                     markup: True
                     color: labelColor
                     font_size: dp(self.width / labelSizer)
                     halign: 'center'
+
+                Button:
+                    id: labInfoButton
+                    text: "[b]Lab Info\n& Notes[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+                    on_press: app.openLabInfoPop()
 
                 Button:
                     id: reportNumButton
@@ -67,7 +77,7 @@
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: Factory.LabDataPopup().open()
+                    on_press: root.openPopup()
 
                 Button:
                     id: restraintIdButton
@@ -468,7 +478,7 @@
 
 
         BoxLayout:
-            id: textArea
+            id: textAreas
             orientation: "vertical"
             spacing: 20
             padding: (0, 0, 0, 0)
@@ -477,7 +487,7 @@
                 id: userText
                 font_size: dp(14)
                 background_normal: ''
-                text: "#PyMac\n#Comments\n"
+                text: ""
 
             TextInput:
                 id: errors
@@ -492,27 +502,30 @@
         markup: True
         size_hint: (1.0, 0.01)
 
-<LabDataPopup@Popup>:
+<LabInfoPopup>:
+    id: labInfoPop
     auto_dismiss: False
     title: "Enter Laboratory Information"
+    title_size: dp(18)
     size_hint: (0.5, 0.6)
 
     BoxLayout:
-        id: LabDataPLayout
+        id: LabInfoPLayout
         orientation: "vertical"
         spacing: 100
         padding: 20, 50, 20, 20
         
         TextInput:
+            id: labInfoText
             hint_text: "Calibration Lab Name\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes"
             font_size: dp(16)
             background_normal: ''
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: 450
+            spacing: 600
             padding: (10, 10)
-            size_hint: (1, 0.25)
+            size_hint: (1, 0.2)
 
             Button:
                 size_hint: (1, 1)
@@ -521,6 +534,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
+                on_press: root.writeText()
 
             Button:
                 size_hint: (1, 1)
@@ -530,3 +544,4 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
+                on_press: root.dismiss()

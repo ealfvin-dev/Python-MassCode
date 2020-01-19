@@ -68,49 +68,31 @@ class MainLayout(BoxLayout):
 
         btn.background_color = 0.62, 0.62, 0.62, 0.62
 
-    def openPopUp(self):
-        popupLayout = BoxLayout()
-        popupLayout.orientation = "horizontal"
+class LabInfoPopup(Popup):
+    def writeText(self):
+        userText = self.ids.labInfoText.text.split("\n")
 
-        col1 = BoxLayout()
-        col1.orientation = "vertical"
-        col2 = BoxLayout()
-        col2.orientation = "vertical"
+        finalText = ""
 
-        label1 = Label()
-        label2 = Label()
+        for line in userText:
+            if(line == ""):
+                finalText += "\n"
 
-        label1.text = "text1"
-        label2.text = "text2"
+            else:
+                finalText += "#" + line + "\n"
 
-        input1 = TextInput()
-        input2 = TextInput()
+        self.parent.children[1].ids.userText.text += finalText
+        self.parent.children[1].ids.labInfoButton.background_color = 0.62, 0.62, 0.62, 0.62
 
-        doneButton = Button()
-        cancelButton = Button()
-
-        col1.add_widget(label1)
-        col1.add_widget(input1)
-        col1.add_widget(cancelButton)
-
-        col2.add_widget(label2)
-        col2.add_widget(input2)
-        col2.add_widget(doneButton)
-
-        popupLayout.add_widget(col1)
-        popupLayout.add_widget(col2)
-
-        popup = Popup()
-        popup.auto_dismiss = False
-        popup.title="First Popup"
-        popup.size_hint=(0.5, 0.5)
-        popup.content=popupLayout
-
-        popup.open()
+        self.dismiss()
 
 class PyMac(App):
     def build(self):
         return MainLayout()
+
+    def openLabInfoPop(self):
+        pop = LabInfoPopup()
+        pop.open()
 
 if __name__ == "__main__":
     mainApp = PyMac()
