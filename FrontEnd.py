@@ -21,7 +21,6 @@ Config.set('graphics', 'window_state', 'maximized')
 Config.write()
 
 class MainLayout(BoxLayout):
-
     def __init__(self, **kwargs):
         super().__init__()
 
@@ -30,6 +29,8 @@ class MainLayout(BoxLayout):
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
             self.bind(size=self._update_rect, pos=self._update_rect)
+
+        self.saved = False
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -68,9 +69,28 @@ class MainLayout(BoxLayout):
 
         btn.background_color = 0.62, 0.62, 0.62, 0.62
 
+    def textAdded(self):
+        if(self.saved):
+            self.ids.saveButton.background_color = (1, 0.85, 0.02, 1)
+            self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+            self.saved = False
+
+    def save(self):
+        self.saved = True
+
+        self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
+        self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+    def run(self):
+        if(not self.saved):
+            pass
+        else:
+            print("Run Python MassCode")
+
 class LabInfoPopup(Popup):
     def writeText(self):
-        inputFileText = self.parent.children[1].ids.userText.text
+        masterTextFile = self.parent.children[1].ids.userText
         labInfoText = ""
 
         userText = self.ids.labInfoText.text.split("\n")
@@ -88,12 +108,13 @@ class LabInfoPopup(Popup):
 
         newTextLength = self.getNumChacacters(labInfoText)
 
-        self.parent.children[1].ids.userText.text = labInfoText + inputFileText
+        masterTextFile.cursor = (0,0)
+        masterTextFile.insert_text(labInfoText)
 
-        self.parent.children[1].ids.userText.select_text(rowStart, newTextLength)
-        self.parent.children[1].ids.userText.selection_color = 0.1, 0.8, 0.2, 0.20
+        masterTextFile.select_text(rowStart, newTextLength)
+        masterTextFile.selection_color = 0.1, 0.8, 0.2, 0.20
 
-        self.parent.children[1].ids.labInfoButton.background_color = 0.62, 0.62, 0.62, 0.62
+        self.parent.children[1].ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
         self.dismiss()
 
