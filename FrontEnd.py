@@ -69,13 +69,13 @@ class MainLayout(BoxLayout):
         btn.background_color = 0.62, 0.62, 0.62, 0.62
 
 class LabInfoPopup(Popup):
-    orderId = 1
-    
     def writeText(self):
         inputFileText = self.parent.children[1].ids.userText.text
         labInfoText = ""
 
         userText = self.ids.labInfoText.text.split("\n")
+
+        rowStart = 0 #self.findInsertion()
 
         for line in userText:
             if(line == ""):
@@ -86,10 +86,27 @@ class LabInfoPopup(Popup):
 
         labInfoText += "\n"
 
+        newTextLength = self.getNumChacacters(labInfoText)
+
         self.parent.children[1].ids.userText.text = labInfoText + inputFileText
+
+        self.parent.children[1].ids.userText.select_text(rowStart, newTextLength)
+        self.parent.children[1].ids.userText.selection_color = 0.1, 0.8, 0.2, 0.20
+
         self.parent.children[1].ids.labInfoButton.background_color = 0.62, 0.62, 0.62, 0.62
 
         self.dismiss()
+
+    def findInsertion(self):
+        pass
+
+    def getNumChacacters(self, text):
+        chars = 0
+
+        for char in text:
+            chars += 1
+
+        return chars
 
 class PyMac(App):
     def build(self):

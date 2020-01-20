@@ -480,12 +480,15 @@
                 background_normal: ''
                 hint_text: "Input text file"
                 text: ""
+                markup: True
+                on_focus: self.selection_color = 0.1843, 0.6549, 0.8313, 0.25
 
             TextInput:
                 id: errors
                 font_size: dp(14)
                 background_normal: ''
                 text: "ERRORS:\n"
+                foreground_color: 0.9, 0.05, 0.05, 0.85
                 size_hint: (1.0, 0.2)
 
     Label:
