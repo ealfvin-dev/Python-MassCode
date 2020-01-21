@@ -28,7 +28,7 @@ reportNumber = "000000"
 restraintID = "0"
 uncRestraint = 0
 randomError = 0
-referenceTemperature = 0
+referenceTemperature = 20
 
 class MatrixSolution:
     """
@@ -404,10 +404,6 @@ with open(fileName, 'r') as configFile:
 
             if splitLine[0] == "Unc-Restraint:":
                 uncRestraint = float(splitLine[1])
-                continue
-
-            if splitLine[0] == "Reference-Temperature:":
-                referenceTemperature = float(splitLine[1])
                 continue
 
             if splitLine[0] == "Random-Error:":

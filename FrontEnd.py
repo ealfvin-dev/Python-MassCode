@@ -19,6 +19,17 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
+def findInsertion():
+        pass
+
+def getNumChacacters(text):
+    chars = 0
+
+    for char in text:
+        chars += 1
+
+    return chars
+
 class MainLayout(BoxLayout):
 
     seriesNumber = 1
@@ -97,7 +108,7 @@ class LabInfoPopup(Popup):
 
         userText = self.ids.labInfoText.text.split("\n")
 
-        rowStart = 0 #self.findInsertion()
+        charStart = 0 #self.findInsertion()
 
         for line in userText:
             if(line == ""):
@@ -108,28 +119,21 @@ class LabInfoPopup(Popup):
 
         labInfoText += "\n"
 
-        newTextLength = self.getNumChacacters(labInfoText)
-
         masterTextFile.cursor = (0,0)
         masterTextFile.insert_text(labInfoText)
 
-        masterTextFile.select_text(rowStart, newTextLength)
+        newTextLength = getNumChacacters(labInfoText)
+
+        masterTextFile.select_text(charStart, newTextLength)
         masterTextFile.selection_color = 0.1, 0.8, 0.2, 0.20
 
         self.parent.children[1].ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
         self.dismiss()
 
-    def findInsertion(self):
+class RestraintPopup(Popup):
+    def writeText(self):
         pass
-
-    def getNumChacacters(self, text):
-        chars = 0
-
-        for char in text:
-            chars += 1
-
-        return chars
 
 class PyMac(App):
     def build(self):
@@ -137,6 +141,10 @@ class PyMac(App):
 
     def openLabInfoPop(self):
         pop = LabInfoPopup()
+        pop.open()
+
+    def openRestraintPop(self):
+        pop = RestraintPopup()
         pop.open()
 
 if __name__ == "__main__":

@@ -71,34 +71,14 @@
                     on_press: app.openLabInfoPop()
 
                 Button:
-                    id: restraintIdButton
-                    text: "[b]Restraint ID[/b]"
+                    id: restraintButton
+                    text: "[b]Starting\nRestraint[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: uncRestraintButton
-                    text: "[b]Restraint\nUncertainty (mg)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: referenceTempButton
-                    text: "[b]Reference Temp\n(" + u"\u00b0" + "C)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
+                    on_press: app.openRestraintPop()
 
                 Label:
                     text: "[b]Cal Setup[/b]"
@@ -482,8 +462,7 @@
                 font_size: dp(12)
                 background_normal: ''
                 font_name: "./Menlo.ttc"
-                hint_text: "Input text file"
-                text: ""
+                text: "@Series"
                 foreground_color: 0, 0, 0, 1
                 markup: True
                 on_focus: self.selection_color = 0.1843, 0.6549, 0.8313, 0.25
@@ -495,9 +474,10 @@
                 font_size: dp(12)
                 background_normal: ''
                 font_name: "./Menlo.ttc"
-                text: "ERRORS:\n"
+                text: "ERRORS:"
                 foreground_color: 0.9, 0.05, 0.05, 0.85
                 size_hint: (1.0, 0.15)
+                readonly: True
 
     Label:
         id: footer
@@ -520,6 +500,7 @@
         
         TextInput:
             id: labInfoText
+            padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
             text: ""
             hint_text: "Calibration Laboratory\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes\n\nReport #"
@@ -528,9 +509,110 @@
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: 600
+            spacing: root.width / 3.5
             padding: (10, 10)
             size_hint: (1, 0.2)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Save"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_press: root.writeText()
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_press: root.dismiss()
+
+<RestraintPopup>:
+    id: restraintPop
+    auto_dismiss: False
+    title: "Enter Starting Restraint Information"
+    title_size: dp(18)
+    size_hint: (0.5, 0.6)
+
+    BoxLayout:
+        id: RestraintPLayout
+        orientation: "vertical"
+        spacing: 20
+        padding: 20, 10, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Restraint ID:"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        TextInput:
+            id: restraintIDText
+            size_hint: (1, 0.6)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "049"
+            font_size: dp(15)
+            background_normal: ''
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Restraint Uncertainty (mg):"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        TextInput:
+            id: restraintUncertaintyText
+            size_hint: (1, 0.6)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "0.062"
+            font_size: dp(15)
+            background_normal: ''
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Random Error (mg):"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        TextInput:
+            id: randomErrorText
+            size_hint: (1, 0.6)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: "0"
+            hint_text: "0"
+            font_size: dp(15)
+            background_normal: ''
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3.5
+            padding: (10, 25)
+            size_hint: (1, 0.9)
 
             Button:
                 size_hint: (1, 1)
