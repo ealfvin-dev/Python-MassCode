@@ -478,21 +478,26 @@
 
             TextInput:
                 id: userText
-                font_size: dp(14)
+                padding: [10, 10, 10, 10]
+                font_size: dp(12)
                 background_normal: ''
+                font_name: "./Menlo.ttc"
                 hint_text: "Input text file"
                 text: ""
+                foreground_color: 0, 0, 0, 1
                 markup: True
                 on_focus: self.selection_color = 0.1843, 0.6549, 0.8313, 0.25
                 on_text: root.textAdded()
 
             TextInput:
                 id: errors
-                font_size: dp(14)
+                padding: [10, 10, 10, 10]
+                font_size: dp(12)
                 background_normal: ''
+                font_name: "./Menlo.ttc"
                 text: "ERRORS:\n"
                 foreground_color: 0.9, 0.05, 0.05, 0.85
-                size_hint: (1.0, 0.2)
+                size_hint: (1.0, 0.15)
 
     Label:
         id: footer
@@ -515,8 +520,10 @@
         
         TextInput:
             id: labInfoText
+            font_name: "./Menlo.ttc"
+            text: ""
             hint_text: "Calibration Laboratory\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes\n\nReport #"
-            font_size: dp(16)
+            font_size: dp(15)
             background_normal: ''
 
         BoxLayout:

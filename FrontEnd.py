@@ -1,6 +1,12 @@
 import kivy
 
 from kivy.config import Config
+
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
+Config.set('graphics', 'fullscreen', 0)
+Config.set('graphics', 'window_state', 'maximized')
+Config.write()
+
 from kivy.graphics import Color, Rectangle
 
 from kivy.uix.popup import Popup
@@ -13,14 +19,10 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
-Config.set('graphics', 'fullscreen', 0)
-Config.set('graphics', 'window_state', 'maximized')
-
-#Config.set('graphics', 'height', '500')
-#Config.set('graphics', 'width', '1000')
-Config.write()
-
 class MainLayout(BoxLayout):
+
+    seriesNumber = 1
+
     def __init__(self, **kwargs):
         super().__init__()
 

@@ -15,7 +15,7 @@
 
               Report-Number: 999999
 
-               Restraint-ID: 24
+               Restraint: 24
               Unc-Restraint: 0.120
       Reference-Temperature: 20
                Random-Error: 0
@@ -84,4 +84,6 @@
             #COM-Difference: -0.5
             #COM-Difference: -0.5
             #COM-Difference: 0
+
+
 
