@@ -54,34 +54,6 @@ class MainLayout(BoxLayout):
             if(instance == element):
                 return str(idName)
 
-    def addToTextBox(self, btn):
-        tags = {"reportNumButton": "Report-Number: ",
-                "restraintIdButton": "Restraint-ID: ",
-                "referenceTempButton": "Reference-Temperature: ",
-                "uncRestraintButton": "Unc-Restraint: ",
-                "designIdButton": "Design-ID: ",
-                "observationsButton": "Observations: ",
-                "numWeightsButton": "Positions: ",
-                "dateButton": "Date: ",
-                "techIDButton": "Technition-ID: ",
-                "balanceIDButton": "Balance-ID: ",
-                "checkIDButton": "Check-Standard-ID: ",
-                "restraintPositionButton": "Restraint: ",
-                "checkPositionButton": "Check-Standard: ",
-                "linearComboPositionButton": "Linear-Combo: ",
-                "nextRestraintPositionButton": "Next-Series-Restraint: ",
-                "randomErrorButton": "Random-Error: ",
-                "swMassButton": "sw-Mass: ",
-                "swDensityButton": "sw-Density: ",
-                "swCCEButton": "sw-CCE: ",
-                "sigmawButton": "Sigma-w: ",
-                "sigmatButton": "Sigma-t: "}
-
-        tag = tags[self.getID(btn)]
-        self.ids.userText.text += (tag + "\n")
-
-        btn.background_color = 0.62, 0.62, 0.62, 0.62
-
     def textAdded(self):
         if(self.saved):
             self.ids.saveButton.background_color = (1, 0.85, 0.02, 1)
@@ -106,7 +78,7 @@ class LabInfoPopup(Popup):
         masterTextFile = self.parent.children[1].ids.userText
         labInfoText = ""
 
-        userText = self.ids.labInfoText.text.split("\n")
+        userText = self.ids.labInfoText.text.split("\n") 
 
         charStart = 0 #self.findInsertion()
 
@@ -133,7 +105,16 @@ class LabInfoPopup(Popup):
 
 class RestraintPopup(Popup):
     def writeText(self):
-        pass
+        restraintIDText = self.ids.restraintIDText.text
+        restraintUncertaintyText = self.ids.restraintUncertaintyText.text
+        randomErrorText = self.ids.randomErrorText.text
+
+        if(restraintIDText == "" or restraintUncertaintyText == "" or randomErrorText == ""):
+            self.ids.restraintPopError.text = "Enter data for all required fields"
+            return
+
+        self.parent.children[1].ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.dismiss()
 
 class PyMac(App):
     def build(self):
