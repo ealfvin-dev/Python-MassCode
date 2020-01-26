@@ -16,7 +16,7 @@
               <Report-Number>  999999
 
                   <Restraint>  24
-              <Unc-Restraint>  0.120
+              <Uni-Restraint>  0.120
                <Random-Error>  0
 
 @SERIES

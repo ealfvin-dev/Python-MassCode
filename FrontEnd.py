@@ -11,10 +11,8 @@ from kivy.graphics import Color, Rectangle
 
 from kivy.uix.popup import Popup
 from kivy.factory import Factory
-from kivy.properties import NumericProperty
 
 from kivy.app import App
-from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -43,6 +41,15 @@ class MainLayout(BoxLayout):
 
         self.saved = False
 
+        self.orderOfTags = {"#": 0, "<Report-Number>": 1, \
+        "<Restraint>": 2, "<Unc-Restraint>": 3, "<Random-Error>": 4, \
+            "<Date>": 5, "@Series": 6, "<Technician-ID>": 7, " <Balance-ID>": 8, "<Check-Standard-ID>": 9}
+
+    def getTag(self, orderNum):
+        for key in self.orderOfTags:
+            if(self.orderOfTags[key] == orderNum):
+                return key
+
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
         self.backgroundRect.size = instance.size
@@ -54,7 +61,35 @@ class MainLayout(BoxLayout):
                 return str(idName)
 
     def writeText(self, text, orderNum):
-        print(orderNum, text)
+        textInput = self.ids.userText
+
+        row = -1
+        textInput.cursor = (0, 0)
+
+        #Move cursor to the appropriate position
+        for line in textInput.text.splitlines():
+            row += 1
+
+            if(line.strip() == "" or line == "\n"):
+                continue
+
+            elif(orderNum > self.orderOfTags[line.strip().split()[0]]):
+                textInput.cursor = (len(line), row)
+
+        #Insert text
+        if(textInput.cursor == (0, 0)):
+            textInput.insert_text("\n")
+            textInput.cursor = (0, 0)
+
+        else:
+            textInput.insert_text("\n")
+
+        for newLine in text.splitlines():
+            textInput.insert_text(self.getTag(orderNum) + "  ")
+            textInput.insert_text(newLine)
+
+            if(orderNum == 0):
+                textInput.insert_text("\n")
 
     def textAdded(self):
         if(self.saved):
@@ -94,35 +129,9 @@ class LabInfoPopup(Popup):
             self.ids.labInfoPopError.text = "Enter data for all fields"
             return
 
+        #If all fields are entered, call the writeText function in the MainLayout to write text into input file
         self.parent.children[1].writeText(labInfoText, labInfoOrder)
         self.parent.children[1].writeText(reportNumText, reportNumOrder)
-
-    def writeText(self):
-        print(self.ids.labInfoText.orderNum)
-
-        masterTextFile = self.parent.children[1].ids.userText
-        labInfoText = ""
-
-        userText = self.ids.labInfoText.text.split("\n") 
-
-        charStart = 0
-
-        for line in userText:
-            if(line == ""):
-                labInfoText += "\n"
-
-            else:
-                labInfoText += "#" + line + "\n"
-
-        labInfoText += "\n"
-
-        masterTextFile.cursor = (0,0)
-        masterTextFile.insert_text(labInfoText)
-
-        newTextLength = getNumChacacters(labInfoText)
-
-        masterTextFile.select_text(charStart, newTextLength)
-        masterTextFile.selection_color = 0.1, 0.8, 0.2, 0.20
 
         self.parent.children[1].ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
@@ -145,6 +154,8 @@ class RestraintPopup(Popup):
 
         #If all fields are entered, call the writeText function in the MainLayout to write text into input file
         self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
+        self.parent.children[1].writeText(restraintUncertaintyText, restraintUncertaintyOrder)
+        self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
 
         self.parent.children[1].ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
