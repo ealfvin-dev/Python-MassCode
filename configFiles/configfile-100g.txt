@@ -13,45 +13,45 @@
 #Do not put "#@PyMac" at top in this case and simply import the old input file.
 
 
-              Report-Number: 999999
+              <Report-Number>  999999
 
-                  Restraint: 24
-              Unc-Restraint: 0.120
-               Random-Error: 0
+                  <Restraint>  24
+              <Unc-Restraint>  0.120
+               <Random-Error>  0
 
 @SERIES
 
-                       Date: 11 28 2019
-              Technician-ID: 19
-                 Balance-ID: 22
-          Check-Standard-ID: 27
+                       <Date>  11 28 2019
+              <Technician-ID>  19
+                 <Balance-ID>  22
+          <Check-Standard-ID>  27
 
-                  Design-ID: 221
-                  Positions: 4
-               Observations: 6
+                  <Design-ID>  221
+                  <Positions>  4
+               <Observations>  6
 
-            Direct-Readings: 0
-         Direct-Readings-SF: 1
-         Nominals-In-Pounds: 0
+            <Direct-Readings>  0
+         <Direct-Readings-SF>  1
+         <Nominals-In-Pounds>  0
 
                                   ID         Nominal(g/lb)   Density     CCE     Reference-Value(mg)
-                   Position: CB2_100g          100            8.00    0.000045      0.692
-                   Position: RL-B_100g         100            7.95    0.000045      0.200
-                   Position: 1F6B_100g         100            7.95    0.000045
-                   Position: 1F6B_Sum_100g     100            7.95    0.000045 
+                   <Position>  CB2_100g          100            8.00    0.000045      0.692
+                   <Position>  RL-B_100g         100            7.95    0.000045      0.200
+                   <Position>  1F6B_100g         100            7.95    0.000045
+                   <Position>  1F6B_Sum_100g     100            7.95    0.000045 
 
-              Design-Matrix: 1 -1 0 0
-              Design-Matrix: 1 0 -1 0
-              Design-Matrix: 1 0 0 -1
-              Design-Matrix: 0 1 -1 0
-              Design-Matrix: 0 1 0 -1
-              Design-Matrix: 0 0 1 -1
+              <Design-Matrix>  1 -1 0 0
+              <Design-Matrix>  1 0 -1 0
+              <Design-Matrix>  1 0 0 -1
+              <Design-Matrix>  0 1 -1 0
+              <Design-Matrix>  0 1 0 -1
+              <Design-Matrix>  0 0 1 -1
 
-                  Restraint: 1 1 0 0 
-             Check-Standard: 1 -1 0 0 
-               Linear-Combo: 0 0 1 1 
+                  <Restraint>  1 1 0 0 
+             <Check-Standard>  1 -1 0 0 
+               <Linear-Combo>  0 0 1 1 
 
-      Next-Series-Restraint: 0 0 0 0
+      Next-Series-Restraint:  0 0 0 0
 
                     Sigma-w: 0.0095063
                     Sigma-t: 0.038

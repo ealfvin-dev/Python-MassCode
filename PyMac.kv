@@ -458,8 +458,8 @@
 
             TextInput:
                 id: userText
-                padding: [10, 10, 10, 10]
                 font_size: dp(12)
+                padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                 background_normal: ''
                 font_name: "./Menlo.ttc"
                 text: "@Series"
@@ -470,8 +470,8 @@
 
             TextInput:
                 id: errors
-                padding: [10, 10, 10, 10]
                 font_size: dp(12)
+                padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                 background_normal: ''
                 font_name: "./Menlo.ttc"
                 text: "ERRORS:"
@@ -488,30 +488,73 @@
 <LabInfoPopup>:
     id: labInfoPop
     auto_dismiss: False
-    title: "Enter Laboratory Information"
+    title: "Header Information"
     title_size: dp(18)
     size_hint: (0.5, 0.6)
 
     BoxLayout:
         id: LabInfoPLayout
         orientation: "vertical"
-        spacing: 100
-        padding: 20, 50, 20, 20
+        spacing: 5
+        padding: 20, 0, 20, 20        
+
+        Label:
+            text: "Laboratory Information & Notes:"
+            size_hint: (1, 0.6)
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
         
-        TextInput:
+        OrderedText:
             id: labInfoText
-            padding: [10, 10, 10, 10]
+            size_hint: (1, 2.2)
             font_name: "./Menlo.ttc"
             text: ""
-            hint_text: "Calibration Laboratory\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes\n\nReport #"
+            hint_text: "Calibration Laboratory\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes"
+            font_size: dp(15)
+            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
+            background_normal: ''
+            orderNum: 0
+
+        Label:
+            text: "Report Number:"
+            size_hint: (1, 0.6)
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+
+        OrderedText:
+            id: reportNumText
+            size_hint: (1, 0.5)
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "999999a"
             font_size: dp(15)
             background_normal: ''
+            orderNum: 1
+
+        Label:
+            id: labInfoPopError
+            size_hint: (1, 0.6)
+            text: ""
+            markup: True
+            color: (0.95, 0.05, 0.09, 1)
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "center"
 
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (10, 10)
-            size_hint: (1, 0.18)
+            padding: (0, 10)
+            size_hint: (1, 0.8)
 
             Button:
                 size_hint: (1, 1)
@@ -520,7 +563,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.writeText()
+                on_press: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -535,14 +578,14 @@
 <RestraintPopup>:
     id: restraintPop
     auto_dismiss: False
-    title: "Enter Starting Restraint Information"
+    title: "Starting Restraint Information"
     title_size: dp(18)
     size_hint: (0.5, 0.6)
 
     BoxLayout:
         id: RestraintPLayout
         orientation: "vertical"
-        spacing: 12
+        spacing: 5
         padding: 20, 0, 20, 20
 
         Label:
@@ -555,7 +598,7 @@
             halign: "left"
             valign: "bottom"
         
-        TextInput:
+        OrderedText:
             id: restraintIDText
             size_hint: (1, 0.5)
             multiline: False
@@ -565,6 +608,7 @@
             hint_text: "049"
             font_size: dp(15)
             background_normal: ''
+            orderNum: 2
 
         Label:
             size_hint: (1, 0.6)
@@ -576,7 +620,7 @@
             halign: "left"
             valign: "bottom"
         
-        TextInput:
+        OrderedText:
             id: restraintUncertaintyText
             size_hint: (1, 0.5)
             multiline: False
@@ -585,7 +629,8 @@
             text: ""
             hint_text: "0.062"
             font_size: dp(15)
-            background_normal: ''
+            background_normal: ''            
+            orderNum: 3
 
         Label:
             size_hint: (1, 0.6)
@@ -597,7 +642,7 @@
             halign: "left"
             valign: "bottom"
         
-        TextInput:
+        OrderedText:
             id: randomErrorText
             size_hint: (1, 0.5)
             multiline: False
@@ -607,6 +652,7 @@
             hint_text: "0"
             font_size: dp(15)
             background_normal: ''
+            orderNum: 4
 
         Label:
             id: restraintPopError
@@ -622,8 +668,8 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (10, 35)
-            size_hint: (1, 1)
+            padding: (0, 35)
+            size_hint: (1, 0.95)
 
             Button:
                 size_hint: (1, 1)
@@ -632,7 +678,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.writeText()
+                on_press: root.submit()
 
             Button:
                 size_hint: (1, 1)

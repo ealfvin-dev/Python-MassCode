@@ -11,6 +11,7 @@ from kivy.graphics import Color, Rectangle
 
 from kivy.uix.popup import Popup
 from kivy.factory import Factory
+from kivy.properties import NumericProperty
 
 from kivy.app import App
 from kivy.uix.scrollview import ScrollView
@@ -18,9 +19,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
-
-def findInsertion():
-        pass
 
 def getNumChacacters(text):
     chars = 0
@@ -49,10 +47,14 @@ class MainLayout(BoxLayout):
         self.backgroundRect.pos = instance.pos
         self.backgroundRect.size = instance.size
 
+    #May be able to remove this function
     def getID(self, instance):
         for idName, element in self.ids.items():
             if(instance == element):
                 return str(idName)
+
+    def writeText(self, text, orderNum):
+        print(orderNum, text)
 
     def textAdded(self):
         if(self.saved):
@@ -73,14 +75,37 @@ class MainLayout(BoxLayout):
         else:
             print("Run Python MassCode")
 
+class OrderedText(TextInput):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.orderNum = 0
+
 class LabInfoPopup(Popup):
+    def submit(self):
+        #Check if all fields have been entered:
+        labInfoText = self.ids.labInfoText.text
+        reportNumText = self.ids.reportNumText.text
+
+        labInfoOrder = self.ids.labInfoText.orderNum
+        reportNumOrder = self.ids.reportNumText.orderNum
+
+        if(labInfoText == "" or reportNumText == ""):
+            self.ids.labInfoPopError.text = "Enter data for all fields"
+            return
+
+        self.parent.children[1].writeText(labInfoText, labInfoOrder)
+        self.parent.children[1].writeText(reportNumText, reportNumOrder)
+
     def writeText(self):
+        print(self.ids.labInfoText.orderNum)
+
         masterTextFile = self.parent.children[1].ids.userText
         labInfoText = ""
 
         userText = self.ids.labInfoText.text.split("\n") 
 
-        charStart = 0 #self.findInsertion()
+        charStart = 0
 
         for line in userText:
             if(line == ""):
@@ -104,16 +129,25 @@ class LabInfoPopup(Popup):
         self.dismiss()
 
 class RestraintPopup(Popup):
-    def writeText(self):
+    def submit(self):
+        #Check if all inputs fields have been entered
         restraintIDText = self.ids.restraintIDText.text
         restraintUncertaintyText = self.ids.restraintUncertaintyText.text
         randomErrorText = self.ids.randomErrorText.text
 
+        restraintIDOrder = self.ids.restraintIDText.orderNum
+        restraintUncertaintyOrder = self.ids.restraintUncertaintyText.orderNum
+        randomErrorOrder = self.ids.randomErrorText.orderNum
+
         if(restraintIDText == "" or restraintUncertaintyText == "" or randomErrorText == ""):
-            self.ids.restraintPopError.text = "Enter data for all required fields"
+            self.ids.restraintPopError.text = "Enter data for all fields"
             return
 
+        #If all fields are entered, call the writeText function in the MainLayout to write text into input file
+        self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
+
         self.parent.children[1].ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
         self.dismiss()
 
 class PyMac(App):
