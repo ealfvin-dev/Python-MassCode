@@ -45,38 +45,44 @@ class MainLayout(BoxLayout):
         "<Restraint>": 2, "<Unc-Restraint>": 3, "<Random-Error>": 4, \
             "<Date>": 5, "@Series": 6, "<Technician-ID>": 7, " <Balance-ID>": 8, "<Check-Standard-ID>": 9}
 
-    def getTag(self, orderNum):
-        for key in self.orderOfTags:
-            if(self.orderOfTags[key] == orderNum):
-                return key
-
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
         self.backgroundRect.size = instance.size
-
-    #May be able to remove this function
-    def getID(self, instance):
-        for idName, element in self.ids.items():
-            if(instance == element):
-                return str(idName)
 
     def writeText(self, text, orderNum):
         textInput = self.ids.userText
 
         row = -1
         textInput.cursor = (0, 0)
+        cursorStart = 0
 
         #Move cursor to the appropriate position
         for line in textInput.text.splitlines():
             row += 1
 
-            if(line.strip() == "" or line == "\n"):
-                continue
-
-            elif(orderNum > self.orderOfTags[line.strip().split()[0]]):
+            if(line.strip() == ""):
                 textInput.cursor = (len(line), row)
 
-        #Insert text
+                cursorStart += len(line)
+                cursorStart += 1
+
+            elif(line == "\n"):
+                textInput.cursor = (0, row)
+
+                cursorStart += 1
+
+            elif(orderNum < self.orderOfTags[line.strip().split()[0]]):
+                break
+
+            else:
+                textInput.cursor = (len(line), row)
+
+                cursorStart += len(line)
+                cursorStart += 1
+
+        #Insert text and record length for highlighting
+        textBlockLength = 0
+
         if(textInput.cursor == (0, 0)):
             textInput.insert_text("\n")
             textInput.cursor = (0, 0)
@@ -84,12 +90,29 @@ class MainLayout(BoxLayout):
         else:
             textInput.insert_text("\n")
 
-        for newLine in text.splitlines():
-            textInput.insert_text(self.getTag(orderNum) + "  ")
+        for line in text.splitlines():
+            newLine = self.getTag(orderNum) + "  " + line
             textInput.insert_text(newLine)
 
-            if(orderNum == 0):
+            textBlockLength += len(newLine)
+
+            if(len(text.splitlines()) > 1):
                 textInput.insert_text("\n")
+                textBlockLength += 1
+
+            if(orderNum == 1):
+                textInput.insert_text("\n")
+
+        return cursorStart, textBlockLength
+
+    def getTag(self, orderNum):
+        for key in self.orderOfTags:
+            if(self.orderOfTags[key] == orderNum):
+                return key
+
+    def highlight(self, startPos, textLength):
+        self.ids.userText.select_text(startPos, startPos + textLength)
+        self.ids.userText.selection_color = 0.1, 0.8, 0.2, 0.20
 
     def textAdded(self):
         if(self.saved):
@@ -130,8 +153,11 @@ class LabInfoPopup(Popup):
             return
 
         #If all fields are entered, call the writeText function in the MainLayout to write text into input file
-        self.parent.children[1].writeText(labInfoText, labInfoOrder)
-        self.parent.children[1].writeText(reportNumText, reportNumOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(labInfoText, labInfoOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(reportNumText, reportNumOrder)
+
+        #Highlight the block added
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
         self.parent.children[1].ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
@@ -153,9 +179,11 @@ class RestraintPopup(Popup):
             return
 
         #If all fields are entered, call the writeText function in the MainLayout to write text into input file
-        self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
-        self.parent.children[1].writeText(restraintUncertaintyText, restraintUncertaintyOrder)
-        self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(restraintUncertaintyText, restraintUncertaintyOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
         self.parent.children[1].ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
