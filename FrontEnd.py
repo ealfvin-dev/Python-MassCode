@@ -42,8 +42,8 @@ class MainLayout(BoxLayout):
         self.saved = False
 
         self.orderOfTags = {"#": 0, "<Report-Number>": 1, \
-        "<Restraint>": 2, "<Unc-Restraint>": 3, "<Random-Error>": 4, \
-            "<Date>": 5, "@Series": 6, "<Technician-ID>": 7, " <Balance-ID>": 8, "<Check-Standard-ID>": 9}
+        "<Restraint-ID>": 2, "<Unc-Restraint>": 3, "<Random-Error>": 4, \
+            "@Series": 5, "<Date>": 6, "<Technician-ID>": 7, " <Balance-ID>": 8, "<Check-Standard-ID>": 9}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -100,7 +100,7 @@ class MainLayout(BoxLayout):
                 textInput.insert_text("\n")
                 textBlockLength += 1
 
-            if(orderNum == 1):
+            if(orderNum == 1 or orderNum == 4):
                 textInput.insert_text("\n")
 
         return cursorStart, textBlockLength
@@ -113,6 +113,30 @@ class MainLayout(BoxLayout):
     def highlight(self, startPos, textLength):
         self.ids.userText.select_text(startPos, startPos + textLength)
         self.ids.userText.selection_color = 0.1, 0.8, 0.2, 0.20
+
+    def checkTags(self):
+        inputText = self.ids.userText.text.splitlines()
+
+        lineNum = 0
+        for line in inputText:
+            lineNum += 1
+
+            if(line.split() == []):
+                pass
+
+            elif(line.split()[0].strip() == ""):
+                pass
+
+            else:
+                try:
+                    self.orderOfTags[line.split()[0].strip()]
+                except KeyError:
+                    errorMessage = "UNKNOWN TAG ON LINE " + str(lineNum) + ": " + line.split()[0].strip()
+
+                    self.ids.errors.text = "ERRORS:\n" + errorMessage
+                    return False
+
+        return True
 
     def textAdded(self):
         if(self.saved):
@@ -141,7 +165,7 @@ class OrderedText(TextInput):
 
 class LabInfoPopup(Popup):
     def submit(self):
-        #Check if all fields have been entered:
+        #Check if all fields have been entered
         labInfoText = self.ids.labInfoText.text
         reportNumText = self.ids.reportNumText.text
 
@@ -152,11 +176,11 @@ class LabInfoPopup(Popup):
             self.ids.labInfoPopError.text = "Enter data for all fields"
             return
 
-        #If all fields are entered, call the writeText function in the MainLayout to write text into input file
+        #Call the writeText function in the MainLayout to write text into input file
         cursorStart1, textLength1 = self.parent.children[1].writeText(labInfoText, labInfoOrder)
         cursorStart2, textLength2 = self.parent.children[1].writeText(reportNumText, reportNumOrder)
 
-        #Highlight the block added
+        #Highlight the block added across total textLength. Add 1 because there is one extra line break character between sections
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
         self.parent.children[1].ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
@@ -165,7 +189,6 @@ class LabInfoPopup(Popup):
 
 class RestraintPopup(Popup):
     def submit(self):
-        #Check if all inputs fields have been entered
         restraintIDText = self.ids.restraintIDText.text
         restraintUncertaintyText = self.ids.restraintUncertaintyText.text
         randomErrorText = self.ids.randomErrorText.text
@@ -178,7 +201,6 @@ class RestraintPopup(Popup):
             self.ids.restraintPopError.text = "Enter data for all fields"
             return
 
-        #If all fields are entered, call the writeText function in the MainLayout to write text into input file
         cursorStart1, textLength1 = self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
         cursorStart2, textLength2 = self.parent.children[1].writeText(restraintUncertaintyText, restraintUncertaintyOrder)
         cursorStart3, textLength3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
@@ -189,17 +211,57 @@ class RestraintPopup(Popup):
 
         self.dismiss()
 
+class DatePopup(Popup):
+    def submit(self):
+        dateText = self.ids.dateText.text
+        techIDText = self.ids.techIDText.text
+
+        dateOrder = self.ids.dateText.orderNum
+        techIDOrder = self.ids.techIDText.orderNum
+
+        if(dateText == "" or techIDText == ""):
+            self.ids.datePopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(dateText, dateOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(techIDText, techIDOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+
+        self.parent.children[1].ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
 class PyMac(App):
     def build(self):
         return MainLayout()
 
     def openLabInfoPop(self):
         pop = LabInfoPopup()
-        pop.open()
+
+        checkOK = self.root.checkTags()
+
+        if(checkOK):
+            self.root.ids.errors.text = "ERRORS:"
+            pop.open()
 
     def openRestraintPop(self):
         pop = RestraintPopup()
-        pop.open()
+
+        checkOK = self.root.checkTags()
+        
+        if(checkOK):
+            self.root.ids.errors.text = "ERRORS:"
+            pop.open()
+
+    def openDatePop(self):
+        pop = DatePopup()
+
+        checkOK = self.root.checkTags()
+        
+        if(checkOK):
+            self.root.ids.errors.text = "ERRORS:"
+            pop.open()
 
 if __name__ == "__main__":
     mainApp = PyMac()

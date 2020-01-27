@@ -89,17 +89,17 @@
 
                 Button:
                     id: dateButton
-                    text: "[b]Cal Date[/b]"
+                    text: "[b]Date,\nTechnition[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: root.addToTextBox(self)
+                    on_press: app.openDatePop()
 
                 Button:
-                    id: techIDButton
-                    text: "[b]Technition\nID[/b]"
+                    id: balanceIDButton
+                    text: "[b]Balance ID\nCheck ID[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
@@ -672,6 +672,99 @@
             spacing: root.width / 3
             padding: (0, 35)
             size_hint: (1, 0.95)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Save"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_press: root.submit()
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_press: root.dismiss()
+
+<DatePopup>:
+    id: datePop
+    auto_dismiss: False
+    title: "Date, Technition ID"
+    title_size: dp(18)
+    size_hint: (0.5, 0.6)
+
+    BoxLayout:
+        id: datePLayout
+        orientation: "vertical"
+        spacing: 5
+        padding: 20, 0, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Date:"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: dateText
+            size_hint: (1, 0.3)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "MM DD YYYY"
+            font_size: dp(15)
+            background_normal: ''
+            orderNum: 6
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Technition ID:"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: techIDText
+            size_hint: (1, 0.3)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "019"
+            font_size: dp(15)
+            background_normal: ''            
+            orderNum: 7
+
+        Label:
+            id: datePopError
+            size_hint: (1, 0.6)
+            text: ""
+            markup: True
+            color: (0.95, 0.05, 0.09, 1)
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "center"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.58)
 
             Button:
                 size_hint: (1, 1)
