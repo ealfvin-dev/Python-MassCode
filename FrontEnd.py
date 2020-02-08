@@ -43,7 +43,7 @@ class MainLayout(BoxLayout):
 
         self.orderOfTags = {"#": 0, "<Report-Number>": 1, \
         "<Restraint-ID>": 2, "<Unc-Restraint>": 3, "<Random-Error>": 4, \
-            "@Series": 5, "<Date>": 6, "<Technician-ID>": 7, " <Balance-ID>": 8, "<Check-Standard-ID>": 9}
+            "@Series": 5, "<Date>": 6, "<Technician-ID>": 7, "<Balance-ID>": 8, "<Check-Standard-ID>": 9}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -232,6 +232,27 @@ class DatePopup(Popup):
 
         self.dismiss()
 
+class BalanceIDPopup(Popup):
+    def submit(self):
+        balanceIDText = self.ids.balanceIDText.text
+        checkIDText = self.ids.checkIDText.text
+
+        balanceIDOrder = self.ids.balanceIDText.orderNum
+        checkIDOrder = self.ids.checkIDText.orderNum
+
+        if(balanceIDText == "" or checkIDText == ""):
+            self.ids.balancePopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(balanceIDText, balanceIDOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+
+        self.parent.children[1].ids.balanceIDButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
 class PyMac(App):
     def build(self):
         return MainLayout()
@@ -256,6 +277,15 @@ class PyMac(App):
 
     def openDatePop(self):
         pop = DatePopup()
+
+        checkOK = self.root.checkTags()
+        
+        if(checkOK):
+            self.root.ids.errors.text = "ERRORS:"
+            pop.open()
+
+    def openBalanceIDPop(self):
+        pop = BalanceIDPopup()
 
         checkOK = self.root.checkTags()
         
