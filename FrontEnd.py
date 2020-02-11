@@ -253,6 +253,40 @@ class BalanceIDPopup(Popup):
 
         self.dismiss()
 
+class DesignPopup(Popup):
+    def evalDesign(self):
+        design = self.ids.designText.text.splitlines()
+
+        observations = len(design)
+        positions = 0
+
+        for line in design:
+            if(len(line.split()) > positions):
+                positions = len(line.split())
+
+        self.ids.positionsLabel.text = "Positions:  " + str(positions)
+        self.ids.observationsLabel.text = "Observations:  " + str(observations)
+
+    def submit(self):
+        balanceIDText = self.ids.balanceIDText.text
+        checkIDText = self.ids.checkIDText.text
+
+        balanceIDOrder = self.ids.balanceIDText.orderNum
+        checkIDOrder = self.ids.checkIDText.orderNum
+
+        if(balanceIDText == "" or checkIDText == ""):
+            self.ids.balancePopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(balanceIDText, balanceIDOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+
+        self.parent.children[1].ids.balanceIDButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
 class PyMac(App):
     def build(self):
         return MainLayout()
@@ -286,6 +320,15 @@ class PyMac(App):
 
     def openBalanceIDPop(self):
         pop = BalanceIDPopup()
+
+        checkOK = self.root.checkTags()
+        
+        if(checkOK):
+            self.root.ids.errors.text = "ERRORS:"
+            pop.open()
+
+    def openDesignPop(self):
+        pop = DesignPopup()
 
         checkOK = self.root.checkTags()
         
