@@ -490,7 +490,7 @@
     auto_dismiss: False
     title: "Header Information"
     title_size: dp(18)
-    size_hint: (0.5, 0.6)
+    size_hint: (0.45, 0.6)
 
     BoxLayout:
         id: LabInfoPLayout
@@ -582,7 +582,7 @@
     auto_dismiss: False
     title: "Starting Restraint Information"
     title_size: dp(18)
-    size_hint: (0.5, 0.6)
+    size_hint: (0.45, 0.6)
 
     BoxLayout:
         id: RestraintPLayout
@@ -697,7 +697,7 @@
     auto_dismiss: False
     title: "Date, Technition ID"
     title_size: dp(18)
-    size_hint: (0.5, 0.6)
+    size_hint: (0.45, 0.48)
 
     BoxLayout:
         id: datePLayout
@@ -717,7 +717,7 @@
         
         OrderedText:
             id: dateText
-            size_hint: (1, 0.3)
+            size_hint: (1, 0.45)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -739,7 +739,7 @@
         
         OrderedText:
             id: techIDText
-            size_hint: (1, 0.3)
+            size_hint: (1, 0.45)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -764,7 +764,7 @@
             orientation: "horizontal"
             spacing: root.width / 3
             padding: (0, 35)
-            size_hint: (1, 0.58)
+            size_hint: (1, 0.90)
 
             Button:
                 size_hint: (1, 1)
@@ -790,7 +790,7 @@
     auto_dismiss: False
     title: "Balance ID, Check ID"
     title_size: dp(18)
-    size_hint: (0.5, 0.6)
+    size_hint: (0.45, 0.6)
 
     BoxLayout:
         id: balancePLayout
@@ -883,7 +883,7 @@
     auto_dismiss: False
     title: "Design"
     title_size: dp(18)
-    size_hint: (0.5, 0.6)
+    size_hint: (0.45, 0.6)
 
     BoxLayout:
         id: designPLayout
@@ -903,6 +903,7 @@
                 padding: 0, 0, 0, 0
 
                 Label:
+                    id: designLabel
                     size_hint: (1, 0.6)
                     text: "Design Matrix:"
                     markup: True
@@ -927,8 +928,44 @@
             BoxLayout:
                 orientation: "vertical"
                 spacing: 5
-                padding: 0, 0, 0, 0
+                padding: 0, designLabel.height + 5, 0, 0
                 size_hint: (0.5, 1)
+
+                Button:
+                    id: dropDownMain
+                    size_hint: (0.8, 0.5)
+                    text: "Presets"
+                    halign: 'center'
+                    font_size: dp(self.width / buttonSizer)
+                    on_release: dropDownn.open(self)
+
+                DropDown:
+                    id: dropDownn
+
+                    Button:
+                        text: "3-1"
+                        size_hint_y: None
+                        height: 60
+
+                    Button:
+                        text: "4-1"
+                        size_hint_y: None
+                        height: 60
+
+                    Button:
+                        text: "5-1"
+                        size_hint_y: None
+                        height: 60
+
+                    Button:
+                        text: "532111"
+                        size_hint_y: None
+                        height: 60
+
+                    Button:
+                        text: "522111"
+                        size_hint_y: None
+                        height: 60
 
                 Label:
                     id: positionsLabel
@@ -937,7 +974,7 @@
                     markup: True
                     color: labelColor
                     text_size: self.size
-                    font_size: dp(self.width / (labelSizer*2.5))
+                    font_size: dp(self.width / (labelSizer*2))
                     halign: "left"
                     valign: "bottom"
 
@@ -948,7 +985,7 @@
                     markup: True
                     color: labelColor
                     text_size: self.size
-                    font_size: dp(self.width / (labelSizer*2.5))
+                    font_size: dp(self.width / (labelSizer*2))
                     halign: "left"
                     valign: "bottom"
 
@@ -975,7 +1012,7 @@
             orderNum: 9
 
         Label:
-            id: balancePopError
+            id: designPopError
             size_hint: (1, 0.6)
             text: ""
             markup: True

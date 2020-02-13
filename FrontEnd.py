@@ -10,6 +10,7 @@ Config.write()
 from kivy.graphics import Color, Rectangle
 
 from kivy.uix.popup import Popup
+from kivy.uix.dropdown import DropDown
 from kivy.factory import Factory
 
 from kivy.app import App
@@ -257,25 +258,28 @@ class DesignPopup(Popup):
     def evalDesign(self):
         design = self.ids.designText.text.splitlines()
 
-        observations = len(design)
+        observations = 0
         positions = 0
 
         for line in design:
-            if(len(line.split()) > positions):
-                positions = len(line.split())
+            if(line.strip() != ""):
+                observations += 1
+
+            if(len(line.strip().split()) > positions):
+                positions = len(line.strip().split())
 
         self.ids.positionsLabel.text = "Positions:  " + str(positions)
         self.ids.observationsLabel.text = "Observations:  " + str(observations)
 
     def submit(self):
-        balanceIDText = self.ids.balanceIDText.text
-        checkIDText = self.ids.checkIDText.text
+        designText = self.ids.designText.text
+        designIDText = self.ids.designIDText.text
 
-        balanceIDOrder = self.ids.balanceIDText.orderNum
-        checkIDOrder = self.ids.checkIDText.orderNum
+        designOrder = self.ids.designText.orderNum
+        designIDOrder = self.ids.designIDText.orderNum
 
-        if(balanceIDText == "" or checkIDText == ""):
-            self.ids.balancePopError.text = "Enter data for all fields"
+        if(designText == "" or designIDText == ""):
+            self.ids.designPopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(balanceIDText, balanceIDOrder)
