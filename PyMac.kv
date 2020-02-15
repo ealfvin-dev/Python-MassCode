@@ -89,23 +89,13 @@
 
                 Button:
                     id: dateButton
-                    text: "[b]Date,\nTechnition[/b]"
+                    text: "[b]Date,\nEquipment[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: app.openDatePop()
-
-                Button:
-                    id: balanceIDButton
-                    text: "[b]Balance ID\nCheck ID[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: app.openBalanceIDPop()
 
                 Button:
                     id: designButton
@@ -127,13 +117,8 @@
                     halign: 'center'
                     on_press: app.openPositionsPop()
 
-            BoxLayout:
-                id: menuCol2
-                orientation: "vertical"
-                spacing: self.height / 28
-
                 Button:
-                    id: weightPositionsButton
+                    id: positionVectorsButton
                     text: "[b]Position\nVectors[/b]"
                     markup: True
                     background_normal: ''
@@ -141,6 +126,11 @@
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: root.addToTextBox(self)
+
+            BoxLayout:
+                id: menuCol2
+                orientation: "vertical"
+                spacing: self.height / 28
 
                 Label:
                     text: "[b]Position\nVectors[/b]"
@@ -650,7 +640,7 @@
     auto_dismiss: False
     title: "Date, Technition ID"
     title_size: dp(18)
-    size_hint: (0.45, 0.48)
+    size_hint: (0.45, 0.7)
 
     BoxLayout:
         id: datePLayout
@@ -703,55 +693,6 @@
             orderNum: 7
 
         Label:
-            id: datePopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
-            halign: "left"
-            valign: "center"
-
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, 35)
-            size_hint: (1, 0.90)
-
-            Button:
-                size_hint: (1, 1)
-                text: "Save"
-                font_size: dp(self.width / buttonSizer)
-                background_normal: ''
-                background_color: (0, 0.6, 0.82, 1)
-                halign: 'center'
-                on_press: root.submit()
-
-            Button:
-                size_hint: (1, 1)
-                text: "[color=#FFFFFF]Cancel[/color]"
-                font_size: dp(self.width / buttonSizer)
-                background_normal: ''
-                background_color: (0.95, 0.1, 0.15, 0.95)
-                halign: 'center'
-                markup: True
-                on_press: root.dismiss()
-
-<BalanceIDPopup>:
-    id: balancePop
-    auto_dismiss: False
-    title: "Balance ID, Check ID"
-    title_size: dp(18)
-    size_hint: (0.45, 0.48)
-
-    BoxLayout:
-        id: balancePLayout
-        orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
-
-        Label:
             size_hint: (1, 0.6)
             text: "Balance ID:"
             markup: True
@@ -796,7 +737,7 @@
             orderNum: 9
 
         Label:
-            id: balancePopError
+            id: datePopError
             size_hint: (1, 0.6)
             text: ""
             markup: True
@@ -810,7 +751,7 @@
             orientation: "horizontal"
             spacing: root.width / 3
             padding: (0, 35)
-            size_hint: (1, 0.9)
+            size_hint: (1, 0.90)
 
             Button:
                 size_hint: (1, 1)
@@ -875,7 +816,7 @@
                     font_size: dp(14)
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
-                    orderNum: 0
+                    orderNum: 11
                     on_text: root.evalDesign()
 
             BoxLayout:
@@ -967,7 +908,7 @@
             hint_text: "111"
             font_size: dp(14)
             background_normal: ''            
-            orderNum: 9
+            orderNum: 10
 
         Label:
             id: designPopError

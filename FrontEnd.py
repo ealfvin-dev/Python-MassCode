@@ -44,7 +44,8 @@ class MainLayout(BoxLayout):
 
         self.orderOfTags = {"#": 0, "<Report-Number>": 1, \
         "<Restraint-ID>": 2, "<Unc-Restraint>": 3, "<Random-Error>": 4, \
-            "@Series": 5, "<Date>": 6, "<Technician-ID>": 7, "<Balance-ID>": 8, "<Check-Standard-ID>": 9}
+            "@Series": 5, "<Date>": 6, "<Technician-ID>": 7, "<Balance-ID>": 8, "<Check-Standard-ID>": 9, \
+                "<Design-ID>": 10, "<Design>": 11}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -88,6 +89,9 @@ class MainLayout(BoxLayout):
             textInput.insert_text("\n")
             textInput.cursor = (0, 0)
 
+        elif(orderNum == 6):
+            textInput.insert_text("\n\n")
+
         else:
             textInput.insert_text("\n")
 
@@ -101,7 +105,7 @@ class MainLayout(BoxLayout):
                 textInput.insert_text("\n")
                 textBlockLength += 1
 
-            if(orderNum == 1 or orderNum == 4):
+            if(orderNum == 1 or orderNum == 4 or orderNum == 9):
                 textInput.insert_text("\n")
 
         return cursorStart, textBlockLength
@@ -216,41 +220,26 @@ class DatePopup(Popup):
     def submit(self):
         dateText = self.ids.dateText.text
         techIDText = self.ids.techIDText.text
+        balanceIDText = self.ids.balanceIDText.text
+        checkIDText = self.ids.checkIDText.text
 
         dateOrder = self.ids.dateText.orderNum
         techIDOrder = self.ids.techIDText.orderNum
+        balanceIDOrder = self.ids.balanceIDText.orderNum
+        checkIDOrder = self.ids.checkIDText.orderNum
 
-        if(dateText == "" or techIDText == ""):
+        if(dateText == "" or techIDText == "" or balanceIDText == "" or checkIDText == ""):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(dateText, dateOrder)
         cursorStart2, textLength2 = self.parent.children[1].writeText(techIDText, techIDOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(balanceIDText, balanceIDOrder)
+        cursorStart4, textLength4 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength3 + textLength4 + textLength2 + 3)
 
         self.parent.children[1].ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
-
-        self.dismiss()
-
-class BalanceIDPopup(Popup):
-    def submit(self):
-        balanceIDText = self.ids.balanceIDText.text
-        checkIDText = self.ids.checkIDText.text
-
-        balanceIDOrder = self.ids.balanceIDText.orderNum
-        checkIDOrder = self.ids.checkIDText.orderNum
-
-        if(balanceIDText == "" or checkIDText == ""):
-            self.ids.balancePopError.text = "Enter data for all fields"
-            return
-
-        cursorStart1, textLength1 = self.parent.children[1].writeText(balanceIDText, balanceIDOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
-
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
-        self.parent.children[1].ids.balanceIDButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
         self.dismiss()
 
@@ -339,15 +328,6 @@ class PyMac(App):
 
     def openDatePop(self):
         pop = DatePopup()
-
-        checkOK = self.root.checkTags()
-        
-        if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
-            pop.open()
-
-    def openBalanceIDPop(self):
-        pop = BalanceIDPopup()
 
         checkOK = self.root.checkTags()
         
