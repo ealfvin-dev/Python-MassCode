@@ -10,13 +10,13 @@
 #       Gravity-Gradient[m/ms^2], COM-Difference[cm](B-A)
 
 #PyMac is backwards-compatible with old MassCode input files.
-#Do not put "#@PyMac" at top in this case and simply import the old input file.
+#Do not put "#@PyMac" at top in this case and simply import the old input file
 
 
               <Report-Number>  999999
 
                   <Restraint>  24
-              <Uni-Restraint>  0.120
+              <Unc-Restraint>  0.120
                <Random-Error>  0
 
 @SERIES

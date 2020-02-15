@@ -255,6 +255,30 @@ class BalanceIDPopup(Popup):
         self.dismiss()
 
 class DesignPopup(Popup):
+    def writeDesign(self, design):
+        if(design == "3-1"):
+            self.ids.designText.text = "1 -1  0\n1  0 -1\n0  1 -1"
+            self.ids.designIDText.text = "111"
+
+        if(design == "4-1"):
+            self.ids.designText.text = "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
+            self.ids.designIDText.text = "112"
+
+        if(design == "5-1"):
+            self.ids.designText.text = "1 -1  0  0  0\n1  0 -1  0  0\n1  0  0 -1  0\n1  0  0  0 -1\n0  1 -1  0  0\n0  1  0 -1  0\n0  1  0  0 -1\n0  0  1 -1  0\n0  0  1  0 -1\n0  0  0  1 -1"
+            self.ids.designIDText.text = "114"
+
+        if(design == "532111"):
+            self.ids.designText.text = "1 -1 -1  1 -1  0\n1 -1 -1  0  1 -1\n1 -1 -1 -1  0  1\n1 -1 -1  0  0  0\n1  0 -1 -1 -1 -1\n0  1 -1  1 -1 -1\n0  1 -1 -1  1 -1\n0  1 -1 -1 -1  1\n0  0  1 -1 -1  0\n0  0  1 -1  0 -1\n0  0  1  0 -1 -1"
+            self.ids.designIDText.text = "032"
+
+        if(design == "522111"):
+            self.ids.designText.text = "1 -1 -1 -1 -1  1\n1 -1 -1 -1  1 -1\n1 -1 -1  1 -1 -1\n1 -1  0 -1 -1 -1\n1  0 -1 -1 -1 -1\n0  1 -1  1 -1  0\n0  1 -1 -1  0  1\n0  1 -1  0  1 -1"
+            self.ids.designIDText.text = "310"
+
+        self.ids.dropDownn.dismiss()
+        self.ids.dropDownMain.text = design
+
     def evalDesign(self):
         design = self.ids.designText.text.splitlines()
 
@@ -282,12 +306,12 @@ class DesignPopup(Popup):
             self.ids.designPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(balanceIDText, balanceIDOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(designText, designOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(designIDText, designIDOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
-        self.parent.children[1].ids.balanceIDButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.designButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
         self.dismiss()
 

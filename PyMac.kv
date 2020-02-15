@@ -62,7 +62,7 @@
 
                 Button:
                     id: labInfoButton
-                    text: "[b]Lab Info &\nCal Notes[/b]"
+                    text: "[b]Lab Info &\nNotes[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
@@ -109,7 +109,7 @@
 
                 Button:
                     id: designButton
-                    text: "[b]Weighing\nDesign[/b]"
+                    text: "[b]Design[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
@@ -118,70 +118,23 @@
                     on_press: app.openDesignPop()
 
                 Button:
-                    id: checkIDButton
-                    text: "[b]Check\nID[/b]"
+                    id: positionsButton
+                    text: "[b]Weights[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: root.addToTextBox(self)
+                    on_press: app.openPositionsPop()
 
             BoxLayout:
                 id: menuCol2
                 orientation: "vertical"
                 spacing: self.height / 28
 
-                Label:
-                    text: "[b]Design[/b]"
-                    markup: True
-                    color: labelColor
-                    font_size: dp(self.width / labelSizer)
-                    halign: 'center'
-
-                Button:
-                    id: designIdButton
-                    text: "[b]Design ID[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: numWeightsButton
-                    text: "[b]# Positions[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: observationsButton
-                    text: "[b]# Observations[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: designMatrixButton
-                    text: "[b]Design Matrix[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
                 Button:
                     id: weightPositionsButton
-                    text: "[b]Weight\nPositions[/b]"
+                    text: "[b]Position\nVectors[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
@@ -790,7 +743,7 @@
     auto_dismiss: False
     title: "Balance ID, Check ID"
     title_size: dp(18)
-    size_hint: (0.45, 0.6)
+    size_hint: (0.45, 0.48)
 
     BoxLayout:
         id: balancePLayout
@@ -810,7 +763,7 @@
         
         OrderedText:
             id: balanceIDText
-            size_hint: (1, 0.3)
+            size_hint: (1, 0.45)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -832,7 +785,7 @@
         
         OrderedText:
             id: checkIDText
-            size_hint: (1, 0.3)
+            size_hint: (1, 0.45)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -857,7 +810,7 @@
             orientation: "horizontal"
             spacing: root.width / 3
             padding: (0, 35)
-            size_hint: (1, 0.58)
+            size_hint: (1, 0.9)
 
             Button:
                 size_hint: (1, 1)
@@ -946,26 +899,31 @@
                         text: "3-1"
                         size_hint_y: None
                         height: 60
+                        on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "4-1"
                         size_hint_y: None
                         height: 60
+                        on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "5-1"
                         size_hint_y: None
                         height: 60
+                        on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "532111"
                         size_hint_y: None
                         height: 60
+                        on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "522111"
                         size_hint_y: None
                         height: 60
+                        on_press: root.writeDesign(self.text)
 
                 Label:
                     id: positionsLabel
