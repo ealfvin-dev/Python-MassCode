@@ -61,7 +61,9 @@ class MainLayout(BoxLayout):
         "<Restraint>": 16, \
         "<Check-Standard>": 17, \
         "<Linear-Combo>": 18, \
-        "<Pass-Down>": 19}
+        "<Pass-Down>": 19, \
+        "<sigma-t>": 20, \
+        "<sigma-w>": 21}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -117,7 +119,7 @@ class MainLayout(BoxLayout):
                 textInput.insert_text("\n")
                 textBlockLength += 1
 
-            if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 15):
+            if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 15 or orderNum == 19):
                 textInput.insert_text("\n")
 
         return cursorStart, textBlockLength
@@ -163,6 +165,11 @@ class MainLayout(BoxLayout):
             self.saved = False
 
     def save(self):
+        checkOK = self.checkTags()
+
+        if(checkOK):
+            self.ids.errors.text = "ERRORS:"
+
         self.saved = True
 
         self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
@@ -390,6 +397,27 @@ class VectorsPopup(Popup):
 
         self.dismiss()
 
+class StatisticsPopup(Popup):
+    def submit(self):
+        sigmatText = self.ids.sigmatText.text
+        sigmawText = self.ids.sigmawText.text
+
+        sigmatOrder = self.ids.sigmatText.orderNum
+        sigmawOrder = self.ids.sigmawText.orderNum
+
+        if(sigmatText == "" or sigmawText == ""):
+            self.ids.sigmaPopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(sigmatText, sigmatOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(sigmawText, sigmawOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+
+        self.parent.children[1].ids.statisticsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
 class PyMac(App):
     def build(self):
         return MainLayout()
@@ -450,6 +478,15 @@ class PyMac(App):
 
     def openVectorsPop(self):
         pop = VectorsPopup()
+
+        checkOK = self.root.checkTags()
+
+        if(checkOK):
+            self.root.ids.errors.text = "ERRORS:"
+            pop.open()
+
+    def openStatisticsPop(self):
+        pop = StatisticsPopup()
 
         checkOK = self.root.checkTags()
 
