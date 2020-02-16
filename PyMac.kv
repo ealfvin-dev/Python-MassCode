@@ -62,7 +62,7 @@
 
                 Button:
                     id: labInfoButton
-                    text: "[b]Lab Info &\nNotes[/b]"
+                    text: "[b]Report No.\nNotes[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
@@ -89,7 +89,7 @@
 
                 Button:
                     id: dateButton
-                    text: "[b]Date,\nEquipment[/b]"
+                    text: "[b]Date\nEquipment[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
@@ -108,14 +108,14 @@
                     on_press: app.openDesignPop()
 
                 Button:
-                    id: positionsButton
+                    id: weightsButton
                     text: "[b]Weights[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: app.openPositionsPop()
+                    on_press: app.openWeightsPop()
 
                 Button:
                     id: positionVectorsButton
@@ -125,7 +125,7 @@
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: root.addToTextBox(self)
+                    on_press: app.openVectorsPop()
 
             BoxLayout:
                 id: menuCol2
@@ -405,7 +405,7 @@
                 padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                 background_normal: ''
                 font_name: "./Menlo.ttc"
-                text: "@Series\n"
+                text: "@Series\n\n"
                 foreground_color: 0, 0, 0, 1
                 markup: True
                 on_focus: self.selection_color = 0.1843, 0.6549, 0.8313, 0.25
@@ -545,7 +545,7 @@
         
         OrderedText:
             id: restraintIDText
-            size_hint: (1, 0.5)
+            size_hint: (1, 0.47)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -567,7 +567,7 @@
         
         OrderedText:
             id: restraintUncertaintyText
-            size_hint: (1, 0.5)
+            size_hint: (1, 0.47)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -589,7 +589,7 @@
         
         OrderedText:
             id: randomErrorText
-            size_hint: (1, 0.5)
+            size_hint: (1, 0.47)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -773,7 +773,7 @@
                 on_press: root.dismiss()
 
 <DesignPopup>:
-    id: balancePop
+    id: designPop
     auto_dismiss: False
     title: "Design"
     title_size: dp(18)
@@ -900,7 +900,7 @@
         
         OrderedText:
             id: designIDText
-            size_hint: (1, 0.45)
+            size_hint: (1, 0.42)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -938,6 +938,234 @@
 
             Button:
                 size_hint: (1, 1.7)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_press: root.dismiss()
+
+<WeightsPopup>:
+    id: weightsPop
+    auto_dismiss: False
+    title: "Positions Data"
+    title_size: dp(18)
+    size_hint: (0.45, 0.6)
+
+    BoxLayout:
+        id: weightsPLayout
+        orientation: "vertical"
+        spacing: 5
+        padding: 20, 0, 20, 20
+
+        Label:
+            text: "Weight Info - ID, Nominal (g/lb), Density, CCE, Correction (mg):"
+            size_hint: (1, 0.6)
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: weightsText
+            size_hint: (1, 2.2)
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "P1.kg     1000  7.9826  0.000045  2.345\nP1..kg    1000  7.9834  0.000045  1.824\nT1.kg     1000  8.0451  0.000045 \nT1..kg    1000  8.0405  0.000045"
+            font_size: dp(14)
+            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
+            background_normal: ''
+            orderNum: 12
+
+        Label:
+            text: "Nominal Units (0 = g, 1 = lb):"
+            size_hint: (1, 0.6)
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+
+        OrderedText:
+            id: nominalsText
+            size_hint: (1, 0.5)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: "0"
+            font_size: dp(14)
+            background_normal: ''
+            orderNum: 13
+
+        Label:
+            id: weightsPopError
+            size_hint: (1, 0.6)
+            text: ""
+            markup: True
+            color: (0.95, 0.05, 0.09, 1)
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "center"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 10)
+            size_hint: (1, 0.74)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Save"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_press: root.submit()
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_press: root.dismiss()
+
+<VectorsPopup>:
+    id: vectorsPop
+    auto_dismiss: False
+    title: "Position Vectors"
+    title_size: dp(18)
+    size_hint: (0.45, 0.7)
+
+    BoxLayout:
+        id: vectorsPLayout
+        orientation: "vertical"
+        spacing: 5
+        padding: 20, 0, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Restraint Position:"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: restraintVectorText
+            size_hint: (1, 0.45)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "1 1 0 0"
+            font_size: dp(14)
+            background_normal: ''
+            orderNum: 14
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Check Standard Position:"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: checkVectorText
+            size_hint: (1, 0.45)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "1 -1 0 0"
+            font_size: dp(14)
+            background_normal: ''            
+            orderNum: 15
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Linear Combo Vector:"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: linearComboText
+            size_hint: (1, 0.45)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "0 0 0 0"
+            font_size: dp(14)
+            background_normal: ''
+            orderNum: 16
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Next Series Restraint:"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: nextRestraintText
+            size_hint: (1, 0.45)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "0 0 0 0"
+            font_size: dp(14)
+            background_normal: ''            
+            orderNum: 17
+
+        Label:
+            id: vectorsPopError
+            size_hint: (1, 0.6)
+            text: ""
+            markup: True
+            color: (0.95, 0.05, 0.09, 1)
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "center"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.90)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Save"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_press: root.submit()
+
+            Button:
+                size_hint: (1, 1)
                 text: "[color=#FFFFFF]Cancel[/color]"
                 font_size: dp(self.width / buttonSizer)
                 background_normal: ''

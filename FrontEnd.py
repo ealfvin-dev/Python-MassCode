@@ -45,7 +45,8 @@ class MainLayout(BoxLayout):
         self.orderOfTags = {"#": 0, "<Report-Number>": 1, \
         "<Restraint-ID>": 2, "<Unc-Restraint>": 3, "<Random-Error>": 4, \
             "@Series": 5, "<Date>": 6, "<Technician-ID>": 7, "<Balance-ID>": 8, "<Check-Standard-ID>": 9, \
-                "<Design-ID>": 10, "<Design>": 11}
+                "<Design-ID>": 10, "<Design>": 11, "<Position>": 12, "<Pounds>": 13, "<Restraint>": 14, \
+                    "<Check-Standard>": 15, "<Linear-Combo>": 16, "<Pass-Down>": 17}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -70,7 +71,6 @@ class MainLayout(BoxLayout):
 
             elif(line == "\n"):
                 textInput.cursor = (0, row)
-
                 cursorStart += 1
 
             elif(orderNum < self.orderOfTags[line.strip().split()[0]]):
@@ -88,9 +88,6 @@ class MainLayout(BoxLayout):
         if(textInput.cursor == (0, 0)):
             textInput.insert_text("\n")
             textInput.cursor = (0, 0)
-
-        elif(orderNum == 6):
-            textInput.insert_text("\n\n")
 
         else:
             textInput.insert_text("\n")
@@ -237,7 +234,7 @@ class DatePopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(balanceIDText, balanceIDOrder)
         cursorStart4, textLength4 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength3 + textLength4 + textLength2 + 3)
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + 3)
 
         self.parent.children[1].ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
@@ -247,22 +244,27 @@ class DesignPopup(Popup):
     def writeDesign(self, design):
         if(design == "3-1"):
             self.ids.designText.text = "1 -1  0\n1  0 -1\n0  1 -1"
+            self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "111"
 
         if(design == "4-1"):
             self.ids.designText.text = "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
+            self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "112"
 
         if(design == "5-1"):
             self.ids.designText.text = "1 -1  0  0  0\n1  0 -1  0  0\n1  0  0 -1  0\n1  0  0  0 -1\n0  1 -1  0  0\n0  1  0 -1  0\n0  1  0  0 -1\n0  0  1 -1  0\n0  0  1  0 -1\n0  0  0  1 -1"
+            self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "114"
 
         if(design == "532111"):
             self.ids.designText.text = "1 -1 -1  1 -1  0\n1 -1 -1  0  1 -1\n1 -1 -1 -1  0  1\n1 -1 -1  0  0  0\n1  0 -1 -1 -1 -1\n0  1 -1  1 -1 -1\n0  1 -1 -1  1 -1\n0  1 -1 -1 -1  1\n0  0  1 -1 -1  0\n0  0  1 -1  0 -1\n0  0  1  0 -1 -1"
+            self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "032"
 
         if(design == "522111"):
             self.ids.designText.text = "1 -1 -1 -1 -1  1\n1 -1 -1 -1  1 -1\n1 -1 -1  1 -1 -1\n1 -1  0 -1 -1 -1\n1  0 -1 -1 -1 -1\n0  1 -1  1 -1  0\n0  1 -1 -1  0  1\n0  1 -1  0  1 -1"
+            self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "310"
 
         self.ids.dropDownn.dismiss()
@@ -304,6 +306,54 @@ class DesignPopup(Popup):
 
         self.dismiss()
 
+class WeightsPopup(Popup):
+    def submit(self):
+        weightsText = self.ids.weightsText.text
+        nominalsText = self.ids.nominalsText.text
+
+        weightsOrder = self.ids.weightsText.orderNum
+        nominalsOrder = self.ids.nominalsText.orderNum
+
+        if(weightsText == "" or nominalsText == ""):
+            self.ids.weightsPopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(weightsText, weightsOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+
+        self.parent.children[1].ids.weightsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
+class VectorsPopup(Popup):
+    def submit(self):
+        restraintText = self.ids.restraintVectorText.text
+        checkText = self.ids.checkVectorText.text
+        linearComboText = self.ids.linearComboText.text
+        nextRestraintText = self.ids.nextRestraintText.text
+
+        restraintOrder = self.ids.restraintVectorText.orderNum
+        checkOrder = self.ids.checkVectorText.orderNum
+        linearComboOrder = self.ids.linearComboText.orderNum
+        nextRestraintOrder = self.ids.nextRestraintText.orderNum
+
+        if(restraintText == "" or checkText == "" or linearComboText == "" or nextRestraintText == ""):
+            self.ids.vectorsPopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(restraintText, restraintOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(checkText, checkOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(linearComboText, linearComboOrder)
+        cursorStart4, textLength4 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + 3)
+
+        self.parent.children[1].ids.positionVectorsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
 class PyMac(App):
     def build(self):
         return MainLayout()
@@ -340,6 +390,24 @@ class PyMac(App):
 
         checkOK = self.root.checkTags()
         
+        if(checkOK):
+            self.root.ids.errors.text = "ERRORS:"
+            pop.open()
+
+    def openWeightsPop(self):
+        pop = WeightsPopup()
+
+        checkOK = self.root.checkTags()
+
+        if(checkOK):
+            self.root.ids.errors.text = "ERRORS:"
+            pop.open()
+
+    def openVectorsPop(self):
+        pop = VectorsPopup()
+
+        checkOK = self.root.checkTags()
+
         if(checkOK):
             self.root.ids.errors.text = "ERRORS:"
             pop.open()
