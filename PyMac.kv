@@ -89,13 +89,23 @@
 
                 Button:
                     id: dateButton
-                    text: "[b]Date\nEquipment[/b]"
+                    text: "[b]Date\nTechnition[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_press: app.openDatePop()
+
+                Button:
+                    id: balanceButton
+                    text: "[b]Balance[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+                    on_press: app.openBalancePop()
 
                 Button:
                     id: designButton
@@ -132,22 +142,15 @@
                 orientation: "vertical"
                 spacing: self.height / 28
 
-                Label:
-                    text: "[b]Position\nVectors[/b]"
-                    markup: True
-                    color: labelColor
-                    font_size: dp(self.width / labelSizer)
-                    halign: 'center'
-
                 Button:
-                    id: restraintPositionButton
-                    text: "[b]Restraint\nPosition[/b]"
+                    id: balanceButton-old
+                    text: "[b]Balance[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: root.addToTextBox(self)
+                    on_press: 
 
                 Button:
                     id: checkPositionButton
@@ -640,7 +643,7 @@
     auto_dismiss: False
     title: "Date, Technition ID"
     title_size: dp(18)
-    size_hint: (0.45, 0.7)
+    size_hint: (0.45, 0.6)
 
     BoxLayout:
         id: datePLayout
@@ -660,7 +663,7 @@
         
         OrderedText:
             id: dateText
-            size_hint: (1, 0.45)
+            size_hint: (1, 0.47)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -682,7 +685,7 @@
         
         OrderedText:
             id: techIDText
-            size_hint: (1, 0.45)
+            size_hint: (1, 0.47)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -691,28 +694,6 @@
             font_size: dp(14)
             background_normal: ''            
             orderNum: 7
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Balance ID:"
-            markup: True
-            color: labelColor
-            text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: balanceIDText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "24"
-            font_size: dp(14)
-            background_normal: ''
-            orderNum: 8
 
         Label:
             size_hint: (1, 0.6)
@@ -726,7 +707,7 @@
         
         OrderedText:
             id: checkIDText
-            size_hint: (1, 0.45)
+            size_hint: (1, 0.47)
             multiline: False
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
@@ -734,7 +715,7 @@
             hint_text: "62"
             font_size: dp(14)
             background_normal: ''            
-            orderNum: 9
+            orderNum: 8
 
         Label:
             id: datePopError
@@ -751,7 +732,120 @@
             orientation: "horizontal"
             spacing: root.width / 3
             padding: (0, 35)
-            size_hint: (1, 0.90)
+            size_hint: (1, 0.95)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Save"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_press: root.submit()
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_press: root.dismiss()
+
+<BalancePopup>:
+    id: balancePop
+    auto_dismiss: False
+    title: "Balance Information"
+    title_size: dp(18)
+    size_hint: (0.45, 0.6)
+
+    BoxLayout:
+        id: balancePLayout
+        orientation: "vertical"
+        spacing: 5
+        padding: 20, 0, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Balance ID:"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: balanceIDText
+            size_hint: (1, 0.47)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "049"
+            font_size: dp(14)
+            background_normal: ''
+            orderNum: 9
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Direct Readings (1 = Yes, 0 = No):"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: directReadingsText
+            size_hint: (1, 0.47)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: "0"
+            font_size: dp(14)
+            background_normal: ''            
+            orderNum: 10
+
+        Label:
+            size_hint: (1, 0.6)
+            text: "Direct Reading Sensitivity Factor (mg/div):"
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: directReadingsSFText
+            size_hint: (1, 0.47)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: "1.0"
+            font_size: dp(14)
+            background_normal: ''
+            orderNum: 11
+
+        Label:
+            id: balancePopError
+            size_hint: (1, 0.6)
+            text: ""
+            markup: True
+            color: (0.95, 0.05, 0.09, 1)
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*8))
+            halign: "left"
+            valign: "center"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.95)
 
             Button:
                 size_hint: (1, 1)
@@ -816,7 +910,7 @@
                     font_size: dp(14)
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
-                    orderNum: 11
+                    orderNum: 13
                     on_text: root.evalDesign()
 
             BoxLayout:
@@ -908,7 +1002,7 @@
             hint_text: "111"
             font_size: dp(14)
             background_normal: ''            
-            orderNum: 10
+            orderNum: 12
 
         Label:
             id: designPopError
@@ -978,7 +1072,7 @@
             font_size: dp(14)
             padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
             background_normal: ''
-            orderNum: 12
+            orderNum: 14
 
         Label:
             text: "Nominal Units (0 = g, 1 = lb):"
@@ -999,7 +1093,7 @@
             text: "0"
             font_size: dp(14)
             background_normal: ''
-            orderNum: 13
+            orderNum: 15
 
         Label:
             id: weightsPopError
@@ -1070,7 +1164,7 @@
             hint_text: "1 1 0 0"
             font_size: dp(14)
             background_normal: ''
-            orderNum: 14
+            orderNum: 16
 
         Label:
             size_hint: (1, 0.6)
@@ -1092,7 +1186,7 @@
             hint_text: "1 -1 0 0"
             font_size: dp(14)
             background_normal: ''            
-            orderNum: 15
+            orderNum: 17
 
         Label:
             size_hint: (1, 0.6)
@@ -1114,7 +1208,7 @@
             hint_text: "0 0 0 0"
             font_size: dp(14)
             background_normal: ''
-            orderNum: 16
+            orderNum: 18
 
         Label:
             size_hint: (1, 0.6)
@@ -1136,7 +1230,7 @@
             hint_text: "0 0 0 0"
             font_size: dp(14)
             background_normal: ''            
-            orderNum: 17
+            orderNum: 19
 
         Label:
             id: vectorsPopError
