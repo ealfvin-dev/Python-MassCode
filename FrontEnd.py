@@ -67,9 +67,11 @@ class MainLayout(BoxLayout):
         "<sw-Mass>": 22, \
         "<sw-Density>": 23, \
         "<sw-CCE>": 24, \
-        "Balance-Reading": 25, \
-        "Environmentals": 26, \
-        "Env-Corrections": 27}
+        "<Balance-Reading>": 25, \
+        "<Environmentals>": 26, \
+        "<Env-Corrections>": 27, \
+        "<COM-Diff>": 28, \
+        "<Gravity-Grad>": 29}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -116,17 +118,22 @@ class MainLayout(BoxLayout):
             textInput.insert_text("\n")
 
         for line in text.splitlines():
-            newLine = self.getTag(orderNum) + "  " + line
-            textInput.insert_text(newLine)
-
-            textBlockLength += len(newLine)
-
-            if(len(text.splitlines()) > 1):
+            if(line == "" or line == "\n"):
                 textInput.insert_text("\n")
                 textBlockLength += 1
 
-            if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 15 or orderNum == 19 or orderNum == 21):
-                textInput.insert_text("\n")
+            else:
+                newLine = self.getTag(orderNum) + "  " + line
+                textInput.insert_text(newLine)
+
+                textBlockLength += len(newLine)
+
+                if(len(text.splitlines()) > 1):
+                    textInput.insert_text("\n")
+                    textBlockLength += 1
+
+                if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 15 or orderNum == 19 or orderNum == 21 or orderNum == 24 or orderNum == 27):
+                    textInput.insert_text("\n")
 
         return cursorStart, textBlockLength
 
@@ -339,18 +346,18 @@ class DesignPopup(Popup):
         self.ids.observationsLabel.text = "Observations:  " + str(observations)
 
     def submit(self):
-        designText = self.ids.designText.text
         designIDText = self.ids.designIDText.text
+        designText = self.ids.designText.text
 
-        designOrder = self.ids.designText.orderNum
         designIDOrder = self.ids.designIDText.orderNum
+        designOrder = self.ids.designText.orderNum
 
-        if(designText == "" or designIDText == ""):
+        if(designIDText == "" or designText == ""):
             self.ids.designPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(designText, designOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(designIDText, designIDOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(designIDText, designIDOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(designText, designOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
@@ -465,6 +472,26 @@ class MeasurementsPopup(Popup):
             self.ids.measurementsPopError.text = "Enter data for all fields"
             return
 
+        #Check if Num lines are the same for measurements and env data
+        numBalReadings = 0
+        numEnvReadings = 0
+
+        for line in balanceReadingsText.splitlines():
+            if(line == "" or line == "\n"):
+                pass
+            else:
+                numBalReadings += 1
+
+        for line in envText.splitlines():
+            if(line == "" or line == "\n"):
+                pass
+            else:
+                numEnvReadings += 1
+
+        if(numBalReadings != numEnvReadings):
+            self.ids.measurementsPopError.text = "Same number of lines required for balance & environmental readings"
+            return
+
         cursorStart1, textLength1 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
         cursorStart2, textLength2 = self.parent.children[1].writeText(envText, envOrder)
         cursorStart3, textLength3 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
@@ -472,6 +499,27 @@ class MeasurementsPopup(Popup):
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
         self.parent.children[1].ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
+class GravityPopup(Popup):
+    def submit(self):
+        gradientText = self.ids.gradientText.text
+        COMText = self.ids.COMText.text
+
+        gradientOrder = self.ids.gradientText.orderNum
+        COMOrder = self.ids.COMText.orderNum
+
+        if(gradientText == "" or COMText == ""):
+            self.ids.gravityPopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(gradientText, gradientOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(COMText, COMOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+
+        self.parent.children[1].ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
         self.dismiss()
 
@@ -562,6 +610,15 @@ class PyMac(App):
 
     def openMeasurementsPop(self):
         pop = MeasurementsPopup()
+
+        checkOK = self.root.checkTags()
+
+        if(checkOK):
+            self.root.ids.errors.text = ""
+            pop.open()
+
+    def openGravityPop(self):
+        pop = GravityPopup()
 
         checkOK = self.root.checkTags()
 

@@ -41,7 +41,7 @@
     BoxLayout:
         id: content
         orientation: 'horizontal'
-        spacing: self.width / 20
+        spacing: self.width / 30
         padding: (60, 15, 60, 30)
 
         BoxLayout:
@@ -82,7 +82,7 @@
                     on_press: app.openRestraintPop()
 
                 Label:
-                    text: "[b]Cal Setup[/b]"
+                    text: "[b]Series Setup[/b]"
                     markup: True
                     color: labelColor
                     font_size: dp(self.width / labelSizer)
@@ -108,9 +108,38 @@
                     halign: 'center'
                     on_press: app.openBalancePop()
 
+                Label:
+                    text: "[b]Statistics[/b]"
+                    markup: True
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
+                    halign: 'center'
+
+                Button:
+                    id: statisticsButton
+                    text: "[b]Statistics[/b]"
+                    markup: True
+                    background_normal: ''
+                    background_color: buttonColor
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+                    on_press: app.openStatisticsPop()
+
+            BoxLayout:
+                id: menuCol2
+                orientation: "vertical"
+                spacing: self.height / 28
+
+                Label:
+                    text: "[b]Design[/b]"
+                    markup: True
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
+                    halign: 'center'
+
                 Button:
                     id: designButton
-                    text: "[b]Design[/b]"
+                    text: "[b]Weighing\nDesign[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
@@ -138,20 +167,12 @@
                     halign: 'center'
                     on_press: app.openVectorsPop()
 
-            BoxLayout:
-                id: menuCol2
-                orientation: "vertical"
-                spacing: self.height / 28
-
-                Button:
-                    id: statisticsButton
-                    text: "[b]Statistics[/b]"
+                Label:
+                    text: "[b]Measurement\nData[/b]"
                     markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
-                    on_press: app.openStatisticsPop()
 
                 Button:
                     id: swButton
@@ -173,156 +194,6 @@
                     halign: 'center'
                     on_press: app.openMeasurementsPop()
 
-                Button:
-                    text: "[b]Next Restraint\nPosition[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-            BoxLayout:
-                id: menuCol3
-                orientation: "vertical"
-                spacing: self.height / 28
-
-                Label:
-                    text: "[b]sw[/b]"
-                    markup: True
-                    color: labelColor
-                    font_size: dp(self.width / labelSizer)
-                    halign: 'center'
-
-                Button:
-                    id: swMassButton
-                    text: "[b]sw Mass\n(mg)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: swDensityButton
-                    text: "[b]sw Density\n(g/cm^3)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: swCCEButton
-                    text: "[b]sw CCE\n(/" + u"\u00b0" +"C)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Label:
-                    text: "[b]Statistics[/b]"
-                    markup: True
-                    color: labelColor
-                    font_size: dp(self.width / labelSizer)
-                    halign: 'center'
-
-                Button:
-                    id: sigmawButton
-                    text: "[b]sw (mg)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: sigmatButton
-                    text: "[b]st (mg)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Label:
-                    text: "[b]Calibration\nData[/b]"
-                    markup: True
-                    color: labelColor
-                    font_size: dp(self.width / labelSizer)
-                    halign: 'center'
-
-                Button:
-                    id: balanceReadingsButton
-                    text: "[b]Balance\nReadings[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: environmentalsButton
-                    text: "[b]Environmentals[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: environmentalCorrectionsButton
-                    text: "[b]Environmental\nCorrections[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-            BoxLayout:
-                id: menuCol4
-                orientation: "vertical"
-                spacing: self.height / 28
-
-                Button:
-                    id: directReadingsButton
-                    text: "[b]Direct Readings[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: directReadingsSFButton
-                    text: "[b]Direct Readings\nSF (mg/div)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
-                Button:
-                    id: nominalsInPoundsButton
-                    text: "[b]Nominals In\nPounds?[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-                    on_press: root.addToTextBox(self)
-
                 Label:
                     text: "[b]Optionals[/b]"
                     markup: True
@@ -331,24 +202,54 @@
                     halign: 'center'
 
                 Button:
-                    id: gravityGradientButton
-                    text: "[b]Gravity Gradient\n(s^-2)[/b]"
+                    id: gravityButton
+                    text: "[b]Gravity\nGradient[/b]"
                     markup: True
                     background_normal: ''
-                    background_color: buttonColor
+                    background_color: (0.368, 0.49, 0.60, 1)
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
-                    on_press: root.addToTextBox(self)
+                    on_press: app.openGravityPop()
 
-                Button:
-                    id: comHeightsButton
-                    text: "[b]COM Heights\n(cm)[/b]"
-                    markup: True
-                    background_normal: ''
-                    background_color: buttonColor
-                    font_size: dp(self.width / buttonSizer)
+            BoxLayout:
+                id: menuCol3
+                orientation: "vertical"
+                spacing: self.height / 28
+
+                Label:
+                    text: ""
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
                     halign: 'center'
-                    on_press: root.addToTextBox(self)
+
+            BoxLayout:
+                id: menuCol4
+                orientation: "vertical"
+                spacing: self.height / 28
+
+                Label:
+                    text: ""
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
+                    halign: 'center'
+
+                Label:
+                    text: ""
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
+                    halign: 'center'
+
+                Label:
+                    text: ""
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
+                    halign: 'center'
+
+                Label:
+                    text: ""
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
+                    halign: 'center'
 
                 Label:
                     text: "[b]Actions[/b]"
@@ -394,7 +295,6 @@
                     font_size: dp(self.width / buttonSizer)
                     halign: 'center'
                     on_release: root.run()
-
 
         BoxLayout:
             id: textAreas
@@ -450,7 +350,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -471,7 +371,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
 
@@ -494,7 +394,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -542,7 +442,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -564,7 +464,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -586,7 +486,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -609,7 +509,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -657,7 +557,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -679,7 +579,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -701,7 +601,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -724,7 +624,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -772,7 +672,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -794,7 +694,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -815,7 +715,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -837,7 +737,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -897,7 +797,7 @@
                     markup: True
                     color: labelColor
                     text_size: self.size
-                    font_size: dp(self.width / (labelSizer*5))
+                    font_size: dp(self.width / (labelSizer*4.5))
                     halign: "left"
                     valign: "bottom"
                 
@@ -988,7 +888,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1011,7 +911,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -1059,7 +959,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1080,7 +980,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
 
@@ -1102,7 +1002,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -1150,7 +1050,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1172,7 +1072,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1194,7 +1094,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1216,7 +1116,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1239,7 +1139,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -1283,11 +1183,11 @@
 
         Label:
             size_hint: (1, 0.6)
-            text: chr(963) + "[size=" + str(self.width / (labelSizer*12)) + "dp]t[/size] (mg):"
+            text: chr(963) + "[size=" + str(self.width / (labelSizer*11)) + "dp]t[/size] (mg):"
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1304,11 +1204,11 @@
 
         Label:
             size_hint: (1, 0.6)
-            text: chr(963) + "[size=" + str(self.width / (labelSizer*12)) + "dp]w[/size] (mg):"
+            text: chr(963) + "[size=" + str(self.width / (labelSizer*11)) + "dp]w[/size] (mg):"
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1330,7 +1230,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -1378,7 +1278,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1400,7 +1300,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1422,7 +1322,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1445,7 +1345,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
@@ -1493,7 +1393,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1514,7 +1414,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1535,7 +1435,7 @@
             markup: True
             color: labelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
 
@@ -1558,7 +1458,99 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*8))
+            font_size: dp(self.width / (labelSizer*7))
+            halign: "left"
+            valign: "center"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 10)
+            size_hint: (1, 0.74)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Write"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_press: root.submit()
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_press: root.dismiss()
+
+<GravityPopup>:
+    id: gravityPop
+    auto_dismiss: False
+    title: "Header"
+    title_size: dp(18)
+    size_hint: (0.42, 0.56)
+
+    BoxLayout:
+        id: gravityPLayout
+        orientation: "vertical"
+        spacing: 5
+        padding: 20, 0, 20, 20        
+
+        Label:
+            text: "COM Height Differences (cm):"
+            size_hint: (1, 0.6)
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*7))
+            halign: "left"
+            valign: "bottom"
+        
+        OrderedText:
+            id: COMText
+            size_hint: (1, 2.2)
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "-0.5\n-1.0\n-1.0\n-0.5\n-0.5\n0.0"
+            font_size: popUpFontSize
+            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
+            background_normal: ''
+            orderNum: 29
+
+        Label:
+            text: "Gravity Gradient (1/s" + chr(178) + "):"
+            size_hint: (1, 0.6)
+            markup: True
+            color: labelColor
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*7))
+            halign: "left"
+            valign: "bottom"
+
+        OrderedText:
+            id: gradientText
+            size_hint: (1, 0.5)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            text: ""
+            hint_text: "0.0000031"
+            font_size: popUpFontSize
+            background_normal: ''
+            orderNum: 28
+
+        Label:
+            id: gravityPopError
+            size_hint: (1, 0.6)
+            text: ""
+            markup: True
+            color: (0.95, 0.05, 0.09, 1)
+            text_size: self.size
+            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "center"
 
