@@ -62,8 +62,14 @@ class MainLayout(BoxLayout):
         "<Check-Standard>": 17, \
         "<Linear-Combo>": 18, \
         "<Pass-Down>": 19, \
-        "<sigma-t>": 20, \
-        "<sigma-w>": 21}
+        "<Sigma-t>": 20, \
+        "<Sigma-w>": 21, \
+        "<sw-Mass>": 22, \
+        "<sw-Density>": 23, \
+        "<sw-CCE>": 24, \
+        "Balance-Reading": 25, \
+        "Environmentals": 26, \
+        "Env-Corrections": 27}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -119,7 +125,7 @@ class MainLayout(BoxLayout):
                 textInput.insert_text("\n")
                 textBlockLength += 1
 
-            if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 15 or orderNum == 19):
+            if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 15 or orderNum == 19 or orderNum == 21):
                 textInput.insert_text("\n")
 
         return cursorStart, textBlockLength
@@ -152,7 +158,7 @@ class MainLayout(BoxLayout):
                 except KeyError:
                     errorMessage = "UNKNOWN TAG ON LINE " + str(lineNum) + ": " + line.split()[0].strip()
 
-                    self.ids.errors.text = "ERRORS:\n" + errorMessage
+                    self.ids.errors.text = "ERROR:\n" + errorMessage
                     return False
 
         return True
@@ -168,7 +174,7 @@ class MainLayout(BoxLayout):
         checkOK = self.checkTags()
 
         if(checkOK):
-            self.ids.errors.text = "ERRORS:"
+            self.ids.errors.text = ""
 
         self.saved = True
 
@@ -177,9 +183,12 @@ class MainLayout(BoxLayout):
 
     def run(self):
         if(not self.saved):
-            pass
+            self.ids.errors.text = "ERROR:\n" + "FILE MUST BE SAVED BEFORE RUNNING"
         else:
-            print("Run Python MassCode")
+            checkOK = self.checkTags()
+
+            if(checkOK):
+                self.ids.errors.text = ""
 
 class OrderedText(TextInput):
     def __init__(self, **kwargs):
@@ -418,6 +427,54 @@ class StatisticsPopup(Popup):
 
         self.dismiss()
 
+class SwPopup(Popup):
+    def submit(self):
+        swMassText = self.ids.swMassText.text
+        swDensityText = self.ids.swDensityText.text
+        swCCEText = self.ids.swCCEText.text
+
+        swMassOrder = self.ids.swMassText.orderNum
+        swDensityOrder = self.ids.swDensityText.orderNum
+        swCCEOrder = self.ids.swCCEText.orderNum
+
+        if(swMassText == "" or swDensityText == "" or swCCEText == ""):
+            self.ids.swPopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(swMassText, swMassOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(swDensityText, swDensityOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(swCCEText, swCCEOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+
+        self.parent.children[1].ids.swButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
+class MeasurementsPopup(Popup):
+    def submit(self):
+        balanceReadingsText = self.ids.balanceReadingsText.text
+        envText = self.ids.envText.text
+        envCorrectionsText = self.ids.envCorrectionsText.text
+
+        balanceReadingsOrder = self.ids.balanceReadingsText.orderNum
+        envOrder = self.ids.envText.orderNum
+        envCorrectionsOrder = self.ids.envCorrectionsText.orderNum
+
+        if(balanceReadingsText == "" or envText == "" or envCorrectionsText == ""):
+            self.ids.measurementsPopError.text = "Enter data for all fields"
+            return
+
+        cursorStart1, textLength1 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(envText, envOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
+
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+
+        self.parent.children[1].ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.dismiss()
+
 class PyMac(App):
     def build(self):
         return MainLayout()
@@ -428,7 +485,7 @@ class PyMac(App):
         checkOK = self.root.checkTags()
 
         if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
+            self.root.ids.errors.text = ""
             pop.open()
 
     def openRestraintPop(self):
@@ -437,7 +494,7 @@ class PyMac(App):
         checkOK = self.root.checkTags()
         
         if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
+            self.root.ids.errors.text = ""
             pop.open()
 
     def openDatePop(self):
@@ -446,7 +503,7 @@ class PyMac(App):
         checkOK = self.root.checkTags()
         
         if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
+            self.root.ids.errors.text = ""
             pop.open()
 
     def openBalancePop(self):
@@ -455,7 +512,7 @@ class PyMac(App):
         checkOK = self.root.checkTags()
         
         if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
+            self.root.ids.errors.text = ""
             pop.open()
 
     def openDesignPop(self):
@@ -464,7 +521,7 @@ class PyMac(App):
         checkOK = self.root.checkTags()
         
         if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
+            self.root.ids.errors.text = ""
             pop.open()
 
     def openWeightsPop(self):
@@ -473,7 +530,7 @@ class PyMac(App):
         checkOK = self.root.checkTags()
 
         if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
+            self.root.ids.errors.text = ""
             pop.open()
 
     def openVectorsPop(self):
@@ -482,7 +539,7 @@ class PyMac(App):
         checkOK = self.root.checkTags()
 
         if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
+            self.root.ids.errors.text = ""
             pop.open()
 
     def openStatisticsPop(self):
@@ -491,7 +548,25 @@ class PyMac(App):
         checkOK = self.root.checkTags()
 
         if(checkOK):
-            self.root.ids.errors.text = "ERRORS:"
+            self.root.ids.errors.text = ""
+            pop.open()
+
+    def openSwPop(self):
+        pop = SwPopup()
+
+        checkOK = self.root.checkTags()
+
+        if(checkOK):
+            self.root.ids.errors.text = ""
+            pop.open()
+
+    def openMeasurementsPop(self):
+        pop = MeasurementsPopup()
+
+        checkOK = self.root.checkTags()
+
+        if(checkOK):
+            self.root.ids.errors.text = ""
             pop.open()
 
 if __name__ == "__main__":
