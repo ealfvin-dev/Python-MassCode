@@ -12,24 +12,6 @@ The T-test tests the observed value of the check standard against its accepted v
 The F-test tests the within-process standard deviation agianst the accepted standard deviation.
 """
 
-import sys
-import numpy as np
-import scipy.stats
-from statistics import mean, stdev
-from math import sqrt, exp
-
-#Can get set to "old" later to determine how to parse user input file...maybe removing this feature:
-massCodeVersion = "new"
-
-#Initialize a list to store MatrixSolution objects for each series:
-seriesObjects = []
-
-reportNumber = "000000"
-restraintID = "0"
-uncRestraint = 0
-randomError = 0
-referenceTemperature = 20
-
 class MatrixSolution:
     """
     The MatrixSolution class holds all calibration data and data reduction results for a given series.
@@ -41,6 +23,12 @@ class MatrixSolution:
     Functions: calculateAirDensity, calculateDoubleSubs, solution, doStatistics
     """
     def __init__(self):
+        self.reportNumber = "000000"
+        self.restraintID = "0"
+        self.uncRestraint = 0
+        self.randomError = 0
+        self.referenceTemperature = 20
+
         self.seriesNumber = 0
         self.designMatrix = None
                       
@@ -165,7 +153,7 @@ class MatrixSolution:
             obsThree = self.balanceReadings[i][2]
             obsFour = self.balanceReadings[i][3]
 
-            swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((self.environmentals[i][0] - self.envCorrections[0]) - referenceTemperature))
+            swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((self.environmentals[i][0] - self.envCorrections[0]) - self.referenceTemperature))
 
             airDensity = self.calculateAirDensity(\
                 self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
@@ -208,7 +196,7 @@ class MatrixSolution:
             #Adjust densities for lab temperature for each observation:
             adjustedDensities = []
             for j in range(self.positions):
-                adjustedDensities.append(self.weightDensities[j] / (1 + self.weightCCEs[j] * ((self.environmentals[i][0] - self.envCorrections[0]) - referenceTemperature)))
+                adjustedDensities.append(self.weightDensities[j] / (1 + self.weightCCEs[j] * ((self.environmentals[i][0] - self.envCorrections[0]) - self.referenceTemperature)))
             
             #Estimate Mass1Sum, Mass2Sum and effective densities for ABC using estimateMasses:
             designLine = self.designMatrix[i:i+1] #Get sigle line of design matrix as an array
@@ -261,7 +249,7 @@ class MatrixSolution:
             deltaVaccum = deltaLab + airDensity * ((estimatedMassTwo / effectiveDensityMassTwo) - (estimatedMassOne / effectiveDensityMassOne)) #grams
             self.matrixY[i, 0] = -1 * deltaVaccum
 
-    def solution(self):
+    def solution(self, seriesObjects):
         if len(self.environmentals) != len(self.balanceReadings):
             sys.exit("USE THE SAME NUMBER OF LINES FOR DESIGN-MATRIX, BALANCE-READINGS AND ENVIRONMENTALS IN CONFIGURATION FILE FOR SERIES " + str(self.seriesNumber + 1))
 
@@ -353,35 +341,51 @@ class MatrixSolution:
 
         print("T-critical =", str(tCritical))
 
+def parse(fileName):
+    header = {}
+    seriesObjects = []
 
-fileName = input("Enter configuration file name: ")
+    lines = 0
+    seriesNumber = -1
+    designRow = 0
+    positionRow = 0
 
-lines = 0
-seriesNumber = -1
-designRow = 0
-positionRow = 0
+    nominalsInPounds = 1
 
-nominalsInPounds = 1
-
-#Open configuration file, read line by line, make MatrixSolution object for each series,
-#assign atributes to MS object based on which series it's in:
-with open(fileName, 'r') as configFile:
-    if configFile.readline().splitlines()[0] != "@PyMac":
-        massCodeVersion = "old"
-
-#If input file is new version:
-    if massCodeVersion == "new":
+    #Determine number of positions and observations in each series
+    posObs = []
+    with open(fileName, 'r') as configFile:
         for line in configFile:
             lines += 1
             if lines > 5000:
                 sys.exit("CONFIGURATION FILE EXCEEDS 5000 LINE LIMIT")
 
-            if line[0] == "#" or line == "\n":
-                continue
-
             splitLine = line.strip().split(maxsplit=15)
 
-            if splitLine[0][0] == "#":
+            if (len(splitLine) == 0):
+                continue
+
+            if splitLine[0] == "@SERIES":
+                seriesNumber += 1
+                posObs.append([0, 0])
+
+            if splitLine[0] == "<Position>":
+                posObs[seriesNumber][0] += 1
+            
+            if splitLine[0] == "<Design>":
+                posObs[seriesNumber][1] += 1
+
+    seriesNumber = -1
+    lines = 0
+
+    #Open configuration file, read line by line, make MatrixSolution object for each series,
+    #Assign atributes to MatrixSolution object based on the series number
+    with open(fileName, 'r') as configFile:
+        for line in configFile:
+            lines += 1
+            splitLine = line.strip().split(maxsplit=15)
+
+            if(splitLine == [] or splitLine[0] == "\n" or splitLine[0][0] == "#"):
                 continue
 
             if splitLine[0] == "@SERIES":
@@ -392,51 +396,54 @@ with open(fileName, 'r') as configFile:
 
                 seriesObjects.append(MatrixSolution())
                 seriesObjects[seriesNumber].seriesNumber = seriesNumber
+
+                seriesObjects[seriesNumber].positions = posObs[seriesNumber][0]
+                seriesObjects[seriesNumber].observations = posObs[seriesNumber][1]
                 continue
 
-            if splitLine[0] == "Report-Number:":
-                reportNumber = splitLine[1]
+            if splitLine[0] == "<Report-Number>":
+                header["<Report-Number>"] = splitLine[1]
                 continue
 
-            if splitLine[0] == "Restraint-ID:":
-                restraintID = splitLine[1]
+            if splitLine[0] == "<Restraint-ID>":
+                header["<Restraint-ID>"] = splitLine[1]
                 continue
 
-            if splitLine[0] == "Unc-Restraint:":
-                uncRestraint = float(splitLine[1])
+            if splitLine[0] == "<Unc-Restraint>":
+                header["<Unc-Restraint>"] = splitLine[1]
                 continue
 
-            if splitLine[0] == "Random-Error:":
-                randomError = float(splitLine[1])
+            if splitLine[0] == "<Random-Error>":
+                header["<Random-Error>"] = splitLine[1]
                 continue
 
-            if splitLine[0] == "Date:":
+            if splitLine[0] == "<Date>":
                 seriesObjects[seriesNumber].date.append(int(splitLine[1]))
                 seriesObjects[seriesNumber].date.append(int(splitLine[2]))
                 seriesObjects[seriesNumber].date.append(int(splitLine[3]))
                 continue
 
-            if splitLine[0] == "Technician-ID:":
+            if splitLine[0] == "<Technician-ID>":
                 seriesObjects[seriesNumber].technicianId = splitLine[1]
                 continue
 
-            if splitLine[0] == "Balance-ID:":
+            if splitLine[0] == "<Balance-ID>":
                 seriesObjects[seriesNumber].balanceId = splitLine[1]
                 continue
 
-            if splitLine[0] == "Check-Standard-ID:":
+            if splitLine[0] == "<Check-Standard-ID>":
                 seriesObjects[seriesNumber].checkStandardId = splitLine[1]
                 continue
 
-            if splitLine[0] == "Direct-Readings:":
+            if splitLine[0] == "<Direct-Readings>":
                 seriesObjects[seriesNumber].directReadings = int(splitLine[1])
                 continue
 
-            if splitLine[0] == "Direct-Readings-SF:":
+            if splitLine[0] == "<Direct-Reading-SF>":
                 seriesObjects[seriesNumber].directReadingsSF = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "Nominals-In-Pounds:":
+            if splitLine[0] == "<Pounds>":
                 seriesObjects[seriesNumber].nominalsInPounds = int(splitLine[1])
                 if int(splitLine[1]) == 1:
                     nominalsInPounds = 453.59237
@@ -444,19 +451,11 @@ with open(fileName, 'r') as configFile:
                     nominalsInPounds = 1
                 continue
 
-            if splitLine[0] == "Design-ID:":
+            if splitLine[0] == "<Design-ID>":
                 seriesObjects[seriesNumber].designId = splitLine[1]
                 continue
 
-            if splitLine[0] == "Positions:":
-                seriesObjects[seriesNumber].positions = int(splitLine[1])
-                continue
-
-            if splitLine[0] == "Observations:":
-                seriesObjects[seriesNumber].observations = int(splitLine[1])
-                continue
-
-            if splitLine[0] == "Position:":
+            if splitLine[0] == "<Position>":
                 seriesObjects[seriesNumber].weightIds.append(splitLine[1])
 
                 #Make weight nominals array and set calculatedMasses to nominals for first-pass estimates. Initialize matrixY:
@@ -479,7 +478,7 @@ with open(fileName, 'r') as configFile:
                 positionRow += 1
                 continue
 
-            if splitLine[0] == "Design-Matrix:":
+            if splitLine[0] == "<Design>":
                 if designRow == 0:
                     seriesObjects[seriesNumber].designMatrix = \
                         np.zeros(shape=(seriesObjects[seriesNumber].observations, seriesObjects[seriesNumber].positions))
@@ -488,87 +487,96 @@ with open(fileName, 'r') as configFile:
                 designRow += 1
                 continue
 
-            if splitLine[0] == "Restraint:":
+            if splitLine[0] == "<Restraint>":
                 seriesObjects[seriesNumber].restraintPos = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
                 for i in range(1, len(splitLine)):
                     seriesObjects[seriesNumber].restraintPos[0, i - 1] = int(splitLine[i])
                 continue
 
-            if splitLine[0] == "Check-Standard:":
+            if splitLine[0] == "<Check-Standard>":
                 seriesObjects[seriesNumber].checkStandardPos = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
                 for i in range(1, len(splitLine)):
                     seriesObjects[seriesNumber].checkStandardPos[0, i - 1] = int(splitLine[i])
                 continue
 
-            if splitLine[0] == "Linear-Combo:":
+            if splitLine[0] == "<Linear-Combo>":
                 combo = []
                 for i in range(1, len(splitLine)):
                     combo.append(int(splitLine[i]))
                 seriesObjects[seriesNumber].linearCombos.append(combo)
                 continue
 
-            if splitLine[0] == "Next-Series-Restraint:":
+            if splitLine[0] == "<Pass-Down>":
                 seriesObjects[seriesNumber].nextRestraint = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
                 for i in range(1, len(splitLine)):
                     seriesObjects[seriesNumber].nextRestraint[0, i - 1] = int(splitLine[i])
                 continue
 
-            if splitLine[0] == "Sigma-w:":
+            if splitLine[0] == "<Sigma-w>":
                 seriesObjects[seriesNumber].sigmaW = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "Sigma-t:":
+            if splitLine[0] == "<Sigma-t>":
                 seriesObjects[seriesNumber].sigmaT = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "Sensitivity-Weight-Mass:":
+            if splitLine[0] == "<sw-Mass>":
                 seriesObjects[seriesNumber].swMass = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "Sensitivity-Weight-Density:":
+            if splitLine[0] == "<sw-Density>":
                 seriesObjects[seriesNumber].swDensity = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "Sensitivity-Weight-CCE:":
+            if splitLine[0] == "<sw-CCE>":
                 seriesObjects[seriesNumber].swCCE = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "Balance-Readings:":
+            if splitLine[0] == "<Balance-Reading>":
                 readings = []
                 for i in range(1, len(splitLine)):
                     readings.append(float(splitLine[i]))
                 seriesObjects[seriesNumber].balanceReadings.append(readings)
                 continue
 
-            if splitLine[0] == "Environmentals:":
+            if splitLine[0] == "<Environmentals>":
                 envs = []
                 for i in range(1, 4):
                     envs.append(float(splitLine[i]))
                 seriesObjects[seriesNumber].environmentals.append(envs)
                 continue
 
-            if splitLine[0] == "Corrections:":
+            if splitLine[0] == "<Env-Corrections>":
                 for i in range(1, 4):
                     seriesObjects[seriesNumber].envCorrections.append(float(splitLine[i]))
                 continue
 
-            if splitLine[0] == "Gravity-Gradient:":
+            if splitLine[0] == "<Gravity-Grad>":
                 seriesObjects[seriesNumber].gravityGradient = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "COM-Difference:":
+            if splitLine[0] == "<COM-Diff>":
                 seriesObjects[seriesNumber].heightDifferences.append(float(splitLine[1]))
-                continue
-
-            if splitLine[0] == "ID":
                 continue
 
             sys.exit("UNKNOWN TAG AT LINE " + str(lines) + " IN CONFIGURATION FILE: " + str(splitLine[0]))
 
-#If input file is original MassCode version:
-    elif massCodeVersion == "old":
-        for line in configFile:
-            pass
+    return seriesObjects
 
-for series in seriesObjects:
-    series.solution()
+def reduceData(data):
+    for series in data:
+        series.solution(data)
+
+def run(inputFile):
+    data = parse(inputFile)
+    reduceData(data)
+
+if(__name__ == "__main__"):
+    import sys
+    import numpy as np
+    import scipy.stats
+    from statistics import mean, stdev
+    from math import sqrt, exp
+
+    inputFile = sys.argv[1]
+    run(inputFile)

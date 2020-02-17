@@ -1,5 +1,3 @@
-@PyMac
-
 #Write as many lines up here as you want for notes, as long as they start with a "#"
 #Make sure that the top-most line is "#@PyMac" if using this template
 #All masses and mass corrections are entered as true mass.
@@ -15,7 +13,7 @@
 
               <Report-Number>  999999
 
-                  <Restraint>  24
+                  <Restraint-ID>  24
               <Unc-Restraint>  0.120
                <Random-Error>  0
 
@@ -26,54 +24,51 @@
                  <Balance-ID>  22
           <Check-Standard-ID>  27
 
-                  <Design-ID>  221
-                  <Positions>  4
-               <Observations>  6
-
             <Direct-Readings>  0
-         <Direct-Readings-SF>  1
-         <Nominals-In-Pounds>  0
+          <Direct-Reading-SF>  1
+                     <Pounds>  0
 
-                                  ID         Nominal(g/lb)   Density     CCE     Reference-Value(mg)
+
                    <Position>  CB2_100g          100            8.00    0.000045      0.692
                    <Position>  RL-B_100g         100            7.95    0.000045      0.200
                    <Position>  1F6B_100g         100            7.95    0.000045
                    <Position>  1F6B_Sum_100g     100            7.95    0.000045 
 
-              <Design-Matrix>  1 -1 0 0
-              <Design-Matrix>  1 0 -1 0
-              <Design-Matrix>  1 0 0 -1
-              <Design-Matrix>  0 1 -1 0
-              <Design-Matrix>  0 1 0 -1
-              <Design-Matrix>  0 0 1 -1
+		  <Design-ID>  221
+              <Design>  1 -1 0 0
+              <Design>  1 0 -1 0
+              <Design>  1 0 0 -1
+              <Design>  0 1 -1 0
+              <Design>  0 1 0 -1
+              <Design>  0 0 1 -1
 
                   <Restraint>  1 1 0 0 
              <Check-Standard>  1 -1 0 0 
                <Linear-Combo>  0 0 1 1
 
-      Next-Series-Restraint:  0 0 0 0
+      <Pass-Down>  0 0 0 0
 
-                    Sigma-w: 0.0095063
-                    Sigma-t: 0.038
+                    <Sigma-w> 0.0095063
+                    <Sigma-t> 0.038
 
-    Sensitivity-Weight-Mass: 20.0245
- Sensitivity-Weight-Density: 2.70
-     Sensitivity-Weight-CCE: 0.000069
+    <sw-Mass> 20.0245
+ <sw-Density> 2.70
+     <sw-CCE> 0.000069
 
-           Balance-Readings:  0     -0.61 19.42 20.02
-           Balance-Readings:  0.00  -0.59 19.42 20.03
-           Balance-Readings:  0.01  -0.51 19.51 20.02
-           Balance-Readings:  -0.60 -0.61 19.42 19.42
-           Balance-Readings:  -0.60 -0.53 19.49 19.40
-           Balance-Readings:  -0.62 -0.54 19.47 19.37
+           <Balance-Reading>  0     -0.61 19.42 20.02
+           <Balance-Reading>  0.00  -0.59 19.42 20.03
+           <Balance-Reading>  0.01  -0.51 19.51 20.02
+           <Balance-Reading>  -0.60 -0.61 19.42 19.42
+           <Balance-Reading>  -0.60 -0.53 19.49 19.40
+           <Balance-Reading>  -0.62 -0.54 19.47 19.37
 
-             Environmentals: 20.9 749.245 56.74    (Temperature Pressure Humidity)
-             Environmentals: 20.9 749.245 56.74
-             Environmentals: 20.9 749.245 56.74
-             Environmentals: 20.9 749.245 56.74
-             Environmentals: 20.9 749.245 56.74
-             Environmentals: 20.9 749.245 56.74
-                Corrections: 0.05 0.105 0.07   (Temperature Pressure Humidity)
+             <Environmentals> 20.9 749.245 56.74  
+             <Environmentals> 20.9 749.245 56.74
+             <Environmentals> 20.9 749.245 56.74
+             <Environmentals> 20.9 749.245 56.74
+             <Environmentals> 20.9 749.245 56.74
+             <Environmentals> 20.9 749.245 56.74
+            <Env-Corrections> 0.05 0.105 0.07 
 
           #Gravity-Gradient: 0.0000031
 
