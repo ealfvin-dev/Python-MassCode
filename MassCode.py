@@ -12,6 +12,12 @@ The T-test tests the observed value of the check standard against its accepted v
 The F-test tests the within-process standard deviation agianst the accepted standard deviation.
 """
 
+import sys
+import numpy as np
+import scipy.stats
+from statistics import mean, stdev
+from math import sqrt, exp
+
 class MatrixSolution:
     """
     The MatrixSolution class holds all calibration data and data reduction results for a given series.
@@ -572,11 +578,5 @@ def run(inputFile):
     reduceData(data)
 
 if(__name__ == "__main__"):
-    import sys
-    import numpy as np
-    import scipy.stats
-    from statistics import mean, stdev
-    from math import sqrt, exp
-
     inputFile = sys.argv[1]
     run(inputFile)

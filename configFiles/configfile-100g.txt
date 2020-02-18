@@ -1,14 +1,14 @@
-#Write as many lines up here as you want for notes, as long as they start with a "#"
-#Make sure that the top-most line is "#@PyMac" if using this template
-#All masses and mass corrections are entered as true mass.
-#Do not include any spaces in weight IDs
-#Entry tags must not be changed
+# Write as many lines up here as you want for notes, as long as they start with a "#"
+# Make sure that the top-most line is "#@PyMac" if using this template
+# All masses and mass corrections are entered as true mass.
+# Do not include any spaces in weight IDs
+# Entry tags must not be changed
 
-#Units: Temperature[degrees C], Pressure[mmHg], Humidity[%], density[g/cm^3], CCE[/degree C], sigmas[mg], sw-Mass[mg], Unc[mg]
+# Units: Temperature[degrees C], Pressure[mmHg], Humidity[%], density[g/cm^3], CCE[/degree C], sigmas[mg], sw-Mass[mg], Unc[mg]
 #       Gravity-Gradient[m/ms^2], COM-Difference[cm](B-A)
 
-#PyMac is backwards-compatible with old MassCode input files.
-#Do not put "#@PyMac" at top in this case and simply import the old input file
+# PyMac is backwards-compatible with old MassCode input files.
+# Do not put "#@PyMac" at top in this case and simply import the old input file
 
 
               <Report-Number>  999999
@@ -70,11 +70,11 @@
              <Environmentals> 20.9 749.245 56.74
             <Env-Corrections> 0.05 0.105 0.07 
 
-          #Gravity-Gradient: 0.0000031
+          # Gravity-Gradient: 0.0000031
 
-            #COM-Difference: -0.5
-            #COM-Difference: -1
-            #COM-Difference: -1
-            #COM-Difference: -0.5
-            #COM-Difference: -0.5
-            #COM-Difference: 0
+            # COM-Difference: -0.5
+            # COM-Difference: -1
+            # COM-Difference: -1
+            # COM-Difference: -0.5
+            # COM-Difference: -0.5
+            # COM-Difference: 0

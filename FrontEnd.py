@@ -19,6 +19,8 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
+import MassCode
+
 def getNumChacacters(text):
     chars = 0
 
@@ -28,7 +30,7 @@ def getNumChacacters(text):
     return chars
 
 class MainLayout(BoxLayout):
-
+    reportNum = ""
     seriesNumber = 1
 
     def __init__(self, **kwargs):
@@ -47,7 +49,7 @@ class MainLayout(BoxLayout):
         "<Restraint-ID>": 2, \
         "<Unc-Restraint>": 3, \
         "<Random-Error>": 4, \
-        "@Series": 5, \
+        "@SERIES": 5, \
         "<Date>": 6, \
         "<Technician-ID>": 7, \
         "<Check-Standard-ID>": 8, \
@@ -70,8 +72,8 @@ class MainLayout(BoxLayout):
         "<Balance-Reading>": 25, \
         "<Environmentals>": 26, \
         "<Env-Corrections>": 27, \
-        "<COM-Diff>": 28, \
-        "<Gravity-Grad>": 29}
+        "<Gravity-Grad>": 28, \
+        "<COM-Diff>": 29}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -177,13 +179,37 @@ class MainLayout(BoxLayout):
 
             self.saved = False
 
+    def getReportNum(self, text):
+        for line in text:
+            if(len(line) == 0):
+                continue
+
+            if(line.strip().split()[0] == "<Report-Number>"):
+                self.reportNum = line.strip().split()[1]
+                return line.strip().split()[1]
+
+        return False
+
     def save(self):
         checkOK = self.checkTags()
 
         if(checkOK):
             self.ids.errors.text = ""
 
+        else:
+            return
+
+        reportNum = self.getReportNum(self.ids.userText.text.splitlines())
+
+        if(reportNum == False):
+            return
+
+        f = open(reportNum + "-config.txt", 'w')
+        f.write(self.ids.userText.text)
+        f.close()
+
         self.saved = True
+        self.ids.errors.text = ""
 
         self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
         self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
@@ -196,6 +222,7 @@ class MainLayout(BoxLayout):
 
             if(checkOK):
                 self.ids.errors.text = ""
+                MassCode.run(self.reportNum + "-config.txt")
 
 class OrderedText(TextInput):
     def __init__(self, **kwargs):
