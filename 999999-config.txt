@@ -1,4 +1,17 @@
-<Report-Number>  999999
+# Write as many lines up here as you want for notes, as long as they start with a "#"
+# Make sure that the top-most line is "#@PyMac" if using this template
+# All masses and mass corrections are entered as true mass.
+# Do not include any spaces in weight IDs
+# Entry tags must not be changed
+
+# Units: Temperature[degrees C], Pressure[mmHg], Humidity[%], density[g/cm^3], CCE[/degree C], sigmas[mg], sw-Mass[mg], Unc[mg]
+#       Gravity-Gradient[m/ms^2], COM-Difference[cm](B-A)
+
+# PyMac is backwards-compatible with old MassCode input files.
+# Do not put "#@PyMac" at top in this case and simply import the old input file
+
+
+              <Report-Number>  999999
 
                   <Restraint-ID>  24
               <Unc-Restraint>  0.120
@@ -36,7 +49,7 @@
       <Pass-Down>  0 0 0 0
 
                     <Sigma-w> 0.0095063
-                    <Sigma-t> 0.038
+       
 
     <sw-Mass> 20.0245
  <sw-Density> 2.70

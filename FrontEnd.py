@@ -33,6 +33,7 @@ def getNumChacacters(text):
 class MainLayout(BoxLayout):
     reportNum = ""
     seriesNumber = 1
+    seriesTexts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     def __init__(self, **kwargs):
         super().__init__()
@@ -46,35 +47,39 @@ class MainLayout(BoxLayout):
         self.saved = False
 
         self.orderOfTags = {"#": 0, \
-        "<Report-Number>": 1, \
-        "<Restraint-ID>": 2, \
-        "<Unc-Restraint>": 3, \
-        "<Random-Error>": 4, \
-        "@SERIES": 5, \
-        "<Date>": 6, \
-        "<Technician-ID>": 7, \
-        "<Check-Standard-ID>": 8, \
-        "<Balance-ID>": 9, \
-        "<Direct-Readings>": 10, \
-        "<Direct-Reading-SF>": 11, \
-        "<Design-ID>": 12, \
-        "<Design>": 13, \
-        "<Position>": 14, \
-        "<Pounds>": 15, \
-        "<Restraint>": 16, \
-        "<Check-Standard>": 17, \
-        "<Linear-Combo>": 18, \
-        "<Pass-Down>": 19, \
-        "<Sigma-t>": 20, \
-        "<Sigma-w>": 21, \
-        "<sw-Mass>": 22, \
-        "<sw-Density>": 23, \
-        "<sw-CCE>": 24, \
-        "<Balance-Reading>": 25, \
-        "<Environmentals>": 26, \
-        "<Env-Corrections>": 27, \
-        "<Gravity-Grad>": 28, \
-        "<COM-Diff>": 29}
+            "<Report-Number>": 1, \
+            "<Restraint-ID>": 2, \
+            "<Unc-Restraint>": 3, \
+            "<Random-Error>": 4, \
+            "@SERIES": 5, \
+            "<Date>": 6, \
+            "<Technician-ID>": 7, \
+            "<Check-Standard-ID>": 8, \
+            "<Balance-ID>": 9, \
+            "<Direct-Readings>": 10, \
+            "<Direct-Reading-SF>": 11, \
+            "<Design-ID>": 12, \
+            "<Design>": 13, \
+            "<Position>": 14, \
+            "<Pounds>": 15, \
+            "<Restraint>": 16, \
+            "<Check-Standard>": 17, \
+            "<Linear-Combo>": 18, \
+            "<Pass-Down>": 19, \
+            "<Sigma-t>": 20, \
+            "<Sigma-w>": 21, \
+            "<sw-Mass>": 22, \
+            "<sw-Density>": 23, \
+            "<sw-CCE>": 24, \
+            "<Balance-Reading>": 25, \
+            "<Environmentals>": 26, \
+            "<Env-Corrections>": 27, \
+            "<Gravity-Grad>": 28, \
+            "<COM-Diff>": 29}
+
+        self.requiredTags = ["@SERIES", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
+            "<Design-ID>", "<Design>", "<Position>", "<Pounds>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
+            "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -141,15 +146,16 @@ class MainLayout(BoxLayout):
         return cursorStart, textBlockLength
 
     def getTag(self, orderNum):
-        for key in self.orderOfTags:
-            if(self.orderOfTags[key] == orderNum):
-                return key
+        for tag in self.orderOfTags:
+            if(self.orderOfTags[tag] == orderNum):
+                return tag
 
     def highlight(self, startPos, textLength):
         self.ids.userText.select_text(startPos, startPos + textLength)
         self.ids.userText.selection_color = 0.1, 0.8, 0.2, 0.20
 
     def checkTags(self):
+        #Checks if currently written tags exist in the known tags dictionary
         inputText = self.ids.userText.text.splitlines()
 
         lineNum = 0
@@ -170,6 +176,22 @@ class MainLayout(BoxLayout):
 
                     self.ids.errors.text = "ERROR:\n" + errorMessage
                     return False
+
+        return True
+
+    def checkIfAllTags(self, series):
+        #Checks if all tags in known tags dictionary exist in seriesText
+        for tag in self.requiredTags:
+            exists = 0
+            for line in self.seriesTexts[series].splitlines():
+                if(line.split() != []):
+                    if(line.split()[0].strip() == tag):
+                        exists = 1
+                        break
+
+            if(exists == 0):
+                self.ids.errors.text = "ERROR:\n" + tag + " DOES NOT EXIST IN SERIES " + str(series)
+                return False
 
         return True
 
@@ -203,6 +225,7 @@ class MainLayout(BoxLayout):
         reportNum = self.getReportNum(self.ids.userText.text.splitlines())
 
         if(reportNum == False):
+            self.ids.errors.text = "ERROR:\n" + "NO REPORT NUMBER PROVIDED, CANNOT SAVE"
             return
 
         f = open(reportNum + "-config.txt", 'w')
@@ -211,6 +234,11 @@ class MainLayout(BoxLayout):
 
         self.saved = True
         self.ids.errors.text = ""
+        try:
+            self.seriesTexts[0] = self.ids.userText.text
+        except IndexError:
+            self.ids.errors.text = "ERROR:\n" + "OVER 50 SERIES PROVIDED, CANNOT SAVE"
+            return
 
         self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
         self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
@@ -219,9 +247,10 @@ class MainLayout(BoxLayout):
         if(not self.saved):
             self.ids.errors.text = "ERROR:\n" + "FILE MUST BE SAVED BEFORE RUNNING"
         else:
-            checkOK = self.checkTags()
+            checkWrittenTags = self.checkTags()
+            checkAllExist = self.checkIfAllTags(0)
 
-            if(checkOK):
+            if(checkWrittenTags and checkAllExist):
                 self.ids.errors.text = ""
                 try:
                     MassCode.run(self.reportNum + "-config.txt")
