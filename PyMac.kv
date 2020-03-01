@@ -364,6 +364,7 @@
             padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
             background_normal: ''
             orderNum: 0
+            write_tab: True
 
         Label:
             text: "Report Number:"
@@ -812,6 +813,7 @@
                     background_normal: ''
                     orderNum: 13
                     on_text: root.evalDesign()
+                    write_tab: True
 
             BoxLayout:
                 orientation: "vertical"
@@ -903,7 +905,6 @@
             font_size: popUpFontSize
             background_normal: ''            
             orderNum: 12
-            on_text: root.checkTab()
 
         Label:
             id: designPopError
@@ -974,6 +975,7 @@
             padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
             background_normal: ''
             orderNum: 14
+            write_tab: True
 
         Label:
             text: "Nominal Units (0 = g, 1 = lb):"
@@ -1408,6 +1410,7 @@
             padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
             background_normal: ''
             orderNum: 25
+            write_tab: True
 
         Label:
             text: "Environmentals (" + chr(730) + "C, %, mmHg):"
@@ -1429,6 +1432,7 @@
             padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
             background_normal: ''
             orderNum: 26
+            write_tab: True
 
         Label:
             text: "Environmental Corrections (" + chr(730) + "C, %, mmHg):"

@@ -234,6 +234,7 @@ class OrderedText(TextInput):
 
         self.orderNum = 0
         self.next_focus = 0
+        self.write_tab = False
 
 class LabInfoPopup(Popup):
     def submit(self):
@@ -376,9 +377,6 @@ class DesignPopup(Popup):
 
         self.ids.positionsLabel.text = "Positions:  " + str(positions)
         self.ids.observationsLabel.text = "Observations:  " + str(observations)
-
-    def checkTab(self, **kwargs):
-        print(**kwargs)
 
     def submit(self):
         designIDText = self.ids.designIDText.text
