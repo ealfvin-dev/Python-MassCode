@@ -33,7 +33,7 @@ def getNumChacacters(text):
 class MainLayout(BoxLayout):
     reportNum = ""
     seriesNumber = 1
-    seriesTexts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    seriesTexts = []
 
     def __init__(self, **kwargs):
         super().__init__()
@@ -179,18 +179,18 @@ class MainLayout(BoxLayout):
 
         return True
 
-    def checkIfAllTags(self, series):
+    def checkIfAllTags(self, seriesText, seriesNum):
         #Checks if all tags in known tags dictionary exist in seriesText
         for tag in self.requiredTags:
             exists = 0
-            for line in self.seriesTexts[series].splitlines():
+            for line in seriesText.splitlines():
                 if(line.split() != []):
                     if(line.split()[0].strip() == tag):
                         exists = 1
                         break
 
             if(exists == 0):
-                self.ids.errors.text = "ERROR:\n" + tag + " DOES NOT EXIST IN SERIES " + str(series)
+                self.ids.errors.text = "ERROR:\n" + tag + " DOES NOT EXIST IN SERIES " + str(seriesNum)
                 return False
 
         return True
@@ -237,8 +237,7 @@ class MainLayout(BoxLayout):
         try:
             self.seriesTexts[0] = self.ids.userText.text
         except IndexError:
-            self.ids.errors.text = "ERROR:\n" + "OVER 50 SERIES PROVIDED, CANNOT SAVE"
-            return
+            self.seriesTexts.append(self.ids.userText.text)
 
         self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
         self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
@@ -248,9 +247,14 @@ class MainLayout(BoxLayout):
             self.ids.errors.text = "ERROR:\n" + "FILE MUST BE SAVED BEFORE RUNNING"
         else:
             checkWrittenTags = self.checkTags()
-            checkAllExist = self.checkIfAllTags(0)
 
-            if(checkWrittenTags and checkAllExist):
+            for i in range(len(self.seriesTexts)):
+                checkAllExist = self.checkIfAllTags(self.seriesTexts[i], i + 1)
+
+                if(not checkAllExist):
+                    return
+
+            if(checkWrittenTags):
                 self.ids.errors.text = ""
                 try:
                     MassCode.run(self.reportNum + "-config.txt")

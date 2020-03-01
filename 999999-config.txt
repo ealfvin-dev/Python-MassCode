@@ -49,11 +49,11 @@
       <Pass-Down>  0 0 0 0
 
                     <Sigma-w> 0.0095063
-       
+                    <Sigma-t> 0.038
 
     <sw-Mass> 20.0245
  <sw-Density> 2.70
-     <sw-CCE> 0.000069
+
 
            <Balance-Reading>  0     -0.61 19.42 20.02
            <Balance-Reading>  0.00  -0.59 19.42 20.03
