@@ -1,66 +1,67 @@
-#  Notes and stuffs
 <Report-Number>  999999
 
-<Restraint-ID>  22
-<Unc-Restraint>  0.1
-<Random-Error>  0
+                  <Restraint-ID>  24
+              <Unc-Restraint>  0.120
+               <Random-Error>  0
 
 @SERIES
 
-<Date>  02 17 2020
-<Technician-ID>  19
-<Check-Standard-ID>  22
+                       <Date>  11 28 2019
+              <Technician-ID>  19
+                 <Balance-ID>  22
+          <Check-Standard-ID>  27
 
-<Balance-ID>  22
-<Direct-Readings>  0
-<Direct-Reading-SF>  1.0
+            <Direct-Readings>  0
+          <Direct-Reading-SF>  1
+                     <Pounds>  0
 
-<Design-ID>  112
-<Design>  1 -1  0  0
-<Design>  1  0 -1  0
-<Design>  1  0  0 -1
-<Design>  0  1 -1  0
-<Design>  0  1  0 -1
-<Design>  0  0  1 -1
 
-<Position>  CB2_100g          100            8.00    0.000045      0.692
-<Position>  RL-B_100g         100            7.95    0.000045      0.200
-<Position>  1F6B_100g         100            7.95    0.000045
-<Position>  1F6B_Sum_100g     100            7.95    0.000045
+                   <Position>  CB2_100g          100            8.00    0.000045      0.692
+                   <Position>  RL-B_100g         100            7.95    0.000045      0.200
+                   <Position>  1F6B_100g         100            7.95    0.000045
+                   <Position>  1F6B_Sum_100g     100            7.95    0.000045 
 
-<Pounds>  0
+           <Design-ID>  221
+              <Design>  1 -1 0 0
+              <Design>  1 0 -1 0
+              <Design>  1 0 0 -1
+              <Design>  0 1 -1 0
+              <Design>  0 1 0 -1
+              <Design>  0 0 1 -1
 
-<Restraint>  1 1 0 0
-<Check-Standard>  1 -1 0 0
-<Linear-Combo>  0 0 0 0
-<Pass-Down>  0 0 0 0
+                  <Restraint>  1 1 0 0 
+             <Check-Standard>  1 -1 0 0 
+               <Linear-Combo>  0 0 1 1
 
-<Sigma-t>  0.038
-<Sigma-w>  0.0095063
+      <Pass-Down>  0 0 0 0
 
-<sw-Mass>  20.0245
-<sw-Density>  2.7
-<sw-CCE>  0.000069
+                    <Sigma-w> 0.0095063
+                    <Sigma-t> 0.038
 
-<Balance-Reading>  0     -0.61 19.42 20.02
-<Balance-Reading>  0.00  -0.59 19.42 20.03
-<Balance-Reading>  0.01  -0.51 19.51 20.02
-<Balance-Reading>  -0.60 -0.61 19.42 19.42
-<Balance-Reading>  -0.60 -0.53 19.49 19.40
-<Balance-Reading>  -0.62 -0.54 19.47 19.37
+    <sw-Mass> 20.0245
+ <sw-Density> 2.70
+     <sw-CCE> 0.000069
 
-<Environmentals>  20.9 749.245 56.74
-<Environmentals>  20.9 749.245 56.74
-<Environmentals>  20.9 749.245 56.74
-<Environmentals>  20.9 749.245 56.74
-<Environmentals>  20.9 749.245 56.74
-<Environmentals>  20.9 749.245 56.74
+           <Balance-Reading>  0     -0.61 19.42 20.02
+           <Balance-Reading>  0.00  -0.59 19.42 20.03
+           <Balance-Reading>  0.01  -0.51 19.51 20.02
+           <Balance-Reading>  -0.60 -0.61 19.42 19.42
+           <Balance-Reading>  -0.60 -0.53 19.49 19.40
+           <Balance-Reading>  -0.62 -0.54 19.47 19.37
 
-<Env-Corrections>  0.05 0.105 0.07
-<Gravity-Grad>  0.0000031
-<COM-Diff>  0
-<COM-Diff>  1
-<COM-Diff>  1
-<COM-Diff>  -1
-<COM-Diff>  -1
-<COM-Diff>  0
+             <Environmentals> 20.9 749.245 56.74  
+             <Environmentals> 20.9 749.245 56.74
+             <Environmentals> 20.9 749.245 56.74
+             <Environmentals> 20.9 749.245 56.74
+             <Environmentals> 20.9 749.245 56.74
+             <Environmentals> 20.9 749.245 56.74
+            <Env-Corrections> 0.05 0.105 0.07 
+
+          # Gravity-Gradient: 0.0000031
+
+            # COM-Difference: -0.5
+            # COM-Difference: -1
+            # COM-Difference: -1
+            # COM-Difference: -0.5
+            # COM-Difference: -0.5
+            # COM-Difference: 0

@@ -34,7 +34,7 @@
                    <Position>  1F6B_100g         100            7.95    0.000045
                    <Position>  1F6B_Sum_100g     100            7.95    0.000045 
 
-		  <Design-ID>  221
+           <Design-ID>  221
               <Design>  1 -1 0 0
               <Design>  1 0 -1 0
               <Design>  1 0 0 -1

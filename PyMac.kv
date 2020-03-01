@@ -139,7 +139,7 @@
 
                 Button:
                     id: designButton
-                    text: "[b]Weighing\nDesign[/b]"
+                    text: "[b]Design[/b]"
                     markup: True
                     background_normal: ''
                     background_color: buttonColor
@@ -903,6 +903,7 @@
             font_size: popUpFontSize
             background_normal: ''            
             orderNum: 12
+            on_text: root.checkTab()
 
         Label:
             id: designPopError
@@ -1090,7 +1091,7 @@
 
         Label:
             size_hint: (1, 0.6)
-            text: "Linear Combo Vector:"
+            text: "Linear Combo Position:"
             markup: True
             color: labelColor
             text_size: self.size

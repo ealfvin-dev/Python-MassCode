@@ -20,6 +20,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
 import MassCode
+import sys
 
 def getNumChacacters(text):
     chars = 0
@@ -222,13 +223,17 @@ class MainLayout(BoxLayout):
 
             if(checkOK):
                 self.ids.errors.text = ""
-                MassCode.run(self.reportNum + "-config.txt")
+                try:
+                    MassCode.run(self.reportNum + "-config.txt")
+                except:
+                    self.ids.errors.text = "ERROR:\n" + str(sys.exc_info())
 
 class OrderedText(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
 
         self.orderNum = 0
+        self.next_focus = 0
 
 class LabInfoPopup(Popup):
     def submit(self):
@@ -371,6 +376,9 @@ class DesignPopup(Popup):
 
         self.ids.positionsLabel.text = "Positions:  " + str(positions)
         self.ids.observationsLabel.text = "Observations:  " + str(observations)
+
+    def checkTab(self, **kwargs):
+        print(**kwargs)
 
     def submit(self):
         designIDText = self.ids.designIDText.text
