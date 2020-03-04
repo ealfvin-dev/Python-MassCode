@@ -152,7 +152,7 @@ class MainLayout(BoxLayout):
 
     def highlight(self, startPos, textLength):
         self.ids.userText.select_text(startPos, startPos + textLength)
-        self.ids.userText.selection_color = 0.1, 0.8, 0.2, 0.20
+        self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
 
     def checkTags(self):
         #Checks if currently written tags exist in the known tags dictionary
@@ -268,6 +268,14 @@ class OrderedText(TextInput):
         self.orderNum = 0
         self.next_focus = 0
         self.write_tab = False
+
+class SeriesButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.seriesNum = 0
+        #self.background_color = (0.25, 0.25, 0.28, 0.20)
+        self.background_color = (0.956, 0.968, 0.976, 0.85)
 
 class LabInfoPopup(Popup):
     def submit(self):

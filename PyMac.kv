@@ -16,7 +16,7 @@
         id: navBar
         orientation: 'horizontal'
         size_hint: (1.0, 0.05)
-        padding: (60, 0, 60, 0)
+        padding: (0, 0, 0, 0)
 
         Label:
             text: "[color=#FF970F][size=72][b]Some Logo[/b][/size][/color]"
@@ -42,7 +42,7 @@
         id: content
         orientation: 'horizontal'
         spacing: self.width / 30
-        padding: (60, 15, 60, 30)
+        padding: (0, 15, 140, 30)
 
         BoxLayout:
             id: menu
@@ -51,6 +51,138 @@
 
             BoxLayout:
                 id: menuCol1
+                orientation: "vertical"
+                spacing: self.width / 200
+                padding: 0, 0, 0 - root.ids.menu.width / 50 , 0 - 30 - 10 - (root.size[1] * root.ids.footer.size_hint[1])
+
+                Label:
+                    text: "[b]Series[/b]"
+                    markup: True
+                    color: labelColor
+                    background_color: (0.85, 0.85, 0.85, 0.90)
+                    font_size: dp(self.width / labelSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesOne
+                    seriesNum: 1
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesTwo
+                    seriesNum: 2
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesThree
+                    seriesNum: 3
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesFour
+                    seriesNum: 4
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesFive
+                    seriesNum: 5
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesSix
+                    seriesNum: 6
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesSeven
+                    seriesNum: 7
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesEight
+                    seriesNum: 8
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesNine
+                    seriesNum: 9
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesTen
+                    seriesNum: 10
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesEleven
+                    seriesNum: 11
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                SeriesButton:
+                    id: seriesTwelve
+                    seriesNum: 12
+                    text: ""
+                    markup: True
+                    background_normal: ''
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+
+                Button:
+                    id: addSeriesButton
+                    text: "[b]+ [/b]Add Series"
+                    markup: True
+                    background_normal: ''
+                    background_color: (0.00, 0.76, 0.525, 1)
+                    font_size: dp(self.width / buttonSizer)
+                    halign: 'center'
+                    on_press: root.addSeries()
+
+            BoxLayout:
+                id: menuCol2
                 orientation: 'vertical'
                 spacing: self.height / 28
 
@@ -126,7 +258,7 @@
                     on_press: app.openStatisticsPop()
 
             BoxLayout:
-                id: menuCol2
+                id: menuCol3
                 orientation: "vertical"
                 spacing: self.height / 28
 
@@ -212,7 +344,7 @@
                     on_press: app.openGravityPop()
 
             BoxLayout:
-                id: menuCol3
+                id: menuCol4
                 orientation: "vertical"
                 spacing: self.height / 28
 
@@ -222,10 +354,11 @@
                     font_size: dp(self.width / labelSizer)
                     halign: 'center'
 
-            BoxLayout:
-                id: menuCol4
-                orientation: "vertical"
-                spacing: self.height / 28
+                Label:
+                    text: ""
+                    color: labelColor
+                    font_size: dp(self.width / labelSizer)
+                    halign: 'center'
 
                 Label:
                     text: ""
@@ -256,24 +389,6 @@
                     markup: True
                     color: labelColor
                     font_size: dp(self.width / labelSizer)
-                    halign: 'center'
-
-                Button:
-                    id: addSeriesButton
-                    text: "[color=#FFFFFF][b]ADD\nSERIES[/b][/color]"
-                    markup: True
-                    background_normal: ''
-                    background_color: (0.09, 0.64, 0.72, 0.95)
-                    font_size: dp(self.width / buttonSizer)
-                    halign: 'center'
-
-                Button:
-                    id: goToSeriesButton
-                    text: "[color=#FFFFFF][b]GO TO\nSERIES[/b][/color]"
-                    markup: True
-                    background_normal: ''
-                    background_color: (0.09, 0.64, 0.72, 0.95)
-                    font_size: dp(self.width / buttonSizer)
                     halign: 'center'
 
                 Button: 
