@@ -1,7 +1,7 @@
 #:import Factory kivy.factory.Factory
 
 #:set buttonColor (0.08, 0.55, 1, 1)
-#:set labelColor (0.95, 0.95, 0.96, 1)
+#:set labelColor (0.095, 0.095, 0.096, 0.9)
 
 #:set buttonSizer 20
 #:set labelSizer 12
@@ -52,7 +52,7 @@
             BoxLayout:
                 id: menuCol1
                 orientation: "vertical"
-                spacing: self.width / 200
+                spacing: 0
                 padding: 0, 0, 0 - root.ids.menu.width / 50 , 0 - 30 - 10 - (root.size[1] * root.ids.footer.size_hint[1])
 
                 Label:

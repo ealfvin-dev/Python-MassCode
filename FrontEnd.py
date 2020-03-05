@@ -39,7 +39,8 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.25, 0.25, 0.28, 0.55)
+            #Color(0.25, 0.25, 0.28, 0.85)
+            Color(0.956, 0.968, 0.976, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
             self.bind(size=self._update_rect, pos=self._update_rect)
@@ -274,8 +275,8 @@ class SeriesButton(Button):
         super().__init__()
 
         self.seriesNum = 0
-        #self.background_color = (0.25, 0.25, 0.28, 0.20)
-        self.background_color = (0.956, 0.968, 0.976, 0.85)
+        self.background_color = (0.145, 0.227, 0.302, 0.75)
+        #self.background_color = (0.956, 0.968, 0.976, 0.85)
 
 class LabInfoPopup(Popup):
     def submit(self):

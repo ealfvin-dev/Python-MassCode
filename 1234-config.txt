@@ -1,9 +1,5 @@
-#  MN metrology lab
+#  sxsadsadsad
 <Report-Number>  1234
-
-<Restraint-ID>  018
-<Unc-Restraint>  0.011
-<Random-Error>  0
 
 @SERIES
 
