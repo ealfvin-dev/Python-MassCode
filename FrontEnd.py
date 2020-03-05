@@ -278,7 +278,7 @@ class SeriesButton(Button):
 
         self.seriesNum = 0
         self.exists = False
-        self.background_color = (0.145, 0.227, 0.302, 0.75)
+        self.background_color = (0.155, 0.217, 0.292, 0.65)
         #self.background_color = (0.956, 0.968, 0.976, 0.85)
 
     def goToSeries(self, exists, seriesNum):
