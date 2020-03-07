@@ -273,9 +273,17 @@ class SeriesButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
 
+        self.markup = True
+
         self.seriesNum = 0
-        #self.background_color = (0.25, 0.25, 0.28, 0.20)
+        self.exists = False
+        #self.background_color = (0.155, 0.217, 0.292, 0.65)
         self.background_color = (0.956, 0.968, 0.976, 0.85)
+
+    def goToSeries(self, exists, seriesNum):
+        if(exists):
+            self.background_color = (0.25, 0.25, 0.28, 1.0)
+            self.text = "[color=#FFFFFF]" + self.text + "[/color]"
 
 class LabInfoPopup(Popup):
     def submit(self):
