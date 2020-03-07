@@ -286,6 +286,20 @@ class SeriesButton(Button):
             self.background_color = (0.906, 0.918, 0.926, 1)
             self.text = "[color=#000000]" + self.text + "[/color]"
 
+class RoundedButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.completed = False
+        self.background_color = 0,0,0,0
+        self.canvasColor = (0.08, 0.55, 1, 1)
+
+        with self.canvas.before:
+            Color(self.canvasColor)
+            pos = self.pos
+            size = self.size
+            radius = [self.size[0] / 12,]
+
 class LabInfoPopup(Popup):
     def submit(self):
         #Check if all fields have been entered
@@ -307,6 +321,7 @@ class LabInfoPopup(Popup):
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
         self.parent.children[1].ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        #self.parent.children[1].ids.labInfoButton.completed = True
 
         self.dismiss()
 
