@@ -33,7 +33,7 @@
             on_press: root.addSeries()
 
         SeriesButton:
-            id: seriesOne
+            id: series1
             seriesNum: 1
             text: "[color=#000000]Series 1[/color]"
             background_color: (0.906, 0.918, 0.926, 1)
@@ -42,127 +42,137 @@
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
             exists: True
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesTwo
+            id: series2
             seriesNum: 2
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesThree
+            id: series3
             seriesNum: 3
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesFour
+            id: series4
             seriesNum: 4
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesFive
+            id: series5
             seriesNum: 5
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesSix
+            id: series6
             seriesNum: 6
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesSeven
+            id: series7
             seriesNum: 7
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesEight
+            id: series8
             seriesNum: 8
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesNine
+            id: series9
             seriesNum: 9
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesTen
+            id: series10
             seriesNum: 10
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesEleven
+            id: series11
             seriesNum: 11
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesTwelve
+            id: series12
             seriesNum: 12
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesThirteen
-            seriesNum: 2
+            id: series13
+            seriesNum: 13
             text: ""
             markup: True
             background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: root.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
+
+        SeriesButton:
+            id: series14
+            seriesNum: 14
+            text: ""
+            markup: True
+            background_normal: ''
+            font_size: dp(self.width / buttonSizer)
+            halign: 'center'
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
     BoxLayout:
         id: secondaryMainBox

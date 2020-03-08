@@ -32,6 +32,7 @@ def getNumChacacters(text):
 
 class MainLayout(BoxLayout):
     reportNum = ""
+    numberOfSeries = 1
     seriesNumber = 1
     seriesTexts = []
 
@@ -214,6 +215,32 @@ class MainLayout(BoxLayout):
 
         return False
 
+    def addSeries(self):
+        if(self.numberOfSeries == 14):
+            return
+
+        self.numberOfSeries += 1
+
+        newSeriesId = "series" + str(self.numberOfSeries)
+
+        self.ids[newSeriesId].text = "[color=#FFFFFF]Series " + str(self.numberOfSeries) +"[/color]"
+        self.ids[newSeriesId].exists = True
+
+    def goToSeries(self, button, exists, seriesNum):
+        if(exists):
+            for sn in range(1, 15):
+                seriesID = "series" + str(sn)
+
+                self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
+
+                if(self.ids[seriesID].exists):
+                    self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+
+            button.background_color = (0.906, 0.918, 0.926, 1)
+            button.text = "[color=#000000]" + button.text[15:]
+
+            #Update TextInput text
+
     def save(self):
         checkOK = self.checkTags()
 
@@ -280,11 +307,6 @@ class SeriesButton(Button):
         self.exists = False
         self.background_color = (0.155, 0.217, 0.292, 0.65)
         #self.background_color = (0.956, 0.968, 0.976, 0.85)
-
-    def goToSeries(self, exists, seriesNum):
-        if(exists):
-            self.background_color = (0.906, 0.918, 0.926, 1)
-            self.text = "[color=#000000]" + self.text + "[/color]"
 
 class RoundedButton(Button):
     def __init__(self, **kwargs):
