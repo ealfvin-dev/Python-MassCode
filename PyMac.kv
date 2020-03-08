@@ -197,25 +197,58 @@
         BoxLayout:
             id: content
             orientation: 'horizontal'
-            spacing: self.width / 30
-            padding: (0, 15, 140, 30)
+            spacing: self.width / 15
+            padding: (0, 50, 100, 30)
 
             BoxLayout:
                 id: menu
-                orientation: 'horizontal'
+                orientation: 'vertical'
                 spacing: self.width / 20
 
                 BoxLayout:
-                    id: menuCol2
-                    orientation: 'vertical'
-                    spacing: self.height / 28
+                    id: menuLabel1
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.08)
 
                     Label:
-                        text: "[b]Report\nHeader[/b]"
+                        text: "[b]Report Header[/b]"
                         markup: True
                         color: labelColor
                         font_size: dp(self.width / labelSizer)
-                        halign: 'center'
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow1
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
 
                     Button:
                         id: labInfoButton
@@ -238,11 +271,56 @@
                         on_press: app.openRestraintPop()
 
                     Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel2
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.08)
+
+                    Label:
                         text: "[b]Series Setup[/b]"
                         markup: True
                         color: labelColor
                         font_size: dp(self.width / labelSizer)
                         halign: 'center'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow2
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
 
                     Button:
                         id: dateButton
@@ -265,11 +343,56 @@
                         on_press: app.openBalancePop()
 
                     Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel3
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.08)
+
+                    Label:
                         text: "[b]Statistics[/b]"
                         markup: True
                         color: labelColor
                         font_size: dp(self.width / labelSizer)
                         halign: 'center'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow3
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
 
                     Button:
                         id: statisticsButton
@@ -281,10 +404,24 @@
                         halign: 'center'
                         on_press: app.openStatisticsPop()
 
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
                 BoxLayout:
-                    id: menuCol3
-                    orientation: "vertical"
-                    spacing: self.height / 28
+                    id: menuLabel4
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.08)
 
                     Label:
                         text: "[b]Design[/b]"
@@ -292,6 +429,39 @@
                         color: labelColor
                         font_size: dp(self.width / labelSizer)
                         halign: 'center'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow4
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
 
                     Button:
                         id: designButton
@@ -323,12 +493,50 @@
                         halign: 'center'
                         on_press: app.openVectorsPop()
 
+                BoxLayout:
+                    id: menuLabel5
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.08)
+
                     Label:
-                        text: "[b]Measurement\nData[/b]"
+                        text: "[b]Measurement Data[/b]"
                         markup: True
                         color: labelColor
                         font_size: dp(self.width / labelSizer)
                         halign: 'center'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow5
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
 
                     Button:
                         id: swButton
@@ -351,11 +559,56 @@
                         on_press: app.openMeasurementsPop()
 
                     Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel6
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.08)
+
+                    Label:
                         text: "[b]Optionals[/b]"
                         markup: True
                         color: labelColor
                         font_size: dp(self.width / labelSizer)
                         halign: 'center'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow6
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
 
                     Button:
                         id: gravityButton
@@ -367,53 +620,24 @@
                         halign: 'center'
                         on_press: app.openGravityPop()
 
-                BoxLayout:
-                    id: menuCol4
-                    orientation: "vertical"
-                    spacing: self.height / 28
-
                     Label:
                         text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: "[b]Actions[/b]"
                         markup: True
                         color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuCol7
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
 
                     Button: 
                         id: saveButton
@@ -435,6 +659,12 @@
                         halign: 'center'
                         on_release: root.run()
 
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: dp(self.width / labelSizer)
+                        halign: 'center'
+
             BoxLayout:
                 id: textAreas
                 orientation: "vertical"
@@ -444,7 +674,7 @@
 
                 TextInput:
                     id: userText
-                    font_size: dp(12)
+                    font_size: mm(3.1)
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
                     font_name: "./Menlo.ttc"
@@ -456,7 +686,7 @@
 
                 TextInput:
                     id: errors
-                    font_size: dp(12)
+                    font_size: mm(3.1)
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
                     font_name: "./Menlo.ttc"
@@ -467,7 +697,7 @@
 
         Label:
             id: footer
-            text: "[size=20]Copywrite Erik Alfvin, 2020[/size]"
+            text: "[size=20][color='000000']Copywrite Erik Alfvin, 2020[/color][/size]"
             markup: True
             size_hint: (1.0, 0.01)
 
