@@ -276,7 +276,7 @@ class SeriesButton(Button):
 
         self.markup = True
 
-        self.seriesNum = 0
+        self.seriesNum = 1
         self.exists = False
         self.background_color = (0.155, 0.217, 0.292, 0.65)
         #self.background_color = (0.956, 0.968, 0.976, 0.85)
