@@ -196,18 +196,18 @@
         BoxLayout:
             id: content
             orientation: 'horizontal'
-            spacing: self.width / 30
+            spacing: self.width / 22
             padding: (0, 15, 140, 30)
 
             BoxLayout:
                 id: menu
                 orientation: 'horizontal'
-                spacing: self.width / 20
+                spacing: self.width / 10
 
                 BoxLayout:
                     id: menuCol2
                     orientation: 'vertical'
-                    spacing: self.height / 28
+                    spacing: self.height / 30
 
                     Label:
                         text: "[b]Report\nHeader[/b]"
@@ -280,10 +280,12 @@
                         halign: 'center'
                         on_press: app.openStatisticsPop()
 
+                    
+
                 BoxLayout:
                     id: menuCol3
                     orientation: "vertical"
-                    spacing: self.height / 28
+                    spacing: self.height / 30
 
                     Label:
                         text: "[b]Design[/b]"
@@ -358,7 +360,7 @@
 
                     Button:
                         id: gravityButton
-                        text: "[b]Gravity\nGradient[/b]"
+                        text: "Gravity\nGradient"
                         markup: True
                         background_normal: ''
                         background_color: (0.368, 0.49, 0.60, 1)
@@ -369,7 +371,7 @@
                 BoxLayout:
                     id: menuCol4
                     orientation: "vertical"
-                    spacing: self.height / 28
+                    spacing: self.height / 30
 
                     Label:
                         text: ""
@@ -443,7 +445,7 @@
 
                 TextInput:
                     id: userText
-                    font_size: dp(12)
+                    font_size: dp(self.size[0]/100) if self.size[0] > 1000 else dp(10)
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
                     font_name: "./Menlo.ttc"
