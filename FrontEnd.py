@@ -33,8 +33,8 @@ def getNumChacacters(text):
 class MainLayout(BoxLayout):
     reportNum = ""
     numberOfSeries = 1
-    seriesNumber = 1
-    seriesTexts = []
+    currentSeries = 1
+    seriesTexts = ["@SERIES\n\n"]
 
     def __init__(self, **kwargs):
         super().__init__()
@@ -226,8 +226,16 @@ class MainLayout(BoxLayout):
         self.ids[newSeriesId].text = "[color=#FFFFFF]Series " + str(self.numberOfSeries) +"[/color]"
         self.ids[newSeriesId].exists = True
 
+        self.seriesTexts.append("@SERIES\n\n")
+
     def goToSeries(self, button, exists, seriesNum):
         if(exists):
+            #Write usertext into seriesTexts, pull new seriesText into userText
+            self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+            self.ids.userText.text = self.seriesTexts[seriesNum - 1]
+
+            self.currentSeries = seriesNum
+
             for sn in range(1, 15):
                 seriesID = "series" + str(sn)
 
@@ -239,7 +247,7 @@ class MainLayout(BoxLayout):
             button.background_color = (0.906, 0.918, 0.926, 1)
             button.text = "[color=#000000]" + button.text[15:]
 
-            #Update TextInput text
+            #Update TextInput text, save current text in self.seriesTexts[i]
 
     def save(self):
         checkOK = self.checkTags()
