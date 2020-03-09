@@ -158,26 +158,29 @@ class MainLayout(BoxLayout):
 
     def checkTags(self):
         #Checks if currently written tags exist in the known tags dictionary
-        inputText = self.ids.userText.text.splitlines()
+        seriesNumber = 0
 
-        lineNum = 0
-        for line in inputText:
-            lineNum += 1
+        for seriesText in self.seriesTexts:
+            seriesNumber += 1
+            lineNum = 0
 
-            if(line.split() == []):
-                pass
+            for line in seriesText.splitlines():
+                lineNum += 1
 
-            elif(line.split()[0].strip() == ""):
-                pass
+                if(line.split() == []):
+                    pass
 
-            else:
-                try:
-                    self.orderOfTags[line.split()[0].strip()]
-                except KeyError:
-                    errorMessage = "UNKNOWN TAG ON LINE " + str(lineNum) + ": " + line.split()[0].strip()
+                elif(line.split()[0].strip() == ""):
+                    pass
 
-                    self.ids.errors.text = "ERROR:\n" + errorMessage
-                    return False
+                else:
+                    try:
+                        self.orderOfTags[line.split()[0].strip()]
+                    except KeyError:
+                        errorMessage = "UNKNOWN TAG IN SERIES " + str(seriesNumber) + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
+
+                        self.ids.errors.text = "ERROR:\n" + errorMessage
+                        return False
 
         return True
 
@@ -210,8 +213,11 @@ class MainLayout(BoxLayout):
                 continue
 
             if(line.strip().split()[0] == "<Report-Number>"):
-                self.reportNum = line.strip().split()[1]
-                return line.strip().split()[1]
+                try:
+                    self.reportNum = line.strip().split()[1]
+                    return line.strip().split()[1]
+                except IndexError:
+                    return False
 
         return False
 
@@ -230,9 +236,12 @@ class MainLayout(BoxLayout):
 
     def goToSeries(self, button, exists, seriesNum):
         if(exists):
-            #Write usertext into seriesTexts, pull new seriesText into userText
+            #Write current usertext into seriesTexts, pull new seriesText into userText
             self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
             self.ids.userText.text = self.seriesTexts[seriesNum - 1]
+            self.ids.userText.cursor = (0, 0)
+            self.ids.userText.select_text(0, 0)
 
             self.currentSeries = seriesNum
 
@@ -250,6 +259,9 @@ class MainLayout(BoxLayout):
             #Update TextInput text, save current text in self.seriesTexts[i]
 
     def save(self):
+        #Save current working series Text into self.seriesTexts array
+        self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
         checkOK = self.checkTags()
 
         if(checkOK):
@@ -258,22 +270,23 @@ class MainLayout(BoxLayout):
         else:
             return
 
-        reportNum = self.getReportNum(self.ids.userText.text.splitlines())
+        reportNum = self.getReportNum(self.seriesTexts[0].splitlines())
 
         if(reportNum == False):
             self.ids.errors.text = "ERROR:\n" + "NO REPORT NUMBER PROVIDED, CANNOT SAVE"
             return
 
-        f = open(reportNum + "-config.txt", 'w')
-        f.write(self.ids.userText.text)
-        f.close()
-
         self.saved = True
         self.ids.errors.text = ""
-        try:
-            self.seriesTexts[0] = self.ids.userText.text
-        except IndexError:
-            self.seriesTexts.append(self.ids.userText.text)
+        
+        fileText = ""
+        for seriesText in self.seriesTexts:
+            fileText += seriesText
+            fileText += "\n"
+
+        f = open(reportNum + "-config.txt", 'w')
+        f.write(fileText)
+        f.close()
 
         self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
         self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
@@ -656,22 +669,24 @@ class PyMac(App):
         return MainLayout()
 
     def openLabInfoPop(self):
-        pop = LabInfoPopup()
+        if(self.root.currentSeries == 1):
+            pop = LabInfoPopup()
 
-        checkOK = self.root.checkTags()
+            checkOK = self.root.checkTags()
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop.open()
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop.open()
 
     def openRestraintPop(self):
-        pop = RestraintPopup()
+        if(self.root.currentSeries == 1):
+            pop = RestraintPopup()
 
-        checkOK = self.root.checkTags()
-        
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop.open()
+            checkOK = self.root.checkTags()
+            
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop.open()
 
     def openDatePop(self):
         pop = DatePopup()
