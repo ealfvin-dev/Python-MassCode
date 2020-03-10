@@ -79,7 +79,7 @@ class MainLayout(BoxLayout):
             "<Gravity-Grad>": 28, \
             "<COM-Diff>": 29}
 
-        self.requiredTags = ["@SERIES", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
+        self.requiredTags = ["@SERIES", "<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
             "<Design-ID>", "<Design>", "<Position>", "<Pounds>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
             "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
 
@@ -156,11 +156,11 @@ class MainLayout(BoxLayout):
         self.ids.userText.select_text(startPos, startPos + textLength)
         self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
 
-    def checkTags(self):
+    def checkTags(self, seriesArray, seriesNum):
         #Checks if currently written tags exist in the known tags dictionary
         seriesNumber = 0
 
-        for seriesText in self.seriesTexts:
+        for seriesText in seriesArray:
             seriesNumber += 1
             lineNum = 0
 
@@ -177,7 +177,12 @@ class MainLayout(BoxLayout):
                     try:
                         self.orderOfTags[line.split()[0].strip()]
                     except KeyError:
-                        errorMessage = "UNKNOWN TAG IN SERIES " + str(seriesNumber) + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
+                        if(seriesNum):
+                            snText = str(seriesNum)
+                        else:
+                            snText = str(seriesNumber)
+
+                        errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
 
                         self.ids.errors.text = "ERROR:\n" + errorMessage
                         return False
@@ -187,6 +192,9 @@ class MainLayout(BoxLayout):
     def checkIfAllTags(self, seriesText, seriesNum):
         #Checks if all tags in known tags dictionary exist in seriesText
         for tag in self.requiredTags:
+            if((tag == "<Report-Number>" or tag == "<Restraint-ID>" or tag == "<Unc-Restraint>" or tag == "<Random-Error>") and seriesNum != 1):
+                continue
+
             exists = 0
             for line in seriesText.splitlines():
                 if(line.split() != []):
@@ -262,14 +270,6 @@ class MainLayout(BoxLayout):
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
-        checkOK = self.checkTags()
-
-        if(checkOK):
-            self.ids.errors.text = ""
-
-        else:
-            return
-
         reportNum = self.getReportNum(self.seriesTexts[0].splitlines())
 
         if(reportNum == False):
@@ -288,20 +288,25 @@ class MainLayout(BoxLayout):
         f.write(fileText)
         f.close()
 
-        self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
-        self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        checkOK = self.checkTags(self.seriesTexts, False)
+
+        if(checkOK):
+            self.ids.errors.text = ""
+
+            self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
+            self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def run(self):
         if(not self.saved):
             self.ids.errors.text = "ERROR:\n" + "FILE MUST BE SAVED BEFORE RUNNING"
         else:
-            checkWrittenTags = self.checkTags()
-
             for i in range(len(self.seriesTexts)):
                 checkAllExist = self.checkIfAllTags(self.seriesTexts[i], i + 1)
 
                 if(not checkAllExist):
                     return
+
+            checkWrittenTags = self.checkTags(self.seriesTexts, False)
 
             if(checkWrittenTags):
                 self.ids.errors.text = ""
@@ -670,103 +675,114 @@ class PyMac(App):
 
     def openLabInfoPop(self):
         if(self.root.currentSeries == 1):
-            pop = LabInfoPopup()
+            seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
                 self.root.ids.errors.text = ""
+                pop = LabInfoPopup()
                 pop.open()
 
     def openRestraintPop(self):
         if(self.root.currentSeries == 1):
-            pop = RestraintPopup()
+            seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
             
             if(checkOK):
                 self.root.ids.errors.text = ""
+                pop = RestraintPopup()
                 pop.open()
 
     def openDatePop(self):
-        pop = DatePopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
         
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = DatePopup()
             pop.open()
 
     def openBalancePop(self):
-        pop = BalancePopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
         
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = BalancePopup()
             pop.open()
 
     def openDesignPop(self):
-        pop = DesignPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
         
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = DesignPopup()
             pop.open()
 
     def openWeightsPop(self):
-        pop = WeightsPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = WeightsPopup()
             pop.open()
 
     def openVectorsPop(self):
-        pop = VectorsPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = VectorsPopup()
             pop.open()
 
     def openStatisticsPop(self):
-        pop = StatisticsPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = StatisticsPopup()
             pop.open()
 
     def openSwPop(self):
-        pop = SwPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = SwPopup()
             pop.open()
 
     def openMeasurementsPop(self):
-        pop = MeasurementsPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = MeasurementsPopup()
             pop.open()
 
     def openGravityPop(self):
-        pop = GravityPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = GravityPopup()
             pop.open()
 
 if __name__ == "__main__":
