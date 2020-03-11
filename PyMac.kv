@@ -381,7 +381,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_release: app.openDesignPop()
+                        on_release: app.openDesignPop(); root.parent.children[0].ids.dropDownn.dismiss()
 
                     Button:
                         id: weightsButton
