@@ -229,6 +229,112 @@ class MainLayout(BoxLayout):
 
         return False
 
+    def renderButtons(self, seriesText):
+        #Make dictionary of tags, linked to True/False if they exist in userText.text
+        tags = {"#": False, \
+            "<Report-Number>": False, \
+            "<Restraint-ID>": False, \
+            "<Unc-Restraint>": False, \
+            "<Random-Error>": False, \
+            "@SERIES": False, \
+            "<Date>": False, \
+            "<Technician-ID>": False, \
+            "<Check-Standard-ID>": False, \
+            "<Balance-ID>": False, \
+            "<Direct-Readings>": False, \
+            "<Direct-Reading-SF>": False, \
+            "<Design-ID>": False, \
+            "<Design>": False, \
+            "<Position>": False, \
+            "<Pounds>": False, \
+            "<Restraint>": False, \
+            "<Check-Standard>": False, \
+            "<Linear-Combo>": False, \
+            "<Pass-Down>": False, \
+            "<Sigma-t>": False, \
+            "<Sigma-w>": False, \
+            "<sw-Mass>": False, \
+            "<sw-Density>": False, \
+            "<sw-CCE>": False, \
+            "<Balance-Reading>": False, \
+            "<Environmentals>": False, \
+            "<Env-Corrections>": False, \
+            "<Gravity-Grad>": False, \
+            "<COM-Diff>": False}
+
+        for line in seriesText.splitlines():
+            if(line.strip() != "" and line.strip != "\n"):
+                try:
+                    tags[line.strip().split()[0]] = True
+                except KeyError:
+                    pass
+
+        #Lab Info Button
+        if(self.currentSeries == 1 and tags["<Report-Number>"] == False):
+            self.ids.labInfoButton.background_color = (0.08, 0.55, 1, 1)
+        else:
+            self.ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        #Restraint Button
+        if(self.currentSeries == 1 and (tags["<Restraint-ID>"] == False or tags["<Unc-Restraint>"] == False or tags["<Random-Error>"] == False)):
+            self.ids.restraintButton.background_color = (0.08, 0.55, 1, 1)
+        else:
+            self.ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        #Date Button
+        if(tags["<Date>"] and tags["<Technician-ID>"] and tags["<Check-Standard-ID>"]):
+            self.ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.dateButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Balance Button
+        if(tags["<Balance-ID>"] and tags["<Direct-Readings>"] and tags["<Direct-Reading-SF>"]):
+            self.ids.balanceButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.balanceButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Gravity Button
+        if(tags["<COM-Diff>"] and tags["<Gravity-Grad>"]):
+            self.ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.gravityButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Statistics Buttons
+        if(tags["<Sigma-t>"] and tags["<Sigma-w>"]):
+            self.ids.statisticsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.statisticsButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Design Button
+        if(tags["<Design>"] and tags["<Design-ID>"]):
+            self.ids.designButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.designButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Weights Button
+        if(tags["<Position>"] and tags["<Pounds>"]):
+            self.ids.weightsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.weightsButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Positions Button
+        if(tags["<Restraint>"] and tags["<Check-Standard>"] and tags["<Linear-Combo>"] and tags["<Pass-Down>"]):
+            self.ids.positionVectorsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.positionVectorsButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Sensitivity Weight Button
+        if(tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]):
+            self.ids.swButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.swButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Measurements Button
+        if(tags["<Balance-Reading>"] and tags["<Environmentals>"] and tags["<Env-Corrections>"]):
+            self.ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.measurementsButton.background_color = (0.08, 0.55, 1, 1)
+
     def addSeries(self):
         if(self.numberOfSeries == 14):
             return
@@ -264,7 +370,7 @@ class MainLayout(BoxLayout):
             button.background_color = (0.906, 0.918, 0.926, 1)
             button.text = "[color=#000000]" + button.text[15:]
 
-            #Update TextInput text, save current text in self.seriesTexts[i]
+            self.renderButtons(self.ids.userText.text)
 
     def save(self):
         #Save current working series Text into self.seriesTexts array
@@ -292,6 +398,7 @@ class MainLayout(BoxLayout):
 
         if(checkOK):
             self.ids.errors.text = ""
+            self.renderButtons(self.ids.userText.text)
 
             self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
             self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)

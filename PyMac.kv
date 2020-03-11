@@ -243,7 +243,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openLabInfoPop()
+                        on_release: app.openLabInfoPop()
 
                     Button:
                         id: restraintButton
@@ -253,7 +253,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openRestraintPop()
+                        on_release: app.openRestraintPop()
 
                     Label:
                         text: ""
@@ -289,7 +289,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openDatePop()
+                        on_release: app.openDatePop()
 
                     Button:
                         id: balanceButton
@@ -299,7 +299,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openBalancePop()
+                        on_release: app.openBalancePop()
 
                     Button:
                         id: gravityButton
@@ -309,7 +309,7 @@
                         background_color: (0.368, 0.49, 0.60, 1)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openGravityPop()
+                        on_release: app.openGravityPop()
 
                 BoxLayout:
                     id: menuLabel3
@@ -338,7 +338,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openStatisticsPop()
+                        on_release: app.openStatisticsPop()
 
                     Label:
                         text: ""
@@ -381,7 +381,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openDesignPop()
+                        on_release: app.openDesignPop()
 
                     Button:
                         id: weightsButton
@@ -391,7 +391,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openWeightsPop()
+                        on_release: app.openWeightsPop()
 
                     Button:
                         id: positionVectorsButton
@@ -401,7 +401,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openVectorsPop()
+                        on_release: app.openVectorsPop()
 
                 BoxLayout:
                     id: menuLabel5
@@ -430,7 +430,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openSwPop()
+                        on_release: app.openSwPop()
 
                     Button:
                         id: measurementsButton
@@ -440,7 +440,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openMeasurementsPop()
+                        on_release: app.openMeasurementsPop()
 
                     Label:
                         text: ""
@@ -608,7 +608,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -618,7 +618,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <RestraintPopup>:
     id: restraintPop
@@ -723,7 +723,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -733,7 +733,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <DatePopup>:
     id: datePop
@@ -838,7 +838,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -848,7 +848,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <BalancePopup>:
     id: balancePop
@@ -951,7 +951,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -961,7 +961,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <DesignPopup>:
     id: designPop
@@ -1126,7 +1126,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1.7)
@@ -1136,7 +1136,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <WeightsPopup>:
     id: weightsPop
@@ -1218,7 +1218,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1228,7 +1228,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <VectorsPopup>:
     id: vectorsPop
@@ -1355,7 +1355,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1365,7 +1365,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <StatisticsPopup>:
     id: statisticsPop
@@ -1446,7 +1446,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1456,7 +1456,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <SwPopup>:
     id: swPop
@@ -1561,7 +1561,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1571,7 +1571,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <MeasurementsPopup>:
     id: measurementsPop
@@ -1676,7 +1676,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1686,7 +1686,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <GravityPopup>:
     id: gravityPop
@@ -1768,7 +1768,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1778,4 +1778,4 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
