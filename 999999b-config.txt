@@ -1,5 +1,5 @@
 #  Test file
-<Report-Number>  999999
+<Report-Number>  999999b
 
 <Restraint-ID>  24
 <Unc-Restraint>  0.022
@@ -11,10 +11,7 @@
               <Technician-ID> 19
           <Check-Standard-ID> 27
 
-<Balance-ID>  22
-<Direct-Readings>  1
-<Direct-Reading-SF>  1.0
-<Pounds> 0
+
 
 <Position> T300+200g           500          7.93452 0.000045
                    <Position> S500g               500          8.0363  0.000045      0.0192
@@ -36,32 +33,7 @@
 <Design>  0  1  0 -1
 <Design>  0  0  1 -1
 
-<Restraint> 0 1 0 1
-             <Check-Standard> 0 1 0 -1 
-               <Linear-Combo> 0 0 1 1 
-
-      <Pass-Down> 1 0 0 0
-
-                    <Sigma-w> 0.0095
-                    <Sigma-t> 0.038
-
-    <sw-Mass> 20.0245
- <sw-Density> 2.70
-     <sw-CCE> 0.000069
-
-           <Balance-Reading>  -0.5459
-           <Balance-Reading>  -0.4764
-           <Balance-Reading>  -0.4670
-           <Balance-Reading>  0.0689	
-           <Balance-Reading>  0.0782
-           <Balance-Reading>  0.0083
-           <Balance-Reading>  -0.5474	
-           <Balance-Reading>  -0.4773	
-           <Balance-Reading>  -0.4686
-           <Balance-Reading>  0.0707	
-           <Balance-Reading>  0.0777
-           <Balance-Reading>  0.0072
-
+ 
              <Environmentals> 19.782 735.921 47.664
              <Environmentals> 19.782 735.921 47.664
              <Environmentals> 19.782 735.921 47.664
@@ -80,7 +52,9 @@
 
 
 
+
 @SERIES
+
 
 
 <Date> 11 28 2019
@@ -142,7 +116,9 @@
 
                 <Env-Corrections> 0 0 0.488
 
+
 @SERIES
+
 
 
 <Date> 11 28 2019
@@ -217,7 +193,9 @@
 <Env-Corrections> 0 0 0.488
 
 
+
 @SERIES
+
 
 
 <Date> 11 28 2019
@@ -292,7 +270,9 @@
                 <Env-Corrections> 0 0 0.488
 
 
+
 @SERIES
+
 
 
 <Date> 11 28 2019
@@ -364,6 +344,7 @@
              <Environmentals> 19.585 736.75 48.6
 
                <Env-Corrections> 0 0 0.488
+
 
 
 

@@ -210,7 +210,7 @@ class MainLayout(BoxLayout):
 
     def textAdded(self):
         if(self.saved):
-            self.ids.saveButton.background_color = (1, 0.85, 0.02, 1)
+            self.ids.saveButton.background_color = (0.20, 0.68, 0.27, 0.98)
             self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
             self.saved = False
@@ -417,7 +417,7 @@ class MainLayout(BoxLayout):
                             self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
                             continue
                         else:
-                            self.ids.userText.text += "@SERIES"
+                            self.ids.userText.text += "@SERIES\n"
                     else:
                         self.ids.userText.text += line
                     
