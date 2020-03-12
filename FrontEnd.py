@@ -397,6 +397,14 @@ class MainLayout(BoxLayout):
             self.ids.errors.text = "ERROR:\n" + "SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES"
 
     def openFile(self, fileName):
+        #Remove existing series
+        self.goToSeries(self.ids["series1"], True, 1)
+        self.ids.userText.text = ""
+
+        for i in range(self.numberOfSeries):
+            self.seriesTexts[self.numberOfSeries - 1] = ""
+            self.removeLastSeries()
+
         try:
             with open(fileName, 'r') as configFile:
                 seriesNum = 0
