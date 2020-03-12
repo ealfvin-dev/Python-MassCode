@@ -297,7 +297,7 @@ class MainLayout(BoxLayout):
         if(tags["<COM-Diff>"] and tags["<Gravity-Grad>"]):
             self.ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
         else:
-            self.ids.gravityButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
 
         #Statistics Buttons
         if(tags["<Sigma-t>"] and tags["<Sigma-w>"]):
@@ -371,6 +371,52 @@ class MainLayout(BoxLayout):
             button.text = "[color=#000000]" + button.text[15:]
 
             self.renderButtons(self.ids.userText.text)
+
+    def removeLastSeries(self):
+        if(self.numberOfSeries == 1):
+            return
+
+        lastSeriesText = self.seriesTexts[len(self.seriesTexts) - 1].strip().splitlines()
+
+        #If user is currently working in the last series
+        if(self.currentSeries == self.numberOfSeries):
+            lastSeriesText = self.ids.userText.text.strip().splitlines()
+
+        if(lastSeriesText == []):
+            self.ids.errors.text = ""
+
+            if(self.currentSeries == self.numberOfSeries):
+                self.goToSeries(self.ids["series" + str(self.numberOfSeries - 1)], True, self.numberOfSeries - 1)
+
+            self.seriesTexts.pop()
+            self.ids["series" + str(self.numberOfSeries)].text = ""
+            self.ids["series" + str(self.numberOfSeries)].exists = False
+
+            self.numberOfSeries -= 1
+        else:
+            self.ids.errors.text = "ERROR:\n" + "SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES"
+
+    def openFile(self, fileName):
+        try:
+            with open(fileName, 'r') as configFile:
+                seriesNum = 0
+
+                for line in configFile:
+                    if(line.strip() == "@SERIES"):
+                        seriesNum += 1
+                        if(seriesNum > 1):
+                            self.addSeries()
+                            self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
+                            continue
+                        else:
+                            self.ids.userText.text += "@SERIES"
+                    else:
+                        self.ids.userText.text += line
+                    
+                self.goToSeries(self.ids["series1"], True, 1)
+
+        except(FileNotFoundError):
+            self.ids.errors.text = "ERROR:\n" + "FILE NOT FOUND"
 
     def save(self):
         #Save current working series Text into self.seriesTexts array
@@ -776,6 +822,9 @@ class GravityPopup(Popup):
 
         self.dismiss()
 
+class OpenFilePopup(Popup):
+    pass
+
 class PyMac(App):
     def build(self):
         return MainLayout()
@@ -891,6 +940,10 @@ class PyMac(App):
             self.root.ids.errors.text = ""
             pop = GravityPopup()
             pop.open()
+
+    def openFilePop(self):
+        pop = OpenFilePopup()
+        pop.open()
 
 if __name__ == "__main__":
     mainApp = PyMac()

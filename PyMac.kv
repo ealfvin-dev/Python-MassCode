@@ -174,6 +174,17 @@
             halign: 'center'
             on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
+        Button:
+            id: removeSeries
+            text: "[color=#FFFFFF]Remove Last\nSeries[/color]"
+            markup: True
+            background_normal: ''
+            background_color: (0.70, 0.135, 0.05, 0.90)
+            font_size: dp(self.width / (buttonSizer*1.1))
+            halign: 'center'
+            on_release: root.removeLastSeries()
+            size_hint: (1, 0.85)
+
     BoxLayout:
         id: secondaryMainBox
         orientation: 'vertical'
@@ -192,6 +203,7 @@
             Button:
                 id: openFile
                 text: "Open File"
+                on_release: app.openFilePop()
 
             Button:
                 id: newFile
@@ -1769,6 +1781,65 @@
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
                 on_release: root.submit()
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_release: root.dismiss()
+
+<OpenFilePopup>:
+    id: openFilePop
+    auto_dismiss: False
+    title: "Open File"
+    title_size: dp(18)
+    size_hint: (0.42, 0.32)
+
+    BoxLayout:
+        id: openFilePLayout
+        orientation: "vertical"
+        spacing: 35
+        padding: 20, 0, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            font_size: popUpLabelSize
+            text: "Enter Configuration File Name:"
+            markup: True
+            color: popLabelColor
+            text_size: self.size
+            halign: "left"
+            valign: "bottom"
+        
+        TextInput:
+            id: openFileText
+            size_hint: (1, 0.44)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            hint_text: "12345-config.txt"
+            font_size: popUpFontSize
+            background_normal: ''
+            orderNum: 20
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.92)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Open"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_release: root.parent.children[1].openFile(root.ids.openFileText.text); root.dismiss()
 
             Button:
                 size_hint: (1, 1)
