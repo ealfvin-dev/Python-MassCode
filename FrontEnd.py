@@ -415,6 +415,7 @@ class MainLayout(BoxLayout):
                         if(seriesNum > 1):
                             self.addSeries()
                             self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
+                            self.ids.userText.text = "@SERIES\n"
                             continue
                         else:
                             self.ids.userText.text += "@SERIES\n"
@@ -435,9 +436,6 @@ class MainLayout(BoxLayout):
         if(reportNum == False):
             self.ids.errors.text = "ERROR:\n" + "NO REPORT NUMBER PROVIDED, CANNOT SAVE"
             return
-
-        self.saved = True
-        self.ids.errors.text = ""
         
         fileText = ""
         for seriesText in self.seriesTexts:
@@ -447,6 +445,8 @@ class MainLayout(BoxLayout):
         f = open(reportNum + "-config.txt", 'w')
         f.write(fileText)
         f.close()
+
+        self.saved = True
 
         checkOK = self.checkTags(self.seriesTexts, False)
 
@@ -481,7 +481,6 @@ class OrderedText(TextInput):
         super().__init__()
 
         self.orderNum = 0
-        self.next_focus = 0
         self.write_tab = False
 
 class SeriesButton(Button):
