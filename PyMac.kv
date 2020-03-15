@@ -214,7 +214,7 @@
             Button:
                 id: validation
                 text: "Run Validation"
-                on_release: root.runTestSuite()
+                on_release: app.openValidationPop()
 
             Button:
                 id: help
@@ -1018,7 +1018,7 @@
                     size_hint: (1, 2.5)
                     font_name: "./Menlo.ttc"
                     text: ""
-                    hint_text: "1 -1 0\n1 0 -1\n0 1 -1\n       .\n        .\n         ."
+                    hint_text: "1 -1 0\n1 0 -1 . . .\n0 1 -1\n  .    .\n  .     .\n  .      ."
                     font_size: popUpFontSize
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
@@ -1593,7 +1593,7 @@
     auto_dismiss: False
     title: "Measurements"
     title_size: dp(18)
-    size_hint: (0.42, 0.8)
+    size_hint: (0.42, 0.9)
 
     BoxLayout:
         id: measurementsPLayout
@@ -1613,7 +1613,7 @@
         
         OrderedText:
             id: balanceReadingsText
-            size_hint: (1, 2.2)
+            size_hint: (1, 2.5)
             font_name: "./Menlo.ttc"
             text: ""
             hint_text: "0     -0.61 19.42 20.02\n0.00  -0.59 19.42 20.03\n0.01  -0.51 19.51 20.02\n-0.60 -0.61 19.42 19.42\n          .\n          .\n          ."
@@ -1635,7 +1635,7 @@
         
         OrderedText:
             id: envText
-            size_hint: (1, 2.2)
+            size_hint: (1, 2.5)
             font_name: "./Menlo.ttc"
             text: ""
             hint_text: "20.9 749.24 46.74\n20.8 749.26 46.81\n20.8 749.29 46.99\n20.9 749.31 47.11\n       .\n       .\n       ."
@@ -1644,6 +1644,33 @@
             background_normal: ''
             orderNum: 26
             write_tab: True
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (1, 0.95)
+            spacing: 20
+            padding: (0, -1 * root.size[1] / 10, 0, 20)
+
+            CheckBox:
+                active: True
+                halign: "left"
+                size_hint: (0.032, 0.15)
+
+                canvas.before:
+                    Color:
+                        rgba: 0.7, 0.7, 0.7, 1
+                    Line:
+                        width: 1.5
+                        rectangle: self.x, self.y, self.size[0], self.size[1]
+
+            Label:
+                text: "Line-by-Line Environmentals"
+                size_hint: (1, 0.15)
+                markup: True
+                color: popLabelColor
+                text_size: self.size
+                font_size: popUpLabelSize
+                valign: 'center'
 
         Label:
             text: "Environmental Corrections (" + chr(730) + "C, %, mmHg):"
@@ -1669,7 +1696,7 @@
 
         Label:
             id: measurementsPopError
-            size_hint: (1, 0.6)
+            size_hint: (1, 0.7)
             text: ""
             markup: True
             color: (0.95, 0.05, 0.09, 1)
@@ -1827,7 +1854,6 @@
             hint_text: "12345-config.txt"
             font_size: popUpFontSize
             background_normal: ''
-            orderNum: 20
 
         BoxLayout:
             orientation: "horizontal"
@@ -1853,3 +1879,62 @@
                 halign: 'center'
                 markup: True
                 on_release: root.dismiss()
+
+<ValidationPopup>:
+    id: validationPop
+    auto_dismiss: False
+    title: "Unit Testing"
+    title_size: dp(18)
+    size_hint: (0.45, 0.75)
+
+    BoxLayout:
+        id: validationPLayout
+        orientation: "vertical"
+        spacing: 15
+        padding: 20, -1 * self.size[1]/15, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            font_size: popUpLabelSize
+            text: "Results:"
+            markup: True
+            color: popLabelColor
+            text_size: self.size
+            halign: "left"
+            valign: "bottom"
+        
+        TextInput:
+            id: validationText
+            size_hint: (1, 2.75)
+            multiline: True
+            readonly: True
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            font_size: popUpFontSize
+            background_normal: ''
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.60)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Close"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                markup: True
+                on_release: root.dismiss()
+
+            Label:
+                size_hint: (1, 0.6)
+                font_size: popUpLabelSize
+                text: ""
+                markup: True
+                color: popLabelColor
+                text_size: self.size
+                halign: "left"
+                valign: "bottom"

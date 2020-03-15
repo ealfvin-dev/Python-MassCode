@@ -18,6 +18,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
 
 import MassCode
 import runTest
@@ -432,10 +433,6 @@ class MainLayout(BoxLayout):
         except(FileNotFoundError):
             self.ids.errors.text = "ERROR:\n" + "FILE NOT FOUND"
 
-    def runTestSuite(self):
-        result = runTest.test()
-        self.ids.errors.text = result
-
     def save(self):
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
@@ -787,7 +784,7 @@ class MeasurementsPopup(Popup):
             self.ids.measurementsPopError.text = "Enter data for all fields"
             return
 
-        #Check if Num lines are the same for measurements and env data
+        #Check if Num lines are the same for measurements and environmental data
         numBalReadings = 0
         numEnvReadings = 0
 
@@ -804,7 +801,7 @@ class MeasurementsPopup(Popup):
                 numEnvReadings += 1
 
         if(numBalReadings != numEnvReadings):
-            self.ids.measurementsPopError.text = "Same number of lines required for balance & environmental readings"
+            self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
@@ -840,6 +837,15 @@ class GravityPopup(Popup):
 
 class OpenFilePopup(Popup):
     pass
+
+class ValidationPopup(Popup):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.runTestSuite()
+
+    def runTestSuite(self):
+        result = runTest.test()
+        self.ids.validationText.text = result
 
 class PyMac(App):
     def build(self):
@@ -959,6 +965,10 @@ class PyMac(App):
 
     def openFilePop(self):
         pop = OpenFilePopup()
+        pop.open()
+
+    def openValidationPop(self):
+        pop = ValidationPopup()
         pop.open()
 
 if __name__ == "__main__":
