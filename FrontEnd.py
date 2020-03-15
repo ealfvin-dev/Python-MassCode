@@ -20,6 +20,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
 import MassCode
+import runTest
 import sys
 
 def getNumChacacters(text):
@@ -413,19 +414,27 @@ class MainLayout(BoxLayout):
                     if(line.strip() == "@SERIES"):
                         seriesNum += 1
                         if(seriesNum > 1):
+                            self.ids.userText.do_backspace()
+
                             self.addSeries()
                             self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
+
                             self.ids.userText.text = "@SERIES\n"
                             continue
                         else:
                             self.ids.userText.text += "@SERIES\n"
                     else:
                         self.ids.userText.text += line
-                    
+
+                self.ids.userText.do_backspace()    
                 self.goToSeries(self.ids["series1"], True, 1)
 
         except(FileNotFoundError):
             self.ids.errors.text = "ERROR:\n" + "FILE NOT FOUND"
+
+    def runTestSuite(self):
+        result = runTest.test()
+        self.ids.errors.text = result
 
     def save(self):
         #Save current working series Text into self.seriesTexts array

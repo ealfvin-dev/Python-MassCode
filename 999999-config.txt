@@ -16,7 +16,7 @@
 <Direct-Reading-SF>  1.0
 <Pounds> 0
 
-<Position> T300+200g           500          7.93452 0.000045
+                   <Position> T300+200g           500          7.93452 0.000045
                    <Position> S500g               500          8.0363  0.000045      0.0192
                    <Position> T500g               500          7.9601  0.000045
                    <Position> S500.g              500          8.0357  0.000045      -0.0549
@@ -40,7 +40,7 @@
              <Check-Standard> 0 1 0 -1 
                <Linear-Combo> 0 0 1 1 
 
-
+                  <Pass-Down> 1 0 0 0
 
                     <Sigma-w> 0.0095
                     <Sigma-t> 0.038
@@ -78,20 +78,9 @@
 
                 <Env-Corrections> 0 0 0.488
 
-
-
-
-
-
-
-
-
-
-
-
-
 @SERIES
-<Date> 11 28 2019
+
+	<Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
           <Check-Standard-ID> 27
@@ -150,18 +139,9 @@
 
                 <Env-Corrections> 0 0 0.488
 
-
-
-
-
-
-
-
-
-
-
 @SERIES
-<Date> 11 28 2019
+
+	<Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
           <Check-Standard-ID> 27
@@ -230,21 +210,11 @@
              <Environmentals> 19.781 736.426 46.995
              <Environmentals> 19.781 736.426 46.995
 
-<Env-Corrections> 0 0 0.488
-
-
-
-
-
-
-
-
-
-
-
+	     <Env-Corrections> 0 0 0.488
 
 @SERIES
-<Date> 11 28 2019
+
+	<Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
           <Check-Standard-ID> 27
@@ -315,19 +285,9 @@
 
                 <Env-Corrections> 0 0 0.488
 
-
-
-
-
-
-
-
-
-
-
-
 @SERIES
-<Date> 11 28 2019
+
+	<Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
           <Check-Standard-ID> 27
@@ -395,17 +355,4 @@
              <Environmentals> 19.585 736.75 48.6
              <Environmentals> 19.585 736.75 48.6
 
-               <Env-Corrections> 0 0 0.488
-
-
-
-
-
-
-
-
-
-
-
-
-
+               <Env-Corrections> 0 0 0.48
