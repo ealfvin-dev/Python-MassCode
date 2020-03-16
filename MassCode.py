@@ -24,7 +24,7 @@ class MatrixSolution:
     The vector self.nextRestraint contains the position of the weights to be passed down to the next series.
 
     The parser needs to push read data into MatrixSolution class instance variables for each series.
-    The variable self.seriesNumber holds the series number 1 = first series
+    The variable self.seriesNumber holds the series number 0 = first series
 
     Functions: calculateAirDensity, calculateDoubleSubs, solution, doStatistics
     """
@@ -39,6 +39,7 @@ class MatrixSolution:
         self.designMatrix = None
                       
         self.matrixY = None
+        self.matrixBHat = None
         self.calculatedMasses = None
 
         self.positions = 0
@@ -309,6 +310,7 @@ class MatrixSolution:
 
             print(matrixBHat, "\n")
 
+        self.matrixBHat = matrixBHat
         self.doStatistics(matrixQ)
 
     def doStatistics(self, matrixQ):
@@ -427,6 +429,8 @@ def parse(fileName):
                 seriesObjects[seriesNumber].date.append(int(splitLine[1]))
                 seriesObjects[seriesNumber].date.append(int(splitLine[2]))
                 seriesObjects[seriesNumber].date.append(int(splitLine[3]))
+
+                seriesObjects[seriesNumber].reportNumber = header["<Report-Number>"]
                 continue
 
             if splitLine[0] == "<Technician-ID>":
@@ -569,13 +573,30 @@ def parse(fileName):
 
     return seriesObjects
 
-def reduceData(data):
-    for series in data:
-        series.solution(data)
+def writeOut(seriesList):
+    f = open(seriesList[0].reportNumber + "-out.txt", 'w')
+
+    for series in seriesList:
+        if(series.seriesNumber == 0):
+            f.write(str(series.reportNumber))
+            f.write("\n")
+
+            for i in range(len(series.weightIds)):
+                f.write(series.weightIds[i] + "   " + str(series.matrixBHat[i]) + "\n")
+
+        else:
+            for i in range(len(series.weightIds)):
+                f.write(series.weightIds[i] + "   " + str(series.matrixBHat[i]) + "\n")
+
+    f.close()
 
 def run(inputFile):
     data = parse(inputFile)
-    reduceData(data)
+    
+    for series in data:
+        series.solution(data)
+
+    writeOut(data)
 
 if(__name__ == "__main__"):
     inputFile = sys.argv[1]
