@@ -152,7 +152,8 @@ class MatrixSolution:
                 positionMassOne[0, position] = 1
 
         #Initialize nominal variable to the nominal of the first weighing:
-        nominal = int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+        nominal = float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+        nominal = round(nominal, 5)
 
         for i in range(len(self.balanceReadings)):
             obsOne = self.balanceReadings[i][0]
@@ -177,16 +178,17 @@ class MatrixSolution:
                     positionMassOne[0, position] = 1
 
             #Check if current nominal is the same as last nominal, if not, add average sensitivity to sensitivities dictionary:
-            if int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))) != nominal:
+            if round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5) != nominal:
                 averageSensitivities[nominal] = mean(nominalSensitivity)
                 nominalSensitivity = []
-                nominal = int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+                nominal = round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)
                 nominalSensitivity.append(sensitivity)
             else:
                 nominalSensitivity.append(sensitivity)
 
         #Add last stored value to sensitivities dictionary:
         averageSensitivities[nominal] = mean(nominalSensitivity)
+        print(averageSensitivities)
         return averageSensitivities
 
     def calculateDoubleSubs(self, estimateMasses, averageSensitivities):
@@ -241,7 +243,7 @@ class MatrixSolution:
                 obsThree = self.balanceReadings[i][2]
                 obsFour = self.balanceReadings[i][3]
 
-                deltaLab = (((obsTwo - obsOne) + (obsThree - obsFour)) / 2) * averageSensitivities[int(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))]
+                deltaLab = (((obsTwo - obsOne) + (obsThree - obsFour)) / 2) * averageSensitivities[round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
 
             elif self.directReadings == 1:
                 deltaLab = -1 * self.balanceReadings[i][0] * averageSensitivities['balance'] / 1000
@@ -291,8 +293,8 @@ class MatrixSolution:
         if self.directReadings == 1:
             averageSensitivities = {'balance':self.directReadingsSF}
 
-            #Iterate 3 times through solution, update calculated masses matrix each time and repeat:
-            for i in range(3):
+            #Iterate 4 times through solution, update calculated masses matrix each time and repeat:
+            for i in range(4):
                 self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
                 matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
                 self.calculatedMasses = np.matrix.transpose(matrixBHat)
@@ -303,7 +305,7 @@ class MatrixSolution:
         else:
             averageSensitivities = self.calculateSensitivities()
 
-            for i in range(3):
+            for i in range(4):
                 self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
                 matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
                 self.calculatedMasses = np.matrix.transpose(matrixBHat)

@@ -64,8 +64,8 @@ class MainLayout(BoxLayout):
             "<Direct-Reading-SF>": 11, \
             "<Design-ID>": 12, \
             "<Design>": 13, \
-            "<Position>": 14, \
-            "<Pounds>": 15, \
+            "<Pounds>": 14, \
+            "<Position>": 15, \
             "<Restraint>": 16, \
             "<Check-Standard>": 17, \
             "<Linear-Combo>": 18, \
@@ -82,7 +82,7 @@ class MainLayout(BoxLayout):
             "<COM-Diff>": 29}
 
         self.requiredTags = ["@SERIES", "<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
-            "<Design-ID>", "<Design>", "<Position>", "<Pounds>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
+            "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
             "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
 
     def _update_rect(self, instance, value):
@@ -144,7 +144,7 @@ class MainLayout(BoxLayout):
                     textInput.insert_text("\n")
                     textBlockLength += 1
 
-                if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 15 or orderNum == 19 or orderNum == 21 or orderNum == 24 or orderNum == 27):
+                if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 14 or orderNum == 19 or orderNum == 21 or orderNum == 24 or orderNum == 27):
                     textInput.insert_text("\n")
 
         return cursorStart, textBlockLength
@@ -247,8 +247,8 @@ class MainLayout(BoxLayout):
             "<Direct-Reading-SF>": False, \
             "<Design-ID>": False, \
             "<Design>": False, \
-            "<Position>": False, \
             "<Pounds>": False, \
+            "<Position>": False, \
             "<Restraint>": False, \
             "<Check-Standard>": False, \
             "<Linear-Combo>": False, \
@@ -409,6 +409,7 @@ class MainLayout(BoxLayout):
 
         try:
             with open(fileName, 'r') as configFile:
+                self.ids.errors.text = ""
                 seriesNum = 0
 
                 for line in configFile:
@@ -689,8 +690,8 @@ class WeightsPopup(Popup):
             self.ids.weightsPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(weightsText, weightsOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(weightsText, weightsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
