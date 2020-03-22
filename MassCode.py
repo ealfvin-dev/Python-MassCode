@@ -30,6 +30,8 @@ class MatrixSolution:
     """
     def __init__(self):
         self.reportNumber = "000000"
+        self.notes = []
+
         self.restraintID = "0"
         self.uncRestraint = 0
         self.randomError = 0
@@ -82,6 +84,7 @@ class MatrixSolution:
         self.balanceReadings = []
         self.environmentals = []
         self.envCorrections = [] #[T, P, RH]
+        self.airDensities = []
 
         self.gravityGradient = 0
         self.heightDifferences = []
@@ -197,11 +200,13 @@ class MatrixSolution:
         The first pass through uses the nominal values as a first guess at masses. Sensitivity is passed in and the average sensitivity for each load is used. Automated balances use Direct-Readings-SF 
         as the sensitivity factor. 
         """
-        
+
         for i in range(len(self.balanceReadings)):
             airDensity = self.calculateAirDensity(\
                 self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
             
+            self.airDensities.append(airDensity)
+
             #Adjust densities for lab temperature for each observation:
             adjustedDensities = []
             for j in range(self.positions):
@@ -391,11 +396,13 @@ def parse(fileName):
     #Open configuration file, read line by line, make MatrixSolution object for each series,
     #Assign atributes to MatrixSolution object based on the series number
     with open(fileName, 'r') as configFile:
+        notes = []
+
         for line in configFile:
             lines += 1
             splitLine = line.strip().split(maxsplit=15)
 
-            if(splitLine == [] or splitLine[0] == "\n" or splitLine[0][0] == "#"):
+            if(splitLine == [] or splitLine[0] == "\n"):
                 continue
 
             if splitLine[0] == "@SERIES":
@@ -409,6 +416,11 @@ def parse(fileName):
 
                 seriesObjects[seriesNumber].positions = posObs[seriesNumber][0]
                 seriesObjects[seriesNumber].observations = posObs[seriesNumber][1]
+                continue
+
+            if(splitLine[0][0] == "#"):
+                note = " ".join(splitLine)
+                notes.append(note)
                 continue
 
             if splitLine[0] == "<Report-Number>":
@@ -433,6 +445,7 @@ def parse(fileName):
                 seriesObjects[seriesNumber].date.append(int(splitLine[3]))
 
                 seriesObjects[seriesNumber].reportNumber = header["<Report-Number>"]
+                seriesObjects[seriesNumber].notes = notes
                 continue
 
             if splitLine[0] == "<Technician-ID>":
@@ -580,15 +593,25 @@ def writeOut(seriesList):
 
     for series in seriesList:
         if(series.seriesNumber == 0):
-            f.write(str(series.reportNumber))
+            for note in series.notes:
+                f.write(note + "\n")
+
             f.write("\n")
 
-            for i in range(len(series.weightIds)):
-                f.write(series.weightIds[i] + "   " + str(series.matrixBHat[i]) + "\n")
+            f.write(str(series.reportNumber) + "\n\n")
 
-        else:
-            for i in range(len(series.weightIds)):
-                f.write(series.weightIds[i] + "   " + str(series.matrixBHat[i]) + "\n")
+        f.write("SERIES " + str(series.seriesNumber + 1) + "\n\n")
+
+        f.write("   T(" + chr(730) + "C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED)\n")
+        for i in range(len(series.environmentals)):
+            f.write(str(i + 1) + ":  " + str(round(series.environmentals[i][0] - series.envCorrections[0], 2)) + "  " + \
+                str(round(series.environmentals[i][1] - series.envCorrections[1], 2)) + "  " + str(round(series.environmentals[i][2] - series.envCorrections[2], 2)) + \
+                    "    " + str(round(series.airDensities[i], 8)) + "\n")
+
+        f.write("\n")
+
+        for i in range(len(series.weightIds)):
+            f.write(series.weightIds[i] + "   " + str(series.matrixBHat[i]) + "\n")
 
     f.close()
 
