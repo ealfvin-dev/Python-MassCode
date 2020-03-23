@@ -442,9 +442,9 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Date>":
-                seriesObjects[seriesNumber].date.append(int(splitLine[1]))
-                seriesObjects[seriesNumber].date.append(int(splitLine[2]))
-                seriesObjects[seriesNumber].date.append(int(splitLine[3]))
+                seriesObjects[seriesNumber].date.append(str(splitLine[1]))
+                seriesObjects[seriesNumber].date.append(str(splitLine[2]))
+                seriesObjects[seriesNumber].date.append(str(splitLine[3]))
 
                 seriesObjects[seriesNumber].reportNumber = header["<Report-Number>"]
                 seriesObjects[seriesNumber].notes = notes
@@ -608,17 +608,45 @@ def writeOut(seriesList):
 
         f.write("SERIES " + str(series.seriesNumber + 1) + "\n\n")
 
+        f.write("OPERATOR  " + str(series.technicianId) + "\n")
+        f.write("BALANCE ID  " + str(series.balanceId) + "\n")
+        f.write("DATE  " + " ".join(series.date) + "\n\n")
+
+        restraint = []
+        for i in range(len(series.restraintPos[0])):
+            if(series.restraintPos[0][i] == 1):
+                restraint.append(series.weightIds[i])
+
+        check = ""
+        for i in range(len(series.checkStandardPos[0])):
+            if(series.checkStandardPos[0][i] == 1):
+                check += series.weightIds[i]
+
+        for i in range(len(series.checkStandardPos[0])):
+            if(series.checkStandardPos[0][i] == -1):
+                check += "-" + series.weightIds[i]
+
+        f.write("---RESTRAINT  " + "+".join(restraint) + "\n")
+        f.write("---CHECK STANDARD  " + check + "\n\n")
+
         f.write("        T(" + chr(730) + "C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)\n")
         table = []
         for i in range(len(series.environmentals)):
             line = []
             line.append(str(i + 1) + ": ")
-            line.append(float(series.environmentals[i][0] - series.envCorrections[0]))
-            line.append(float(series.environmentals[i][1] - series.envCorrections[1]))
-            line.append(float(series.environmentals[i][2] - series.envCorrections[2]))
+            line.append(series.environmentals[i][0] - series.envCorrections[0])
+            line.append(series.environmentals[i][1] - series.envCorrections[1])
+            line.append(series.environmentals[i][2] - series.envCorrections[2])
 
             line.append(float(series.airDensities[i]))
             table.append(line)
+
+        transposed = []
+        for i in range(3):
+            transposed.append([row[i] for row in series.environmentals])
+
+        table.append(["AVE: ", mean(transposed[0]) - series.envCorrections[0], mean(transposed[1]) - series.envCorrections[1], mean(transposed[2]) - series.envCorrections[2], \
+            mean(series.airDensities)])
 
         table.append(["CORR: ", series.envCorrections[0], series.envCorrections[1], series.envCorrections[2]])
 
@@ -651,11 +679,12 @@ def writeOut(seriesList):
                 line.append(float(series.ogNominals[0][i]))
 
             line.append(series.weightDensities[i])
+            line.append(series.weightCCEs[i])
             line.append(float(series.matrixBHat[i][0]))
             
             table.append(line)
 
-        f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL", "DENSITY (g/cm)", "TRUE MASS (g)"], floatfmt=("", "", ".5f", ".8f"), colalign=("left", "center", "center", "left")) + "\n\n")
+        f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL", "DENSITY (g/cm)", "CCE (/" + chr(730) + "C)", "TRUE MASS (g)"], floatfmt=("", "", ".5f", ".7f", ".8f"), colalign=("left", "center", "center", "center", "decimal")) + "\n\n")
 
     f.close()
 
