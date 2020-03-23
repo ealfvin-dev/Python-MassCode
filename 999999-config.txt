@@ -176,8 +176,8 @@
 
      <Pass-Down> 0 1 0 0
 
-                    <Sigma-w> 0.0095
-                    <Sigma-t> 0.038
+                    <Sigma-t> 0.0095
+					<Sigma-w> 0.0095
 
     <sw-Mass> 20.0245
  <sw-Density> 2.70

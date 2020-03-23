@@ -17,6 +17,7 @@ import numpy as np
 import scipy.stats
 from statistics import mean, stdev
 from math import sqrt, exp
+from tabulate import tabulate
 
 class MatrixSolution:
     """
@@ -54,6 +55,7 @@ class MatrixSolution:
         #Holders for data for weights in the series:
         self.weightIds = []
         self.weightNominals = None
+        self.ogNominals = None
         self.weightDensities = []
         self.weightCCEs = []
         self.referenceValues = None
@@ -486,11 +488,15 @@ def parse(fileName):
                 #Make weight nominals array and set calculatedMasses to nominals for first-pass estimates. Initialize matrixY:
                 if positionRow == 0:
                     seriesObjects[seriesNumber].weightNominals = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
+                    seriesObjects[seriesNumber].ogNominals = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
+
                     seriesObjects[seriesNumber].calculatedMasses = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
                     seriesObjects[seriesNumber].matrixY = np.zeros(shape=(seriesObjects[seriesNumber].observations, 1))
                     seriesObjects[seriesNumber].referenceValues = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
 
                 seriesObjects[seriesNumber].weightNominals[0, positionRow] = float(splitLine[2]) * nominalsInPounds
+                seriesObjects[seriesNumber].ogNominals[0, positionRow] = float(splitLine[2])
+
                 seriesObjects[seriesNumber].calculatedMasses[0, positionRow] = float(splitLine[2]) * nominalsInPounds
 
                 seriesObjects[seriesNumber].weightDensities.append(float(splitLine[3]))
@@ -602,16 +608,54 @@ def writeOut(seriesList):
 
         f.write("SERIES " + str(series.seriesNumber + 1) + "\n\n")
 
-        f.write("   T(" + chr(730) + "C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED)\n")
+        f.write("        T(" + chr(730) + "C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)\n")
+        table = []
         for i in range(len(series.environmentals)):
-            f.write(str(i + 1) + ":  " + str(round(series.environmentals[i][0] - series.envCorrections[0], 2)) + "  " + \
-                str(round(series.environmentals[i][1] - series.envCorrections[1], 2)) + "  " + str(round(series.environmentals[i][2] - series.envCorrections[2], 2)) + \
-                    "    " + str(round(series.airDensities[i], 8)) + "\n")
+            line = []
+            line.append(str(i + 1) + ": ")
+            line.append(float(series.environmentals[i][0] - series.envCorrections[0]))
+            line.append(float(series.environmentals[i][1] - series.envCorrections[1]))
+            line.append(float(series.environmentals[i][2] - series.envCorrections[2]))
 
-        f.write("\n")
+            line.append(float(series.airDensities[i]))
+            table.append(line)
 
+        table.append(["CORR: ", series.envCorrections[0], series.envCorrections[1], series.envCorrections[2]])
+
+        f.write(tabulate(table, tablefmt="plain", floatfmt=("", ".2f", ".2f", ".2f", ".8f")) + "\n\n")
+
+        f.write("   BALANCE OBSERVATIONS\n")
+        table = []
+        for i in range(len(series.balanceReadings)):
+            line = []
+            line.append(str(i + 1) + ": ")
+            line.append(str(series.balanceReadings[i][0]))
+            try:
+                line.append(str(series.balanceReadings[i][1]))
+                line.append(str(series.balanceReadings[i][2]))
+                line.append(str(series.balanceReadings[i][3]))
+            except IndexError:
+                pass
+
+            table.append(line)
+
+        f.write(tabulate(table, tablefmt="plain") + "\n\n")
+
+        table = []
         for i in range(len(series.weightIds)):
-            f.write(series.weightIds[i] + "   " + str(series.matrixBHat[i]) + "\n")
+            line = []
+            line.append(series.weightIds[i])
+            if(int(series.ogNominals[0][i]) == float(series.ogNominals[0][i])):
+                line.append(int(series.ogNominals[0][i]))
+            else:
+                line.append(float(series.ogNominals[0][i]))
+
+            line.append(series.weightDensities[i])
+            line.append(float(series.matrixBHat[i][0]))
+            
+            table.append(line)
+
+        f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL", "DENSITY (g/cm)", "TRUE MASS (g)"], floatfmt=("", "", ".5f", ".8f"), colalign=("left", "center", "center", "left")) + "\n\n")
 
     f.close()
 
