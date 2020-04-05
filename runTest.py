@@ -1,4 +1,4 @@
-import MassCode
+import RunFile
 import sys
 
 def test():

@@ -20,8 +20,8 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.checkbox import CheckBox
 
-import MassCode
-import runTest
+import RunFile
+import RunTest
 import sys
 
 def getNumChacacters(text):
@@ -479,7 +479,7 @@ class MainLayout(BoxLayout):
             if(checkWrittenTags):
                 self.ids.errors.text = ""
                 try:
-                    MassCode.run(self.reportNum + "-config.txt")
+                    RunFile.run(self.reportNum + "-config.txt")
                 except:
                     self.ids.errors.text = "ERROR:\n" + str(sys.exc_info())
 
@@ -845,7 +845,7 @@ class ValidationPopup(Popup):
         self.runTestSuite()
 
     def runTestSuite(self):
-        result = runTest.test()
+        result = RunTest.test()
         self.ids.validationText.text = result
 
 class PyMac(App):
