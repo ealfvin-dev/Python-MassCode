@@ -1,4 +1,40 @@
+# Test file #1
+# 3000 lb 3-1 validation file
+# PyMac Input
+
 Test1
-A3000lb   [1360786.232]
-B3000lb   [1360803.5853732]
-C3000lb   [1360775.19231811]
+
+SERIES 1
+
+OPERATOR  019
+BALANCE ID  11
+DATE  03 16 2020
+
+---RESTRAINT  A3000lb
+---CHECK STANDARD  B3000lb
+
+        T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)
+1:     20.51  729.60  46.75  0.00114929
+2:     20.51  729.60  46.75  0.00114929
+3:     20.51  729.60  46.75  0.00114929
+AVE:   20.51  729.60  46.75  0.00114929
+CORR:   0.04    0.00  -0.25
+
+BALANCE OBSERVATIONS
+1:   0.5   11    514.5  509
+2:  13     -1.5  500.5  505.5
+3:   1    -38    468.5  498
+
+SENSITIVITIES
+        LOAD        OBS SENSITIVITY    AVE SENSITIVITY
+         (g)           (mg/DIV)           (mg/DIV)
+1:  1360777.11000      997.86758          987.42466
+2:  1360777.11000      986.54496          987.42466
+3:  1360777.11000      977.86144          987.42466
+
+WEIGHT ID     NOMINAL    DENSITY (g/cm)    CCE (/˚C)      TRUE MASS (g)
+-----------  ---------  ----------------  -----------  ----------------
+A3000lb        3000         7.23200        0.0000370   1360786.23200000
+B3000lb        3000         7.10000        0.0000350   1360803.58537320
+C3000lb        3000         7.10000        0.0000350   1360775.19231811
+

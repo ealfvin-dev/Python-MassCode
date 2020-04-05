@@ -88,6 +88,10 @@ class MatrixSolution:
         self.envCorrections = [] #[T, P, RH]
         self.airDensities = []
 
+        self.sensitivities = []
+        self.loads = []
+        self.aveSensitivities = None
+
         self.gravityGradient = 0
         self.heightDifferences = []
 
@@ -148,17 +152,8 @@ class MatrixSolution:
         averageSensitivities = {}
         nominalSensitivity = []
 
-        firstDesignLine = self.designMatrix[0:1]
-
-        #Initialize positionMassOne vector to position of first line of design:
-        positionMassOne = np.zeros(shape=(1, self.positions))
-        for position in range(np.shape(firstDesignLine)[1]):
-            if firstDesignLine[0, position] == 1:
-                positionMassOne[0, position] = 1
-
-        #Initialize nominal variable to the nominal of the first weighing:
-        nominal = float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
-        nominal = round(nominal, 5)
+        #Initialize load to nominal of the first weighing:
+        load = self.loads[0]
 
         for i in range(len(self.balanceReadings)):
             obsOne = self.balanceReadings[i][0]
@@ -172,29 +167,42 @@ class MatrixSolution:
                 self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
 
             swDrift = ((obsFour - obsOne) - (obsThree - obsTwo)) / 2
+
             sensitivity = (self.swMass / 1000) * (1 - airDensity / swDensityAdjusted) / ((obsThree - obsTwo) - swDrift)
+            self.sensitivities.append(sensitivity)
 
-            designLine = self.designMatrix[i:i+1]
-            positionMassOne = np.zeros(shape=(1, self.positions))
+            #Check if current load is the same as last. If not, add average sensitivity to sensitivities dictionary:
+            if(self.loads[i] != load):
+                averageSensitivities[load] = mean(nominalSensitivity)
 
-            #Set position of massOne for the given line of the design to figure out the nominal we're working at:
-            for position in range(np.shape(designLine)[1]):
-                if designLine[0, position] == 1:
-                    positionMassOne[0, position] = 1
-
-            #Check if current nominal is the same as last nominal, if not, add average sensitivity to sensitivities dictionary:
-            if round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5) != nominal:
-                averageSensitivities[nominal] = mean(nominalSensitivity)
                 nominalSensitivity = []
-                nominal = round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)
+                load = self.loads[i]
+
                 nominalSensitivity.append(sensitivity)
             else:
                 nominalSensitivity.append(sensitivity)
 
         #Add last stored value to sensitivities dictionary:
-        averageSensitivities[nominal] = mean(nominalSensitivity)
-        print(averageSensitivities)
+        averageSensitivities[load] = mean(nominalSensitivity)
+
+        self.aveSensitivities = averageSensitivities
+        
         return averageSensitivities
+
+    def calculateLoads(self):
+        #Builds a list of working loads for each observation line in the design
+        for line in self.designMatrix:
+            positionMassOne = np.copy(line)
+            for i in range(len(line)):
+                if(line[i] == 1):
+                    positionMassOne[i] = 1
+                else:
+                    positionMassOne[i] = 0
+
+            nominal = float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+            nominal = round(nominal, 5)
+
+            self.loads.append(nominal)
 
     def calculateDoubleSubs(self, estimateMasses, averageSensitivities):
         """
@@ -295,29 +303,23 @@ class MatrixSolution:
             #Pull restraint from last series:
             rStar = np.matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, np.matrix.transpose(seriesObjects[self.seriesNumber - 1].calculatedMasses))
 
-        #If direct readings entered (a values), set sesitivity to Direct-Readings-SF, put this in averageSensitivities dictionary and pass to calculateDoubleSubs:
+        self.calculateLoads()
 
+        #If direct readings entered (a values), set sesitivity to Direct-Readings-SF, put this in averageSensitivities dictionary and pass to calculateDoubleSubs:
         if self.directReadings == 1:
             averageSensitivities = {'balance':self.directReadingsSF}
-
-            #Iterate 4 times through solution, update calculated masses matrix each time and repeat:
-            for i in range(4):
-                self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
-                matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
-                self.calculatedMasses = np.matrix.transpose(matrixBHat)
-
-            print(matrixBHat, "\n")
-            
+        
         #If doing double subs:
         else:
             averageSensitivities = self.calculateSensitivities()
 
-            for i in range(4):
-                self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
-                matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
-                self.calculatedMasses = np.matrix.transpose(matrixBHat)
+        #Iterate 4 times through solution, update calculated masses matrix each time and repeat:
+        for i in range(4):
+            self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
+            matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
+            self.calculatedMasses = np.matrix.transpose(matrixBHat)
 
-            print(matrixBHat, "\n")
+        print(matrixBHat, "\n")
 
         self.matrixBHat = matrixBHat
         self.doStatistics(matrixQ)
@@ -652,7 +654,7 @@ def writeOut(seriesList):
 
         f.write(tabulate(table, tablefmt="plain", floatfmt=("", ".2f", ".2f", ".2f", ".8f")) + "\n\n")
 
-        f.write("   BALANCE OBSERVATIONS\n")
+        f.write("BALANCE OBSERVATIONS\n")
         table = []
         for i in range(len(series.balanceReadings)):
             line = []
@@ -668,6 +670,21 @@ def writeOut(seriesList):
             table.append(line)
 
         f.write(tabulate(table, tablefmt="plain") + "\n\n")
+
+        f.write("SENSITIVITIES\n")
+        table = []
+        for i in range(len(series.balanceReadings)):
+            line = []
+            load = series.loads[i]
+
+            line.append(str(i + 1) + ": ")
+            line.append(load)
+            line.append(float(series.sensitivities[i]*1000))
+            line.append(float(series.aveSensitivities[load]*1000))
+
+            table.append(line)
+
+        f.write(tabulate(table, headers=["", "LOAD\n(g)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"], floatfmt=("", ".5f", ".5f", ".5f"), tablefmt="plain", colalign=("left", "center", "center", "center")) + "\n\n")
 
         table = []
         for i in range(len(series.weightIds)):
