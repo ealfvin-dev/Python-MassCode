@@ -135,9 +135,13 @@ class MainLayout(BoxLayout):
                 textBlockLength += 1
 
             else:
-                newLine = self.getTag(orderNum) + "  " + line
-                textInput.insert_text(newLine)
+                if(orderNum != 0 and orderNum != 5):
+                    newLine = " " * (19 - len(self.getTag(orderNum)))
+                else:
+                    newLine = ""
 
+                newLine += self.getTag(orderNum) + "  " + line
+                textInput.insert_text(newLine)
                 textBlockLength += len(newLine)
 
                 if(len(text.splitlines()) > 1):

@@ -1,8 +1,7 @@
-
-Minnesota Weights & Measures                                     PAGE  2
- 14305 Southcross Drive #150                                      SERIES 1
- Burnsville, MN 55306                                              4/ 3/20
- TEST NUMBER  P1.-P1..kg-PostCal
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  2
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       4/ 3/20
+ TEST NUMBER  Test3-1kg         
 
 
  BALANCE     3
@@ -13,46 +12,45 @@ Minnesota Weights & Measures                                     PAGE  2
 
  CALIBRATION DESIGN  112
  RESTRAINT VECTOR     0    1    0    1
- MASS CORRECTION OF RESTRAINT                                      19.68600 MG
- VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  19.80              250.23168 CM3
+ MASS CORRECTION OF RESTRAINT                                      10.31400 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  19.80              250.23050 CM3
  TYPE B UNCERTAINTY IN THE RESTRAINT                                0.03400 MG
  TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00000 MG
 
 
  CHECK STANDARD USED    54
  CHECK STANDARD VECTOR     0   -1    0    1
- ACCEPTED MASS CORRECTION OF CHECK STANDARD       2.39000 MG
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       2.39200 MG
  REPORT VECTOR     1    1    1    1
 
 
  TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
  CORRECTED TEMPERATURE IN DEGREES C         19.80        19.80        19.80
- ** CORRECTED PRESSURE IN PASCALS        98347.       98347.       98347.
- CORRECTED HUMIDITY IN PERCENT              46.67        46.67        46.67
- COMPUTED AIR DENSITY IN MG/CM3              1.1651       1.1651       1.1651
+ ** CORRECTED PRESSURE IN PASCALS        98361.       98361.       98361.
+ CORRECTED HUMIDITY IN PERCENT              46.85        46.85        46.85
+ COMPUTED AIR DENSITY IN MG/CM3              1.1653       1.1653       1.1653
  TEMPERATURE CORRECTION                      0.00         0.00
- ** PRESSURE CORRECTION IN PASCALS           0.           0.
- HUMIDITY CORRECTION                        -0.29        -0.29
+ ** PRESSURE CORRECTION IN PASCALS         -13.         -13.
+ HUMIDITY CORRECTION                        -0.11        -0.11
  OBSERVED TEMPERATURE IN DEGREES C          19.80        19.80
- ** OBSERVED PRESSURE IN PASCALS         98347.       98347.
+ ** OBSERVED PRESSURE IN PASCALS         98374.       98374.
  OBSERVED HUMIDITY IN PERCENT               46.96        46.96
 
 
     WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
         TESTED       VALUE G    G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
 
- T1::kg                1000.0000    7.9436      .000045
- P1..kg                1000.0000    7.9926      .000045         8.64800
- T1:.kg                1000.0000    7.9435      .000045
- P1.kg                 1000.0000    7.9926      .000045        11.03800
+ A1kg                  1000.0000    7.9436      .000045
+ B1kg                  1000.0000    7.9926      .000045         3.96100
+ C1kg                  1000.0000    7.9435      .000045
+ D1kg                  1000.0000    7.9926      .000045         6.35300
 
 
  ** 101325 PASCALS = 760 TORR
-
-Minnesota Weights & Measures                                     PAGE  3
- 14305 Southcross Drive #150                                      SERIES 1
- Burnsville, MN 55306                                              4/ 3/20
- TEST NUMBER  P1.-P1..kg-PostCal
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  3
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       4/ 3/20
+ TEST NUMBER  Test3-1kg         
 
 
  BALANCE     3
@@ -92,11 +90,10 @@ Minnesota Weights & Measures                                     PAGE  3
  A 10        6.7592
  A 11       -2.3887
  A 12       -9.1477      40.8523
-
-Minnesota Weights & Measures                                     PAGE  4
- 14305 Southcross Drive #150                                      SERIES 1
- Burnsville, MN 55306                                              4/ 3/20
- TEST NUMBER  P1.-P1..kg-PostCal
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  4
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       4/ 3/20
+ TEST NUMBER  Test3-1kg         
 
 
  BALANCE     3
@@ -120,15 +117,15 @@ Minnesota Weights & Measures                                     PAGE  4
               (MG)        (MG)        (MG/DIV)
 
  A  1       -6.75700     -0.00021      1.00000
- A  2        0.00180      0.00025
+ A  2        0.00180      0.00026
  A  3       -9.14480      0.00046
- A  4        6.75720     -0.00114
+ A  4        6.75720     -0.00113
  A  5       -2.38880     -0.00033
  A  6       -9.14650      0.00031
  A  7       -6.75740     -0.00061
- A  8        0.00100     -0.00055
+ A  8        0.00100     -0.00054
  A  9       -9.14460      0.00066
- A 10        6.75920      0.00086
+ A 10        6.75920      0.00087
  A 11       -2.38870     -0.00023
  A 12       -9.14770     -0.00089      1.00000
 
@@ -137,18 +134,17 @@ Minnesota Weights & Measures                                     PAGE  4
      ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
       (G)            (MG)       (CM3)         (MG)       (MG)       (MG)
 
-    1000.0000      2.79014    125.88673    0.01700    0.00251    0.03437
-    1000.0000      8.64859    125.11569    0.01700    0.00145    0.03412
-    1000.0000      2.79044    125.88831    0.01700    0.00251    0.03437
-    1000.0000     11.03741    125.11599    0.01700    0.00145    0.03412
+    1000.0000     -1.89575    125.88613    0.01700    0.00251    0.03437
+    1000.0000      3.96259    125.11510    0.01700    0.00145    0.03412
+    1000.0000     -1.89544    125.88772    0.01700    0.00251    0.03437
+    1000.0000      6.35141    125.11540    0.01700    0.00145    0.03412
 
  TEMPERATURE T= 19.80  C
 
-
-Minnesota Weights & Measures                                     PAGE  5
- 14305 Southcross Drive #150                                      SERIES 1
- Burnsville, MN 55306                                              4/ 3/20
- TEST NUMBER  P1.-P1..kg-PostCal
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  5
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       4/ 3/20
+ TEST NUMBER  Test3-1kg         
 
 
  BALANCE     3
@@ -176,10 +172,10 @@ Minnesota Weights & Measures                                     PAGE  5
 
  CHECK STANDARD VECTOR     0   -1    0    1
  CHECK STANDARD USED    54
- ACCEPTED MASS CORRECTION OF CHECK STANDARD       2.39000 MG
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       2.39200 MG
  OBSERVED CORRECTION OF CHECK STANDARD            2.38882 MG
  STANDARD DEVIATION OF THE OBSERVED CORRECTION    0.00290 MG
- T VALUE   -0.41
+ T VALUE   -1.10
 
 
 
@@ -190,28 +186,24 @@ Minnesota Weights & Measures                                     PAGE  5
 
  TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
  CORRECTED TEMPERATURE IN DEGREES C         19.80        19.80        19.80
- ** CORRECTED PRESSURE IN PASCALS        98347.       98347.       98347.
- CORRECTED HUMIDITY IN PERCENT              46.67        46.67        46.67
- COMPUTED AIR DENSITY IN MG/CM3              1.1651       1.1651       1.1651
+ ** CORRECTED PRESSURE IN PASCALS        98361.       98361.       98361.
+ CORRECTED HUMIDITY IN PERCENT              46.85        46.85        46.85
+ COMPUTED AIR DENSITY IN MG/CM3              1.1653       1.1653       1.1653
  TEMPERATURE CORRECTION                      0.00         0.00
- ** PRESSURE CORRECTION IN PASCALS           0.           0.
- HUMIDITY CORRECTION                        -0.29        -0.29
+ ** PRESSURE CORRECTION IN PASCALS         -13.         -13.
+ HUMIDITY CORRECTION                        -0.11        -0.11
  OBSERVED TEMPERATURE IN DEGREES C          19.80        19.80
- ** OBSERVED PRESSURE IN PASCALS         98347.       98347.
+ ** OBSERVED PRESSURE IN PASCALS         98374.       98374.
  OBSERVED HUMIDITY IN PERCENT               46.96        46.96
 
 
 
 
  ** 101325 PASCALS = 760 TORR
-
-
-
-
-Minnesota Weights & Measures                                     PAGE  6
- 14305 Southcross Drive #150                                       4/ 3/20
- Burnsville, MN 55306                                             
- TEST NUMBER  P1.-P1..kg-PostCal
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  6
+ MassCode 4 Input                                                  4/ 3/20
+ Erik Alfvin                                                      
+ TEST NUMBER  Test3-1kg         
 
 
 
@@ -222,10 +214,10 @@ Minnesota Weights & Measures                                     PAGE  6
                         MASS        UNCERTAINTY  VOL AT 20  COEF OF EXP
        ITEM              (G)             (G)      (CM3)
 
-  P1.kg             1000.01103741    0.00003412  125.11711 0.000045
-  P1..kg            1000.00864859    0.00003412  125.11681 0.000045
-  T1:.kg            1000.00279044    0.00003437  125.88944 0.000045
-  T1::kg            1000.00279014    0.00003437  125.88786 0.000045
+  D1kg              1000.00635141    0.00003412  125.11652 0.000045
+  B1kg              1000.00396259    0.00003412  125.11622 0.000045
+  C1kg               999.99810456    0.00003437  125.88890 0.000045
+  A1kg               999.99810425    0.00003437  125.88730 0.000045
 
  SOFTWARE VERSION 08/15/2013
 
@@ -234,16 +226,10 @@ Minnesota Weights & Measures                                     PAGE  6
 NOTE 1297 IMPLEMENTED JANUARY 1, 1994,  SEE REFERENCE NO. 14.
 THE EXPANDED UNCERTAINTY IS 2 TIMES THE ROOT SUM SQUARE OF
 THE TYPE A AND TYPE B UNCERTAINTIES.
-
-
-
-*T1:.kg agrees with the P1.kg, P1..kg Pre NIST calibrations to 0.0245 mg and T1::kg agrees to 0.0175 mg.
-The uncertainty on the T1:.kg and T1::kg calibrations is 0.057 mg.
-
-Minnesota Weights & Measures                                     PAGE  7
- 14305 Southcross Drive #150                                       4/ 3/20
- Burnsville, MN 55306                                             
- TEST NUMBER  P1.-P1..kg-PostCal
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  7
+ MassCode 4 Input                                                  4/ 3/20
+ Erik Alfvin                                                      
+ TEST NUMBER  Test3-1kg         
 
 
 
@@ -253,10 +239,10 @@ Minnesota Weights & Measures                                     PAGE  7
 
   ITEM                      COR.A (MG)           COR.B (MG)
 
-  P1.kg                        3.90886             10.89851
-  P1..kg                       1.52006              8.50969
-  T1:.kg                      -5.26622              1.72337
-  T1::kg                      -5.26461              1.72497
+  D1kg                         -.77710              6.21251
+  B1kg                        -3.16591              3.82369
+  C1kg                        -9.95207             -2.96252
+  A1kg                        -9.95047             -2.96092
 
  SOFTWARE VERSION 08/15/2013
 
@@ -265,5 +251,4 @@ Minnesota Weights & Measures                                     PAGE  7
 
 
                         End of Report
-
-
+

@@ -98,10 +98,8 @@ class MatrixSolution:
         self.df = 0
 
     def calculateAirDensity(self, t, p, rh):
-        """
-        Calculates the air density using the CIPM 2007 air density equation
-        Picard et al.: https://iopscience.iop.org/article/10.1088/0026-1394/45/2/004
-        """
+        #Calculates the air density using the CIPM 2007 air density equation
+        #Picard et al.: https://iopscience.iop.org/article/10.1088/0026-1394/45/2/004
 
         tKelvin = t + 273.15
         humidity = rh / 100.0
@@ -138,6 +136,7 @@ class MatrixSolution:
             (pressurePa / tKelvin)**2 * (dZ + e*xv**2)
 
         airDensity = (pressurePa * ma / (z * r * tKelvin)) * (1 - xv * (1 - mv / ma)) * 10**-3
+        print(airDensity)
         return airDensity
 
         #Approximated air density:
