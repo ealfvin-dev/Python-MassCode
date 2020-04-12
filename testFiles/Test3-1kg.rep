@@ -13,7 +13,7 @@
  CALIBRATION DESIGN  112
  RESTRAINT VECTOR     0    1    0    1
  MASS CORRECTION OF RESTRAINT                                      10.31400 MG
- VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  19.80              250.23050 CM3
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  20.10              250.23390 CM3
  TYPE B UNCERTAINTY IN THE RESTRAINT                                0.03400 MG
  TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00000 MG
 
@@ -25,13 +25,13 @@
 
 
  TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
- CORRECTED TEMPERATURE IN DEGREES C         19.80        19.80        19.80
- ** CORRECTED PRESSURE IN PASCALS        98361.       98361.       98361.
- CORRECTED HUMIDITY IN PERCENT              46.85        46.85        46.85
- COMPUTED AIR DENSITY IN MG/CM3              1.1653       1.1653       1.1653
- TEMPERATURE CORRECTION                      0.00         0.00
- ** PRESSURE CORRECTION IN PASCALS         -13.         -13.
- HUMIDITY CORRECTION                        -0.11        -0.11
+ CORRECTED TEMPERATURE IN DEGREES C         20.10        20.10        20.10
+ ** CORRECTED PRESSURE IN PASCALS        98254.       98254.       98254.
+ CORRECTED HUMIDITY IN PERCENT              46.26        46.26        46.26
+ COMPUTED AIR DENSITY IN MG/CM3              1.1628       1.1628       1.1628
+ TEMPERATURE CORRECTION                      0.30         0.30
+ ** PRESSURE CORRECTION IN PASCALS        -120.        -120.
+ HUMIDITY CORRECTION                        -0.70        -0.70
  OBSERVED TEMPERATURE IN DEGREES C          19.80        19.80
  ** OBSERVED PRESSURE IN PASCALS         98374.       98374.
  OBSERVED HUMIDITY IN PERCENT               46.96        46.96
@@ -134,12 +134,12 @@
      ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
       (G)            (MG)       (CM3)         (MG)       (MG)       (MG)
 
-    1000.0000     -1.89575    125.88613    0.01700    0.00251    0.03437
-    1000.0000      3.96259    125.11510    0.01700    0.00145    0.03412
-    1000.0000     -1.89544    125.88772    0.01700    0.00251    0.03437
-    1000.0000      6.35141    125.11540    0.01700    0.00145    0.03412
+    1000.0000     -1.89767    125.88784    0.01700    0.00251    0.03437
+    1000.0000      3.96258    125.11680    0.01700    0.00145    0.03412
+    1000.0000     -1.89736    125.88943    0.01700    0.00251    0.03437
+    1000.0000      6.35140    125.11710    0.01700    0.00145    0.03412
 
- TEMPERATURE T= 19.80  C
+ TEMPERATURE T= 20.10  C
 
 Test file #3 - 1 kg 4-1 direct readings                          PAGE  5
  MassCode 4 Input                                                 SERIES 1
@@ -185,13 +185,13 @@
 
 
  TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
- CORRECTED TEMPERATURE IN DEGREES C         19.80        19.80        19.80
- ** CORRECTED PRESSURE IN PASCALS        98361.       98361.       98361.
- CORRECTED HUMIDITY IN PERCENT              46.85        46.85        46.85
- COMPUTED AIR DENSITY IN MG/CM3              1.1653       1.1653       1.1653
- TEMPERATURE CORRECTION                      0.00         0.00
- ** PRESSURE CORRECTION IN PASCALS         -13.         -13.
- HUMIDITY CORRECTION                        -0.11        -0.11
+ CORRECTED TEMPERATURE IN DEGREES C         20.10        20.10        20.10
+ ** CORRECTED PRESSURE IN PASCALS        98254.       98254.       98254.
+ CORRECTED HUMIDITY IN PERCENT              46.26        46.26        46.26
+ COMPUTED AIR DENSITY IN MG/CM3              1.1628       1.1628       1.1628
+ TEMPERATURE CORRECTION                      0.30         0.30
+ ** PRESSURE CORRECTION IN PASCALS        -120.        -120.
+ HUMIDITY CORRECTION                        -0.70        -0.70
  OBSERVED TEMPERATURE IN DEGREES C          19.80        19.80
  ** OBSERVED PRESSURE IN PASCALS         98374.       98374.
  OBSERVED HUMIDITY IN PERCENT               46.96        46.96
@@ -214,10 +214,10 @@
                         MASS        UNCERTAINTY  VOL AT 20  COEF OF EXP
        ITEM              (G)             (G)      (CM3)
 
-  D1kg              1000.00635141    0.00003412  125.11652 0.000045
-  B1kg              1000.00396259    0.00003412  125.11622 0.000045
-  C1kg               999.99810456    0.00003437  125.88890 0.000045
-  A1kg               999.99810425    0.00003437  125.88730 0.000045
+  D1kg              1000.00635140    0.00003412  125.11652 0.000045
+  B1kg              1000.00396258    0.00003412  125.11622 0.000045
+  C1kg               999.99810264    0.00003437  125.88890 0.000045
+  A1kg               999.99810233    0.00003437  125.88730 0.000045
 
  SOFTWARE VERSION 08/15/2013
 
@@ -239,10 +239,10 @@ THE TYPE A AND TYPE B UNCERTAINTIES.
 
   ITEM                      COR.A (MG)           COR.B (MG)
 
-  D1kg                         -.77710              6.21251
-  B1kg                        -3.16591              3.82369
-  C1kg                        -9.95207             -2.96252
-  A1kg                        -9.95047             -2.96092
+  D1kg                         -.77711              6.21250
+  B1kg                        -3.16592              3.82368
+  C1kg                        -9.95399             -2.96444
+  A1kg                        -9.95239             -2.96284
 
  SOFTWARE VERSION 08/15/2013
 

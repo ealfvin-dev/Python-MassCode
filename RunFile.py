@@ -355,7 +355,15 @@ def run(inputFile):
     for series in data:
         series.solution(data)
 
-    writeOut(data)
+    try:
+        writeOutFile = sys.argv[2]
+    except(IndexError):
+        writeOutFile = True
+
+    if(writeOutFile != "nofile"):
+        writeOut(data)
+
+    return data
 
 if(__name__ == "__main__"):
     inputFile = sys.argv[1]
