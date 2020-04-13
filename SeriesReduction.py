@@ -305,17 +305,20 @@ class MatrixSolution:
 
         #If direct readings entered (a values), set sesitivity to Direct-Readings-SF, put this in averageSensitivities dictionary and pass to calculateDoubleSubs:
         if self.directReadings == 1:
-            averageSensitivities = {'balance':self.directReadingsSF}
+            for i in range(self.observations):
+                self.sensitivities.append(self.directReadingsSF)
+
+            self.aveSensitivities = {'balance':self.directReadingsSF}
         
         #If doing double subs:
         else:
-            averageSensitivities = self.calculateSensitivities()
+            self.calculateSensitivities()
 
         #Iterate 4 times through solution, update calculated masses matrix each time and repeat:
         for i in range(4):
             self.airDensities = []
-            self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
-            
+            self.calculateDoubleSubs(self.calculatedMasses, self.aveSensitivities)
+
             matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
             self.calculatedMasses = np.matrix.transpose(matrixBHat)
 

@@ -40,11 +40,4 @@ class TestSuite():
         return testResults
 
     def testOne(self):
-        testResults = "RUNNING TEST 1: AIR DENSITY CALCULATION\n\n"
-        data = RunFile.run("Test3-1kg-config.txt", False)
-
-        expectedAirDen = 0.0011627570610528723
-        if(round(data[0].airDensities[0], 8) == round(expectedAirDen, 8)):
-
-
-            return str(data[0].weightIds)
+        pass

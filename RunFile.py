@@ -322,9 +322,21 @@ def writeOut(seriesList):
             load = series.loads[i]
 
             line.append(str(i + 1) + ": ")
-            line.append(load)
-            line.append(float(series.sensitivities[i]*1000))
-            line.append(float(series.aveSensitivities[load]*1000))
+
+            if(int(load) == float(load)):
+                line.append(int(load))
+            else:
+                line.append(float(load))
+
+            if(series.directReadings == 0):
+                line.append(float(series.sensitivities[i]*1000))
+            else:
+                line.append(float(series.sensitivities[i]))
+
+            try:
+                line.append(float(series.aveSensitivities[load]*1000))
+            except:
+                line.append(float(series.aveSensitivities["balance"]))
 
             table.append(line)
 
