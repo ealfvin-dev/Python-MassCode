@@ -313,7 +313,9 @@ class MatrixSolution:
 
         #Iterate 4 times through solution, update calculated masses matrix each time and repeat:
         for i in range(4):
+            self.airDensities = []
             self.calculateDoubleSubs(self.calculatedMasses, averageSensitivities)
+            
             matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
             self.calculatedMasses = np.matrix.transpose(matrixBHat)
 

@@ -349,18 +349,13 @@ def writeOut(seriesList):
 
     f.close()
 
-def run(inputFile):
+def run(inputFile, writeOutFile=True):
     data = parse(inputFile)
     
     for series in data:
         series.solution(data)
 
-    try:
-        writeOutFile = sys.argv[2]
-    except(IndexError):
-        writeOutFile = True
-
-    if(writeOutFile != "nofile"):
+    if(writeOutFile):
         writeOut(data)
 
     return data

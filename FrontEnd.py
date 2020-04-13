@@ -849,8 +849,10 @@ class ValidationPopup(Popup):
         self.runTestSuite()
 
     def runTestSuite(self):
-        result = RunTest.test()
-        self.ids.validationText.text = result
+        self.ids.validationText.text = ""
+        testSuite = RunTest.TestSuite()
+
+        self.ids.validationText.text += testSuite.testZero()
 
 class PyMac(App):
     def build(self):
