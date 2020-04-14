@@ -853,6 +853,10 @@ class ValidationPopup(Popup):
         testSuite = RunTest.TestSuite()
 
         self.ids.validationText.text += testSuite.testZero()
+        self.ids.validationText.text += testSuite.testOne()
+
+        self.ids.validationText.text += "\n***RAN " + str(testSuite.passed + testSuite.failed) + " TESTS***\n"
+        self.ids.validationText.text += str(testSuite.passed) + " PASSED\n"+str(testSuite.failed) + " FAILED\n\n"
 
 class PyMac(App):
     def build(self):
