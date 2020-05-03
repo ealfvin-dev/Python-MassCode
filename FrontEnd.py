@@ -806,7 +806,7 @@ class MeasurementsPopup(Popup):
                 numEnvReadings += 1
 
         if(numBalReadings != numEnvReadings):
-            self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required"
+            self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required, " + str(numEnvReadings) + " provided"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
@@ -844,10 +844,6 @@ class OpenFilePopup(Popup):
     pass
 
 class ValidationPopup(Popup):
-    def __init__(self, **kwargs):
-        super().__init__()
-        self.runTestSuite()
-
     def runTestSuite(self):
         self.ids.validationText.text = ""
         testSuite = RunTest.TestSuite()
@@ -855,6 +851,7 @@ class ValidationPopup(Popup):
         #Run tests from RunTest.TestSuite class
         self.ids.validationText.text += testSuite.testZero()
         self.ids.validationText.text += testSuite.testOne()
+        self.ids.validationText.text += testSuite.testTwo()
 
         self.ids.validationText.text += "\nTESTS PASSED:\n    "
         self.ids.validationText.text += "\n    ".join(testSuite.passedTests)
@@ -989,6 +986,6 @@ class PyMac(App):
         pop = ValidationPopup()
         pop.open()
 
-if __name__ == "__main__":
+if(__name__ == "__main__"):
     mainApp = PyMac()
     mainApp.run()

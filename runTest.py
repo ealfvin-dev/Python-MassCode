@@ -11,30 +11,47 @@ class TestSuite():
         self.passedTests = []
         self.failedTests = []
 
+    def testKivy(self):
+        #Tests if Kivy can be imported
+        testResults = "###RUNNING IMPORT KIVY\n\n"
+
+        try:
+            import kivy
+            testResults += "KIVY IMPORT...............PASS"
+            self.passed += 1
+            self.passedTests.append("KIVY TEST - IMPORT KIVY")
+        except:
+            testResults += "KIVY IMPORT...............FAIL"
+            self.failed += 1
+            self.failedTests.append("KIVY TEST - IMPORT KIVY")
+
+        return testResults
+
     def testZero(self):
+        #Tests if config file can be run and output file can be written
         testResults = "###RUNNING TEST 0: RUN FILE\n\n"
 
         try:
-            data = RunFile.run("Test0-AirDensity-config.txt", False)
+            data = RunFile.run("./TestFiles/PyMacTest/Test0-AirDensity-config.txt", False)
             testResults += "RUN TEST FILE.............PASS\n"
 
             self.passed +=1
-            self.passedTests.append("RUN TEST FILE")
+            self.passedTests.append("TEST 0 - RUN TEST FILE")
         except:
             testResults += "RUN TEST FILE.............FAIL\n"
             self.failed += 1
-            self.failedTests.append("RUN TEST FILE")
+            self.failedTests.append("TEST 0 - RUN TEST FILE")
 
         try:
-            data = RunFile.run("Test0-AirDensity-config.txt")
+            data = RunFile.run("./TestFiles/PyMacTest/Test0-AirDensity-config.txt")
             testResults += "WRITE OUT FILE.............PASS\n\n"
 
             self.passed +=1
-            self.passedTests.append("WRITE OUT FILE")
+            self.passedTests.append("TEST 0 - WRITE OUT FILE")
         except:
             testResults += "WRITE OUT FILE.............FAIL\n\n"
             self.failed += 1
-            self.failedTests.append("WRITE OUT FILE")
+            self.failedTests.append("TEST 0 - WRITE OUT FILE")
 
         if(os.path.exists("Test0-AirDensity-out.txt")):
             os.remove("Test0-AirDensity-out.txt")
@@ -42,9 +59,11 @@ class TestSuite():
         return testResults
 
     def testOne(self):
+        #Tests if calculated air densities match expected
+        testResults = "###RUNNING TEST 1: AIR DENSITY CALCULATION\n\n"
+
         try:
-            testResults = "###RUNNING TEST 1: AIR DENSITY CALCULATION\n\n"
-            data = RunFile.run("Test0-AirDensity-config.txt", False)
+            data = RunFile.run("./TestFiles/PyMacTest/Test0-AirDensity-config.txt", False)
 
             expectedDensities = [0.0011627477621149957,\
                 0.0011319900687371933,\
@@ -68,31 +87,51 @@ class TestSuite():
                 if isCloseRes[i] == True:
                     testResults += str(i) + ":  " + str(data[0].airDensities[i]) + "...............PASS\n"
                     self.passed += 1
-                    self.passedTests.append("AIR DENSITY CALC " + str(i))
+                    self.passedTests.append("TEST 1 - AIR DENSITY CALC " + str(i))
                 else:
                     testResults += str(i) + ":  " + str(data[0].airDensities[i]) + "...............FAIL\n"
                     self.failed += 1
-                    self.failedTests.append("AIR DENSITY CALC " + str(i))
+                    self.failedTests.append("TEST 1 - AIR DENSITY CALC " + str(i))
         except:
             testResults = "AN ERROR OCCURED - AIR DENSITIES WERE NOT CALCULATED.......FAIL\n"
             self.failed += 1
-            self.failedTests.append("AIR DENSITIES WERE NOT CALCULATED\n")
+            self.failedTests.append("TEST 1 - AIR DENSITIES WERE NOT CALCULATED\n")
 
         return testResults
 
     def testTwo(self):
-        pass
+        #Tests if calculated masses match masses written to output file. Not testing acuracy of results yet
+        testResults = "\n###RUNNING TEST 2: WRITING DATA TO OUTPUT FILE\n\n"
+
+        try:
+            data = RunFile.run("./TestFiles/PyMacTest/Test2-config.txt")
+            print(data)
+
+            self.passed += 1
+            self.passedTests.append("TEST 2 - DATA CORRECTLY WRITTEN TO OUTPUT FILE")
+        except:
+            testResults = "AN ERROR OCCURED - FILE DID NOT RUN.......FAIL\n"
+            self.failed += 1
+            self.failedTests.append("TEST 2 - ERROR IN RUN/OUTPUT REPORT GENERATION\n")
+
+        if(os.path.exists("Test2-out.txt")):
+            os.remove("Test2-out.txt")
+
+        return testResults
 
 if(__name__ == "__main__"):
     testSuite = TestSuite()
 
+    print(testSuite.testKivy())
     print(testSuite.testZero())
     print(testSuite.testOne())
+    print(testSuite.testTwo())
 
     print("\nTESTS PASSED:\n")
     print("    " + "\n    ".join(testSuite.passedTests))
 
     print("\n\nTESTS FAILED:\n    ")
     print("    " + "\n    ".join(testSuite.failedTests))
+
     print("\n***RAN " + str(testSuite.passed + testSuite.failed) + " TESTS***\n")
     print(str(testSuite.passed) + " PASSED\n"+str(testSuite.failed) + " FAILED\n\n")

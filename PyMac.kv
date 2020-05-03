@@ -1916,12 +1916,12 @@
                 markup: True
                 on_release: root.dismiss()
 
-            Label:
-                size_hint: (1, 0.6)
-                font_size: popUpLabelSize
-                text: ""
+            Button:
+                size_hint: (1, 1)
+                text: "Run Tests"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.82, 0.3, 0.9)
+                halign: 'center'
                 markup: True
-                color: popLabelColor
-                text_size: self.size
-                halign: "left"
-                valign: "bottom"
+                on_release: root.runTestSuite()
