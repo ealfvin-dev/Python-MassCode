@@ -32,7 +32,7 @@ class TestSuite():
         testResults = "###RUNNING TEST 0: RUN FILE\n\n"
 
         try:
-            data = RunFile.run("./TestFiles/PyMacTest/Test0-AirDensity-config.txt", False)
+            data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt", False)
             testResults += "RUN TEST FILE.............PASS\n"
 
             self.passed +=1
@@ -43,7 +43,7 @@ class TestSuite():
             self.failedTests.append("TEST 0 - RUN TEST FILE")
 
         try:
-            data = RunFile.run("./TestFiles/PyMacTest/Test0-AirDensity-config.txt")
+            data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt")
             testResults += "WRITE OUT FILE.............PASS\n\n"
 
             self.passed +=1
@@ -63,7 +63,7 @@ class TestSuite():
         testResults = "###RUNNING TEST 1: AIR DENSITY CALCULATION\n\n"
 
         try:
-            data = RunFile.run("./TestFiles/PyMacTest/Test0-AirDensity-config.txt", False)
+            data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt", False)
 
             expectedDensities = [0.0011627477621149957,\
                 0.0011319900687371933,\
@@ -100,15 +100,36 @@ class TestSuite():
         return testResults
 
     def testTwo(self):
-        #Tests if calculated masses match masses written to output file. Not testing acuracy of results yet
+        #Tests if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
         testResults = "\n###RUNNING TEST 2: WRITING DATA TO OUTPUT FILE\n\n"
 
         try:
-            data = RunFile.run("./TestFiles/PyMacTest/Test2-config.txt")
-            print(data)
+            data = RunFile.run("./Testing/PyMacTest/Test2-config.txt")
 
-            self.passed += 1
-            self.passedTests.append("TEST 2 - DATA CORRECTLY WRITTEN TO OUTPUT FILE")
+            outFileMasses = []
+            expectedMasses = data[0].calculatedMasses[0]
+            testResults += "EXPECTED MASSES: \n" + "\n".join(str(x) for x in expectedMasses) + "\n\n"
+
+            with open("Test2-out.txt", 'r') as outFile:
+                for line in outFile:
+                    m = line.strip().split()
+                    if(m == [] or m[0] == "\n"):
+                        continue
+
+                    if(m[0] == "W500g" or m[0] == "W300g" or m[0] == "W200g" or m[0] == "W100g" or m[0] == "P100g" or m[0] == "Wsum"):
+                        outFileMasses.append(float(m[4]))
+
+            testResults += "OUTPUT FILE MASSES: \n" + "\n".join(str(x) for x in outFileMasses) + "\n\n"
+
+            for i in range(len(expectedMasses)):
+                if(outFileMasses[i] == round(expectedMasses[i], 8)):
+                    testResults += "TEST 2 - DATA WRITING TO OUTPUT FILE AT " + str(round(data[0].ogNominals[0][i])) + " G..........PASS\n"
+                    self.passed += 1
+                    self.passedTests.append("TEST 2 - DATA WRITING TO OUTPUT FILE AT " + str(round(data[0].ogNominals[0][i])) + " G")
+                else:
+                    testResults += "TEST 2 - DATA WRITING TO OUTPUT FILE AT " + str(round(data[0].ogNominals[0][i])) + " G..........FAIL\n"
+                    self.failed += 1
+                    self.failedTests.append("TEST 2 - DATA WRITING TO OUTPUT FILE AT " + str(round(data[0].ogNominals[0][i])) + " G")
         except:
             testResults = "AN ERROR OCCURED - FILE DID NOT RUN.......FAIL\n"
             self.failed += 1
