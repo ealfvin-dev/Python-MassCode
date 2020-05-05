@@ -851,6 +851,7 @@ class ValidationPopup(Popup):
         testSuite = RunTest.TestSuite()
 
         #Run tests from RunTest.TestSuite class
+        testSuite.passTest("IMPORT KIVY")
         testSuite.testZero()
         testSuite.testOne()
         testSuite.testTwo()

@@ -33,10 +33,10 @@
 
            <Pounds>  0
 
-         <Position>  W500g          500 7.9500  0.000045
-         <Position>  W300g          300 7.9500  0.000045
-         <Position>  W200g          200 7.9500  0.000045
-         <Position>  W100g          100 7.9500  0.000045
+         <Position>  W500g          500 7.9565  0.000045
+         <Position>  W300g          300 7.9570  0.000045
+         <Position>  W200g          200 7.8477  0.000045
+         <Position>  W100g          100 8.0001  0.000045
          <Position>  P100g          100 7.9918  0.000045 0.6877
          <Position>  Wsum           100 7.9500  0.000045
 
