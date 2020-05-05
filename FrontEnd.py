@@ -22,7 +22,11 @@ from kivy.uix.checkbox import CheckBox
 
 import RunFile
 import RunTest
+
 import sys
+import threading
+
+import sqlite3
 
 def getNumChacacters(text):
     chars = 0
@@ -844,8 +848,12 @@ class OpenFilePopup(Popup):
     pass
 
 class ValidationPopup(Popup):
+    def runTestThread(self):
+        threading.Thread(target=self.runTestSuite).start()
+
     def runTestSuite(self):
         self.ids.runTestButton.background_color = (0.7, 0.7, 0.7, 1)
+        self.ids.testingMessage.text = "Running Tests..."
         self.ids.validationText.text = ""
 
         testSuite = RunTest.TestSuite()
@@ -857,6 +865,7 @@ class ValidationPopup(Popup):
         testSuite.testTwo()
 
         self.ids.validationText.text = testSuite.printSummary()
+        self.ids.testingMessage.text = ""
         self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
 
 class PyMac(App):

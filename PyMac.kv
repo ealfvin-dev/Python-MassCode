@@ -1872,7 +1872,7 @@
     auto_dismiss: False
     title: "Unit Testing"
     title_size: dp(18)
-    size_hint: (0.45, 0.75)
+    size_hint: (0.45, 0.85)
 
     BoxLayout:
         id: validationPLayout
@@ -1900,11 +1900,22 @@
             font_size: popUpFontSize
             background_normal: ''
 
+        Label:
+            id: testingMessage
+            size_hint: (1, 0.2)
+            text: ""
+            markup: True
+            color: (0.05, 0.95, 0.09, 1)
+            text_size: self.size
+            font_size: popUpLabelSize
+            halign: "left"
+            valign: "center"
+
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
             padding: (0, 35)
-            size_hint: (1, 0.60)
+            size_hint: (1, 0.50)
 
             Button:
                 size_hint: (1, 1)
@@ -1925,4 +1936,4 @@
                 background_color: (0, 0.82, 0.3, 0.9)
                 halign: 'center'
                 markup: True
-                on_release: root.runTestSuite()
+                on_release: root.runTestThread()
