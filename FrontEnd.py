@@ -845,22 +845,14 @@ class OpenFilePopup(Popup):
 
 class ValidationPopup(Popup):
     def runTestSuite(self):
-        self.ids.validationText.text = ""
         testSuite = RunTest.TestSuite()
 
         #Run tests from RunTest.TestSuite class
-        self.ids.validationText.text += testSuite.testZero()
-        self.ids.validationText.text += testSuite.testOne()
-        self.ids.validationText.text += testSuite.testTwo()
+        testSuite.testZero()
+        testSuite.testOne()
+        testSuite.testTwo()
 
-        self.ids.validationText.text += "\nTESTS PASSED:\n    "
-        self.ids.validationText.text += "\n    ".join(testSuite.passedTests)
-
-        self.ids.validationText.text += "\n\nTESTS FAILED:\n    "
-        self.ids.validationText.text += "\n    ".join(testSuite.failedTests)
-
-        self.ids.validationText.text += "\n***RAN " + str(testSuite.passed + testSuite.failed) + " TESTS***\n"
-        self.ids.validationText.text += str(testSuite.passed) + " PASSED\n"+str(testSuite.failed) + " FAILED\n\n"
+        self.ids.validationText.text = testSuite.printSummary()
 
 class PyMac(App):
     def build(self):

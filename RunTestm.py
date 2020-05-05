@@ -27,17 +27,19 @@ class TestSuite():
         self.testNum += 1
 
     def printSummary(self):
-        print("###########RUNNING TESTING SUITE###########")
-        print(self.longOutput)
+        summary = "\n############## TESTING SUITE ##############\n"
 
-        print("\nTESTS PASSED:\n")
-        print("    " + "\n    ".join(testSuite.passedTests))
+        summary += self.longOutput + "\n"
 
-        print("\n\nTESTS FAILED:\n    ")
-        print("    " + "\n    ".join(testSuite.failedTests))
+        summary += "\nTESTS PASSED:\n\n"
+        summary += "    " + "\n    ".join(self.passedTests) + "\n"
+        summary += "\n\nTESTS FAILED:\n\n"
+        summary += "    " + "\n    ".join(self.failedTests) + "\n"
 
-        print("\n***RAN " + str(testSuite.passed + testSuite.failed) + " TESTS***\n")
-        print(str(testSuite.passed) + " PASSED\n"+str(testSuite.failed) + " FAILED\n\n")
+        summary += "\n***RAN " + str(self.passed + self.failed) + " TESTS***\n\n"
+        summary += str(self.passed) + " PASSED\n"+str(self.failed) + " FAILED\n\n"
+
+        return summary
 
     def testKivy(self):
         #Tests if Kivy can be imported
@@ -144,4 +146,4 @@ if(__name__ == "__main__"):
     testSuite.testOne()
     testSuite.testTwo()
 
-    testSuite.printSummary()
+    print(testSuite.printSummary())
