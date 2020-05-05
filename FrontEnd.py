@@ -845,6 +845,9 @@ class OpenFilePopup(Popup):
 
 class ValidationPopup(Popup):
     def runTestSuite(self):
+        self.ids.runTestButton.background_color = (0.7, 0.7, 0.7, 1)
+        self.ids.validationText.text = ""
+
         testSuite = RunTest.TestSuite()
 
         #Run tests from RunTest.TestSuite class
@@ -853,6 +856,7 @@ class ValidationPopup(Popup):
         testSuite.testTwo()
 
         self.ids.validationText.text = testSuite.printSummary()
+        self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
 
 class PyMac(App):
     def build(self):
