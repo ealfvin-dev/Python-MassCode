@@ -1,0 +1,215 @@
+Test file #1 - 3000 lb 3-1                                       PAGE  2
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       3/16/20
+ TEST NUMBER  Test1-3000lb      
+
+
+ BALANCE    11
+ OPERATOR   19
+ ACCEPTED WITHIN STANDARD DEVIATION OF THE PROCESS     3900.00000 MG
+ ACCEPTED BETWEEN STANDARD DEVIATION OF THE PROCESS    4500.00000 MG
+
+
+ CALIBRATION DESIGN  111
+ RESTRAINT VECTOR     1    0    0
+ MASS CORRECTION OF RESTRAINT                                    9122.00000 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  20.51           188165.40000 CM3
+ TYPE B UNCERTAINTY IN THE RESTRAINT                             2200.00000 MG
+ TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00000 MG
+
+
+ CHECK STANDARD USED   101
+ CHECK STANDARD VECTOR     0    1    0
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD   25036.00000 MG
+ REPORT VECTOR     1    1    1
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         20.07        20.95        20.51
+ ** CORRECTED PRESSURE IN PASCALS        97205.       97339.       97272.
+ CORRECTED HUMIDITY IN PERCENT              45.75        47.75        46.75
+ COMPUTED AIR DENSITY IN MG/CM3              1.1505       1.1481       1.1493
+ TEMPERATURE CORRECTION                     -0.04        -0.04
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                         0.25         0.25
+ OBSERVED TEMPERATURE IN DEGREES C          20.11        20.99
+ ** OBSERVED PRESSURE IN PASCALS         97205.       97339.
+ OBSERVED HUMIDITY IN PERCENT               45.50        47.50
+
+
+    WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
+        TESTED       VALUE LB   G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
+
+ A3000lb                 3000.00    7.2320      .000037      9122.00000
+ B3000lb                 3000.00    7.1000      .000035     25036.00000
+ C3000lb                 3000.00    7.1000      .000035
+Test file #1 - 3000 lb 3-1                                       PAGE  3
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       3/16/20
+ TEST NUMBER  Test1-3000lb      
+
+
+ BALANCE    11
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN  111
+       LB
+        3000  3000  3000
+ A  1      +     -       
+ A  2      +           - 
+ A  3            +     - 
+ R         +             
+
+
+ OBSERVATIONS IN DIVISIONS
+ DOUBLE SUBSTITUTION ONE PAN BALANCE
+
+ A  1      0.5000    11.0000   514.5000   509.0000
+ A  2     13.0000    -1.5000   500.5000   505.5000
+ A  3      1.0000   -38.0000   468.5000   498.0000
+Test file #1 - 3000 lb 3-1                                       PAGE  4
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       3/16/20
+ TEST NUMBER  Test1-3000lb      
+
+
+ BALANCE    11
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN  111
+
+ SENSITIVITY WEIGHT
+ MASS   500004.93000 MG
+ VOLUME       63.77614 CM3 AT 20 C
+ COEFFICIENT OF EXPANSION  0.000045
+     S*=S-PV(S)=  499931.62000 MG
+
+                                     AVERAGE                OBSERVED
+             A(I)     DELTA(I)     SENSITIVITY  DRIFT(I)  SENSITIVITY
+             (MG)       (MG)        (MG/DIV)      (MG)      (MG/DIV)
+
+ A  1   -7898.85400  5430.45900   987.35670  2468.39200   997.86750
+ A  2    9626.72800 -5430.46000   987.35670 -4689.94430   986.54492
+ A  3   33816.96400  5430.46500   987.35670 -4689.94430   977.86140
+
+
+                               VOLUME       TYPE B     TYPE A   EXPANDED
+     ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
+     (LB)            (MG)       (CM3)         (MG)       (MG)       (MG)
+
+      3000.00   9121.99724 188165.40000  2200.00000     0.00000  4400.00000
+      3000.00  26474.46599 191665.90000  2200.00000  7116.17910 14896.98000
+      3000.00  -1916.62908 191661.90000  2200.00000  7116.17910 14896.98000
+
+ TEMPERATURE T= 20.51  C
+
+Test file #1 - 3000 lb 3-1                                       PAGE  5
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       3/16/20
+ TEST NUMBER  Test1-3000lb      
+
+
+ BALANCE    11
+ OPERATOR   19
+ MAXIMUM LOAD   1360777.1000 G
+ STARTING RESTRAINT NUMBER    1
+
+
+ CALIBRATION DESIGN  111
+
+
+ PRECISION CONTROL
+
+
+ OBSERVED STANDARD DEVIATION OF THE PROCESS  9405.83500  MG
+ ACCEPTED STANDARD DEVIATION OF THE PROCESS  3900.00000  MG
+ DEGREES OF FREEDOM    1
+ F RATIO       5.817
+ *******************************************************************************
+ F RATIO IS GREATER THAN  3.84 (CRITICAL VALUE FOR PROBABILITY = .05).
+ THEREFORE THE STANDARD DEVIATION IS NOT IN CONTROL.
+ *******************************************************************************
+
+
+
+ CHECK STANDARD VECTOR     0    1    0
+ CHECK STANDARD USED   101
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD   25036.00000 MG
+ OBSERVED CORRECTION OF CHECK STANDARD        26474.47000 MG
+ STANDARD DEVIATION OF THE OBSERVED CORRECTION 7116.17900 MG
+ T VALUE    0.20
+
+
+
+ ABSOLUTE VALUE OF T IS LESS THAN     1.96
+ THEREFORE CHECK STANDARD IS IN CONTROL.
+
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         20.07        20.95        20.51
+ ** CORRECTED PRESSURE IN PASCALS        97205.       97339.       97272.
+ CORRECTED HUMIDITY IN PERCENT              45.75        47.75        46.75
+ COMPUTED AIR DENSITY IN MG/CM3              1.1505       1.1481       1.1493
+ TEMPERATURE CORRECTION                     -0.04        -0.04
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                         0.25         0.25
+ OBSERVED TEMPERATURE IN DEGREES C          20.11        20.99
+ ** OBSERVED PRESSURE IN PASCALS         97205.       97339.
+ OBSERVED HUMIDITY IN PERCENT               45.50        47.50
+
+
+
+
+ ** 101325 PASCALS = 760 TORR
+Test file #1 - 3000 lb 3-1                                       PAGE  6
+ MassCode 4 Input                                                  3/16/20
+ Erik Alfvin                                                      
+ TEST NUMBER  Test1-3000lb      
+
+
+
+
+                              TABLE I
+
+                                     EXPANDED*
+                           MASS          UNCERTAINTY   VOL AT 20  COEF OF EXP
+     ITEM                  (LB)              (LB)        (IN3)
+
+  B3000lb             3000.05836620663 0.03284222200  11695.960000 0.000035
+  A3000lb             3000.02011056146 0.00970033920  11482.340000 0.000037
+  C3000lb             2999.99577455617 0.03284222200  11695.720000 0.000035
+
+ SOFTWARE VERSION 08/15/2013
+
+
+* THE UNCERTAINTIES ARE CALCULATED ACCORDING TO NIST TECHNICAL
+NOTE 1297 IMPLEMENTED JANUARY 1, 1994,  SEE REFERENCE NO. 14.
+THE EXPANDED UNCERTAINTY IS 2 TIMES THE ROOT SUM SQUARE OF
+THE TYPE A AND TYPE B UNCERTAINTIES.
+Test file #1 - 3000 lb 3-1                                       PAGE  7
+ MassCode 4 Input                                                  3/16/20
+ Erik Alfvin                                                      
+ TEST NUMBER  Test1-3000lb      
+
+
+
+
+                    TABLE II
+
+       ITEM                 COR.A                COR.B
+                          (MICRO-LB)           (MICRO-LB)
+  B3000lb                 -19654.44437           1314.27810
+  A3000lb                 -48653.06774         -27684.54796
+  C3000lb                 -82244.46705         -61276.18206
+
+ SOFTWARE VERSION 08/15/2013
+
+ Security Code    0.00000
+
+
+
+                        End of Report
+

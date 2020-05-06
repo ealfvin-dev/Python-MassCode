@@ -1,11 +1,15 @@
 #:import Factory kivy.factory.Factory
 
 #:set buttonColor (0.08, 0.55, 1, 1)
-#:set labelColor (0.95, 0.95, 0.96, 1)
+#:set buttonColor (0.13, 0.5, 0.95, 0.94)
+
+#:set labelColor (0.095, 0.095, 0.096, 0.9)
+#:set popLabelColor (0.95, 0.95, 0.96, 1)
 
 #:set buttonSizer 20
-#:set labelSizer 12
-#:set popUpFontSize dp(13)
+#:set labelSizer 14
+#:set popUpFontSize mm(3.5)
+#:set popUpLabelSize mm(4)
 
 <MainLayout>:
     id: mainBox
@@ -31,136 +35,171 @@
             on_press: root.addSeries()
 
         SeriesButton:
-            id: seriesOne
+            id: series1
             seriesNum: 1
-            text: "[color=#FFFFFF]Series 1[/color]"
-            background_normal: ''
-            background_color: (0.25, 0.25, 0.28, 0.0)
+            text: "[color=#000000]Series 1[/color]"
+            background_color: (0.906, 0.918, 0.926, 1)
             markup: True
+            background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
             exists: True
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesTwo
+            id: series2
             seriesNum: 2
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesThree
+            id: series3
             seriesNum: 3
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesFour
+            id: series4
             seriesNum: 4
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesFive
+            id: series5
             seriesNum: 5
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesSix
+            id: series6
             seriesNum: 6
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesSeven
+            id: series7
             seriesNum: 7
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesEight
+            id: series8
             seriesNum: 8
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesNine
+            id: series9
             seriesNum: 9
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesTen
+            id: series10
             seriesNum: 10
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesEleven
+            id: series11
             seriesNum: 11
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesTwelve
+            id: series12
             seriesNum: 12
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: self.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: seriesThirteen
-            seriesNum: 2
+            id: series13
+            seriesNum: 13
             text: ""
             markup: True
             background_normal: ''
+            background_down: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
-            on_press: root.goToSeries(self.exists, self.seriesNum)
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
+
+        SeriesButton:
+            id: series14
+            seriesNum: 14
+            text: ""
+            markup: True
+            background_normal: ''
+            background_down: ''
+            font_size: dp(self.width / buttonSizer)
+            halign: 'center'
+            on_press: root.goToSeries(self, self.exists, self.seriesNum)
+
+        Button:
+            id: removeSeries
+            text: "[color=#FFFFFF]Remove\nLast Series[/color]"
+            markup: True
+            background_normal: ''
+            background_color: (0.70, 0.135, 0.05, 0.90)
+            font_size: dp(self.width / (buttonSizer*1.1))
+            halign: 'center'
+            on_release: root.removeLastSeries()
+            size_hint: (1, 0.85)
 
     BoxLayout:
         id: secondaryMainBox
@@ -180,6 +219,7 @@
             Button:
                 id: openFile
                 text: "Open File"
+                on_release: app.openFilePop()
 
             Button:
                 id: newFile
@@ -188,6 +228,7 @@
             Button:
                 id: validation
                 text: "Run Validation"
+                on_release: app.openValidationPop()
 
             Button:
                 id: help
@@ -196,232 +237,269 @@
         BoxLayout:
             id: content
             orientation: 'horizontal'
-            spacing: self.width / 22
-            padding: (0, 15, 140, 30)
+            spacing: self.width / 15
+            padding: (0, 50, 100, 30)
 
             BoxLayout:
                 id: menu
-                orientation: 'horizontal'
-                spacing: self.width / 10
+                orientation: 'vertical'
+                spacing: self.width / 50
 
                 BoxLayout:
-                    id: menuCol2
-                    orientation: 'vertical'
-                    spacing: self.height / 30
+                    id: menuLabel1
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
 
                     Label:
-                        text: "[b]Report\nHeader[/b]"
+                        text: "[b]\nReport Header[/b]"
                         markup: True
                         color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
+                        font_size: dp(self.size[1] / 2.5)
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow1
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
+                    padding: (0, 0, 0, 20)
 
                     Button:
                         id: labInfoButton
-                        text: "[b]Report No.\nNotes[/b]"
+                        text: "Report No.\nNotes"
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openLabInfoPop()
+                        on_release: app.openLabInfoPop()
 
                     Button:
                         id: restraintButton
-                        text: "[b]Starting\nRestraint[/b]"
+                        text: "Starting\nRestraint"
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openRestraintPop()
+                        on_release: app.openRestraintPop()
 
                     Label:
-                        text: "[b]Series Setup[/b]"
+                        text: ""
                         markup: True
                         color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel2
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
+
+                    Label:
+                        text: "[b]\nSeries Setup[/b]"
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.size[1] / 2.5)
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow2
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
+                    padding: (0, 0, 0, 20)
 
                     Button:
                         id: dateButton
-                        text: "[b]Date\nTechnition[/b]"
+                        text: "Date\nTechnicion"
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openDatePop()
+                        on_release: app.openDatePop()
 
                     Button:
                         id: balanceButton
-                        text: "[b]Balance[/b]"
+                        text: "Balance"
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openBalancePop()
-
-                    Label:
-                        text: "[b]Statistics[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Button:
-                        id: statisticsButton
-                        text: "[b]Statistics[/b]"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
-                        on_press: app.openStatisticsPop()
-
-                    
-
-                BoxLayout:
-                    id: menuCol3
-                    orientation: "vertical"
-                    spacing: self.height / 30
-
-                    Label:
-                        text: "[b]Design[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Button:
-                        id: designButton
-                        text: "[b]Design[/b]"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
-                        on_press: app.openDesignPop()
-
-                    Button:
-                        id: weightsButton
-                        text: "[b]Weights[/b]"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
-                        on_press: app.openWeightsPop()
-
-                    Button:
-                        id: positionVectorsButton
-                        text: "[b]Position\nVectors[/b]"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
-                        on_press: app.openVectorsPop()
-
-                    Label:
-                        text: "[b]Measurement\nData[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Button:
-                        id: swButton
-                        text: "[b]Sensitivity\nWeight[/b]"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
-                        on_press: app.openSwPop()
-
-                    Button:
-                        id: measurementsButton
-                        text: "[b]Measurements[/b]"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
-                        on_press: app.openMeasurementsPop()
-
-                    Label:
-                        text: "[b]Optionals[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
+                        on_release: app.openBalancePop()
 
                     Button:
                         id: gravityButton
-                        text: "Gravity\nGradient"
+                        text: "Gravity\nGradient\n(Optional)"
                         markup: True
                         background_normal: ''
                         background_color: (0.368, 0.49, 0.60, 1)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_press: app.openGravityPop()
+                        on_release: app.openGravityPop()
 
                 BoxLayout:
-                    id: menuCol4
-                    orientation: "vertical"
-                    spacing: self.height / 30
+                    id: menuLabel3
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
 
                     Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: dp(self.width / labelSizer)
-                        halign: 'center'
-
-                    Label:
-                        text: "[b]Actions[/b]"
+                        text: "[b]\nStatistics[/b]"
                         markup: True
                         color: labelColor
-                        font_size: dp(self.width / labelSizer)
+                        font_size: dp(self.size[1] / 2.5)
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow3
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
+                    padding: (0, 0, 0, 20)
+
+                    Button:
+                        id: statisticsButton
+                        text: "Statistics"
+                        markup: True
+                        background_normal: ''
+                        background_color: buttonColor
+                        font_size: dp(self.width / buttonSizer)
                         halign: 'center'
+                        on_release: app.openStatisticsPop()
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel4
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
+
+                    Label:
+                        text: "[b]\nDesign[/b]"
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.size[1] / 2.5)
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow4
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
+                    padding: (0, 0, 0, 20)
+
+                    Button:
+                        id: designButton
+                        text: "Design"
+                        markup: True
+                        background_normal: ''
+                        background_color: buttonColor
+                        font_size: dp(self.width / buttonSizer)
+                        halign: 'center'
+                        on_release: app.openDesignPop(); root.parent.children[0].ids.dropDownn.dismiss()
+
+                    Button:
+                        id: weightsButton
+                        text: "Weights"
+                        markup: True
+                        background_normal: ''
+                        background_color: buttonColor
+                        font_size: dp(self.width / buttonSizer)
+                        halign: 'center'
+                        on_release: app.openWeightsPop()
+
+                    Button:
+                        id: positionVectorsButton
+                        text: "Position\nVectors"
+                        markup: True
+                        background_normal: ''
+                        background_color: buttonColor
+                        font_size: dp(self.width / buttonSizer)
+                        halign: 'center'
+                        on_release: app.openVectorsPop()
+
+                BoxLayout:
+                    id: menuLabel5
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
+
+                    Label:
+                        text: "[b]\nMeasurement Data[/b]"
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.size[1] / 2.5)
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow5
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
+                    padding: (0, 0, 0, 20)
+
+                    Button:
+                        id: swButton
+                        text: "Sensitivity\nWeight"
+                        markup: True
+                        background_normal: ''
+                        background_color: buttonColor
+                        font_size: dp(self.width / buttonSizer)
+                        halign: 'center'
+                        on_release: app.openSwPop()
+
+                    Button:
+                        id: measurementsButton
+                        text: "Measurements"
+                        markup: True
+                        background_normal: ''
+                        background_color: buttonColor
+                        font_size: dp(self.width / buttonSizer)
+                        halign: 'center'
+                        on_release: app.openMeasurementsPop()
+
+                    Label:
+                        text: ""
+                        markup: True
+                        color: labelColor
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow6-blank
+                    orientation: 'horizontal'
+                    size_hint: (1, 0.75)
+
+                    Label:
+                        text: ""
+                        font_size: dp(self.height)
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuCol7
+                    orientation: 'horizontal'
+                    spacing: self.width / 12
+                    padding: (0, 20, 0, 0)
 
                     Button: 
                         id: saveButton
-                        text: "[color=#000000][b]SAVE[/b][/color]"
+                        text: "[color=#FFFFFF][b]SAVE[/b][/color]"
                         markup: True
                         background_normal: ''
-                        background_color: (1, 0.85, 0.02, 1)
+                        background_color: (0.20, 0.68, 0.27, 0.98)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
                         on_release: root.save()
@@ -436,6 +514,12 @@
                         halign: 'center'
                         on_release: root.run()
 
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: dp(self.width / labelSizer)
+                        halign: 'center'
+
             BoxLayout:
                 id: textAreas
                 orientation: "vertical"
@@ -445,7 +529,7 @@
 
                 TextInput:
                     id: userText
-                    font_size: dp(self.size[0]/100) if self.size[0] > 1000 else dp(10)
+                    font_size: mm(3.1)
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
                     font_name: "./Menlo.ttc"
@@ -457,7 +541,7 @@
 
                 TextInput:
                     id: errors
-                    font_size: dp(12)
+                    font_size: mm(3.1)
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
                     font_name: "./Menlo.ttc"
@@ -468,7 +552,7 @@
 
         Label:
             id: footer
-            text: "[size=20]Copywrite Erik Alfvin, 2020[/size]"
+            text: "[size=20][color='000000']Copywrite Erik Alfvin, 2020[/color][/size]"
             markup: True
             size_hint: (1.0, 0.01)
 
@@ -489,9 +573,9 @@
             text: "Laboratory Information & Notes:"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -511,9 +595,9 @@
             text: "Report Number:"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
 
@@ -536,7 +620,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -553,7 +637,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -563,7 +647,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <RestraintPopup>:
     id: restraintPop
@@ -582,9 +666,9 @@
             size_hint: (1, 0.6)
             text: "Restraint ID:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -604,9 +688,9 @@
             size_hint: (1, 0.6)
             text: "Restraint Uncertainty (mg):"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -626,9 +710,9 @@
             size_hint: (1, 0.6)
             text: "Random Error (mg):"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -651,7 +735,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -668,7 +752,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -678,7 +762,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <DatePopup>:
     id: datePop
@@ -697,9 +781,9 @@
             size_hint: (1, 0.6)
             text: "Date:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -717,11 +801,11 @@
 
         Label:
             size_hint: (1, 0.6)
-            text: "Technition ID:"
+            text: "Technicion ID:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -741,9 +825,9 @@
             size_hint: (1, 0.6)
             text: "Check ID:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -766,7 +850,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -783,7 +867,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -793,7 +877,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <BalancePopup>:
     id: balancePop
@@ -812,9 +896,9 @@
             size_hint: (1, 0.6)
             text: "Balance ID:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -834,9 +918,9 @@
             size_hint: (1, 0.6)
             text: "Direct Readings (1 = Yes, 0 = No):"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -855,9 +939,9 @@
             size_hint: (1, 0.6)
             text: "Direct Reading Sensitivity Factor (mg/div):"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -879,7 +963,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -896,7 +980,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -906,7 +990,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <DesignPopup>:
     id: designPop
@@ -937,9 +1021,9 @@
                     size_hint: (1, 0.6)
                     text: "Design Matrix:"
                     markup: True
-                    color: labelColor
+                    color: popLabelColor
                     text_size: self.size
-                    font_size: dp(self.width / (labelSizer*4.5))
+                    font_size: popUpLabelSize
                     halign: "left"
                     valign: "bottom"
                 
@@ -948,7 +1032,7 @@
                     size_hint: (1, 2.5)
                     font_name: "./Menlo.ttc"
                     text: ""
-                    hint_text: "1 -1 0\n1 0 -1\n0 1 -1"
+                    hint_text: "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
                     font_size: popUpFontSize
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
@@ -1008,9 +1092,9 @@
                     size_hint: (1, 0.6)
                     text: "Positions:"
                     markup: True
-                    color: labelColor
+                    color: popLabelColor
                     text_size: self.size
-                    font_size: dp(self.width / (labelSizer*2))
+                    font_size: mm(5)
                     halign: "left"
                     valign: "bottom"
 
@@ -1019,9 +1103,9 @@
                     size_hint: (1, 0.6)
                     text: "Observations:"
                     markup: True
-                    color: labelColor
+                    color: popLabelColor
                     text_size: self.size
-                    font_size: dp(self.width / (labelSizer*2))
+                    font_size: mm(5)
                     halign: "left"
                     valign: "bottom"
 
@@ -1029,9 +1113,9 @@
             size_hint: (1, 0.6)
             text: "Design ID:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1042,7 +1126,7 @@
             padding: [10, 10, 10, 10]
             font_name: "./Menlo.ttc"
             text: ""
-            hint_text: "111"
+            hint_text: "112"
             font_size: popUpFontSize
             background_normal: ''            
             orderNum: 12
@@ -1054,7 +1138,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -1071,7 +1155,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1.7)
@@ -1081,7 +1165,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <WeightsPopup>:
     id: weightsPop
@@ -1097,12 +1181,12 @@
         padding: 20, 0, 20, 20
 
         Label:
-            text: "Weight Data - ID, Nominal (g/lb), Density, CCE, Correction (mg):"
+            text: "Weight Data - ID, Nominal (g/lb), Density, CCE (/" + chr(730) + "C), Correction (mg):"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1115,16 +1199,16 @@
             font_size: popUpFontSize
             padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
             background_normal: ''
-            orderNum: 14
+            orderNum: 15
             write_tab: True
 
         Label:
             text: "Nominal Units (0 = g, 1 = lb):"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
 
@@ -1137,7 +1221,7 @@
             text: "0"
             font_size: popUpFontSize
             background_normal: ''
-            orderNum: 15
+            orderNum: 14
 
         Label:
             id: weightsPopError
@@ -1146,7 +1230,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -1163,7 +1247,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1173,7 +1257,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <VectorsPopup>:
     id: vectorsPop
@@ -1192,9 +1276,9 @@
             size_hint: (1, 0.6)
             text: "Restraint Position:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1214,9 +1298,9 @@
             size_hint: (1, 0.6)
             text: "Check Standard Position:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1236,9 +1320,9 @@
             size_hint: (1, 0.6)
             text: "Linear Combo Position:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1258,9 +1342,9 @@
             size_hint: (1, 0.6)
             text: "Next Series Restraint:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1283,7 +1367,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -1300,7 +1384,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1310,7 +1394,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <StatisticsPopup>:
     id: statisticsPop
@@ -1327,11 +1411,11 @@
 
         Label:
             size_hint: (1, 0.6)
-            text: chr(963) + "[size=" + str(self.width / (labelSizer*11)) + "dp]t[/size] (mg):"
+            font_size: popUpLabelSize
+            text: chr(963) + "[size=3mm]t[/size] (mg):"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1348,11 +1432,11 @@
 
         Label:
             size_hint: (1, 0.6)
-            text: chr(963) + "[size=" + str(self.width / (labelSizer*11)) + "dp]w[/size] (mg):"
+            font_size: popUpLabelSize
+            text: chr(963) + "[size=3mm]w[/size] (mg):"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
             halign: "left"
             valign: "bottom"
         
@@ -1374,7 +1458,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -1391,7 +1475,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1401,7 +1485,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <SwPopup>:
     id: swPop
@@ -1420,9 +1504,9 @@
             size_hint: (1, 0.6)
             text: "sw True Mass (mg):"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1442,9 +1526,9 @@
             size_hint: (1, 0.6)
             text: "sw Density:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1464,9 +1548,9 @@
             size_hint: (1, 0.6)
             text: "sw CCE:"
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1489,7 +1573,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -1506,7 +1590,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1516,7 +1600,7 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <MeasurementsPopup>:
     id: measurementsPop
@@ -1535,9 +1619,9 @@
             text: "Balance Readings:"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1554,12 +1638,12 @@
             write_tab: True
 
         Label:
-            text: "Environmentals (" + chr(730) + "C, %, mmHg):"
+            text: "Environmentals (" + chr(730) + "C, mmHg, %):"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1576,12 +1660,12 @@
             write_tab: True
 
         Label:
-            text: "Environmental Corrections (" + chr(730) + "C, %, mmHg):"
+            text: "Environmental Corrections (" + chr(730) + "C, mmHg, %):"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
 
@@ -1604,7 +1688,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -1621,7 +1705,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1631,12 +1715,12 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
 
 <GravityPopup>:
     id: gravityPop
     auto_dismiss: False
-    title: "Header"
+    title: "Local Gravity"
     title_size: dp(18)
     size_hint: (0.42, 0.56)
 
@@ -1650,9 +1734,9 @@
             text: "COM Height Differences (cm):"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
         
@@ -1671,9 +1755,9 @@
             text: "Gravity Gradient (1/s" + chr(178) + "):"
             size_hint: (1, 0.6)
             markup: True
-            color: labelColor
+            color: popLabelColor
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
 
@@ -1696,7 +1780,7 @@
             markup: True
             color: (0.95, 0.05, 0.09, 1)
             text_size: self.size
-            font_size: dp(self.width / (labelSizer*7))
+            font_size: popUpLabelSize
             halign: "left"
             valign: "center"
 
@@ -1713,7 +1797,7 @@
                 background_normal: ''
                 background_color: (0, 0.6, 0.82, 1)
                 halign: 'center'
-                on_press: root.submit()
+                on_release: root.submit()
 
             Button:
                 size_hint: (1, 1)
@@ -1723,4 +1807,133 @@
                 background_color: (0.95, 0.1, 0.15, 0.95)
                 halign: 'center'
                 markup: True
-                on_press: root.dismiss()
+                on_release: root.dismiss()
+
+<OpenFilePopup>:
+    id: openFilePop
+    auto_dismiss: False
+    title: "Open File"
+    title_size: dp(18)
+    size_hint: (0.35, 0.32)
+
+    BoxLayout:
+        id: openFilePLayout
+        orientation: "vertical"
+        spacing: 35
+        padding: 20, 0, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            font_size: popUpLabelSize
+            text: "Enter Configuration File Name:"
+            markup: True
+            color: popLabelColor
+            text_size: self.size
+            halign: "left"
+            valign: "bottom"
+        
+        TextInput:
+            id: openFileText
+            size_hint: (1, 0.44)
+            multiline: False
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            hint_text: "12345-config.txt"
+            font_size: popUpFontSize
+            background_normal: ''
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.92)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Open"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_release: root.parent.children[1].openFile(root.ids.openFileText.text); root.dismiss()
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_release: root.dismiss()
+
+<ValidationPopup>:
+    id: validationPop
+    auto_dismiss: False
+    title: "Unit Testing"
+    title_size: dp(18)
+    size_hint: (0.45, 0.85)
+
+    BoxLayout:
+        id: validationPLayout
+        orientation: "vertical"
+        spacing: 15
+        padding: 20, -1 * self.size[1]/15, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            font_size: popUpLabelSize
+            text: "Results:"
+            markup: True
+            color: popLabelColor
+            text_size: self.size
+            halign: "left"
+            valign: "bottom"
+        
+        TextInput:
+            id: validationText
+            size_hint: (1, 2.75)
+            multiline: True
+            readonly: True
+            padding: [10, 10, 10, 10]
+            font_name: "./Menlo.ttc"
+            font_size: popUpFontSize
+            background_normal: ''
+
+        Label:
+            id: testingMessage
+            size_hint: (1, 0.2)
+            text: ""
+            markup: True
+            color: (0.05, 0.95, 0.09, 1)
+            text_size: self.size
+            font_size: popUpLabelSize
+            halign: "left"
+            valign: "center"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.50)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Close"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                markup: True
+                on_release: root.dismiss()
+
+            Button:
+                id: runTestButton
+                size_hint: (1, 1)
+                text: "Run Tests"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.82, 0.3, 0.9)
+                halign: 'center'
+                markup: True
+                on_release: root.runTestThread()

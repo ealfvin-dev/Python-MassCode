@@ -18,9 +18,15 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
 
-import MassCode
+import RunFile
+import RunTest
+
 import sys
+import threading
+
+import sqlite3
 
 def getNumChacacters(text):
     chars = 0
@@ -32,14 +38,16 @@ def getNumChacacters(text):
 
 class MainLayout(BoxLayout):
     reportNum = ""
-    seriesNumber = 1
-    seriesTexts = []
+    numberOfSeries = 1
+    currentSeries = 1
+    seriesTexts = ["@SERIES\n\n"]
 
     def __init__(self, **kwargs):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.25, 0.25, 0.28, 0.55)
+            #Color(0.25, 0.25, 0.28, 0.85)
+            Color(0.906, 0.918, 0.926, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
             self.bind(size=self._update_rect, pos=self._update_rect)
@@ -60,8 +68,8 @@ class MainLayout(BoxLayout):
             "<Direct-Reading-SF>": 11, \
             "<Design-ID>": 12, \
             "<Design>": 13, \
-            "<Position>": 14, \
-            "<Pounds>": 15, \
+            "<Pounds>": 14, \
+            "<Position>": 15, \
             "<Restraint>": 16, \
             "<Check-Standard>": 17, \
             "<Linear-Combo>": 18, \
@@ -77,8 +85,8 @@ class MainLayout(BoxLayout):
             "<Gravity-Grad>": 28, \
             "<COM-Diff>": 29}
 
-        self.requiredTags = ["@SERIES", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
-            "<Design-ID>", "<Design>", "<Position>", "<Pounds>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
+        self.requiredTags = ["@SERIES", "<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
+            "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
             "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
 
     def _update_rect(self, instance, value):
@@ -131,16 +139,20 @@ class MainLayout(BoxLayout):
                 textBlockLength += 1
 
             else:
-                newLine = self.getTag(orderNum) + "  " + line
-                textInput.insert_text(newLine)
+                if(orderNum != 0 and orderNum != 5):
+                    newLine = " " * (19 - len(self.getTag(orderNum)))
+                else:
+                    newLine = ""
 
+                newLine += self.getTag(orderNum) + "  " + line
+                textInput.insert_text(newLine)
                 textBlockLength += len(newLine)
 
                 if(len(text.splitlines()) > 1):
                     textInput.insert_text("\n")
                     textBlockLength += 1
 
-                if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 15 or orderNum == 19 or orderNum == 21 or orderNum == 24 or orderNum == 27):
+                if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 14 or orderNum == 19 or orderNum == 21 or orderNum == 24 or orderNum == 27):
                     textInput.insert_text("\n")
 
         return cursorStart, textBlockLength
@@ -154,34 +166,45 @@ class MainLayout(BoxLayout):
         self.ids.userText.select_text(startPos, startPos + textLength)
         self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
 
-    def checkTags(self):
+    def checkTags(self, seriesArray, seriesNum):
         #Checks if currently written tags exist in the known tags dictionary
-        inputText = self.ids.userText.text.splitlines()
+        seriesNumber = 0
 
-        lineNum = 0
-        for line in inputText:
-            lineNum += 1
+        for seriesText in seriesArray:
+            seriesNumber += 1
+            lineNum = 0
 
-            if(line.split() == []):
-                pass
+            for line in seriesText.splitlines():
+                lineNum += 1
 
-            elif(line.split()[0].strip() == ""):
-                pass
+                if(line.split() == []):
+                    pass
 
-            else:
-                try:
-                    self.orderOfTags[line.split()[0].strip()]
-                except KeyError:
-                    errorMessage = "UNKNOWN TAG ON LINE " + str(lineNum) + ": " + line.split()[0].strip()
+                elif(line.split()[0].strip() == ""):
+                    pass
 
-                    self.ids.errors.text = "ERROR:\n" + errorMessage
-                    return False
+                else:
+                    try:
+                        self.orderOfTags[line.split()[0].strip()]
+                    except KeyError:
+                        if(seriesNum):
+                            snText = str(seriesNum)
+                        else:
+                            snText = str(seriesNumber)
+
+                        errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
+
+                        self.ids.errors.text = "ERROR:\n" + errorMessage
+                        return False
 
         return True
 
     def checkIfAllTags(self, seriesText, seriesNum):
         #Checks if all tags in known tags dictionary exist in seriesText
         for tag in self.requiredTags:
+            if((tag == "<Report-Number>" or tag == "<Restraint-ID>" or tag == "<Unc-Restraint>" or tag == "<Random-Error>") and seriesNum != 1):
+                continue
+
             exists = 0
             for line in seriesText.splitlines():
                 if(line.split() != []):
@@ -197,7 +220,7 @@ class MainLayout(BoxLayout):
 
     def textAdded(self):
         if(self.saved):
-            self.ids.saveButton.background_color = (1, 0.85, 0.02, 1)
+            self.ids.saveButton.background_color = (0.20, 0.68, 0.27, 0.98)
             self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
             self.saved = False
@@ -208,56 +231,263 @@ class MainLayout(BoxLayout):
                 continue
 
             if(line.strip().split()[0] == "<Report-Number>"):
-                self.reportNum = line.strip().split()[1]
-                return line.strip().split()[1]
+                try:
+                    self.reportNum = line.strip().split()[1]
+                    return line.strip().split()[1]
+                except IndexError:
+                    return False
 
         return False
 
-    def save(self):
-        checkOK = self.checkTags()
+    def renderButtons(self, seriesText):
+        #Make dictionary of tags, linked to True/False if they exist in userText.text
+        tags = {"#": False, \
+            "<Report-Number>": False, \
+            "<Restraint-ID>": False, \
+            "<Unc-Restraint>": False, \
+            "<Random-Error>": False, \
+            "@SERIES": False, \
+            "<Date>": False, \
+            "<Technician-ID>": False, \
+            "<Check-Standard-ID>": False, \
+            "<Balance-ID>": False, \
+            "<Direct-Readings>": False, \
+            "<Direct-Reading-SF>": False, \
+            "<Design-ID>": False, \
+            "<Design>": False, \
+            "<Pounds>": False, \
+            "<Position>": False, \
+            "<Restraint>": False, \
+            "<Check-Standard>": False, \
+            "<Linear-Combo>": False, \
+            "<Pass-Down>": False, \
+            "<Sigma-t>": False, \
+            "<Sigma-w>": False, \
+            "<sw-Mass>": False, \
+            "<sw-Density>": False, \
+            "<sw-CCE>": False, \
+            "<Balance-Reading>": False, \
+            "<Environmentals>": False, \
+            "<Env-Corrections>": False, \
+            "<Gravity-Grad>": False, \
+            "<COM-Diff>": False}
 
-        if(checkOK):
-            self.ids.errors.text = ""
+        for line in seriesText.splitlines():
+            if(line.strip() != "" and line.strip != "\n"):
+                try:
+                    tags[line.strip().split()[0]] = True
+                except KeyError:
+                    pass
 
+        #Lab Info Button
+        if(self.currentSeries == 1 and tags["<Report-Number>"] == False):
+            self.ids.labInfoButton.background_color = (0.08, 0.55, 1, 1)
         else:
+            self.ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        #Restraint Button
+        if(self.currentSeries == 1 and (tags["<Restraint-ID>"] == False or tags["<Unc-Restraint>"] == False or tags["<Random-Error>"] == False)):
+            self.ids.restraintButton.background_color = (0.08, 0.55, 1, 1)
+        else:
+            self.ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        #Date Button
+        if(tags["<Date>"] and tags["<Technician-ID>"] and tags["<Check-Standard-ID>"]):
+            self.ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.dateButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Balance Button
+        if(tags["<Balance-ID>"] and tags["<Direct-Readings>"] and tags["<Direct-Reading-SF>"]):
+            self.ids.balanceButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.balanceButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Gravity Button
+        if(tags["<COM-Diff>"] and tags["<Gravity-Grad>"]):
+            self.ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
+
+        #Statistics Buttons
+        if(tags["<Sigma-t>"] and tags["<Sigma-w>"]):
+            self.ids.statisticsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.statisticsButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Design Button
+        if(tags["<Design>"] and tags["<Design-ID>"]):
+            self.ids.designButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.designButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Weights Button
+        if(tags["<Position>"] and tags["<Pounds>"]):
+            self.ids.weightsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.weightsButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Positions Button
+        if(tags["<Restraint>"] and tags["<Check-Standard>"] and tags["<Linear-Combo>"] and tags["<Pass-Down>"]):
+            self.ids.positionVectorsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.positionVectorsButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Sensitivity Weight Button
+        if(tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]):
+            self.ids.swButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.swButton.background_color = (0.08, 0.55, 1, 1)
+
+        #Measurements Button
+        if(tags["<Balance-Reading>"] and tags["<Environmentals>"] and tags["<Env-Corrections>"]):
+            self.ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        else:
+            self.ids.measurementsButton.background_color = (0.08, 0.55, 1, 1)
+
+    def addSeries(self):
+        if(self.numberOfSeries == 14):
             return
 
-        reportNum = self.getReportNum(self.ids.userText.text.splitlines())
+        self.numberOfSeries += 1
+
+        newSeriesId = "series" + str(self.numberOfSeries)
+
+        self.ids[newSeriesId].text = "[color=#FFFFFF]Series " + str(self.numberOfSeries) +"[/color]"
+        self.ids[newSeriesId].exists = True
+
+        self.seriesTexts.append("@SERIES\n\n")
+
+    def goToSeries(self, button, exists, seriesNum):
+        if(exists):
+            #Write current usertext into seriesTexts, pull new seriesText into userText
+            self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
+            self.ids.userText.text = self.seriesTexts[seriesNum - 1]
+            self.ids.userText.cursor = (0, 0)
+            self.ids.userText.select_text(0, 0)
+
+            self.currentSeries = seriesNum
+
+            for sn in range(1, 15):
+                seriesID = "series" + str(sn)
+
+                self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
+
+                if(self.ids[seriesID].exists):
+                    self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+
+            button.background_color = (0.906, 0.918, 0.926, 1)
+            button.text = "[color=#000000]" + button.text[15:]
+
+            self.renderButtons(self.ids.userText.text)
+
+    def removeLastSeries(self):
+        if(self.numberOfSeries == 1):
+            return
+
+        lastSeriesText = self.seriesTexts[len(self.seriesTexts) - 1].strip().splitlines()
+
+        #If user is currently working in the last series
+        if(self.currentSeries == self.numberOfSeries):
+            lastSeriesText = self.ids.userText.text.strip().splitlines()
+
+        if(lastSeriesText == []):
+            self.ids.errors.text = ""
+
+            if(self.currentSeries == self.numberOfSeries):
+                self.goToSeries(self.ids["series" + str(self.numberOfSeries - 1)], True, self.numberOfSeries - 1)
+
+            self.seriesTexts.pop()
+            self.ids["series" + str(self.numberOfSeries)].text = ""
+            self.ids["series" + str(self.numberOfSeries)].exists = False
+
+            self.numberOfSeries -= 1
+        else:
+            self.ids.errors.text = "ERROR:\n" + "SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES"
+
+    def openFile(self, fileName):
+        #Remove existing series
+        self.goToSeries(self.ids["series1"], True, 1)
+        self.ids.userText.text = ""
+
+        for i in range(self.numberOfSeries):
+            self.seriesTexts[self.numberOfSeries - 1] = ""
+            self.removeLastSeries()
+
+        try:
+            with open(fileName, 'r') as configFile:
+                self.ids.errors.text = ""
+                seriesNum = 0
+
+                for line in configFile:
+                    if(line.strip() == "@SERIES"):
+                        seriesNum += 1
+                        if(seriesNum > 1):
+                            self.ids.userText.do_backspace()
+
+                            self.addSeries()
+                            self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
+
+                            self.ids.userText.text = "@SERIES\n"
+                            continue
+                        else:
+                            self.ids.userText.text += "@SERIES\n"
+                    else:
+                        self.ids.userText.text += line
+
+                self.ids.userText.do_backspace()    
+                self.goToSeries(self.ids["series1"], True, 1)
+
+        except(FileNotFoundError):
+            self.ids.errors.text = "ERROR:\n" + "FILE NOT FOUND"
+
+    def save(self):
+        #Save current working series Text into self.seriesTexts array
+        self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
+        reportNum = self.getReportNum(self.seriesTexts[0].splitlines())
 
         if(reportNum == False):
             self.ids.errors.text = "ERROR:\n" + "NO REPORT NUMBER PROVIDED, CANNOT SAVE"
             return
+        
+        fileText = ""
+        for seriesText in self.seriesTexts:
+            fileText += seriesText
+            fileText += "\n"
 
         f = open(reportNum + "-config.txt", 'w')
-        f.write(self.ids.userText.text)
+        f.write(fileText)
         f.close()
 
         self.saved = True
-        self.ids.errors.text = ""
-        try:
-            self.seriesTexts[0] = self.ids.userText.text
-        except IndexError:
-            self.seriesTexts.append(self.ids.userText.text)
 
-        self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
-        self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        checkOK = self.checkTags(self.seriesTexts, False)
+
+        if(checkOK):
+            self.ids.errors.text = ""
+            self.renderButtons(self.ids.userText.text)
+
+            self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
+            self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def run(self):
         if(not self.saved):
             self.ids.errors.text = "ERROR:\n" + "FILE MUST BE SAVED BEFORE RUNNING"
         else:
-            checkWrittenTags = self.checkTags()
-
             for i in range(len(self.seriesTexts)):
                 checkAllExist = self.checkIfAllTags(self.seriesTexts[i], i + 1)
 
                 if(not checkAllExist):
                     return
 
+            checkWrittenTags = self.checkTags(self.seriesTexts, False)
+
             if(checkWrittenTags):
                 self.ids.errors.text = ""
                 try:
-                    MassCode.run(self.reportNum + "-config.txt")
+                    RunFile.run(self.reportNum + "-config.txt")
                 except:
                     self.ids.errors.text = "ERROR:\n" + str(sys.exc_info())
 
@@ -266,7 +496,6 @@ class OrderedText(TextInput):
         super().__init__()
 
         self.orderNum = 0
-        self.next_focus = 0
         self.write_tab = False
 
 class SeriesButton(Button):
@@ -275,10 +504,24 @@ class SeriesButton(Button):
 
         self.markup = True
 
-        self.seriesNum = 0
+        self.seriesNum = 1
         self.exists = False
-        #self.background_color = (0.155, 0.217, 0.292, 0.65)
-        self.background_color = (0.956, 0.968, 0.976, 0.85)
+        self.background_color = (0.155, 0.217, 0.292, 0.65)
+        #self.background_color = (0.956, 0.968, 0.976, 0.85)
+
+class RoundedButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.completed = False
+        self.background_color = 0,0,0,0
+        self.canvasColor = (0.08, 0.55, 1, 1)
+
+        with self.canvas.before:
+            Color(self.canvasColor)
+            pos = self.pos
+            size = self.size
+            radius = [self.size[0] / 12,]
 
     def goToSeries(self, exists, seriesNum):
         if(exists):
@@ -306,6 +549,7 @@ class LabInfoPopup(Popup):
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
         self.parent.children[1].ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        #self.parent.children[1].ids.labInfoButton.completed = True
 
         self.dismiss()
 
@@ -459,8 +703,8 @@ class WeightsPopup(Popup):
             self.ids.weightsPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(weightsText, weightsOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(weightsText, weightsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
@@ -554,7 +798,7 @@ class MeasurementsPopup(Popup):
             self.ids.measurementsPopError.text = "Enter data for all fields"
             return
 
-        #Check if Num lines are the same for measurements and env data
+        #Check if Num lines are the same for measurements and environmental data
         numBalReadings = 0
         numEnvReadings = 0
 
@@ -571,7 +815,7 @@ class MeasurementsPopup(Popup):
                 numEnvReadings += 1
 
         if(numBalReadings != numEnvReadings):
-            self.ids.measurementsPopError.text = "Same number of lines required for balance & environmental readings"
+            self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required, " + str(numEnvReadings) + " provided"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
@@ -605,109 +849,154 @@ class GravityPopup(Popup):
 
         self.dismiss()
 
+class OpenFilePopup(Popup):
+    pass
+
+class ValidationPopup(Popup):
+    def runTestThread(self):
+        threading.Thread(target=self.runTestSuite).start()
+
+    def runTestSuite(self):
+        self.ids.runTestButton.background_color = (0.7, 0.7, 0.7, 1)
+        self.ids.testingMessage.text = "Running Tests..."
+        self.ids.validationText.text = ""
+
+        testSuite = RunTest.TestSuite()
+
+        #Run tests from RunTest.TestSuite class
+        testSuite.passTest("IMPORT KIVY")
+        testSuite.testZero()
+        testSuite.testOne()
+        testSuite.testTwo()
+
+        self.ids.validationText.text = testSuite.printSummary()
+        self.ids.testingMessage.text = ""
+        self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
+
 class PyMac(App):
     def build(self):
         return MainLayout()
 
     def openLabInfoPop(self):
-        pop = LabInfoPopup()
+        if(self.root.currentSeries == 1):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop.open()
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = LabInfoPopup()
+                pop.open()
 
     def openRestraintPop(self):
-        pop = RestraintPopup()
+        if(self.root.currentSeries == 1):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
-        
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop.open()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = RestraintPopup()
+                pop.open()
 
     def openDatePop(self):
-        pop = DatePopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
         
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = DatePopup()
             pop.open()
 
     def openBalancePop(self):
-        pop = BalancePopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
         
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = BalancePopup()
             pop.open()
 
     def openDesignPop(self):
-        pop = DesignPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
         
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = DesignPopup()
             pop.open()
 
     def openWeightsPop(self):
-        pop = WeightsPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = WeightsPopup()
             pop.open()
 
     def openVectorsPop(self):
-        pop = VectorsPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = VectorsPopup()
             pop.open()
 
     def openStatisticsPop(self):
-        pop = StatisticsPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = StatisticsPopup()
             pop.open()
 
     def openSwPop(self):
-        pop = SwPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = SwPopup()
             pop.open()
 
     def openMeasurementsPop(self):
-        pop = MeasurementsPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = MeasurementsPopup()
             pop.open()
 
     def openGravityPop(self):
-        pop = GravityPopup()
+        seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags()
+        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
         if(checkOK):
             self.root.ids.errors.text = ""
+            pop = GravityPopup()
             pop.open()
 
-if __name__ == "__main__":
+    def openFilePop(self):
+        pop = OpenFilePopup()
+        pop.open()
+
+    def openValidationPop(self):
+        pop = ValidationPopup()
+        pop.open()
+
+if(__name__ == "__main__"):
     mainApp = PyMac()
     mainApp.run()

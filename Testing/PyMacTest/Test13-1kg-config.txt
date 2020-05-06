@@ -1,0 +1,85 @@
+# Test file #3 - 1 kg 4-1 direct readings
+
+# Validation
+# Erik Alfvin
+# April 5, 2020
+
+<Report-Number>  Test3-1kg
+
+<Restraint-ID>  055
+<Unc-Restraint>  0.034
+<Random-Error>  0
+
+@SERIES
+
+<Date>  04 03 2020
+<Technician-ID>  019
+<Check-Standard-ID>  54
+
+<Balance-ID>  003
+<Direct-Readings>  1
+<Direct-Reading-SF>  1.0
+
+<Design-ID>  112
+<Design>  1 -1  0  0
+<Design>  1  0 -1  0
+<Design>  1  0  0 -1
+<Design>  0  1 -1  0
+<Design>  0  1  0 -1
+<Design>  0  0  1 -1
+<Design>  1 -1  0  0
+<Design>  1  0 -1  0
+<Design>  1  0  0 -1
+<Design>  0  1 -1  0
+<Design>  0  1  0 -1
+<Design>  0  0  1 -1
+
+<Pounds>  0
+
+<Position>  A1kg           1000 7.9436 0.000045
+<Position>  B1kg           1000 7.9926 0.000045 3.961
+<Position>  C1kg           1000 7.9435 0.000045
+<Position>  D1kg           1000 7.9926 0.000045 6.353
+
+<Restraint>  0 1 0 1
+<Check-Standard>  0 -1 0 1
+<Linear-Combo>  0 0 0 0
+<Pass-Down>  0 0 0 0
+
+<Sigma-t>  0.003
+<Sigma-w>  0.0013
+
+<sw-Mass>  50
+<sw-Density>  8
+<sw-CCE>  0.000045
+
+
+<Balance-Reading>  -6.7570
+<Balance-Reading>  0.0018	
+<Balance-Reading>  -9.1448	
+<Balance-Reading>  6.7572	
+<Balance-Reading>  -2.3888	
+<Balance-Reading>  -9.1465	
+<Balance-Reading>  -6.7574	
+<Balance-Reading>  0.0010	
+<Balance-Reading>  -9.1446	
+<Balance-Reading>  6.7592	
+<Balance-Reading>  -2.3887	
+<Balance-Reading>  -9.1477
+
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+<Environmentals>  19.800 737.866 46.962
+
+<Env-Corrections>  -0.3 0.9 0.7
+
+
