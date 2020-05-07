@@ -239,6 +239,42 @@ class MainLayout(BoxLayout):
 
         return False
 
+    def displaySeriesNominal(self, inputText, seriesButton):
+        #Call this from save(), gotoseries(), addpositionscallback()
+        seriesNominal = 0
+        units = ""
+        foundNominal = False
+        foundUnits = False
+
+        for line in inputText.splitlines():
+            if(len(line) == 0):
+                continue
+
+            if(line.strip().split()[0] == "<Position>" and foundNominal == False):
+                try:
+                    seriesNominal = line.strip().split()[2]
+                    foundNominal = True
+                except IndexError:
+                    pass
+                
+            elif(line.strip().split()[0] == "<Pounds>"):
+                try:
+                    unitsNum = line.strip().split()[1]
+                    if(unitsNum == "0"):
+                        units = "g"
+                        foundUnits = True
+                    if(unitsNum == "1"):
+                        units = "lb"
+                        foundUnits = True
+                except IndexError:
+                    pass
+
+        if(foundNominal and foundUnits):
+            nominal = str(seriesNominal) + units
+            seriesButton.text = "[color=#000000]Series " + str(seriesButton.seriesNum) + " - " + nominal + "[/color]"
+        else:
+            seriesButton.text = "[color=#000000]Series " + str(seriesButton.seriesNum) + "[/color]"
+
     def renderButtons(self, seriesText):
         #Make dictionary of tags, linked to True/False if they exist in userText.text
         tags = {"#": False, \
@@ -360,9 +396,14 @@ class MainLayout(BoxLayout):
 
     def goToSeries(self, button, exists, seriesNum):
         if(exists):
-            #Write current usertext into seriesTexts, pull new seriesText into userText
+            #Write current usertext into seriesTexts
             self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
+            #Render series button nominal
+            seriesButtonId = "series" + str(self.currentSeries)
+            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+
+            #Pull new seriesText into userText
             self.ids.userText.text = self.seriesTexts[seriesNum - 1]
             self.ids.userText.cursor = (0, 0)
             self.ids.userText.select_text(0, 0)
@@ -451,6 +492,9 @@ class MainLayout(BoxLayout):
         if(reportNum == False):
             self.ids.errors.text = "ERROR:\n" + "NO REPORT NUMBER PROVIDED, CANNOT SAVE"
             return
+
+        seriesButtonId = "series" + str(self.currentSeries)
+        self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
         
         fileText = ""
         for seriesText in self.seriesTexts:
@@ -704,6 +748,10 @@ class WeightsPopup(Popup):
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
         self.parent.children[1].ids.weightsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        #Render series nominal
+        seriesButtonId = "series" + str(self.parent.children[1].currentSeries)
+        self.parent.children[1].displaySeriesNominal(self.parent.children[1].ids.userText.text, self.parent.children[1].ids[seriesButtonId])
 
         self.dismiss()
 
