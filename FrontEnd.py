@@ -401,12 +401,13 @@ class MainLayout(BoxLayout):
 
     def goToSeries(self, button, exists, seriesNum):
         if(exists):
-            #Write current usertext into seriesTexts
-            self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+            if(self.currentSeries != None):
+                #Write current usertext into seriesTexts
+                self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
-            #Render current series button nominal
-            seriesButtonId = "series" + str(self.currentSeries)
-            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+                #Render current series button nominal
+                seriesButtonId = "series" + str(self.currentSeries)
+                self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
 
             #Pull new seriesText into userText
             self.ids.userText.text = self.seriesTexts[seriesNum - 1]
@@ -415,6 +416,7 @@ class MainLayout(BoxLayout):
 
             self.currentSeries = seriesNum
 
+            #Make all tabs black/blue:
             for sn in range(1, 14):
                 seriesID = "series" + str(sn)
 
@@ -422,6 +424,10 @@ class MainLayout(BoxLayout):
 
                 if(self.ids[seriesID].exists):
                     self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+
+            self.ids.outputFileTab.background_color = (0.155, 0.217, 0.292, 0.65)
+            if(self.ids.outputFileTab.exists):
+                self.ids.outputFileTab.text = "[color=#FFFFFF]" + self.ids.outputFileTab.text[15:]
 
             button.background_color = (0.906, 0.918, 0.926, 1)
             button.text = "[color=#000000]" + button.text[15:]
@@ -555,6 +561,10 @@ class MainLayout(BoxLayout):
             #Render output button/tab
             self.ids.outputFileTab.text = "[color=#FFFFFF][b]Output[/b][/color]"
             self.ids.outputFileTab.exists = True
+        else:
+            self.ids.outputFileTab.text = ""
+            self.ids.outputFileTab.exists = False
+            self.outputText = ""
 
     def openOutputFile(self, thisButton):
         if(thisButton.exists):
@@ -562,7 +572,7 @@ class MainLayout(BoxLayout):
             seriesButtonId = "series" + str(self.currentSeries)
             self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
 
-            self.currentSeries = 999
+            self.currentSeries = None
 
             #Pull output text into userText
             self.ids.userText.text = self.outputText
@@ -578,7 +588,7 @@ class MainLayout(BoxLayout):
                     self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
 
             thisButton.background_color = (0.906, 0.918, 0.926, 1)
-            thisButton.text = "[color=#000000][b]" + thisButton.text[18:]
+            thisButton.text = "[color=#000000]" + thisButton.text[15:]
 
             self.voidAllButtons()
 
