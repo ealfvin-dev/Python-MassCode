@@ -482,8 +482,10 @@ class MainLayout(BoxLayout):
                     else:
                         self.ids.userText.text += line
 
-                self.ids.userText.do_backspace()    
-                self.goToSeries(self.ids["series1"], True, 1)
+            self.ids.userText.do_backspace()    
+            self.goToSeries(self.ids["series1"], True, 1)
+            self.getReportNum(self.seriesTexts[0].splitlines())
+            self.grabOutputFile()
 
         except(FileNotFoundError):
             self.ids.errors.text = "ERROR:\n" + "FILE NOT FOUND"
