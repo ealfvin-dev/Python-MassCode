@@ -24,9 +24,10 @@ import RunFile
 import RunTest
 
 import sys
+import os
 import threading
 
-import sqlite3
+#import sqlite3
 
 def getNumChacacters(text):
     chars = 0
@@ -41,6 +42,7 @@ class MainLayout(BoxLayout):
     numberOfSeries = 1
     currentSeries = 1
     seriesTexts = ["@SERIES\n\n"]
+    outputText = ""
 
     def __init__(self, **kwargs):
         super().__init__()
@@ -381,8 +383,11 @@ class MainLayout(BoxLayout):
         else:
             self.ids.measurementsButton.background_color = (0.08, 0.55, 1, 1)
 
+    def voidAllButtons(self):
+        pass
+
     def addSeries(self):
-        if(self.numberOfSeries == 14):
+        if(self.numberOfSeries == 13):
             return
 
         self.numberOfSeries += 1
@@ -399,7 +404,7 @@ class MainLayout(BoxLayout):
             #Write current usertext into seriesTexts
             self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
-            #Render series button nominal
+            #Render current series button nominal
             seriesButtonId = "series" + str(self.currentSeries)
             self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
 
@@ -410,7 +415,7 @@ class MainLayout(BoxLayout):
 
             self.currentSeries = seriesNum
 
-            for sn in range(1, 15):
+            for sn in range(1, 14):
                 seriesID = "series" + str(sn)
 
                 self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
@@ -532,8 +537,48 @@ class MainLayout(BoxLayout):
                 self.ids.errors.text = ""
                 try:
                     RunFile.run(self.reportNum + "-config.txt")
+                    self.grabOutputFile()
                 except:
                     self.ids.errors.text = "ERROR:\n" + str(sys.exc_info())
+
+    def grabOutputFile(self):
+        outFile = self.reportNum + "-out.txt"
+
+        if(os.path.exists(outFile)):
+            self.outputText = ""
+            f = open(outFile, 'r')
+            for line in f:
+                self.outputText += line
+            
+            #Render output button/tab
+            self.ids.outputFileTab.text = "[color=#FFFFFF][b]Output[/b][/color]"
+            self.ids.outputFileTab.exists = True
+
+    def openOutputFile(self, thisButton):
+        if(thisButton.exists):
+            #Render current series button nominal
+            seriesButtonId = "series" + str(self.currentSeries)
+            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+
+            self.currentSeries = 999
+
+            #Pull output text into userText
+            self.ids.userText.text = self.outputText
+            self.ids.userText.cursor = (0, 0)
+            self.ids.userText.select_text(0, 0)
+
+            for sn in range(1, 14):
+                seriesID = "series" + str(sn)
+
+                self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
+
+                if(self.ids[seriesID].exists):
+                    self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+
+            thisButton.background_color = (0.906, 0.918, 0.926, 1)
+            thisButton.text = "[color=#000000][b]" + thisButton.text[18:]
+
+            self.voidAllButtons()
 
 class OrderedText(TextInput):
     def __init__(self, **kwargs):

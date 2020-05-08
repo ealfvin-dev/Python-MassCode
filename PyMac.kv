@@ -181,15 +181,14 @@
             on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: series14
-            seriesNum: 14
+            id: outputFileTab
             text: ""
             markup: True
             background_normal: ''
             background_down: ''
             font_size: dp(self.width / menuButtonSizer)
             halign: 'center'
-            on_press: root.goToSeries(self, self.exists, self.seriesNum)
+            on_press: root.openOutputFile(self)
 
         Button:
             id: removeSeries
