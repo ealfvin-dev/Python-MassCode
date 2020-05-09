@@ -238,7 +238,7 @@
             id: content
             orientation: 'horizontal'
             spacing: self.width / 15
-            padding: (0, 50, 100, 30)
+            padding: (0, 50, 30, 30)
 
             BoxLayout:
                 id: menu
@@ -410,7 +410,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_release: app.openDesignPop(); root.parent.children[0].ids.dropDownn.dismiss()
+                        on_release: app.openDesignPop()
 
                     Button:
                         id: weightsButton

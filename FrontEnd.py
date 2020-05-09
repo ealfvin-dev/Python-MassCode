@@ -497,6 +497,10 @@ class MainLayout(BoxLayout):
             self.ids.errors.text = "ERROR:\n" + "FILE NOT FOUND"
 
     def save(self):
+        #If in the output tab, return
+        if(self.currentSeries == None):
+            return
+
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
@@ -530,6 +534,10 @@ class MainLayout(BoxLayout):
             self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def run(self):
+        #If in the output tab, return
+        if(self.currentSeries == None):
+            return
+
         if(not self.saved):
             self.ids.errors.text = "ERROR:\n" + "FILE MUST BE SAVED BEFORE RUNNING"
         else:
@@ -568,9 +576,12 @@ class MainLayout(BoxLayout):
 
     def openOutputFile(self, thisButton):
         if(thisButton.exists):
-            #Render current series button nominal
-            seriesButtonId = "series" + str(self.currentSeries)
-            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+            #Render current series button nominal and save current text if coming from a series tab
+            if(self.currentSeries != None):
+                seriesButtonId = "series" + str(self.currentSeries)
+                self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+
+                self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
             self.currentSeries = None
 
@@ -1000,94 +1011,104 @@ class PyMac(App):
                 pop.open()
 
     def openDatePop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
-        
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = DatePopup()
-            pop.open()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = DatePopup()
+                pop.open()
 
     def openBalancePop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
-        
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = BalancePopup()
-            pop.open()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = BalancePopup()
+                pop.open()
 
     def openDesignPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
-        
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = DesignPopup()
-            pop.open()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = DesignPopup()
+                pop.open()
+                pop.ids.dropDownn.dismiss()
 
     def openWeightsPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = WeightsPopup()
-            pop.open()
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = WeightsPopup()
+                pop.open()
 
     def openVectorsPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = VectorsPopup()
-            pop.open()
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = VectorsPopup()
+                pop.open()
 
     def openStatisticsPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = StatisticsPopup()
-            pop.open()
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = StatisticsPopup()
+                pop.open()
 
     def openSwPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = SwPopup()
-            pop.open()
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = SwPopup()
+                pop.open()
 
     def openMeasurementsPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = MeasurementsPopup()
-            pop.open()
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = MeasurementsPopup()
+                pop.open()
 
     def openGravityPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = GravityPopup()
-            pop.open()
+            if(checkOK):
+                self.root.ids.errors.text = ""
+                pop = GravityPopup()
+                pop.open()
 
     def openFilePop(self):
         pop = OpenFilePopup()
