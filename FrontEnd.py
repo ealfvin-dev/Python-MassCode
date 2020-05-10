@@ -249,7 +249,7 @@ class MainLayout(BoxLayout):
         foundUnits = False
 
         for line in inputText.splitlines():
-            if(len(line) == 0):
+            if(len(line.strip().split()) == 0):
                 continue
 
             if(line.strip().split()[0] == "<Position>" and foundNominal == False):
