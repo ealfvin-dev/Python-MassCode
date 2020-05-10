@@ -196,7 +196,7 @@ class MainLayout(BoxLayout):
 
                         errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
 
-                        self.ids.errors.text = "ERROR:\n" + errorMessage
+                        self.sendError(errorMessage)
                         return False
 
         return True
@@ -215,7 +215,7 @@ class MainLayout(BoxLayout):
                         break
 
             if(exists == 0):
-                self.ids.errors.text = "ERROR:\n" + tag + " DOES NOT EXIST IN SERIES " + str(seriesNum)
+                self.sendError(tag + " DOES NOT EXIST IN SERIES " + str(seriesNum))
                 return False
 
         return True
@@ -446,7 +446,7 @@ class MainLayout(BoxLayout):
             lastSeriesText = self.ids.userText.text.strip().splitlines()
 
         if(lastSeriesText == []):
-            self.ids.errors.text = ""
+            self.clearErrors()
 
             if(self.currentSeries == self.numberOfSeries):
                 self.goToSeries(self.ids["series" + str(self.numberOfSeries - 1)], True, self.numberOfSeries - 1)
@@ -457,7 +457,7 @@ class MainLayout(BoxLayout):
 
             self.numberOfSeries -= 1
         else:
-            self.ids.errors.text = "ERROR:\n" + "SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES"
+            self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
 
     def openFile(self, fileName):
         #Remove existing series
@@ -470,7 +470,7 @@ class MainLayout(BoxLayout):
 
         try:
             with open(fileName, 'r') as configFile:
-                self.ids.errors.text = ""
+                self.clearErrors()
                 seriesNum = 0
 
                 for line in configFile:
@@ -495,7 +495,7 @@ class MainLayout(BoxLayout):
             self.grabOutputFile()
 
         except(FileNotFoundError):
-            self.ids.errors.text = "ERROR:\n" + "FILE NOT FOUND"
+            self.sendError("FILE NOT FOUND")
 
     def save(self):
         #If in the output tab, return
@@ -508,7 +508,7 @@ class MainLayout(BoxLayout):
         reportNum = self.getReportNum(self.seriesTexts[0].splitlines())
 
         if(reportNum == False):
-            self.ids.errors.text = "ERROR:\n" + "NO REPORT NUMBER PROVIDED, CANNOT SAVE"
+            self.sendError("NO REPORT NUMBER PROVIDED, CANNOT SAVE")
             return
 
         seriesButtonId = "series" + str(self.currentSeries)
@@ -524,15 +524,12 @@ class MainLayout(BoxLayout):
         f.close()
 
         self.saved = True
+        self.sendSuccess("FILE SAVED AS " + str(self.reportNum) + "-config.txt")
 
-        checkOK = self.checkTags(self.seriesTexts, False)
+        self.renderButtons(self.ids.userText.text)
 
-        if(checkOK):
-            self.ids.errors.text = ""
-            self.renderButtons(self.ids.userText.text)
-
-            self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
-            self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
+        self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def run(self):
         #If in the output tab, return
@@ -540,7 +537,7 @@ class MainLayout(BoxLayout):
             return
 
         if(not self.saved):
-            self.ids.errors.text = "ERROR:\n" + "FILE MUST BE SAVED BEFORE RUNNING"
+            self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
         else:
             for i in range(len(self.seriesTexts)):
                 checkAllExist = self.checkIfAllTags(self.seriesTexts[i], i + 1)
@@ -551,12 +548,24 @@ class MainLayout(BoxLayout):
             checkWrittenTags = self.checkTags(self.seriesTexts, False)
 
             if(checkWrittenTags):
-                self.ids.errors.text = ""
+                self.clearErrors()
                 try:
                     RunFile.run(self.reportNum + "-config.txt")
                     self.grabOutputFile()
+                    self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
                 except:
-                    self.ids.errors.text = "ERROR:\n" + str(sys.exc_info())
+                    self.sendError(str(sys.exc_info()))
+
+    def sendError(self, message):
+        self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
+        self.ids.errors.text = "ERROR:\n" + message
+
+    def sendSuccess(self, message):
+        self.ids.errors.foreground_color = (0.05, 0.65, 0.1, 0.98)
+        self.ids.errors.text = message
+
+    def clearErrors(self):
+        self.ids.errors.text = ""
 
     def grabOutputFile(self):
         outFile = self.reportNum + "-out.txt"
@@ -997,7 +1006,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = LabInfoPopup()
                 pop.open()
 
@@ -1008,7 +1017,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
             
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = RestraintPopup()
                 pop.open()
 
@@ -1019,7 +1028,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
             
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = DatePopup()
                 pop.open()
 
@@ -1030,7 +1039,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
             
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = BalancePopup()
                 pop.open()
 
@@ -1041,7 +1050,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
             
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = DesignPopup()
                 pop.open()
                 pop.ids.dropDownn.dismiss()
@@ -1053,7 +1062,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = WeightsPopup()
                 pop.open()
 
@@ -1064,7 +1073,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = VectorsPopup()
                 pop.open()
 
@@ -1075,7 +1084,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = StatisticsPopup()
                 pop.open()
 
@@ -1086,7 +1095,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = SwPopup()
                 pop.open()
 
@@ -1097,7 +1106,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = MeasurementsPopup()
                 pop.open()
 
@@ -1108,7 +1117,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = GravityPopup()
                 pop.open()
 
