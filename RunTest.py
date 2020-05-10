@@ -100,9 +100,9 @@ class TestSuite():
 
             for i in range(len(isCloseRes)):
                 if isCloseRes[i] == True:
-                    self.passTest("AIR DENSITY CALC " + str(i))
+                    self.passTest("AIR DENSITY CALC " + str(i + 1))
                 else:
-                    self.failTest("AIR DENSITY CALC " + str(i))
+                    self.failTest("AIR DENSITY CALC " + str(i + 1))
         except:
             self.failTest("AIR DENSITIES WERE NOT CALCULATED")
 
@@ -154,9 +154,9 @@ class TestSuite():
 
             for i in range(len(inputDensities)):
                 if(inputDensities[i] == outFileDensities[i]):
-                    self.passTest("DATA WRITING TO OUTPUT FILE DESITY CHECK " + str(i + 1))
+                    self.passTest("DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
                 else:
-                    self.failTest("DATA WRITING TO OUTPUT FILE DESITY CHECK " + str(i + 1))
+                    self.failTest("DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
         except:
             self.failTest("ERROR IN RUN/OUTPUT REPORT GENERATION")
 

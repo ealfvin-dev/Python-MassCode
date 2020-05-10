@@ -212,9 +212,9 @@
             size_hint: (1.0, 0.05)
             padding: (0, 0, 0, 0)
 
-            Label:
-                text: "[color=#FF970F][size=72][b]Some Logo[/b][/size][/color]"
-                markup: True
+            Button:
+                id: openFile
+                text: ""
 
             Button:
                 id: openFile
@@ -525,7 +525,7 @@
                 orientation: "vertical"
                 spacing: 20
                 padding: (0, 0, 0, 0)
-                size_hint: (1.3, 1.0)
+                size_hint: (1.5, 1.0)
 
                 TextInput:
                     id: userText
@@ -552,7 +552,8 @@
 
         Label:
             id: footer
-            text: "[size=20][color='000000']Copywrite Erik Alfvin, 2020[/color][/size]"
+            font_size: mm(2.5)
+            text: "[color='000000']Copywrite Erik Alfvin, 2020[/color]"
             markup: True
             size_hint: (1.0, 0.01)
 
