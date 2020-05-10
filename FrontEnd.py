@@ -383,8 +383,18 @@ class MainLayout(BoxLayout):
         else:
             self.ids.measurementsButton.background_color = (0.08, 0.55, 1, 1)
 
-    def voidAllButtons(self):
-        pass
+    def greyOutButtons(self):
+        self.ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.balanceButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.statisticsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.designButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.weightsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.positionVectorsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.swButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def addSeries(self):
         if(self.numberOfSeries == 13):
@@ -612,7 +622,7 @@ class MainLayout(BoxLayout):
             thisButton.background_color = (0.906, 0.918, 0.926, 1)
             thisButton.text = "[color=#000000]" + thisButton.text[15:]
 
-            self.voidAllButtons()
+            self.greyOutButtons()
 
 class OrderedText(TextInput):
     def __init__(self, **kwargs):
