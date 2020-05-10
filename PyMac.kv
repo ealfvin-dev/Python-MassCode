@@ -181,15 +181,14 @@
             on_press: root.goToSeries(self, self.exists, self.seriesNum)
 
         SeriesButton:
-            id: series14
-            seriesNum: 14
+            id: outputFileTab
             text: ""
             markup: True
             background_normal: ''
             background_down: ''
             font_size: dp(self.width / menuButtonSizer)
             halign: 'center'
-            on_press: root.goToSeries(self, self.exists, self.seriesNum)
+            on_press: root.openOutputFile(self)
 
         Button:
             id: removeSeries
@@ -239,7 +238,7 @@
             id: content
             orientation: 'horizontal'
             spacing: self.width / 15
-            padding: (0, 50, 100, 30)
+            padding: (0, 50, 30, 30)
 
             BoxLayout:
                 id: menu
@@ -411,7 +410,7 @@
                         background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
-                        on_release: app.openDesignPop(); root.parent.children[0].ids.dropDownn.dismiss()
+                        on_release: app.openDesignPop()
 
                     Button:
                         id: weightsButton
@@ -547,7 +546,7 @@
                     background_normal: ''
                     font_name: "./Menlo.ttc"
                     text: ""
-                    foreground_color: 0.9, 0.05, 0.05, 0.85
+                    foreground_color: (0.9, 0.05, 0.05, 0.85)
                     size_hint: (1.0, 0.15)
                     readonly: True
 

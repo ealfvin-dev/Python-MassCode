@@ -24,9 +24,10 @@ import RunFile
 import RunTest
 
 import sys
+import os
 import threading
 
-import sqlite3
+#import sqlite3
 
 def getNumChacacters(text):
     chars = 0
@@ -41,6 +42,7 @@ class MainLayout(BoxLayout):
     numberOfSeries = 1
     currentSeries = 1
     seriesTexts = ["@SERIES\n\n"]
+    outputText = ""
 
     def __init__(self, **kwargs):
         super().__init__()
@@ -194,7 +196,7 @@ class MainLayout(BoxLayout):
 
                         errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
 
-                        self.ids.errors.text = "ERROR:\n" + errorMessage
+                        self.sendError(errorMessage)
                         return False
 
         return True
@@ -213,7 +215,7 @@ class MainLayout(BoxLayout):
                         break
 
             if(exists == 0):
-                self.ids.errors.text = "ERROR:\n" + tag + " DOES NOT EXIST IN SERIES " + str(seriesNum)
+                self.sendError(tag + " DOES NOT EXIST IN SERIES " + str(seriesNum))
                 return False
 
         return True
@@ -381,8 +383,11 @@ class MainLayout(BoxLayout):
         else:
             self.ids.measurementsButton.background_color = (0.08, 0.55, 1, 1)
 
+    def voidAllButtons(self):
+        pass
+
     def addSeries(self):
-        if(self.numberOfSeries == 14):
+        if(self.numberOfSeries == 13):
             return
 
         self.numberOfSeries += 1
@@ -396,27 +401,34 @@ class MainLayout(BoxLayout):
 
     def goToSeries(self, button, exists, seriesNum):
         if(exists):
-            #Write current usertext into seriesTexts
-            self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+            if(self.currentSeries != None):
+                #Write current usertext into seriesTexts
+                self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
-            #Render series button nominal
-            seriesButtonId = "series" + str(self.currentSeries)
-            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+                #Render current series button nominal
+                seriesButtonId = "series" + str(self.currentSeries)
+                self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
 
             #Pull new seriesText into userText
+            self.ids.userText.readonly = False
             self.ids.userText.text = self.seriesTexts[seriesNum - 1]
             self.ids.userText.cursor = (0, 0)
             self.ids.userText.select_text(0, 0)
 
             self.currentSeries = seriesNum
 
-            for sn in range(1, 15):
+            #Make all tabs black/blue:
+            for sn in range(1, 14):
                 seriesID = "series" + str(sn)
 
                 self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
 
                 if(self.ids[seriesID].exists):
                     self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+
+            self.ids.outputFileTab.background_color = (0.155, 0.217, 0.292, 0.65)
+            if(self.ids.outputFileTab.exists):
+                self.ids.outputFileTab.text = "[color=#FFFFFF]" + self.ids.outputFileTab.text[15:]
 
             button.background_color = (0.906, 0.918, 0.926, 1)
             button.text = "[color=#000000]" + button.text[15:]
@@ -434,7 +446,7 @@ class MainLayout(BoxLayout):
             lastSeriesText = self.ids.userText.text.strip().splitlines()
 
         if(lastSeriesText == []):
-            self.ids.errors.text = ""
+            self.clearErrors()
 
             if(self.currentSeries == self.numberOfSeries):
                 self.goToSeries(self.ids["series" + str(self.numberOfSeries - 1)], True, self.numberOfSeries - 1)
@@ -445,7 +457,7 @@ class MainLayout(BoxLayout):
 
             self.numberOfSeries -= 1
         else:
-            self.ids.errors.text = "ERROR:\n" + "SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES"
+            self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
 
     def openFile(self, fileName):
         #Remove existing series
@@ -458,7 +470,7 @@ class MainLayout(BoxLayout):
 
         try:
             with open(fileName, 'r') as configFile:
-                self.ids.errors.text = ""
+                self.clearErrors()
                 seriesNum = 0
 
                 for line in configFile:
@@ -477,20 +489,26 @@ class MainLayout(BoxLayout):
                     else:
                         self.ids.userText.text += line
 
-                self.ids.userText.do_backspace()    
-                self.goToSeries(self.ids["series1"], True, 1)
+            self.ids.userText.do_backspace()    
+            self.goToSeries(self.ids["series1"], True, 1)
+            self.getReportNum(self.seriesTexts[0].splitlines())
+            self.grabOutputFile()
 
         except(FileNotFoundError):
-            self.ids.errors.text = "ERROR:\n" + "FILE NOT FOUND"
+            self.sendError("FILE NOT FOUND")
 
     def save(self):
+        #If in the output tab, return
+        if(self.currentSeries == None):
+            return
+
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
         reportNum = self.getReportNum(self.seriesTexts[0].splitlines())
 
         if(reportNum == False):
-            self.ids.errors.text = "ERROR:\n" + "NO REPORT NUMBER PROVIDED, CANNOT SAVE"
+            self.sendError("NO REPORT NUMBER PROVIDED, CANNOT SAVE")
             return
 
         seriesButtonId = "series" + str(self.currentSeries)
@@ -506,19 +524,20 @@ class MainLayout(BoxLayout):
         f.close()
 
         self.saved = True
+        self.sendSuccess("FILE SAVED AS " + str(self.reportNum) + "-config.txt")
 
-        checkOK = self.checkTags(self.seriesTexts, False)
+        self.renderButtons(self.ids.userText.text)
 
-        if(checkOK):
-            self.ids.errors.text = ""
-            self.renderButtons(self.ids.userText.text)
-
-            self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
-            self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
+        self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def run(self):
+        #If in the output tab, return
+        if(self.currentSeries == None):
+            return
+
         if(not self.saved):
-            self.ids.errors.text = "ERROR:\n" + "FILE MUST BE SAVED BEFORE RUNNING"
+            self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
         else:
             for i in range(len(self.seriesTexts)):
                 checkAllExist = self.checkIfAllTags(self.seriesTexts[i], i + 1)
@@ -529,11 +548,71 @@ class MainLayout(BoxLayout):
             checkWrittenTags = self.checkTags(self.seriesTexts, False)
 
             if(checkWrittenTags):
-                self.ids.errors.text = ""
+                self.clearErrors()
                 try:
                     RunFile.run(self.reportNum + "-config.txt")
+                    self.grabOutputFile()
+                    self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
                 except:
-                    self.ids.errors.text = "ERROR:\n" + str(sys.exc_info())
+                    self.sendError(str(sys.exc_info()))
+
+    def sendError(self, message):
+        self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
+        self.ids.errors.text = "ERROR:\n" + message
+
+    def sendSuccess(self, message):
+        self.ids.errors.foreground_color = (0.05, 0.65, 0.1, 0.98)
+        self.ids.errors.text = message
+
+    def clearErrors(self):
+        self.ids.errors.text = ""
+
+    def grabOutputFile(self):
+        outFile = self.reportNum + "-out.txt"
+
+        if(os.path.exists(outFile)):
+            self.outputText = ""
+            f = open(outFile, 'r')
+            for line in f:
+                self.outputText += line
+            
+            #Render output button/tab
+            self.ids.outputFileTab.text = "[color=#FFFFFF][b]Output[/b][/color]"
+            self.ids.outputFileTab.exists = True
+        else:
+            self.ids.outputFileTab.text = ""
+            self.ids.outputFileTab.exists = False
+            self.outputText = ""
+
+    def openOutputFile(self, thisButton):
+        if(thisButton.exists):
+            #Save current text and render current series button nominal if coming from a series tab
+            if(self.currentSeries != None):
+                self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
+                seriesButtonId = "series" + str(self.currentSeries)
+                self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+
+            self.currentSeries = None
+
+            #Pull output text into userText
+            self.ids.userText.text = self.outputText
+            self.ids.userText.cursor = (0, 0)
+            self.ids.userText.select_text(0, 0)
+            self.ids.userText.readonly = True
+
+            for sn in range(1, 14):
+                seriesID = "series" + str(sn)
+
+                self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
+
+                if(self.ids[seriesID].exists):
+                    self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+
+            thisButton.background_color = (0.906, 0.918, 0.926, 1)
+            thisButton.text = "[color=#000000]" + thisButton.text[15:]
+
+            self.voidAllButtons()
 
 class OrderedText(TextInput):
     def __init__(self, **kwargs):
@@ -932,7 +1011,7 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = LabInfoPopup()
                 pop.open()
 
@@ -943,99 +1022,109 @@ class PyMac(App):
             checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
             
             if(checkOK):
-                self.root.ids.errors.text = ""
+                self.root.clearErrors()
                 pop = RestraintPopup()
                 pop.open()
 
     def openDatePop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
-        
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = DatePopup()
-            pop.open()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            
+            if(checkOK):
+                self.root.clearErrors()
+                pop = DatePopup()
+                pop.open()
 
     def openBalancePop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
-        
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = BalancePopup()
-            pop.open()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            
+            if(checkOK):
+                self.root.clearErrors()
+                pop = BalancePopup()
+                pop.open()
 
     def openDesignPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
-        
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = DesignPopup()
-            pop.open()
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            
+            if(checkOK):
+                self.root.clearErrors()
+                pop = DesignPopup()
+                pop.open()
+                pop.ids.dropDownn.dismiss()
 
     def openWeightsPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = WeightsPopup()
-            pop.open()
+            if(checkOK):
+                self.root.clearErrors()
+                pop = WeightsPopup()
+                pop.open()
 
     def openVectorsPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = VectorsPopup()
-            pop.open()
+            if(checkOK):
+                self.root.clearErrors()
+                pop = VectorsPopup()
+                pop.open()
 
     def openStatisticsPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = StatisticsPopup()
-            pop.open()
+            if(checkOK):
+                self.root.clearErrors()
+                pop = StatisticsPopup()
+                pop.open()
 
     def openSwPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = SwPopup()
-            pop.open()
+            if(checkOK):
+                self.root.clearErrors()
+                pop = SwPopup()
+                pop.open()
 
     def openMeasurementsPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = MeasurementsPopup()
-            pop.open()
+            if(checkOK):
+                self.root.clearErrors()
+                pop = MeasurementsPopup()
+                pop.open()
 
     def openGravityPop(self):
-        seriesText = self.root.ids.userText.text
+        if(self.root.currentSeries != None):
+            seriesText = self.root.ids.userText.text
 
-        checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
 
-        if(checkOK):
-            self.root.ids.errors.text = ""
-            pop = GravityPopup()
-            pop.open()
+            if(checkOK):
+                self.root.clearErrors()
+                pop = GravityPopup()
+                pop.open()
 
     def openFilePop(self):
         pop = OpenFilePopup()
