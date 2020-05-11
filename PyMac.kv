@@ -204,7 +204,7 @@
     BoxLayout:
         id: secondaryMainBox
         orientation: 'vertical'
-        spacing: 10
+        spacing: 5
 
         BoxLayout:
             id: navBar
@@ -214,16 +214,17 @@
 
             Button:
                 id: openFile
-                text: ""
-
-            Button:
-                id: openFile
                 text: "Open File"
                 on_release: app.openFilePop()
 
             Button:
+                id: searchDB
+                text: "Search DB"
+
+            Button:
                 id: newFile
                 text: "New File"
+                on_release: app.openNewFilePop()
 
             Button:
                 id: validation
@@ -231,8 +232,8 @@
                 on_release: app.openValidationPop()
 
             Button:
-                id: help
-                text: "Help"
+                id: tutorial
+                text: "Tutorial"
 
         BoxLayout:
             id: content
@@ -1859,6 +1860,57 @@
                 on_release: root.parent.children[1].openFile(root.ids.openFileText.text); root.dismiss()
 
             Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Cancel[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_release: root.dismiss()
+
+<OpenNewFilePopup>:
+    id: openNewFilePop
+    auto_dismiss: True
+    title: "Open New File"
+    title_size: dp(18)
+    size_hint: (0.35, 0.28)
+
+    BoxLayout:
+        id: openFilePLayout
+        orientation: "vertical"
+        spacing: 35
+        padding: 20, 0, 20, 20
+
+        Label:
+            id: newFileMessage
+            size_hint: (1, 0.6)
+            font_size: popUpLabelSize
+            text: ""
+            markup: True
+            color: popLabelColor
+            text_size: self.size
+            halign: "left"
+            valign: "bottom"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.92)
+
+            Button:
+                id: openNewFileButton
+                size_hint: (1, 1)
+                text: ""
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_release: root.openNewFile()
+
+            Button:
+                id: cancelNewFileButton
                 size_hint: (1, 1)
                 text: "[color=#FFFFFF]Cancel[/color]"
                 font_size: dp(self.width / buttonSizer)
