@@ -996,18 +996,47 @@ class OpenFilePopup(Popup):
     pass
 
 class OpenNewFilePopup(Popup):
-    def setMessage(self):
+    def setMessage(self, newFile):
+        print(self.parent.children)
         rep = self.parent.children[1].getReportNum(self.parent.children[1].ids.userText.text.splitlines())
         if(rep == False):
             self.ids.newFileMessage.text = "No report number provided in Series 1,\nfile cannot be saved. Open new file anyway?"
             self.ids.openNewFileButton.text = "Don't Save &\nOpen"
+            if(newFile == True):
+                self.ids.openNewFileButton.bind(on_release=self.openNewFileNoSave)
+            else:
+                self.ids.openNewFileButton.bind(on_release=self.openFileSearchNoSave)
         else:
             self.ids.newFileMessage.text = "Save before opening new file?"
             self.ids.openNewFileButton.text = "Save & Open"
             self.ids.cancelNewFileButton.text = "[color=#FFFFFF]Don't Save\n& Open[/color]"
+            if(newFile == True):
+                self.ids.openNewFileButton.bind(on_release=self.openNewFile)
+                self.ids.cancelNewFileButton.bind(on_release=self.openNewFileNoSave)
+            else:
+                self.ids.openNewFileButton.bind(on_release=self.openFileSearch)
+                self.ids.cancelNewFileButton.bind(on_release=self.openFileSearchNoSave)
 
-    def openNewFile(self):
-        pass
+    def openFileSearch(self, e):
+        self.parent.children[1].save()
+
+        fileSearchPop = OpenFilePopup()
+        fileSearchPop.open()
+        self.dismiss()
+
+    def openFileSearchNoSave(self, e):
+        fileSearchPop = OpenFilePopup()
+        fileSearchPop.open()
+        self.dismiss()
+
+    def openNewFile(self, e):
+        self.parent.children[1].save()
+        self.parent.children[1].openFile(None)
+        self.dismiss()
+
+    def openNewFileNoSave(self, e):
+        self.parent.children[1].openFile(None)
+        self.dismiss()
 
 class ValidationPopup(Popup):
     def runTestThread(self):
@@ -1161,7 +1190,7 @@ class PyMac(App):
         if(self.root.saved == False and freshOpen == False):
             pop = OpenNewFilePopup()
             pop.open()
-            pop.setMessage()
+            pop.setMessage(False)
         else:
             pop = OpenFilePopup()
             pop.open()
@@ -1171,7 +1200,7 @@ class PyMac(App):
         if(self.root.saved == False and freshOpen == False):
             pop = OpenNewFilePopup()
             pop.open()
-            pop.setMessage()
+            pop.setMessage(True)
         else:
             self.root.openFile(None)
 
