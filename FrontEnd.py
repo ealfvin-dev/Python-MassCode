@@ -229,7 +229,7 @@ class MainLayout(BoxLayout):
 
     def getReportNum(self, text):
         for line in text:
-            if(len(line) == 0):
+            if(len(line.strip().split()) == 0):
                 continue
 
             if(line.strip().split()[0] == "<Report-Number>"):
@@ -237,8 +237,10 @@ class MainLayout(BoxLayout):
                     self.reportNum = line.strip().split()[1]
                     return line.strip().split()[1]
                 except IndexError:
+                    self.reportNum = ""
                     return False
 
+        self.reportNum = ""
         return False
 
     def displaySeriesNominal(self, inputText, seriesButton):
@@ -470,6 +472,17 @@ class MainLayout(BoxLayout):
             self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
 
     def openFile(self, fileName):
+        #fileName = None to open a new file
+        if(fileName == None):
+            configFile = ["@SERIES", "\n", "\n"]
+        else:
+            #Check if file exists
+            try:
+                configFile = open(fileName, 'r')
+            except(FileNotFoundError):
+                self.sendError("FILE NOT FOUND")
+                return
+
         #Remove existing series
         self.goToSeries(self.ids["series1"], True, 1)
         self.ids.userText.text = ""
@@ -478,34 +491,32 @@ class MainLayout(BoxLayout):
             self.seriesTexts[self.numberOfSeries - 1] = ""
             self.removeLastSeries()
 
-        try:
-            with open(fileName, 'r') as configFile:
-                self.clearErrors()
-                seriesNum = 0
+        self.clearErrors()
+        seriesNum = 0
 
-                for line in configFile:
-                    if(line.strip() == "@SERIES"):
-                        seriesNum += 1
-                        if(seriesNum > 1):
-                            self.ids.userText.do_backspace()
+        for line in configFile:
+            if(line.strip() == "@SERIES"):
+                seriesNum += 1
+                if(seriesNum > 1):
+                    self.ids.userText.do_backspace()
 
-                            self.addSeries()
-                            self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
+                    self.addSeries()
+                    self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
 
-                            self.ids.userText.text = "@SERIES\n"
-                            continue
-                        else:
-                            self.ids.userText.text += "@SERIES\n"
-                    else:
-                        self.ids.userText.text += line
+                    self.ids.userText.text = "@SERIES\n"
+                    continue
+                else:
+                    self.ids.userText.text += "@SERIES\n"
+            else:
+                self.ids.userText.text += line
 
-            self.ids.userText.do_backspace()    
-            self.goToSeries(self.ids["series1"], True, 1)
-            self.getReportNum(self.seriesTexts[0].splitlines())
-            self.grabOutputFile()
+        if(fileName != None):
+            configFile.close()
 
-        except(FileNotFoundError):
-            self.sendError("FILE NOT FOUND")
+        self.ids.userText.do_backspace()    
+        self.goToSeries(self.ids["series1"], True, 1)
+        self.getReportNum(self.seriesTexts[0].splitlines())
+        self.grabOutputFile()
 
     def save(self):
         #If in the output tab, return
@@ -518,7 +529,7 @@ class MainLayout(BoxLayout):
         reportNum = self.getReportNum(self.seriesTexts[0].splitlines())
 
         if(reportNum == False):
-            self.sendError("NO REPORT NUMBER PROVIDED, CANNOT SAVE")
+            self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1, CANNOT SAVE")
             return
 
         seriesButtonId = "series" + str(self.currentSeries)
@@ -989,6 +1000,48 @@ class GravityPopup(Popup):
 class OpenFilePopup(Popup):
     pass
 
+class OpenNewFilePopup(Popup):
+    def setMessage(self, newFile):
+        rep = self.parent.children[1].getReportNum(self.parent.children[1].ids.userText.text.splitlines())
+        if(rep == False):
+            self.ids.newFileMessage.text = "No report number provided in Series 1,\nfile cannot be saved. Open new file anyway?"
+            self.ids.openNewFileButton.text = "Don't Save &\nOpen"
+            if(newFile == True):
+                self.ids.openNewFileButton.bind(on_release=self.openNewFileNoSave)
+            else:
+                self.ids.openNewFileButton.bind(on_release=self.openFileSearchNoSave)
+        else:
+            self.ids.newFileMessage.text = "Save before opening new file?"
+            self.ids.openNewFileButton.text = "Save & Open"
+            self.ids.cancelNewFileButton.text = "[color=#FFFFFF]Don't Save\n& Open[/color]"
+            if(newFile == True):
+                self.ids.openNewFileButton.bind(on_release=self.openNewFile)
+                self.ids.cancelNewFileButton.bind(on_release=self.openNewFileNoSave)
+            else:
+                self.ids.openNewFileButton.bind(on_release=self.openFileSearch)
+                self.ids.cancelNewFileButton.bind(on_release=self.openFileSearchNoSave)
+
+    def openFileSearch(self, e):
+        self.parent.children[1].save()
+
+        fileSearchPop = OpenFilePopup()
+        fileSearchPop.open()
+        self.dismiss()
+
+    def openFileSearchNoSave(self, e):
+        fileSearchPop = OpenFilePopup()
+        fileSearchPop.open()
+        self.dismiss()
+
+    def openNewFile(self, e):
+        self.parent.children[1].save()
+        self.parent.children[1].openFile(None)
+        self.dismiss()
+
+    def openNewFileNoSave(self, e):
+        self.parent.children[1].openFile(None)
+        self.dismiss()
+
 class ValidationPopup(Popup):
     def runTestThread(self):
         threading.Thread(target=self.runTestSuite).start()
@@ -1137,8 +1190,23 @@ class PyMac(App):
                 pop.open()
 
     def openFilePop(self):
-        pop = OpenFilePopup()
-        pop.open()
+        freshOpen = self.root.numberOfSeries == 1 and self.root.ids.userText.text.strip() == "@SERIES"
+        if(self.root.saved == False and freshOpen == False):
+            pop = OpenNewFilePopup()
+            pop.open()
+            pop.setMessage(False)
+        else:
+            pop = OpenFilePopup()
+            pop.open()
+
+    def openNewFilePop(self):
+        freshOpen = self.root.numberOfSeries == 1 and self.root.ids.userText.text.strip() == "@SERIES"
+        if(self.root.saved == False and freshOpen == False):
+            pop = OpenNewFilePopup()
+            pop.open()
+            pop.setMessage(True)
+        else:
+            self.root.openFile(None)
 
     def openValidationPop(self):
         pop = ValidationPopup()
