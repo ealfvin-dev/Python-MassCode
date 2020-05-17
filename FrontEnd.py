@@ -997,7 +997,6 @@ class OpenFilePopup(Popup):
 
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
-        print(self.parent.children)
         rep = self.parent.children[1].getReportNum(self.parent.children[1].ids.userText.text.splitlines())
         if(rep == False):
             self.ids.newFileMessage.text = "No report number provided in Series 1,\nfile cannot be saved. Open new file anyway?"
