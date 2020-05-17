@@ -13,7 +13,7 @@ def writeOut(seriesList):
 
             f.write(str(series.reportNumber) + "\n\n")
 
-        f.write("SERIES " + str(series.seriesNumber + 1) + "\n\n")
+        f.write("***SERIES " + str(series.seriesNumber + 1) + "***\n\n")
 
         f.write("OPERATOR  " + str(series.technicianId) + "\n")
         f.write("BALANCE ID  " + str(series.balanceId) + "\n")
@@ -36,6 +36,8 @@ def writeOut(seriesList):
         f.write("---RESTRAINT  " + "+".join(restraint) + "\n")
         f.write("---CHECK STANDARD  " + check + "\n\n")
 
+        #Air Densities
+        f.write("##ENVIRONMENTALS##\n")
         f.write("        T(" + chr(730) + "C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)\n")
         table = []
         for i in range(len(series.environmentals)):
@@ -59,7 +61,8 @@ def writeOut(seriesList):
 
         f.write(tabulate(table, tablefmt="plain", floatfmt=("", ".2f", ".2f", ".2f", ".8f")) + "\n\n")
 
-        f.write("BALANCE OBSERVATIONS\n")
+        #Observations
+        f.write("##BALANCE OBSERVATIONS##\n")
         table = []
         for i in range(len(series.balanceReadings)):
             line = []
@@ -76,7 +79,8 @@ def writeOut(seriesList):
 
         f.write(tabulate(table, tablefmt="plain") + "\n\n")
 
-        f.write("SENSITIVITIES\n")
+        #Sensitivities
+        f.write("##SENSITIVITIES##\n")
         table = []
         for i in range(len(series.balanceReadings)):
             line = []
@@ -102,6 +106,25 @@ def writeOut(seriesList):
             table.append(line)
 
         f.write(tabulate(table, headers=["", "LOAD\n(g)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"], floatfmt=("", ".5f", ".5f", ".5f"), tablefmt="plain", colalign=("left", "center", "center", "center")) + "\n\n")
+
+        #Statistics
+        f.write("##STATISTICS##\n")
+        if(series.fValue > series.fCritical):
+            f.write("############################################\n\n")
+
+        f.write("#F-TEST\n")
+        f.write("ACCEPTED SW = " + str(round(series.sigmaW, 6)) + " MG\n")
+        f.write("OBSERVED SW = " + str(round(series.swObs, 6)) + " MG\n")
+        f.write("CRITICAL F-VALUE = " + str(round(series.fCritical, 2)) + "\n")
+        f.write("OBSERVED F-VALUE = " + str(round(series.fValue, 2)) + "\n")
+
+        if(series.fValue <= series.fCritical):
+            f.write("--------\n| PASS |\n--------\n\n")
+        else:
+            f.write("--------\n| FAIL |\n--------\n\n")
+
+        if(series.fValue > series.fCritical):
+            f.write("############################################\n\n")
 
         table = []
         for i in range(len(series.weightIds)):

@@ -96,6 +96,11 @@ class MatrixSolution:
 
         #Statistics Stuff:
         self.df = 0
+        self.swObs = 0
+        self.fCritical = 0
+        self.fValue = 0
+        self.tCritical = 0
+        self.tValue = 0
 
     def calculateAirDensity(self, t, p, rh):
         #Calculates the air density using the CIPM 2007 air density equation
@@ -325,32 +330,34 @@ class MatrixSolution:
         print(matrixBHat, "\n")
 
         self.matrixBHat = matrixBHat
-        self.doStatistics(matrixQ)
 
-    def doStatistics(self, matrixQ):
+        alpha = 0.05
+        self.fTest(alpha, matrixQ)
+        self.tTest(alpha)
+
+    def fTest(self, alpha, matrixQ):
         #Calculate YHat = XQX'Y = the predicted values from the best fit (in grams):
         self.df = (self.observations - self.positions) + 1
         matrixYHat = np.matmul(np.matmul(np.matmul(self.designMatrix, matrixQ), np.matrix.transpose(self.designMatrix)), self.matrixY)
 
         #Calculate the within process standard deviation (in mg):
-        sumOfResiduals = 0.0 #grams
+        sumOfResiduals = 0.0 #grams^2
         for i in range(np.shape(matrixYHat)[0]):
             sumOfResiduals += (self.matrixY[i, 0] - matrixYHat[i, 0])**2
         
         sw = sqrt(sumOfResiduals / self.df) * 1000 #mg
 
-        alpha = 0.05
-
         fCritical = scipy.stats.f.ppf(1 - alpha, self.df, 1000)
         f = sw**2 / self.sigmaW**2
+
+        self.swObs = sw
+        self.fCritical = fCritical
+        self.fValue = f
 
         if f < fCritical:
             fPass = True
         else:
             fPass = False
-
-        tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
-        t = 0
 
         print("sw =", str(sw), "mg")
         print("df =", str(self.df))
@@ -360,5 +367,12 @@ class MatrixSolution:
         print("F-observed =", str(f))
         print("F-test Passed =", str(fPass))
         print("")
+
+    def tTest(self, alpha):
+        tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
+        t = 0
+
+        self.tCritical = tCritical
+        self.tValue = t
 
         print("T-critical =", str(tCritical))
