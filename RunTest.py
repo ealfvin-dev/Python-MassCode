@@ -107,7 +107,7 @@ class TestSuite():
             self.failTest("AIR DENSITIES WERE NOT CALCULATED")
 
     def testTwo(self):
-        #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
+        #Test writing stuff into output file
         self.longOutput += "\n\n###RUNNING TEST: WRITING DATA TO OUTPUT FILE...\n\n"
 
         try:
@@ -115,8 +115,14 @@ class TestSuite():
 
             outFileDensities = []
             outFileMasses = []
-            expectedMasses = data[0].calculatedMasses[0]
-            self.longOutput += "EXPECTED MASSES: \n" + "\n".join(str(x) for x in expectedMasses) + "\n\n"
+            outFilesw = 0
+            outFileswAccepted = 0
+            outFileFcrit = 0
+            outFileFvalue = 0
+            outFileTcrit = 0
+            outFileTvalue = 0
+            outFileCheckStd = 0
+            outFileCheckStdAccepted = 0
 
             #Pull useful stuff out of output file
             with open("Test2-out.txt", 'r') as outFile:
@@ -128,7 +134,26 @@ class TestSuite():
                     if(m[0] == "W500g" or m[0] == "W300g" or m[0] == "W200g" or m[0] == "W100g" or m[0] == "P100g" or m[0] == "Wsum"):
                         outFileMasses.append(float(m[4]))
                         outFileDensities.append(float(m[2]))
+                    elif(m[0] == "ACCEPTED_SW"):
+                        outFileswAccepted = float(m[2])
+                    elif(m[0] == "OBSERVED_SW"):
+                        outFilesw = float(m[2])
+                    elif(m[0] == "CRITICAL_F-VALUE"):
+                        outFileFcrit = float(m[2])
+                    elif(m[0] == "OBSERVED_F-VALUE"):
+                        outFileFvalue = float(m[2])
+                    elif(m[0] == "ACCEPTED_MASS_OF_CHECK_STANNDARD"):
+                        outFileCheckStdAccepted = float(m[2])
+                    elif(m[0] == "OBSERVED_MASS_OF_CHECK_STANNDARD"):
+                        outFileCheckStd = float(m[2])
+                    elif(m[0] == "CRITICAL_T-VALUE"):
+                        outFileTcrit = float(m[2])
+                    elif(m[0] == "OBSERVED_T-VALUE"):
+                        outFileTvalue = float(m[2])
 
+            #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
+            expectedMasses = data[0].calculatedMasses[0]
+            self.longOutput += "EXPECTED MASSES: \n" + "\n".join(str(x) for x in expectedMasses) + "\n\n"
             self.longOutput += "OUTPUT FILE MASSES: \n" + "\n".join(str(x) for x in outFileMasses) + "\n\n"
 
             for i in range(len(expectedMasses)):
@@ -157,6 +182,38 @@ class TestSuite():
                     self.passTest("DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
                 else:
                     self.failTest("DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
+
+            #Test if statistics were written out correctly
+            self.longOutput += "\n\nSTATISTICS:\n\n"
+            self.longOutput += "CALCULATED SW OBSERVED: " + str(round(data[0].swObs, 6)) + "\n"
+            self.longOutput += "OUTPUT FILE SW OBSERVED: " + str(outFilesw) + "\n\n"
+            self.longOutput += "INPUT SW ACCEPTED: " + str(round(data[0].sigmaW, 6)) + "\n"
+            self.longOutput += "OUTPUT FILE SW ACCEPTED: " + str(outFileswAccepted) + "\n\n"
+            self.longOutput += "CALCULATED F-CRITICAL: " + str(round(data[0].fCritical, 2)) + "\n"
+            self.longOutput += "OUTPUT FILE F-CRITICAL: " + str(outFileFcrit) + "\n\n"
+            self.longOutput += "CALCULATED F-VALUE: " + str(round(data[0].fValue, 2)) + "\n"
+            self.longOutput += "OUTPUT FILE F-VALUE: " + str(outFileFvalue) + "\n\n"
+
+            if(outFilesw == round(data[0].swObs, 6)):
+                self.passTest("DATA WRITING TO OUTPUT FILE SW OBSERVED")
+            else:
+                self.failTest("DATA WRITING TO OUTPUT FILE SW OBSERVED")
+
+            if(outFileswAccepted == round(data[0].sigmaW, 6)):
+                self.passTest("DATA WRITING TO OUTPUT FILE SW ACCEPTED")
+            else:
+                self.failTest("DATA WRITING TO OUTPUT FILE SW ACCEPTED")
+
+            if(outFileFcrit == round(data[0].fCritical, 2)):
+                self.passTest("DATA WRITING TO OUTPUT FILE F-CRITICAL")
+            else:
+                self.failTest("DATA WRITING TO OUTPUT FILE F-CRITICAL")
+
+            if(outFileFvalue == round(data[0].fValue, 2)):
+                self.passTest("DATA WRITING TO OUTPUT FILE F-VALUE")
+            else:
+                self.failTest("DATA WRITING TO OUTPUT FILE F-VALUE")
+
         except:
             self.failTest("ERROR IN RUN/OUTPUT REPORT GENERATION")
 
