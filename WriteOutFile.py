@@ -107,10 +107,31 @@ def writeOut(seriesList):
 
         f.write(tabulate(table, headers=["", "LOAD\n(g)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"], floatfmt=("", ".5f", ".5f", ".5f"), tablefmt="plain", colalign=("left", "center", "center", "center")) + "\n\n")
 
+        #Deltas
+        f.write("##DELTAS##\n")
+        table = []
+        for i in range(len(series.balanceReadings)):
+            line = []
+            load = series.loads[i]
+
+            line.append(str(i + 1) + ": ")
+
+            if(int(load) == float(load)):
+                line.append(int(load))
+            else:
+                line.append(float(load))
+
+            line.append(series.deltas[i])
+
+            table.append(line)
+
+        f.write(tabulate(table, headers=["", "LOAD\n(g)", "DELTA\n(MG)"], floatfmt=("", ".5f", ".5f"), tablefmt="plain", colalign=("left", "center", "decimal")) + "\n\n")
+
         #Statistics
+        #F-test
         f.write("##STATISTICS##\n")
         if(series.fValue > series.fCritical):
-            f.write("############################################\n\n")
+            f.write("################################################################\n")
 
         f.write("#F-TEST\n")
         f.write("ACCEPTED SW = " + str(round(series.sigmaW, 6)) + " MG\n")
@@ -119,12 +140,30 @@ def writeOut(seriesList):
         f.write("OBSERVED F-VALUE = " + str(round(series.fValue, 2)) + "\n")
 
         if(series.fValue <= series.fCritical):
-            f.write("--------\n| PASS |\n--------\n\n")
+            f.write("--------\n| PASS |\n--------\n")
         else:
-            f.write("--------\n| FAIL |\n--------\n\n")
+            f.write("--------\n| FAIL |\n--------\n")
 
         if(series.fValue > series.fCritical):
-            f.write("############################################\n\n")
+            f.write("################################################################\n")
+
+        #T-test
+        if(series.tValue > series.tCritical):
+            f.write("################################################################\n")
+
+        f.write("#T-TEST\n")
+        f.write("ACCEPTED MASS OF CHECK STANNDARD = " + str(round(series.sigmaW, 6)) + " MG\n")
+        f.write("OBSERVED MASS OF CHECK STANNDARD = " + str(round(series.swObs, 6)) + " MG\n")
+        f.write("CRITICAL T-VALUE = " + str(round(series.tCritical, 2)) + "\n")
+        f.write("OBSERVED T-VALUE = " + str(round(series.tValue, 2)) + "\n")
+
+        if(series.tValue <= series.tCritical):
+            f.write("--------\n| PASS |\n--------\n\n")
+        else:
+            f.write("--------\n| FAIL |\n--------\n")
+
+        if(series.tValue > series.tCritical):
+            f.write("################################################################\n\n")
 
         table = []
         for i in range(len(series.weightIds)):

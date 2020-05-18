@@ -101,6 +101,7 @@ class MatrixSolution:
         self.fValue = 0
         self.tCritical = 0
         self.tValue = 0
+        self.deltas = [] #mg
 
     def calculateAirDensity(self, t, p, rh):
         #Calculates the air density using the CIPM 2007 air density equation
@@ -344,6 +345,7 @@ class MatrixSolution:
         sumOfResiduals = 0.0 #grams^2
         for i in range(np.shape(matrixYHat)[0]):
             sumOfResiduals += (self.matrixY[i, 0] - matrixYHat[i, 0])**2
+            self.deltas.append((self.matrixY[i, 0] - matrixYHat[i, 0]) * 1000)
         
         sw = sqrt(sumOfResiduals / self.df) * 1000 #mg
 
