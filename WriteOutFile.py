@@ -152,8 +152,8 @@ def writeOut(seriesList):
             f.write("################################################################\n")
 
         f.write("#T-TEST\n")
-        f.write("ACCEPTED_MASS_OF_CHECK_STANNDARD = " + str(round(series.sigmaW, 6)) + " MG\n")
-        f.write("OBSERVED_MASS_OF_CHECK_STANNDARD = " + str(round(series.swObs, 6)) + " MG\n")
+        f.write("ACCEPTED_CHECK_STANDARD_CORRECTION = " + str(series.acceptedCheckCorrection) + " MG\n")
+        f.write("OBSERVED_CHECK_STANDARD_CORRECTION = " + str(round(series.calculatedCheckCorrection, 6)) + " MG\n")
         f.write("CRITICAL_T-VALUE = " + str(round(series.tCritical, 2)) + "\n")
         f.write("OBSERVED_T-VALUE = " + str(round(series.tValue, 2)) + "\n")
 

@@ -5,7 +5,7 @@ import os
 
 class TestSuite():
     def __init__(self):
-        self.expectedNumTests = 27
+        self.expectedNumTests = 33
         self.testNum = 1
         self.passed = 0
         self.failed = 0
@@ -115,14 +115,14 @@ class TestSuite():
 
             outFileDensities = []
             outFileMasses = []
-            outFilesw = 0
-            outFileswAccepted = 0
-            outFileFcrit = 0
-            outFileFvalue = 0
-            outFileTcrit = 0
-            outFileTvalue = 0
-            outFileCheckStd = 0
-            outFileCheckStdAccepted = 0
+            outFilesw = 0.0
+            outFileswAccepted = 0.0
+            outFileFcrit = 0.0
+            outFileFvalue = 0.0
+            outFileCheckStd = 0.0
+            outFileCheckStdAccepted = 0.0
+            outFileTcrit = 0.0
+            outFileTvalue = 0.0
 
             #Pull useful stuff out of output file
             with open("Test2-out.txt", 'r') as outFile:
@@ -142,9 +142,9 @@ class TestSuite():
                         outFileFcrit = float(m[2])
                     elif(m[0] == "OBSERVED_F-VALUE"):
                         outFileFvalue = float(m[2])
-                    elif(m[0] == "ACCEPTED_MASS_OF_CHECK_STANNDARD"):
+                    elif(m[0] == "ACCEPTED_CHECK_STANDARD_CORRECTION"):
                         outFileCheckStdAccepted = float(m[2])
-                    elif(m[0] == "OBSERVED_MASS_OF_CHECK_STANNDARD"):
+                    elif(m[0] == "OBSERVED_CHECK_STANDARD_CORRECTION"):
                         outFileCheckStd = float(m[2])
                     elif(m[0] == "CRITICAL_T-VALUE"):
                         outFileTcrit = float(m[2])
@@ -164,15 +164,17 @@ class TestSuite():
 
             #Test if densities in output file match input
             inputDensities = []
+            inputAcceptedCSCorr = 0.0
 
             with open("./Testing/PyMacTest/Test2-config.txt", 'r') as configFile:
                 for line in configFile:
                     m = line.strip().split()
                     if(m == [] or m[0] == "\n"):
                         continue
-
                     if(m[0] == "<Position>"):
                         inputDensities.append(float(m[3]))
+                        if(m[1] == "P100g"):
+                            inputAcceptedCSCorr = float(m[5])
 
             self.longOutput += "\n\nINPUT FILE DENSITIES: \n" + "\n".join(str(x) for x in inputDensities) + "\n\n"
             self.longOutput += "OUTPUT FILE DENSITIES: \n" + "\n".join(str(x) for x in outFileDensities) + "\n"
@@ -194,6 +196,11 @@ class TestSuite():
             self.longOutput += "CALCULATED F-VALUE: " + str(round(data[0].fValue, 2)) + "\n"
             self.longOutput += "OUTPUT FILE F-VALUE: " + str(outFileFvalue) + "\n\n"
 
+            self.longOutput += "CALCULATED CHECK STANDARD CORRECTION: " + str(round(data[0].calculatedCheckCorrection, 6)) + "\n"
+            self.longOutput += "OUTPUT FILE CHECK STANDARD CORRECTION: " + str(outFileCheckStd) + "\n\n"
+            self.longOutput += "INPUT ACCEPTED CHECK STANDARD CORRECTION: " + str(inputAcceptedCSCorr) + "\n"
+            self.longOutput += "OUTPUT ACCEPTED CHECK STANDARD CORRECTION: " + str(outFileCheckStdAccepted) + "\n\n"
+
             if(outFilesw == round(data[0].swObs, 6)):
                 self.passTest("DATA WRITING TO OUTPUT FILE SW OBSERVED")
             else:
@@ -213,6 +220,16 @@ class TestSuite():
                 self.passTest("DATA WRITING TO OUTPUT FILE F-VALUE")
             else:
                 self.failTest("DATA WRITING TO OUTPUT FILE F-VALUE")
+
+            if(outFileCheckStd == round(data[0].calculatedCheckCorrection, 6)):
+                self.passTest("DATA WRITING TO OUTPUT FILE CALCULATED CHECK STANDARD CORRECTION")
+            else:
+                self.failTest("DATA WRITING TO OUTPUT FILE CALCULATED CHECK STANDARD CORRECTION")
+
+            if(outFileCheckStdAccepted == inputAcceptedCSCorr):
+                self.passTest("DATA WRITING TO OUTPUT FILE ACCEPTED CHECK STANDARD CORRECTION")
+            else:
+                self.failTest("DATA WRITING TO OUTPUT FILE ACCEPTED CHECK STANDARD CORRECTION")
 
         except:
             self.failTest("ERROR IN RUN/OUTPUT REPORT GENERATION")

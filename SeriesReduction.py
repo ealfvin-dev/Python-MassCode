@@ -50,6 +50,8 @@ class MatrixSolution:
         self.restraintPos = None
         self.checkStandardPos = None
         self.linearCombos = []
+        self.acceptedCheckCorrection = 0
+        self.calculatedCheckCorrection = 0
 
         #Holders for data for weights in the series:
         self.weightIds = []
@@ -60,9 +62,6 @@ class MatrixSolution:
         self.referenceValues = None
 
         self.nextRestraint = None
-
-        self.restraintMass = 0
-        self.checkStandardMass = 0
 
         self.swMass = 0
         self.swDensity = 0
@@ -371,6 +370,11 @@ class MatrixSolution:
         print("")
 
     def tTest(self, alpha):
+        self.acceptedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.referenceValues))[0][0]
+        ##ADD IF FOR IF CHECK IS DIFFERENCE
+        self.calculatedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.calculatedMasses))[0][0] \
+                                            - np.matmul(self.checkStandardPos, np.matrix.transpose(self.weightNominals))[0][0]
+
         tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
         t = 0
 
