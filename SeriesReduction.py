@@ -371,7 +371,6 @@ class MatrixSolution:
 
     def tTest(self, alpha):
         self.acceptedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.referenceValues))[0][0]
-        ##ADD IF FOR IF CHECK IS DIFFERENCE
         self.calculatedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.calculatedMasses))[0][0] \
                                             - np.matmul(self.checkStandardPos, np.matrix.transpose(self.weightNominals))[0][0]
 

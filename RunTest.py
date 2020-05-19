@@ -5,7 +5,7 @@ import os
 
 class TestSuite():
     def __init__(self):
-        self.expectedNumTests = 33
+        self.expectedNumTests = 35
         self.testNum = 1
         self.passed = 0
         self.failed = 0
@@ -124,6 +124,19 @@ class TestSuite():
             outFileTcrit = 0.0
             outFileTvalue = 0.0
 
+            calculatedSw = round(data[0].swObs, 6)
+            inputSw = round(data[0].sigmaW, 6)
+            calculatedFcrit = round(data[0].fCritical, 2)
+            calculatedFvalue = round(data[0].fValue, 2)
+            calculatedCheckStd = round(data[0].calculatedCheckCorrection, 6)
+            calculatedTcrit = round(data[0].tCritical, 2)
+            calculatedTvalue = round(data[0].tValue, 2)
+
+            inputDensities = []
+            inputAcceptedCSCorr = 0.0
+
+            expectedMasses = data[0].calculatedMasses[0]
+
             #Pull useful stuff out of output file
             with open("Test2-out.txt", 'r') as outFile:
                 for line in outFile:
@@ -151,21 +164,7 @@ class TestSuite():
                     elif(m[0] == "OBSERVED_T-VALUE"):
                         outFileTvalue = float(m[2])
 
-            #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
-            expectedMasses = data[0].calculatedMasses[0]
-            self.longOutput += "EXPECTED MASSES: \n" + "\n".join(str(x) for x in expectedMasses) + "\n\n"
-            self.longOutput += "OUTPUT FILE MASSES: \n" + "\n".join(str(x) for x in outFileMasses) + "\n\n"
-
-            for i in range(len(expectedMasses)):
-                if(outFileMasses[i] == round(expectedMasses[i], 8)):
-                    self.passTest("DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
-                else:
-                    self.failTest("DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
-
-            #Test if densities in output file match input
-            inputDensities = []
-            inputAcceptedCSCorr = 0.0
-
+            #Pull useful stuff out of input file
             with open("./Testing/PyMacTest/Test2-config.txt", 'r') as configFile:
                 for line in configFile:
                     m = line.strip().split()
@@ -176,6 +175,17 @@ class TestSuite():
                         if(m[1] == "P100g"):
                             inputAcceptedCSCorr = float(m[5])
 
+            #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
+            self.longOutput += "EXPECTED MASSES: \n" + "\n".join(str(x) for x in expectedMasses) + "\n\n"
+            self.longOutput += "OUTPUT FILE MASSES: \n" + "\n".join(str(x) for x in outFileMasses) + "\n\n"
+
+            for i in range(len(expectedMasses)):
+                if(outFileMasses[i] == round(expectedMasses[i], 8)):
+                    self.passTest("DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
+                else:
+                    self.failTest("DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
+
+            #Test if densities in output file match input
             self.longOutput += "\n\nINPUT FILE DENSITIES: \n" + "\n".join(str(x) for x in inputDensities) + "\n\n"
             self.longOutput += "OUTPUT FILE DENSITIES: \n" + "\n".join(str(x) for x in outFileDensities) + "\n"
 
@@ -187,41 +197,45 @@ class TestSuite():
 
             #Test if statistics were written out correctly
             self.longOutput += "\n\nSTATISTICS:\n\n"
-            self.longOutput += "CALCULATED SW OBSERVED: " + str(round(data[0].swObs, 6)) + "\n"
+            self.longOutput += "CALCULATED SW OBSERVED: " + str(calculatedSw) + "\n"
             self.longOutput += "OUTPUT FILE SW OBSERVED: " + str(outFilesw) + "\n\n"
-            self.longOutput += "INPUT SW ACCEPTED: " + str(round(data[0].sigmaW, 6)) + "\n"
+            self.longOutput += "INPUT SW ACCEPTED: " + str(inputSw) + "\n"
             self.longOutput += "OUTPUT FILE SW ACCEPTED: " + str(outFileswAccepted) + "\n\n"
-            self.longOutput += "CALCULATED F-CRITICAL: " + str(round(data[0].fCritical, 2)) + "\n"
+            self.longOutput += "CALCULATED F-CRITICAL: " + str(calculatedFcrit) + "\n"
             self.longOutput += "OUTPUT FILE F-CRITICAL: " + str(outFileFcrit) + "\n\n"
-            self.longOutput += "CALCULATED F-VALUE: " + str(round(data[0].fValue, 2)) + "\n"
+            self.longOutput += "CALCULATED F-VALUE: " + str(calculatedFvalue) + "\n"
             self.longOutput += "OUTPUT FILE F-VALUE: " + str(outFileFvalue) + "\n\n"
 
-            self.longOutput += "CALCULATED CHECK STANDARD CORRECTION: " + str(round(data[0].calculatedCheckCorrection, 6)) + "\n"
+            self.longOutput += "CALCULATED CHECK STANDARD CORRECTION: " + str(calculatedCheckStd) + "\n"
             self.longOutput += "OUTPUT FILE CHECK STANDARD CORRECTION: " + str(outFileCheckStd) + "\n\n"
             self.longOutput += "INPUT ACCEPTED CHECK STANDARD CORRECTION: " + str(inputAcceptedCSCorr) + "\n"
             self.longOutput += "OUTPUT ACCEPTED CHECK STANDARD CORRECTION: " + str(outFileCheckStdAccepted) + "\n\n"
+            self.longOutput += "CALCULATED T-CRITICAL: " + str(calculatedTcrit) + "\n"
+            self.longOutput += "OUTPUT FILE T-CRITICAL: " + str(outFileTcrit) + "\n\n"
+            self.longOutput += "CALCULATED T-VALUE: " + str(calculatedTvalue) + "\n"
+            self.longOutput += "OUTPUT FILE T-VALUE: " + str(outFileTvalue) + "\n\n"
 
-            if(outFilesw == round(data[0].swObs, 6)):
+            if(outFilesw == calculatedSw):
                 self.passTest("DATA WRITING TO OUTPUT FILE SW OBSERVED")
             else:
                 self.failTest("DATA WRITING TO OUTPUT FILE SW OBSERVED")
 
-            if(outFileswAccepted == round(data[0].sigmaW, 6)):
+            if(outFileswAccepted == inputSw):
                 self.passTest("DATA WRITING TO OUTPUT FILE SW ACCEPTED")
             else:
                 self.failTest("DATA WRITING TO OUTPUT FILE SW ACCEPTED")
 
-            if(outFileFcrit == round(data[0].fCritical, 2)):
+            if(outFileFcrit == calculatedFcrit):
                 self.passTest("DATA WRITING TO OUTPUT FILE F-CRITICAL")
             else:
                 self.failTest("DATA WRITING TO OUTPUT FILE F-CRITICAL")
 
-            if(outFileFvalue == round(data[0].fValue, 2)):
+            if(outFileFvalue == calculatedFvalue):
                 self.passTest("DATA WRITING TO OUTPUT FILE F-VALUE")
             else:
                 self.failTest("DATA WRITING TO OUTPUT FILE F-VALUE")
 
-            if(outFileCheckStd == round(data[0].calculatedCheckCorrection, 6)):
+            if(outFileCheckStd == calculatedCheckStd):
                 self.passTest("DATA WRITING TO OUTPUT FILE CALCULATED CHECK STANDARD CORRECTION")
             else:
                 self.failTest("DATA WRITING TO OUTPUT FILE CALCULATED CHECK STANDARD CORRECTION")
@@ -230,6 +244,16 @@ class TestSuite():
                 self.passTest("DATA WRITING TO OUTPUT FILE ACCEPTED CHECK STANDARD CORRECTION")
             else:
                 self.failTest("DATA WRITING TO OUTPUT FILE ACCEPTED CHECK STANDARD CORRECTION")
+
+            if(outFileTcrit == calculatedTcrit):
+                self.passTest("DATA WRITING TO OUTPUT FILE T-CRITICAL")
+            else:
+                self.failTest("DATA WRITING TO OUTPUT FILE T-CRITICAL")
+
+            if(outFileTvalue == calculatedTvalue):
+                self.passTest("DATA WRITING TO OUTPUT FILE T-VALUE")
+            else:
+                self.failTest("DATA WRITING TO OUTPUT FILE T-VALUE")
 
         except:
             self.failTest("ERROR IN RUN/OUTPUT REPORT GENERATION")
