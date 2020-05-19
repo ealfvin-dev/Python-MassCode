@@ -2,15 +2,16 @@
 
 999999
 
-SERIES 1
+***SERIES 1***
 
 OPERATOR  19
-BALANCE ID  22
+BALANCE_ID  22
 DATE  11 28 2019
 
 ---RESTRAINT  S500g+S500.g
 ---CHECK STANDARD  S500g-S500.g
 
+##ENVIRONMENTALS##
         T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)
 1:     19.78  735.92  47.18  0.00116237
 2:     19.78  735.92  47.18  0.00116237
@@ -27,7 +28,7 @@ DATE  11 28 2019
 AVE:   19.78  735.92  47.18  0.00116237
 CORR:   0.00    0.00   0.49
 
-BALANCE OBSERVATIONS
+##BALANCE OBSERVATIONS##
 1:   -0.5459
 2:   -0.4764
 3:   -0.467
@@ -41,7 +42,7 @@ BALANCE OBSERVATIONS
 11:   0.0777
 12:   0.0072
 
-SENSITIVITIES
+##SENSITIVITIES##
       LOAD    OBS SENSITIVITY    AVE SENSITIVITY
       (g)        (mg/DIV)           (mg/DIV)
 1:    500         1.00000            1.00000
@@ -57,22 +58,57 @@ SENSITIVITIES
 11:   500         1.00000            1.00000
 12:   500         1.00000            1.00000
 
+##DELTAS##
+      LOAD      DELTA
+      (g)        (MG)
+1:    500     0.00052
+2:    500     0.00012
+3:    500     0.00135
+4:    500    -0.00100
+5:    500     0.00013
+6:    500     0.00013
+7:    500    -0.00097
+8:    500    -0.00078
+9:    500    -0.00025
+10:   500     0.00080
+11:   500    -0.00037
+12:   500    -0.00097
+
+##STATISTICS##
+#F-TEST
+ACCEPTED_SW = 0.0009 MG
+OBSERVED_SW = 0.000849 MG
+CRITICAL_F-VALUE = 1.89
+OBSERVED_F-VALUE = 0.89
+--------
+| PASS |
+--------
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 2.469 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 7.3e-05 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
 WEIGHT ID     NOMINAL    DENSITY (g/cm)    CCE (/˚C)     TRUE MASS (g)
 -----------  ---------  ----------------  -----------  ---------------
-T300+200g       500         7.93452        0.0000450      500.00039980
-S500g           500         8.03630        0.0000450      500.00001849
-T500g           500         7.96010        0.0000450      500.00064097
-S500.g          500         8.03570        0.0000450      499.99994581
+T300+200g       500         7.93452        0.0000450      500.00110315
+S500g           500         8.03630        0.0000450      500.00072184
+T500g           500         7.96010        0.0000450      500.00134433
+S500.g          500         8.03570        0.0000450      500.00064916
 
-SERIES 2
+***SERIES 2***
 
 OPERATOR  19
-BALANCE ID  22
+BALANCE_ID  22
 DATE  11 28 2019
 
 ---RESTRAINT  T300g+T200g
 ---CHECK STANDARD  P100g
 
+##ENVIRONMENTALS##
         T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)
 1:     19.76  738.08  46.45  0.00116595
 2:     19.76  738.08  46.45  0.00116595
@@ -85,7 +121,7 @@ DATE  11 28 2019
 AVE:   19.76  738.08  46.45  0.00116595
 CORR:   0.00    0.00   0.49
 
-BALANCE OBSERVATIONS
+##BALANCE OBSERVATIONS##
 1:   1.0904
 2:   1.0906
 3:   0.5654
@@ -95,7 +131,7 @@ BALANCE OBSERVATIONS
 7:  -0.5241
 8:  -0.5242
 
-SENSITIVITIES
+##SENSITIVITIES##
      LOAD    OBS SENSITIVITY    AVE SENSITIVITY
      (g)        (mg/DIV)           (mg/DIV)
 1:   300         1.00000            1.00000
@@ -107,22 +143,53 @@ SENSITIVITIES
 7:   100         1.00000            1.00000
 8:   100         1.00000            1.00000
 
+##DELTAS##
+     LOAD      DELTA
+     (g)        (MG)
+1:   300     0.00052
+2:   300     0.00072
+3:   300     0.00028
+4:   300    -0.00152
+5:   200    -0.00010
+6:   200     0.00010
+7:   100     0.00067
+8:   100     0.00057
+
+##STATISTICS##
+#F-TEST
+ACCEPTED_SW = 0.0095 MG
+OBSERVED_SW = 0.000888 MG
+CRITICAL_F-VALUE = 2.22
+OBSERVED_F-VALUE = 0.01
+--------
+| PASS |
+--------
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 0.0 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 100.000824 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
 WEIGHT ID     NOMINAL    DENSITY (g/cm)    CCE (/˚C)     TRUE MASS (g)
 -----------  ---------  ----------------  -----------  ---------------
-T300g           300         7.93360        0.0000450      300.00088206
-T200g           200         7.93590        0.0000450      199.99951773
-T100g           100         7.95140        0.0000450      100.00023286
-P100g           100         7.99180        0.0000450      100.00068357
+T300g           300         7.93360        0.0000450      300.00130407
+T200g           200         7.93590        0.0000450      199.99979907
+T100g           100         7.95140        0.0000450      100.00037353
+P100g           100         7.99180        0.0000450      100.00082424
 
-SERIES 3
+***SERIES 3***
 
 OPERATOR  19
-BALANCE ID  22
+BALANCE_ID  22
 DATE  11 28 2019
 
 ---RESTRAINT  T100g
 ---CHECK STANDARD  P100g
 
+##ENVIRONMENTALS##
         T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)
 1:     19.78  736.43  46.51  0.00116324
 2:     19.78  736.43  46.51  0.00116324
@@ -139,7 +206,7 @@ DATE  11 28 2019
 AVE:   19.78  736.43  46.51  0.00116324
 CORR:   0.00    0.00   0.49
 
-BALANCE OBSERVATIONS
+##BALANCE OBSERVATIONS##
 1:    0.5169
 2:    0.6058
 3:    0.5241
@@ -153,7 +220,7 @@ BALANCE OBSERVATIONS
 11:   0.0072
 12:  -0.0814
 
-SENSITIVITIES
+##SENSITIVITIES##
       LOAD    OBS SENSITIVITY    AVE SENSITIVITY
       (g)        (mg/DIV)           (mg/DIV)
 1:    100         1.00000            1.00000
@@ -169,22 +236,57 @@ SENSITIVITIES
 11:   100         1.00000            1.00000
 12:   100         1.00000            1.00000
 
+##DELTAS##
+      LOAD      DELTA
+      (g)        (MG)
+1:    100    -0.00001
+2:    100    -0.00021
+3:    100    -0.00017
+4:    100     0.00010
+5:    100     0.00004
+6:    100     0.00014
+7:    100     0.00029
+8:    100     0.00029
+9:    100    -0.00017
+10:   100     0.00030
+11:   100    -0.00016
+12:   100     0.00034
+
+##STATISTICS##
+#F-TEST
+ACCEPTED_SW = 0.0095 MG
+OBSERVED_SW = 0.000243 MG
+CRITICAL_F-VALUE = 1.89
+OBSERVED_F-VALUE = 0.0
+--------
+| PASS |
+--------
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 0.0 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 100.000824 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
 WEIGHT ID     NOMINAL    DENSITY (g/cm)    CCE (/˚C)     TRUE MASS (g)
 -----------  ---------  ----------------  -----------  ---------------
-P100g           100         7.99180        0.0000450      100.00068325
-S50g+T50g       100         7.91446        0.0000450      100.00030852
-W100.g          100         7.95000        0.0000450      100.00015369
-T100g           100         7.95140        0.0000450      100.00023286
+P100g           100         7.99180        0.0000450      100.00082392
+S50g+T50g       100         7.91446        0.0000450      100.00044919
+W100.g          100         7.95000        0.0000450      100.00029436
+T100g           100         7.95140        0.0000450      100.00037353
 
-SERIES 4
+***SERIES 4***
 
 OPERATOR  19
-BALANCE ID  22
+BALANCE_ID  22
 DATE  11 28 2019
 
 ---RESTRAINT  S50g+T50g
 ---CHECK STANDARD  P50g
 
+##ENVIRONMENTALS##
         T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)
 1:     19.80  730.27  46.98  0.00115334
 2:     19.80  730.27  46.98  0.00115334
@@ -201,7 +303,7 @@ DATE  11 28 2019
 AVE:   19.80  730.27  46.98  0.00115334
 CORR:   0.00    0.00   0.49
 
-BALANCE OBSERVATIONS
+##BALANCE OBSERVATIONS##
 1:    0.0295
 2:   -0.0282
 3:   -0.3171
@@ -215,7 +317,7 @@ BALANCE OBSERVATIONS
 11:  -0.346
 12:  -0.2879
 
-SENSITIVITIES
+##SENSITIVITIES##
       LOAD    OBS SENSITIVITY    AVE SENSITIVITY
       (g)        (mg/DIV)           (mg/DIV)
 1:     50         1.00000            1.00000
@@ -231,22 +333,57 @@ SENSITIVITIES
 11:    50         1.00000            1.00000
 12:    50         1.00000            1.00000
 
+##DELTAS##
+      LOAD      DELTA
+      (g)        (MG)
+1:     50     0.00026
+2:     50     0.00030
+3:     50    -0.00036
+4:     50    -0.00006
+5:     50     0.00037
+6:     50     0.00034
+7:     50     0.00026
+8:     50     0.00020
+9:     50    -0.00066
+10:    50     0.00024
+11:    50    -0.00002
+12:    50     0.00034
+
+##STATISTICS##
+#F-TEST
+ACCEPTED_SW = 0.0095 MG
+OBSERVED_SW = 0.000375 MG
+CRITICAL_F-VALUE = 1.89
+OBSERVED_F-VALUE = 0.0
+--------
+| PASS |
+--------
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 0.0 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 50.000459 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
 WEIGHT ID     NOMINAL    DENSITY (g/cm)    CCE (/˚C)     TRUE MASS (g)
 -----------  ---------  ----------------  -----------  ---------------
-T30g+T20g       50          7.94597        0.0000450       50.00012573
-S50g            50          7.96690        0.0000450       50.00007742
-T50g            50          7.86270        0.0000450       50.00023110
-P50g            50          8.00510        0.0000450       50.00038890
+T30g+T20g       50          7.94597        0.0000450       50.00019606
+S50g            50          7.96690        0.0000450       50.00014775
+T50g            50          7.86270        0.0000450       50.00030144
+P50g            50          8.00510        0.0000450       50.00045923
 
-SERIES 5
+***SERIES 5***
 
 OPERATOR  19
-BALANCE ID  22
+BALANCE_ID  22
 DATE  11 28 2019
 
 ---RESTRAINT  T50g+T30g+T20g
 ---CHECK STANDARD  P10g
 
+##ENVIRONMENTALS##
         T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)
 1:     19.59  736.75  48.12  0.00116443
 2:     19.59  736.75  48.12  0.00116443
@@ -262,7 +399,7 @@ DATE  11 28 2019
 AVE:   19.59  736.75  48.12  0.00116443
 CORR:   0.00    0.00   0.48
 
-BALANCE OBSERVATIONS
+##BALANCE OBSERVATIONS##
 1:    0      -0.092  19.91   20.006
 2:   -0.058  -0.018  19.986  19.941
 3:    0.029  -0.005  19.995  20.029
@@ -275,7 +412,7 @@ BALANCE OBSERVATIONS
 10:  -0.004   0.06   20.062  19.996
 11:  -0.005  -0.006  19.993  19.994
 
-SENSITIVITIES
+##SENSITIVITIES##
       LOAD    OBS SENSITIVITY    AVE SENSITIVITY
       (g)        (mg/DIV)           (mg/DIV)
 1:     60         0.99980            0.99969
@@ -290,12 +427,45 @@ SENSITIVITIES
 10:    20         0.99965            0.99974
 11:    20         0.99985            0.99974
 
+##DELTAS##
+      LOAD      DELTA
+      (g)        (MG)
+1:     60     0.00068
+2:     60    -0.00062
+3:     60     0.00031
+4:     50     0.00014
+5:     50    -0.00051
+6:     40    -0.00058
+7:     40     0.00079
+8:     40     0.00030
+9:     20    -0.00102
+10:    20     0.00023
+11:    20     0.00129
+
+##STATISTICS##
+#F-TEST
+ACCEPTED_SW = 0.0095 MG
+OBSERVED_SW = 0.000916 MG
+CRITICAL_F-VALUE = 2.11
+OBSERVED_F-VALUE = 0.01
+--------
+| PASS |
+--------
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 0.0256 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 10.000039 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
 WEIGHT ID     NOMINAL    DENSITY (g/cm)    CCE (/˚C)     TRUE MASS (g)
 -----------  ---------  ----------------  -----------  ---------------
-T50g            50          7.86270        0.0000450       50.00023141
-T30g            30          7.93990        0.0000450       30.00011298
-T20g            20          7.95510        0.0000450       20.00001244
-P10g            10          8.01750        0.0000450       10.00002478
-T10g            10          7.95500        0.0000450        9.99997126
-Tsum            10          7.95945        0.0000450       10.00004069
+T50g            50          7.86270        0.0000450       50.00030174
+T30g            30          7.93990        0.0000450       30.00015518
+T20g            20          7.95510        0.0000450       20.00004058
+P10g            10          8.01750        0.0000450       10.00003885
+T10g            10          7.95500        0.0000450        9.99998533
+Tsum            10          7.95945        0.0000450       10.00005476
 

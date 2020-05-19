@@ -50,6 +50,8 @@ class MatrixSolution:
         self.restraintPos = None
         self.checkStandardPos = None
         self.linearCombos = []
+        self.acceptedCheckCorrection = 0
+        self.calculatedCheckCorrection = 0
 
         #Holders for data for weights in the series:
         self.weightIds = []
@@ -60,9 +62,6 @@ class MatrixSolution:
         self.referenceValues = None
 
         self.nextRestraint = None
-
-        self.restraintMass = 0
-        self.checkStandardMass = 0
 
         self.swMass = 0
         self.swDensity = 0
@@ -96,6 +95,12 @@ class MatrixSolution:
 
         #Statistics Stuff:
         self.df = 0
+        self.swObs = 0
+        self.fCritical = 0
+        self.fValue = 0
+        self.tCritical = 0
+        self.tValue = 0
+        self.deltas = [] #mg
 
     def calculateAirDensity(self, t, p, rh):
         #Calculates the air density using the CIPM 2007 air density equation
@@ -325,32 +330,35 @@ class MatrixSolution:
         print(matrixBHat, "\n")
 
         self.matrixBHat = matrixBHat
-        self.doStatistics(matrixQ)
 
-    def doStatistics(self, matrixQ):
+        alpha = 0.05
+        self.fTest(alpha, matrixQ)
+        self.tTest(alpha)
+
+    def fTest(self, alpha, matrixQ):
         #Calculate YHat = XQX'Y = the predicted values from the best fit (in grams):
         self.df = (self.observations - self.positions) + 1
         matrixYHat = np.matmul(np.matmul(np.matmul(self.designMatrix, matrixQ), np.matrix.transpose(self.designMatrix)), self.matrixY)
 
         #Calculate the within process standard deviation (in mg):
-        sumOfResiduals = 0.0 #grams
+        sumOfResiduals = 0.0 #grams^2
         for i in range(np.shape(matrixYHat)[0]):
             sumOfResiduals += (self.matrixY[i, 0] - matrixYHat[i, 0])**2
+            self.deltas.append((self.matrixY[i, 0] - matrixYHat[i, 0]) * 1000)
         
         sw = sqrt(sumOfResiduals / self.df) * 1000 #mg
 
-        alpha = 0.05
-
         fCritical = scipy.stats.f.ppf(1 - alpha, self.df, 1000)
         f = sw**2 / self.sigmaW**2
+
+        self.swObs = sw
+        self.fCritical = fCritical
+        self.fValue = f
 
         if f < fCritical:
             fPass = True
         else:
             fPass = False
-
-        tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
-        t = 0
 
         print("sw =", str(sw), "mg")
         print("df =", str(self.df))
@@ -360,5 +368,16 @@ class MatrixSolution:
         print("F-observed =", str(f))
         print("F-test Passed =", str(fPass))
         print("")
+
+    def tTest(self, alpha):
+        self.acceptedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.referenceValues))[0][0]
+        self.calculatedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.calculatedMasses))[0][0] \
+                                            - np.matmul(self.checkStandardPos, np.matrix.transpose(self.weightNominals))[0][0]
+
+        tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
+        t = 0
+
+        self.tCritical = tCritical
+        self.tValue = t
 
         print("T-critical =", str(tCritical))
