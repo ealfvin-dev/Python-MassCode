@@ -215,6 +215,7 @@ class MainLayout(BoxLayout):
                         break
 
             if(exists == 0):
+                self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
                 self.sendError(tag + " DOES NOT EXIST IN SERIES " + str(seriesNum))
                 return False
 
