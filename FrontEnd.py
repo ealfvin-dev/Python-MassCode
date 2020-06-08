@@ -168,6 +168,20 @@ class MainLayout(BoxLayout):
         self.ids.userText.select_text(startPos, startPos + textLength)
         self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
 
+    def highlightError(self, targetLine):
+        startPosition = 0
+        lineNum = 1
+        userTextArray = self.ids.userText.text.splitlines()
+
+        while lineNum <= targetLine:
+            if(lineNum != targetLine):
+                startPosition += len(userTextArray[lineNum - 1]) + 1
+            else:
+                self.ids.userText.select_text(startPosition, startPosition + len(userTextArray[lineNum - 1]))
+                self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
+
+            lineNum += 1
+
     def checkTags(self, seriesArray, seriesNum):
         #Checks if currently written tags exist in the known tags dictionary
         seriesNumber = 0
@@ -196,6 +210,8 @@ class MainLayout(BoxLayout):
 
                         errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
 
+                        self.goToSeries(self.ids["series" + snText], True, int(snText))
+                        self.highlightError(lineNum)
                         self.sendError(errorMessage)
                         return False
 
