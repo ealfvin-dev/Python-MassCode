@@ -239,15 +239,64 @@ class MainLayout(BoxLayout):
 
         return True
 
-    def checkDataEntry(self):
-        series = 0
+    def runRequiredChecks(self):
+        seriesNum = 0
+        lineNum = 1
+
         for seriesText in self.seriesTexts:
-            series += 1
+            seriesNum += 1
+            for line in seriesText.splitlines():
+                line = line.strip().split()
+                if(len(line) == 0):
+                    lineNum += 1
+                    continue
+
+                #Check if environmentals provided
+                if(line[0] == "<Environmentals>"):
+                    try:
+                        temp = float(line[1])
+                        pressure = float(line[2])
+                        humidity = float(line[3])
+                    except:
+                        self.sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTALS MUST BE ENTERED IN THE FORM\n<Environmentals>  T P RH")
+                        self.highlightError(seriesNum, lineNum)
+                        return False
+
+                lineNum += 1
+            lineNum = 1
+
+        return True
+
+    def runSecondaryChecks(self):
+        seriesNum = 0
+        lineNum = 1
+
+        for seriesText in self.seriesTexts:
+            seriesNum += 1
+            for line in seriesText.splitlines():
+                line = line.strip().split()
+                if(len(line) == 0):
+                    lineNum += 1
+                    continue
+
+                #Check if environmentals are out of specs
+                if(line[0] == "<Environmentals>"):
+                    temp = float(line[1])
+                    pressure = float(line[2])
+                    humidity = float(line[3])
+
+                    if(temp < 18 or temp > 23 or humidity < 40 or humidity > 60):
+                        self.sendError("FILE WAS RUN AND SAVED AS " + str(self.reportNum) + "-out.txt\n" + "HOWEVER, ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS")
+                        self.highlightError(seriesNum, lineNum)
+                        return False
+
+                lineNum += 1
+            lineNum = 1
 
     def checkResults(self, results):
-        series = 0
-        for result in results:
-            series += 1
+        seriesNum = 0
+        for series in results:
+            seriesNum += 1
 
     def textAdded(self):
         if(self.saved):
@@ -595,16 +644,17 @@ class MainLayout(BoxLayout):
                     return
 
             checkWrittenTags = self.checkTags(self.seriesTexts, False)
+            requiredChecks = self.runRequiredChecks()
 
-            if(checkWrittenTags):
+            if(checkWrittenTags and requiredChecks):
                 self.clearErrors()
                 try:
                     results = RunFile.run(self.reportNum + "-config.txt")
                     self.grabOutputFile()
                     self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
 
-                    self.checkDataEntry()
                     self.checkResults(results)
+                    self.runSecondaryChecks()
                 except:
                     self.sendError(str(sys.exc_info()))
 
