@@ -232,8 +232,8 @@
               <Design> 1 -1 0 0
               <Design> 1 0 -1 0
               <Design> 1 0 0 -1
-              <Design> 0 1 -1 0
-              <Design> 0 1 0 -1
+              <Designn> 0 1 -1 0
+              <Designn> 0 1 0 -1
               <Design> 0 0 1 -1
               <Design> 1 -1 0 0
               <Design> 1 0 -1 0

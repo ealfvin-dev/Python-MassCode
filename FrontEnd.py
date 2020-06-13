@@ -108,17 +108,13 @@ class MainLayout(BoxLayout):
 
             if(line.strip() == ""):
                 textInput.cursor = (len(line), row)
-
                 cursorStart += len(line)
                 cursorStart += 1
-
             elif(line == "\n"):
                 textInput.cursor = (0, row)
                 cursorStart += 1
-
             elif(orderNum < self.orderOfTags[line.strip().split()[0]]):
                 break
-
             else:
                 textInput.cursor = (len(line), row)
 
@@ -131,7 +127,6 @@ class MainLayout(BoxLayout):
         if(textInput.cursor == (0, 0)):
             textInput.insert_text("\n")
             textInput.cursor = (0, 0)
-
         else:
             textInput.insert_text("\n")
 
@@ -139,7 +134,6 @@ class MainLayout(BoxLayout):
             if(line == "" or line == "\n"):
                 textInput.insert_text("\n")
                 textBlockLength += 1
-
             else:
                 if(orderNum != 0 and orderNum != 5):
                     newLine = " " * (19 - len(self.getTag(orderNum)))
@@ -168,7 +162,9 @@ class MainLayout(BoxLayout):
         self.ids.userText.select_text(startPos, startPos + textLength)
         self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
 
-    def highlightError(self, targetLine):
+    def highlightError(self, series, targetLine):
+        self.goToSeries(self.ids["series" + str(series)], True, series)
+
         startPosition = 0
         lineNum = 1
         userTextArray = self.ids.userText.text.splitlines()
@@ -177,8 +173,10 @@ class MainLayout(BoxLayout):
             if(lineNum != targetLine):
                 startPosition += len(userTextArray[lineNum - 1]) + 1
             else:
-                self.ids.userText.select_text(startPosition, startPosition + len(userTextArray[lineNum - 1]))
                 self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
+                self.ids.userText.select_text(startPosition, startPosition + len(userTextArray[lineNum - 1]))
+                #self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
+                return
 
             lineNum += 1
 
@@ -195,10 +193,8 @@ class MainLayout(BoxLayout):
 
                 if(line.split() == []):
                     pass
-
                 elif(line.split()[0].strip() == ""):
                     pass
-
                 else:
                     try:
                         self.orderOfTags[line.split()[0].strip()]
@@ -210,8 +206,7 @@ class MainLayout(BoxLayout):
 
                         errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
 
-                        self.goToSeries(self.ids["series" + snText], True, int(snText))
-                        self.highlightError(lineNum)
+                        self.highlightError(int(snText), lineNum)
                         self.sendError(errorMessage)
                         return False
 
@@ -236,6 +231,16 @@ class MainLayout(BoxLayout):
                 return False
 
         return True
+
+    def checkDataEntry(self):
+        series = 0
+        for seriesText in self.seriesTexts:
+            series += 1
+
+    def checkResults(self, results):
+        series = 0
+        for result in results:
+            series += 1
 
     def textAdded(self):
         if(self.saved):
@@ -573,7 +578,6 @@ class MainLayout(BoxLayout):
         #If in the output tab, return
         if(self.currentSeries == None):
             return
-
         if(not self.saved):
             self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
         else:
@@ -588,9 +592,12 @@ class MainLayout(BoxLayout):
             if(checkWrittenTags):
                 self.clearErrors()
                 try:
-                    RunFile.run(self.reportNum + "-config.txt")
+                    results = RunFile.run(self.reportNum + "-config.txt")
                     self.grabOutputFile()
                     self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
+
+                    self.checkDataEntry()
+                    self.checkResults(results)
                 except:
                     self.sendError(str(sys.exc_info()))
 
