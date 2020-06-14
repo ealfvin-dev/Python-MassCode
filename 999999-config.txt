@@ -174,7 +174,7 @@
              <Check-Standard> 1 0 0 0 
                <Linear-Combo> 0 0 1 1 
 
-     <Pass-Down> 0 1 0 0
+     <Pass-Down> 1 0 1 0
 
                     <Sigma-t> 0.0095
 					<Sigma-w> 0.0095

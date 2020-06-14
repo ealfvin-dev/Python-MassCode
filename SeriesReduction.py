@@ -301,7 +301,7 @@ class MatrixSolution:
             rStar = (np.matmul(self.restraintPos, np.matrix.transpose(self.referenceValues)) / 1000) + np.matmul(self.restraintPos, np.matrix.transpose(self.weightNominals))
         else:
             if np.count_nonzero(seriesObjects[self.seriesNumber - 1].nextRestraint) == 0:
-                sys.exit("NO RESTRAINT PASSED TO SERIES", str(self.seriesNumber))
+                sys.exit("NO RESTRAINT PASSED TO SERIES " + str(self.seriesNumber + 1))
 
             #Pull restraint from last series:
             rStar = np.matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, np.matrix.transpose(seriesObjects[self.seriesNumber - 1].calculatedMasses))

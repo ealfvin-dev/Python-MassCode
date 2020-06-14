@@ -263,6 +263,17 @@ class MainLayout(BoxLayout):
                 if(len(line) == 0):
                     continue
 
+                #Make sure all connected series have results passed down
+                if(line[0] == "<Pass-Down>" and seriesNum < self.numberOfSeries):
+                    total = 0
+                    for position in line[1:]:
+                        total += int(position)
+                    
+                    if(total == 0):
+                        self.sendError("NO RESTRAINT PASSED TO SERIES " + str(seriesNum + 1))
+                        self.highlightError(seriesNum, lineNum)
+                        return False
+
                 #Count number of observations, balace readings, env lines provided
                 if(line[0] == "<Design>"):
                     designObs += 1
@@ -328,7 +339,7 @@ class MainLayout(BoxLayout):
                         self.sendError("FILE WAS RUN AND SAVED AS " + str(self.reportNum) + "-out.txt\n" + "HOWEVER, ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS\n\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
                         self.highlightError(seriesNum, lineNum)
                         return False
-
+                
                 lineNum += 1
             lineNum = 1
 
@@ -687,15 +698,15 @@ class MainLayout(BoxLayout):
 
             if(checkWrittenTags and requiredChecks):
                 self.clearErrors()
-                try:
-                    results = RunFile.run(self.reportNum + "-config.txt")
-                    self.grabOutputFile()
-                    self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
+                #try:
+                results = RunFile.run(self.reportNum + "-config.txt")
+                self.grabOutputFile()
+                self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
 
-                    self.checkResults(results)
-                    self.runSecondaryChecks()
-                except:
-                    self.sendError(str(sys.exc_info()))
+                self.checkResults(results)
+                self.runSecondaryChecks()
+                #except:
+                    #self.sendError(str(sys.exc_info()))
 
     def sendError(self, message):
         self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
