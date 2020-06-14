@@ -165,6 +165,10 @@ class MainLayout(BoxLayout):
     def highlightError(self, series, startLine, endLine=None):
         self.goToSeries(self.ids["series" + str(series)], True, series)
 
+        self.ids.userText.focus = True
+        self.ids.userText.cursor = (0, 0)
+        self.ids.userText.focus = False
+
         if(endLine == None):
             endLine = startLine
 
@@ -241,29 +245,64 @@ class MainLayout(BoxLayout):
 
     def runRequiredChecks(self):
         seriesNum = 0
-        lineNum = 1
+        lineNum = 0
+
+        designObs = 0
+        numObs = 0
+        numEnvs = 0
+
+        obsStartLine = 0
+        envStartLine = 0
 
         for seriesText in self.seriesTexts:
             seriesNum += 1
             for line in seriesText.splitlines():
+                lineNum += 1
                 line = line.strip().split()
+
                 if(len(line) == 0):
-                    lineNum += 1
                     continue
 
-                #Check if environmentals provided
+                #Count number of observations, balace readings, env lines provided
+                if(line[0] == "<Design>"):
+                    designObs += 1
+
+                if(line[0] == "<Balance-Reading>"):
+                    numObs += 1
+                    if(obsStartLine == 0): obsStartLine = lineNum
+
+                if(line[0] == "<Environmentals>"):
+                    numEnvs += 1
+                    if(envStartLine == 0): envStartLine = lineNum
+
+                #Check if environmentals provided correctly
                 if(line[0] == "<Environmentals>"):
                     try:
                         temp = float(line[1])
                         pressure = float(line[2])
                         humidity = float(line[3])
                     except:
-                        self.sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTALS MUST BE ENTERED IN THE FORM\n<Environmentals>  T P RH")
+                        self.sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nENVIRONMENTALS MUST BE ENTERED IN THE FORM <Environmentals>  T P RH")
                         self.highlightError(seriesNum, lineNum)
                         return False
 
-                lineNum += 1
-            lineNum = 1
+            #Check number of balace readings, envs
+            if(numObs != designObs):
+                self.sendError("SERIES " + str(seriesNum) + " NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
+                self.highlightError(seriesNum, obsStartLine, obsStartLine + numObs - 1)
+                return False
+
+            if(numEnvs != designObs):
+                self.sendError("SERIES " + str(seriesNum) + " NUMBER OF ENVIRONMENTAL OBSERVATIONS DO NOT MATCH THE DESIGN")
+                self.highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
+                return False
+
+            lineNum = 0
+            designObs = 0
+            numObs = 0
+            numEnvs = 0
+            obsStartLine = 0
+            envStartLine = 0
 
         return True
 
@@ -286,7 +325,7 @@ class MainLayout(BoxLayout):
                     humidity = float(line[3])
 
                     if(temp < 18 or temp > 23 or humidity < 40 or humidity > 60):
-                        self.sendError("FILE WAS RUN AND SAVED AS " + str(self.reportNum) + "-out.txt\n" + "HOWEVER, ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS")
+                        self.sendError("FILE WAS RUN AND SAVED AS " + str(self.reportNum) + "-out.txt\n" + "HOWEVER, ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS\n\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
                         self.highlightError(seriesNum, lineNum)
                         return False
 

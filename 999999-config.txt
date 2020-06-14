@@ -343,7 +343,6 @@
            <Balance-Reading>  -0.004   0.060 20.062 19.996
            <Balance-Reading>  -0.005  -0.006 19.993 19.994
 
-
              <Environmentals> 19.585 736.75 48.6
              <Environmentals> 19.585 736.75 48.6
              <Environmentals> 19.585 736.75 48.6
