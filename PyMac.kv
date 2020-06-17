@@ -1989,3 +1989,51 @@
                 halign: 'center'
                 markup: True
                 on_release: root.runTestThread()
+
+<RequestClosePopup>:
+    id: RequestClosePop
+    auto_dismiss: True
+    title: "Close PyMac"
+    title_size: dp(18)
+    size_hint: (0.35, 0.28)
+
+    BoxLayout:
+        id: RequestClosePlayout
+        orientation: "vertical"
+        spacing: 35
+        padding: 20, 0, 20, 20
+
+        Label:
+            size_hint: (1, 0.6)
+            font_size: popUpLabelSize
+            text: "Close without saving input file?"
+            markup: True
+            color: popLabelColor
+            text_size: self.size
+            halign: "left"
+            valign: "bottom"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.92)
+
+            Button:
+                size_hint: (1, 1)
+                text: "Cancel"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0, 0.6, 0.82, 1)
+                halign: 'center'
+                on_release: root.dismiss()
+
+            Button:
+                size_hint: (1, 1)
+                text: "[color=#FFFFFF]Close Without\nSaving[/color]"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.95, 0.1, 0.15, 0.95)
+                halign: 'center'
+                markup: True
+                on_release: app.closeApp()

@@ -12,6 +12,7 @@ from kivy.graphics import Color, Rectangle
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.factory import Factory
+from kivy.core.window import Window
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -782,7 +783,6 @@ class SeriesButton(Button):
         self.seriesNum = 1
         self.exists = False
         self.background_color = (0.155, 0.217, 0.292, 0.65)
-        #self.background_color = (0.956, 0.968, 0.976, 0.85)
 
 class RoundedButton(Button):
     def __init__(self, **kwargs):
@@ -1189,9 +1189,25 @@ class ValidationPopup(Popup):
         self.ids.testingMessage.text = ""
         self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
 
+class RequestClosePopUp(Popup):
+    pass
+
 class PyMac(App):
     def build(self):
+        Window.bind(on_request_close=self.on_request_close)
         return MainLayout()
+
+    def on_request_close(self, *args):
+        if(self.root.saved == False):
+            pop = RequestClosePopUp()
+            pop.open()
+        else:
+            self.closeApp()
+
+        return True
+
+    def closeApp(self):
+        Window.close()
 
     def openLabInfoPop(self):
         if(self.root.currentSeries == 1):
