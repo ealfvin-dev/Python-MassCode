@@ -23,6 +23,7 @@ from kivy.uix.checkbox import CheckBox
 
 import RunFile
 import RunTest
+import InputChecks
 
 import sys
 import os
@@ -49,7 +50,6 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            #Color(0.25, 0.25, 0.28, 0.85)
             Color(0.906, 0.918, 0.926, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
@@ -164,7 +164,7 @@ class MainLayout(BoxLayout):
         self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
 
     def highlightError(self, series, startLine, endLine=None):
-        self.goToSeries(self.ids["series" + str(series)], True, series)
+        self.goToSeries(series, True)
 
         self.ids.userText.focus = True
         self.ids.userText.cursor = (0, 0)
@@ -190,7 +190,6 @@ class MainLayout(BoxLayout):
         endPosition -= 1
         self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
         self.ids.userText.select_text(startPosition, endPosition)
-        #self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
 
     def checkTags(self, seriesArray, seriesNum):
         #Checks if currently written tags exist in the known tags dictionary
@@ -223,131 +222,6 @@ class MainLayout(BoxLayout):
                         return False
 
         return True
-
-    def checkIfAllTags(self, seriesText, seriesNum):
-        #Checks if all tags in known tags dictionary exist in seriesText
-        for tag in self.requiredTags:
-            if((tag == "<Report-Number>" or tag == "<Restraint-ID>" or tag == "<Unc-Restraint>" or tag == "<Random-Error>") and seriesNum != 1):
-                continue
-
-            exists = 0
-            for line in seriesText.splitlines():
-                if(line.split() != []):
-                    if(line.split()[0].strip() == tag):
-                        exists = 1
-                        break
-
-            if(exists == 0):
-                self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
-                self.sendError(tag + " DOES NOT EXIST IN SERIES " + str(seriesNum))
-                return False
-
-        return True
-
-    def runRequiredChecks(self):
-        seriesNum = 0
-        lineNum = 0
-
-        designObs = 0
-        numObs = 0
-        numEnvs = 0
-
-        obsStartLine = 0
-        envStartLine = 0
-
-        for seriesText in self.seriesTexts:
-            seriesNum += 1
-            for line in seriesText.splitlines():
-                lineNum += 1
-                line = line.strip().split()
-
-                if(len(line) == 0):
-                    continue
-
-                #Make sure all connected series have results passed down
-                if(line[0] == "<Pass-Down>" and seriesNum < self.numberOfSeries):
-                    total = 0
-                    for position in line[1:]:
-                        total += int(position)
-                    
-                    if(total == 0):
-                        self.sendError("NO RESTRAINT PASSED TO SERIES " + str(seriesNum + 1))
-                        self.highlightError(seriesNum, lineNum)
-                        return False
-
-                #Count number of observations, balace readings, env lines provided
-                if(line[0] == "<Design>"):
-                    designObs += 1
-
-                if(line[0] == "<Balance-Reading>"):
-                    numObs += 1
-                    if(obsStartLine == 0): obsStartLine = lineNum
-
-                if(line[0] == "<Environmentals>"):
-                    numEnvs += 1
-                    if(envStartLine == 0): envStartLine = lineNum
-
-                #Check if environmentals provided correctly
-                if(line[0] == "<Environmentals>"):
-                    try:
-                        temp = float(line[1])
-                        pressure = float(line[2])
-                        humidity = float(line[3])
-                    except:
-                        self.sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nENVIRONMENTALS MUST BE ENTERED IN THE FORM <Environmentals>  T P RH")
-                        self.highlightError(seriesNum, lineNum)
-                        return False
-
-            #Check number of balace readings, envs
-            if(numObs != designObs):
-                self.sendError("SERIES " + str(seriesNum) + " NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
-                self.highlightError(seriesNum, obsStartLine, obsStartLine + numObs - 1)
-                return False
-
-            if(numEnvs != designObs):
-                self.sendError("SERIES " + str(seriesNum) + " NUMBER OF ENVIRONMENTAL OBSERVATIONS DO NOT MATCH THE DESIGN")
-                self.highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
-                return False
-
-            lineNum = 0
-            designObs = 0
-            numObs = 0
-            numEnvs = 0
-            obsStartLine = 0
-            envStartLine = 0
-
-        return True
-
-    def runSecondaryChecks(self):
-        seriesNum = 0
-        lineNum = 1
-
-        for seriesText in self.seriesTexts:
-            seriesNum += 1
-            for line in seriesText.splitlines():
-                line = line.strip().split()
-                if(len(line) == 0):
-                    lineNum += 1
-                    continue
-
-                #Check if environmentals are out of specs
-                if(line[0] == "<Environmentals>"):
-                    temp = float(line[1])
-                    pressure = float(line[2])
-                    humidity = float(line[3])
-
-                    if(temp < 18 or temp > 23 or humidity < 40 or humidity > 60):
-                        self.sendError("FILE WAS RUN AND SAVED AS " + str(self.reportNum) + "-out.txt\n" + "HOWEVER, ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS\n\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
-                        self.highlightError(seriesNum, lineNum)
-                        return False
-                
-                lineNum += 1
-            lineNum = 1
-
-    def checkResults(self, results):
-        seriesNum = 0
-        for series in results:
-            seriesNum += 1
 
     def textAdded(self):
         if(self.saved):
@@ -540,7 +414,7 @@ class MainLayout(BoxLayout):
 
         self.seriesTexts.append("@SERIES\n\n")
 
-    def goToSeries(self, button, exists, seriesNum):
+    def goToSeries(self, seriesNum, exists):
         if(exists):
             if(self.currentSeries != None):
                 #Write current usertext into seriesTexts
@@ -571,8 +445,9 @@ class MainLayout(BoxLayout):
             if(self.ids.outputFileTab.exists):
                 self.ids.outputFileTab.text = "[color=#FFFFFF]" + self.ids.outputFileTab.text[15:]
 
-            button.background_color = (0.906, 0.918, 0.926, 1)
-            button.text = "[color=#000000]" + button.text[15:]
+            targetButton = self.ids["series" + str(seriesNum)]
+            targetButton.background_color = (0.906, 0.918, 0.926, 1)
+            targetButton.text = "[color=#000000]" + targetButton.text[15:]
 
             self.renderButtons(self.ids.userText.text)
 
@@ -590,7 +465,7 @@ class MainLayout(BoxLayout):
             self.clearErrors()
 
             if(self.currentSeries == self.numberOfSeries):
-                self.goToSeries(self.ids["series" + str(self.numberOfSeries - 1)], True, self.numberOfSeries - 1)
+                self.goToSeries(self.numberOfSeries - 1, True)
 
             self.seriesTexts.pop()
             self.ids["series" + str(self.numberOfSeries)].text = ""
@@ -613,7 +488,7 @@ class MainLayout(BoxLayout):
                 return
 
         #Remove existing series
-        self.goToSeries(self.ids["series1"], True, 1)
+        self.goToSeries(1, True)
         self.ids.userText.text = ""
 
         for i in range(self.numberOfSeries):
@@ -630,7 +505,7 @@ class MainLayout(BoxLayout):
                     self.ids.userText.do_backspace()
 
                     self.addSeries()
-                    self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
+                    self.goToSeries(seriesNum, True)
 
                     self.ids.userText.text = "@SERIES\n"
                     continue
@@ -643,7 +518,7 @@ class MainLayout(BoxLayout):
             configFile.close()
 
         self.ids.userText.do_backspace()    
-        self.goToSeries(self.ids["series1"], True, 1)
+        self.goToSeries(1, True)
         self.getReportNum(self.seriesTexts[0].splitlines())
         self.grabOutputFile()
 
@@ -687,27 +562,28 @@ class MainLayout(BoxLayout):
             return
         if(not self.saved):
             self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
-        else:
-            for i in range(len(self.seriesTexts)):
-                checkAllExist = self.checkIfAllTags(self.seriesTexts[i], i + 1)
+            return
+            
+        checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.requiredTags, self.sendError, self.goToSeries)
+        if(not checkAllExist):
+            return
 
-                if(not checkAllExist):
-                    return
+        checkWrittenTags = self.checkTags(self.seriesTexts, False)
+        if(checkWrittenTags):
+            requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError)
 
-            checkWrittenTags = self.checkTags(self.seriesTexts, False)
-            requiredChecks = self.runRequiredChecks()
-
-            if(checkWrittenTags and requiredChecks):
-                self.clearErrors()
-                #try:
+        if(checkWrittenTags and requiredChecks):
+            self.clearErrors()
+            try:
                 results = RunFile.run(self.reportNum + "-config.txt")
                 self.grabOutputFile()
                 self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
 
-                self.checkResults(results)
-                self.runSecondaryChecks()
-                #except:
-                    #self.sendError(str(sys.exc_info()))
+                secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
+                if(secondaryChecks):
+                    InputChecks.checkResults(results)
+            except:
+                self.sendError(str(sys.exc_info()))
 
     def sendError(self, message):
         self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
