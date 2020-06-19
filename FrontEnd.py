@@ -12,6 +12,7 @@ from kivy.graphics import Color, Rectangle
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.factory import Factory
+from kivy.core.window import Window
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -22,6 +23,7 @@ from kivy.uix.checkbox import CheckBox
 
 import RunFile
 import RunTest
+import InputChecks
 
 import sys
 import os
@@ -48,7 +50,6 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            #Color(0.25, 0.25, 0.28, 0.85)
             Color(0.906, 0.918, 0.926, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
@@ -163,7 +164,11 @@ class MainLayout(BoxLayout):
         self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
 
     def highlightError(self, series, startLine, endLine=None):
-        self.goToSeries(self.ids["series" + str(series)], True, series)
+        self.goToSeries(series, True)
+
+        self.ids.userText.focus = True
+        self.ids.userText.cursor = (0, 0)
+        self.ids.userText.focus = False
 
         if(endLine == None):
             endLine = startLine
@@ -185,69 +190,6 @@ class MainLayout(BoxLayout):
         endPosition -= 1
         self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
         self.ids.userText.select_text(startPosition, endPosition)
-        #self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
-
-    def checkTags(self, seriesArray, seriesNum):
-        #Checks if currently written tags exist in the known tags dictionary
-        seriesNumber = 0
-
-        for seriesText in seriesArray:
-            seriesNumber += 1
-            lineNum = 0
-
-            for line in seriesText.splitlines():
-                lineNum += 1
-
-                if(line.split() == []):
-                    pass
-                elif(line.split()[0].strip() == ""):
-                    pass
-                else:
-                    try:
-                        self.orderOfTags[line.split()[0].strip()]
-                    except KeyError:
-                        if(seriesNum):
-                            snText = str(seriesNum)
-                        else:
-                            snText = str(seriesNumber)
-
-                        errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
-
-                        self.highlightError(int(snText), lineNum)
-                        self.sendError(errorMessage)
-                        return False
-
-        return True
-
-    def checkIfAllTags(self, seriesText, seriesNum):
-        #Checks if all tags in known tags dictionary exist in seriesText
-        for tag in self.requiredTags:
-            if((tag == "<Report-Number>" or tag == "<Restraint-ID>" or tag == "<Unc-Restraint>" or tag == "<Random-Error>") and seriesNum != 1):
-                continue
-
-            exists = 0
-            for line in seriesText.splitlines():
-                if(line.split() != []):
-                    if(line.split()[0].strip() == tag):
-                        exists = 1
-                        break
-
-            if(exists == 0):
-                self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
-                self.sendError(tag + " DOES NOT EXIST IN SERIES " + str(seriesNum))
-                return False
-
-        return True
-
-    def checkDataEntry(self):
-        series = 0
-        for seriesText in self.seriesTexts:
-            series += 1
-
-    def checkResults(self, results):
-        series = 0
-        for result in results:
-            series += 1
 
     def textAdded(self):
         if(self.saved):
@@ -434,13 +376,12 @@ class MainLayout(BoxLayout):
         self.numberOfSeries += 1
 
         newSeriesId = "series" + str(self.numberOfSeries)
-
         self.ids[newSeriesId].text = "[color=#FFFFFF]Series " + str(self.numberOfSeries) +"[/color]"
         self.ids[newSeriesId].exists = True
 
         self.seriesTexts.append("@SERIES\n\n")
 
-    def goToSeries(self, button, exists, seriesNum):
+    def goToSeries(self, seriesNum, exists):
         if(exists):
             if(self.currentSeries != None):
                 #Write current usertext into seriesTexts
@@ -461,7 +402,6 @@ class MainLayout(BoxLayout):
             #Make all tabs black/blue:
             for sn in range(1, 14):
                 seriesID = "series" + str(sn)
-
                 self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
 
                 if(self.ids[seriesID].exists):
@@ -471,8 +411,9 @@ class MainLayout(BoxLayout):
             if(self.ids.outputFileTab.exists):
                 self.ids.outputFileTab.text = "[color=#FFFFFF]" + self.ids.outputFileTab.text[15:]
 
-            button.background_color = (0.906, 0.918, 0.926, 1)
-            button.text = "[color=#000000]" + button.text[15:]
+            targetButton = self.ids["series" + str(seriesNum)]
+            targetButton.background_color = (0.906, 0.918, 0.926, 1)
+            targetButton.text = "[color=#000000]" + targetButton.text[15:]
 
             self.renderButtons(self.ids.userText.text)
 
@@ -490,7 +431,7 @@ class MainLayout(BoxLayout):
             self.clearErrors()
 
             if(self.currentSeries == self.numberOfSeries):
-                self.goToSeries(self.ids["series" + str(self.numberOfSeries - 1)], True, self.numberOfSeries - 1)
+                self.goToSeries(self.numberOfSeries - 1, True)
 
             self.seriesTexts.pop()
             self.ids["series" + str(self.numberOfSeries)].text = ""
@@ -513,7 +454,7 @@ class MainLayout(BoxLayout):
                 return
 
         #Remove existing series
-        self.goToSeries(self.ids["series1"], True, 1)
+        self.goToSeries(1, True)
         self.ids.userText.text = ""
 
         for i in range(self.numberOfSeries):
@@ -530,7 +471,7 @@ class MainLayout(BoxLayout):
                     self.ids.userText.do_backspace()
 
                     self.addSeries()
-                    self.goToSeries(self.ids["series" + str(seriesNum)], True, seriesNum)
+                    self.goToSeries(seriesNum, True)
 
                     self.ids.userText.text = "@SERIES\n"
                     continue
@@ -543,7 +484,7 @@ class MainLayout(BoxLayout):
             configFile.close()
 
         self.ids.userText.do_backspace()    
-        self.goToSeries(self.ids["series1"], True, 1)
+        self.goToSeries(1, True)
         self.getReportNum(self.seriesTexts[0].splitlines())
         self.grabOutputFile()
 
@@ -587,26 +528,28 @@ class MainLayout(BoxLayout):
             return
         if(not self.saved):
             self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
-        else:
-            for i in range(len(self.seriesTexts)):
-                checkAllExist = self.checkIfAllTags(self.seriesTexts[i], i + 1)
+            return
+            
+        checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.requiredTags, self.sendError, self.goToSeries)
+        if(not checkAllExist):
+            return
 
-                if(not checkAllExist):
-                    return
+        checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.orderOfTags, self.highlightError, self.sendError)
+        if(checkWrittenTags):
+            requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError)
 
-            checkWrittenTags = self.checkTags(self.seriesTexts, False)
+        if(checkWrittenTags and requiredChecks):
+            self.clearErrors()
+            try:
+                results = RunFile.run(self.reportNum + "-config.txt")
+                self.grabOutputFile()
+                self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
 
-            if(checkWrittenTags):
-                self.clearErrors()
-                try:
-                    results = RunFile.run(self.reportNum + "-config.txt")
-                    self.grabOutputFile()
-                    self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
-
-                    self.checkDataEntry()
-                    self.checkResults(results)
-                except:
-                    self.sendError(str(sys.exc_info()))
+                secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
+                if(secondaryChecks):
+                    InputChecks.checkResults(results)
+            except:
+                self.sendError(str(sys.exc_info()))
 
     def sendError(self, message):
         self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
@@ -682,7 +625,6 @@ class SeriesButton(Button):
         self.seriesNum = 1
         self.exists = False
         self.background_color = (0.155, 0.217, 0.292, 0.65)
-        #self.background_color = (0.956, 0.968, 0.976, 0.85)
 
 class RoundedButton(Button):
     def __init__(self, **kwargs):
@@ -1002,7 +944,6 @@ class MeasurementsPopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
         self.dismiss()
@@ -1023,7 +964,6 @@ class GravityPopup(Popup):
         cursorStart2, textLength2 = self.parent.children[1].writeText(COMText, COMOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
         self.parent.children[1].ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
         self.dismiss()
@@ -1094,15 +1034,31 @@ class ValidationPopup(Popup):
         self.ids.testingMessage.text = ""
         self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
 
+class RequestClosePopUp(Popup):
+    pass
+
 class PyMac(App):
     def build(self):
+        Window.bind(on_request_close=self.on_request_close)
         return MainLayout()
+
+    def on_request_close(self, *args):
+        if(self.root.saved == False):
+            pop = RequestClosePopUp()
+            pop.open()
+            return True
+        else:
+            Window.close()
+            return
+
+    def closeApp(self):
+        Window.close()
 
     def openLabInfoPop(self):
         if(self.root.currentSeries == 1):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1113,7 +1069,7 @@ class PyMac(App):
         if(self.root.currentSeries == 1):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1124,7 +1080,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1135,7 +1091,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1146,7 +1102,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1158,7 +1114,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1169,7 +1125,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1180,7 +1136,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1191,7 +1147,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1202,7 +1158,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1213,7 +1169,7 @@ class PyMac(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = self.root.checkTags([seriesText], self.root.currentSeries)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()

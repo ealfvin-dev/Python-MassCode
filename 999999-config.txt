@@ -7,7 +7,7 @@
 
 @SERIES
 
-<Date> 11 28 2019
+<Date> 11 29 2019
               <Technician-ID> 19
           <Check-Standard-ID> 27
 
@@ -174,7 +174,7 @@
              <Check-Standard> 1 0 0 0 
                <Linear-Combo> 0 0 1 1 
 
-     <Pass-Down> 0 1 0 0
+     <Pass-Down> 1 0 1 0
 
                     <Sigma-t> 0.0095
 					<Sigma-w> 0.0095
@@ -342,7 +342,6 @@
            <Balance-Reading>  0       -0.006 19.994 19.996
            <Balance-Reading>  -0.004   0.060 20.062 19.996
            <Balance-Reading>  -0.005  -0.006 19.993 19.994
-
 
              <Environmentals> 19.585 736.75 48.6
              <Environmentals> 19.585 736.75 48.6

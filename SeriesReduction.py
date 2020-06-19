@@ -141,7 +141,6 @@ class MatrixSolution:
             (pressurePa / tKelvin)**2 * (dZ + e*xv**2)
 
         airDensity = (pressurePa * ma / (z * r * tKelvin)) * (1 - xv * (1 - mv / ma)) * 10**-3
-        print(airDensity)
         return airDensity
 
         #Approximated air density:
@@ -301,7 +300,7 @@ class MatrixSolution:
             rStar = (np.matmul(self.restraintPos, np.matrix.transpose(self.referenceValues)) / 1000) + np.matmul(self.restraintPos, np.matrix.transpose(self.weightNominals))
         else:
             if np.count_nonzero(seriesObjects[self.seriesNumber - 1].nextRestraint) == 0:
-                sys.exit("NO RESTRAINT PASSED TO SERIES", str(self.seriesNumber))
+                sys.exit("NO RESTRAINT PASSED TO SERIES " + str(self.seriesNumber + 1))
 
             #Pull restraint from last series:
             rStar = np.matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, np.matrix.transpose(seriesObjects[self.seriesNumber - 1].calculatedMasses))
@@ -326,8 +325,6 @@ class MatrixSolution:
 
             matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
             self.calculatedMasses = np.matrix.transpose(matrixBHat)
-
-        print(matrixBHat, "\n")
 
         self.matrixBHat = matrixBHat
 
@@ -360,15 +357,6 @@ class MatrixSolution:
         else:
             fPass = False
 
-        print("sw =", str(sw), "mg")
-        print("df =", str(self.df))
-        print("")
-
-        print("F-critical =", str(fCritical))
-        print("F-observed =", str(f))
-        print("F-test Passed =", str(fPass))
-        print("")
-
     def tTest(self, alpha):
         self.acceptedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.referenceValues))[0][0]
         self.calculatedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.calculatedMasses))[0][0] \
@@ -379,5 +367,3 @@ class MatrixSolution:
 
         self.tCritical = tCritical
         self.tValue = t
-
-        print("T-critical =", str(tCritical))
