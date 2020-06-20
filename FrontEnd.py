@@ -549,8 +549,8 @@ class MainLayout(BoxLayout):
                 secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
                 if(secondaryChecks):
                     InputChecks.checkResults(results)
-            except:
-                self.sendError(str(sys.exc_info()))
+            except Exception as ex:
+                self.sendError("RUNTIME ERROR: " + str(ex))
 
         end = time.time()
         print(end - start)

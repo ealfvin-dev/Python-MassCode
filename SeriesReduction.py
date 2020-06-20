@@ -286,7 +286,10 @@ class MatrixSolution:
         matrixAtemp = np.hstack((transposeXdesign, np.matrix.transpose(self.restraintPos)))
         matrixA = np.vstack((matrixAtemp, np.append(self.restraintPos, 0)))
 
-        inverseA = np.linalg.inv(matrixA)
+        try:
+            inverseA = np.linalg.inv(matrixA)
+        except:
+            raise RuntimeError("DESIGN MATRIX HAS NO INVERSE")
 
         #Check that the inverse of matrixA got calculated correctly within a tolerance:
         if not np.allclose(np.matmul(matrixA, inverseA), np.identity(transposeXdesign.shape[0] + 1)):
