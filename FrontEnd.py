@@ -30,7 +30,7 @@ import os
 import threading
 
 #import sqlite3
-
+import time
 def getNumChacacters(text):
     chars = 0
 
@@ -524,6 +524,7 @@ class MainLayout(BoxLayout):
 
     def run(self):
         #If in the output tab, return
+        start = time.time()
         if(self.currentSeries == None):
             return
         if(not self.saved):
@@ -536,7 +537,7 @@ class MainLayout(BoxLayout):
 
         checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.orderOfTags, self.highlightError, self.sendError)
         if(checkWrittenTags):
-            requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError)
+            requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
 
         if(checkWrittenTags and requiredChecks):
             self.clearErrors()
@@ -550,6 +551,9 @@ class MainLayout(BoxLayout):
                     InputChecks.checkResults(results)
             except:
                 self.sendError(str(sys.exc_info()))
+
+        end = time.time()
+        print(end - start)
 
     def sendError(self, message):
         self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)

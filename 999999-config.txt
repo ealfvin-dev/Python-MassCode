@@ -8,6 +8,7 @@
 @SERIES
 
 <Date> 11 29 2019
+
               <Technician-ID> 19
           <Check-Standard-ID> 27
 
@@ -33,7 +34,7 @@
 <Design>  1  0 -1  0
 <Design>  1  0  0 -1
 <Design>  0  1 -1  0
-<Design>  0  1  0 -1
+<Design>  0  1  0 -1  
 <Design>  0  0  1 -1
 
 <Restraint> 0 1 0 1
@@ -287,8 +288,8 @@
                 <Env-Corrections> 0 0 0.488
 
 @SERIES
-
-	<Date> 11 28 2019
+						
+<Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
           <Check-Standard-ID> 27
@@ -326,8 +327,7 @@
 
                     <Sigma-w> 0.0095
                     <Sigma-t> 0.038
-
-    <sw-Mass> 19.99899
+<sw-Mass> 19.99899
  <sw-Density> 7.95
      <sw-CCE> 0.000045
 

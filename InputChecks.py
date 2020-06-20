@@ -55,11 +55,12 @@ def checkIfAllTags(seriesTexts, requiredTags, sendError, goToSeries):
 
     return True
 
-def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError):
+def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
     #Runs required checks on user input file before running and identifies errors the prevent Runfile.run
     seriesNum = 0
     lineNum = 0
 
+    numSeries = 0
     designObs = 0
     numObs = 0
     numEnvs = 0
@@ -75,6 +76,23 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError):
 
             if(len(line) == 0):
                 continue
+            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
+                continue
+
+            if(line[0] == "@SERIES"):
+                numSeries += 1
+
+            #Check that @SERIES marks the start of the series
+            if(numSeries == 0):
+                sendError("SERIES " + str(seriesNum) + " @SERIES ANNOTATION MUST BE PRESENT BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
+                goToSeries(seriesNum, True)
+                return False
+
+            #Check if more than 1 series is entered in each text block
+            if(numSeries > 1):
+                sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENTER ONE @SERIES BLOCK PER SERIES\nUSING OPEN FILE FROM THE MENU WILL AUTOMATICALLY SPLIT INPUT TEXT INTO INDIVIDUAL SERIES")
+                highlightError(seriesNum, lineNum)
+                return False
 
             #Make sure all connected series have results passed down
             if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
@@ -121,6 +139,7 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError):
             highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
             return False
 
+        numSeries = 0
         lineNum = 0
         designObs = 0
         numObs = 0
