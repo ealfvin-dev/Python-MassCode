@@ -18,6 +18,8 @@ import scipy.stats
 from statistics import mean, stdev
 from math import sqrt, exp
 
+import PyMacException
+
 class MatrixSolution:
     """
     The MatrixSolution class holds all calibration data and data reduction results for a given series.
@@ -266,7 +268,7 @@ class MatrixSolution:
                 deltaLab = -1 * self.balanceReadings[i][0] * averageSensitivities['balance'] / 1000
             
             else:
-                sys.exit("PLEASE ENTER A VALID DIRECT-READINGS ARGUMENT. 1 = DIRECT READINGS ENTERED, 0 = DOUBLE SUBSTITUTION OBSERVATIONS ENTERED")
+                raise RuntimeError("SERIES " + str(self.seriesNumber + 1) + " PLEASE ENTER A VALID DIRECT-READINGS ARGUMENT.\n1 = DIRECT READINGS ENTERED, 0 = DOUBLE SUBSTITUTION OBSERVATIONS ENTERED")
             
             if self.heightDifferences != []:
                 deltaLab = deltaLab - (estimatedMassTwo / 9.807) * ((self.heightDifferences[i]/1000) * -1 * self.gravityGradient)
@@ -277,7 +279,7 @@ class MatrixSolution:
 
     def solution(self, seriesObjects):
         if len(self.environmentals) != len(self.balanceReadings):
-            sys.exit("USE THE SAME NUMBER OF LINES FOR DESIGN-MATRIX, BALANCE-READINGS AND ENVIRONMENTALS IN CONFIGURATION FILE FOR SERIES " + str(self.seriesNumber + 1))
+            raise RuntimeError("SERIES " + str(self.seriesNumber + 1) + ": USE THE SAME NUMBER OF LINES FOR DESIGN-MATRIX, BALANCE-READINGS AND ENVIRONMENTALS IN INPUT FILE")
 
         designTranspose = np.matrix.transpose(self.designMatrix)
         transposeXdesign = np.matmul(designTranspose, self.designMatrix)
@@ -289,11 +291,11 @@ class MatrixSolution:
         try:
             inverseA = np.linalg.inv(matrixA)
         except:
-            raise RuntimeError("DESIGN MATRIX HAS NO INVERSE")
+            raise PyMacException.PyMacException("SERIES " + str(self.seriesNumber + 1) + " DESIGN MATRIX HAS NO INVERSE")
 
         #Check that the inverse of matrixA got calculated correctly within a tolerance:
         if not np.allclose(np.matmul(matrixA, inverseA), np.identity(transposeXdesign.shape[0] + 1)):
-            sys.exit("SOMETHING WENT WRONG WITH THE INVERSE MATRIX CALCULATION :(")
+            raise RuntimeError("SERIES " + str(self.seriesNumber + 1) + ": SOMETHING WENT WRONG WITH THE INVERSE MATRIX CALCULATION")
 
         matrixH = inverseA[np.shape(inverseA)[0] - 1:np.shape(inverseA)[0], 0:np.shape(inverseA)[1] - 1]
         matrixQ = inverseA[0:np.shape(inverseA)[0] - 1, 0:np.shape(inverseA)[1] - 1]
@@ -303,7 +305,7 @@ class MatrixSolution:
             rStar = (np.matmul(self.restraintPos, np.matrix.transpose(self.referenceValues)) / 1000) + np.matmul(self.restraintPos, np.matrix.transpose(self.weightNominals))
         else:
             if np.count_nonzero(seriesObjects[self.seriesNumber - 1].nextRestraint) == 0:
-                sys.exit("NO RESTRAINT PASSED TO SERIES " + str(self.seriesNumber + 1))
+                raise RuntimeError("NO RESTRAINT PASSED TO SERIES " + str(self.seriesNumber + 1))
 
             #Pull restraint from last series:
             rStar = np.matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, np.matrix.transpose(seriesObjects[self.seriesNumber - 1].calculatedMasses))

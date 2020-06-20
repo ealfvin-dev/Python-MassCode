@@ -56,7 +56,7 @@ def checkIfAllTags(seriesTexts, requiredTags, sendError, goToSeries):
     return True
 
 def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
-    #Runs required checks on user input file before running and identifies errors the prevent Runfile.run
+    #Runs required checks on user input file before running and identifies errors that prevent Runfile.run
     seriesNum = 0
     lineNum = 0
 

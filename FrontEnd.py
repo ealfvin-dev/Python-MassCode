@@ -24,6 +24,7 @@ from kivy.uix.checkbox import CheckBox
 import RunFile
 import RunTest
 import InputChecks
+import PyMacException
 
 import sys
 import os
@@ -549,8 +550,10 @@ class MainLayout(BoxLayout):
                 secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
                 if(secondaryChecks):
                     InputChecks.checkResults(results)
-            except Exception as ex:
+            except PyMacException.PyMacException as ex:
                 self.sendError("RUNTIME ERROR: " + str(ex))
+            except:
+                self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
 
         end = time.time()
         print(end - start)
