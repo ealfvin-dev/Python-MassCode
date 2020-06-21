@@ -24,13 +24,14 @@ from kivy.uix.checkbox import CheckBox
 import RunFile
 import RunTest
 import InputChecks
+import PyMacException
 
 import sys
 import os
 import threading
 
 #import sqlite3
-
+import time
 def getNumChacacters(text):
     chars = 0
 
@@ -88,7 +89,7 @@ class MainLayout(BoxLayout):
             "<Gravity-Grad>": 28, \
             "<COM-Diff>": 29}
 
-        self.requiredTags = ["@SERIES", "<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
+        self.requiredTags = ["<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
             "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
             "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
 
@@ -523,9 +524,11 @@ class MainLayout(BoxLayout):
         self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def run(self):
-        #If in the output tab, return
+        #Perform checks to make sure the input file is in a runnable state
+        start = time.time()
         if(self.currentSeries == None):
             return
+
         if(not self.saved):
             self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
             return
@@ -535,21 +538,33 @@ class MainLayout(BoxLayout):
             return
 
         checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.orderOfTags, self.highlightError, self.sendError)
-        if(checkWrittenTags):
-            requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError)
+        if(not checkWrittenTags):
+            return
 
-        if(checkWrittenTags and requiredChecks):
-            self.clearErrors()
-            try:
-                results = RunFile.run(self.reportNum + "-config.txt")
-                self.grabOutputFile()
-                self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
+        checkRepeats = InputChecks.checkForRepeats(self.seriesTexts, self.sendError, self.highlightError)
+        if(not checkRepeats):
+            return
 
-                secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
-                if(secondaryChecks):
-                    InputChecks.checkResults(results)
-            except:
-                self.sendError(str(sys.exc_info()))
+        requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
+        if(not requiredChecks):
+            return
+
+        self.clearErrors()
+        try:
+            results = RunFile.run(self.reportNum + "-config.txt")
+            self.grabOutputFile()
+            self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
+
+            secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
+            if(secondaryChecks):
+                InputChecks.checkResults(results)
+        except PyMacException.PyMacException as ex:
+            self.sendError("RUNTIME ERROR: " + str(ex))
+        except:
+            self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
+
+        end = time.time()
+        print(str((end - start)*1000) + " ms")
 
     def sendError(self, message):
         self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
@@ -620,25 +635,44 @@ class SeriesButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
 
-        self.markup = True
-
         self.seriesNum = 1
         self.exists = False
+        self.text = ''
+        self.markup = True
+        self.halign = 'center'
+        self.background_normal = ''
         self.background_color = (0.155, 0.217, 0.292, 0.65)
+        self.background_down =  ''
 
-class RoundedButton(Button):
+        self.bind(on_press=self.handleGoToSeries)
+
+    def handleGoToSeries(self, event):
+        self.parent.parent.goToSeries(self.seriesNum, self.exists)
+
+class InputButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
 
-        self.completed = False
-        self.background_color = 0,0,0,0
-        self.canvasColor = (0.08, 0.55, 1, 1)
+        self.background_normal = ''
+        #self.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.markup = True
+        self.halign = 'center'
+        #self.color = (0, 0, 0, 1)
 
-        with self.canvas.before:
-            Color(self.canvasColor)
-            pos = self.pos
-            size = self.size
-            radius = [self.size[0] / 12,]
+# class RoundedButton(Button):
+#     def __init__(self, **kwargs):
+#         super().__init__()
+
+#         self.completed = False
+#         self.background_color = 0,0,0,0
+#         self.canvasColor = (0.08, 0.55, 1, 1)
+
+#         with self.canvas.before:
+#             Color(self.canvasColor)
+#             pos = self.pos
+#             size = self.size
+#             radius = [self.size[0] / 12,]
 
     def goToSeries(self, exists, seriesNum):
         if(exists):

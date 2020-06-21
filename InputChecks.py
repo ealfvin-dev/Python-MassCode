@@ -55,11 +55,65 @@ def checkIfAllTags(seriesTexts, requiredTags, sendError, goToSeries):
 
     return True
 
-def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError):
-    #Runs required checks on user input file before running and identifies errors the prevent Runfile.run
+def checkForRepeats(seriesTexts, sendError, highlightError):
+    #Check for repeated tags
     seriesNum = 0
     lineNum = 0
 
+    singleTags = {"<Report-Number>": 0,\
+        "<Restraint-ID>": 0,\
+        "<Unc-Restraint>": 0,\
+        "<Random-Error>": 0,\
+        "<Date>": 0,\
+        "<Technician-ID>": 0,\
+        "<Check-Standard-ID>": 0,\
+        "<Balance-ID>": 0,\
+        "<Direct-Readings>": 0,\
+        "<Direct-Reading-SF>": 0,\
+        "<Design-ID>": 0,\
+        "<Pounds>": 0,\
+        "<Restraint>": 0,\
+        "<Check-Standard>": 0,\
+        "<Linear-Combo>": 0,\
+        "<Pass-Down>": 0,\
+        "<Sigma-t>": 0,\
+        "<Sigma-w>": 0,\
+        "<sw-Mass>": 0,\
+        "<sw-Density>": 0,\
+        "<sw-CCE>": 0}
+
+    for seriesText in seriesTexts:
+        seriesNum += 1
+        lineNum = 0
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.strip().split()
+
+            if(len(line) == 0):
+                continue
+
+            try:
+                singleTags[line[0]] += 1
+            except KeyError:
+                continue
+
+            if(singleTags[line[0]] > 1):
+                sendError("SERIES " + str(seriesNum) + ": MULTIPLE " + line[0] + " TAGS FOUND\nMARK THE START OF EACH SERIES WITH THE @SERIES ANNOTATION BEOFRE <Date>")
+                highlightError(seriesNum, lineNum)
+                return False
+
+        lineNum = 0
+        for key, value in singleTags.items():
+            singleTags[key] = 0 
+
+    return True
+
+def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
+    #Runs required checks on user input file before running and identifies errors that prevent Runfile.run
+    seriesNum = 0
+    lineNum = 0
+
+    numSeries = 0
     designObs = 0
     numObs = 0
     numEnvs = 0
@@ -75,6 +129,23 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError):
 
             if(len(line) == 0):
                 continue
+            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
+                continue
+
+            if(line[0] == "@SERIES"):
+                numSeries += 1
+
+            #Check that @SERIES marks the start of the series
+            if(numSeries == 0):
+                sendError("SERIES " + str(seriesNum) + " @SERIES ANNOTATION MUST BE PRESENT BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
+                goToSeries(seriesNum, True)
+                return False
+
+            #Check if more than 1 series is entered in each text block
+            if(numSeries > 1):
+                sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENTER ONE @SERIES BLOCK PER SERIES\nUSING OPEN FILE FROM THE MENU WILL AUTOMATICALLY SPLIT INPUT TEXT INTO INDIVIDUAL SERIES")
+                highlightError(seriesNum, lineNum)
+                return False
 
             #Make sure all connected series have results passed down
             if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
@@ -110,6 +181,8 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError):
                     highlightError(seriesNum, lineNum)
                     return False
 
+            #Check that pass down nominal matches next restraint
+
         #Check number of balace readings, envs
         if(numObs != designObs):
             sendError("SERIES " + str(seriesNum) + " NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
@@ -121,6 +194,7 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError):
             highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
             return False
 
+        numSeries = 0
         lineNum = 0
         designObs = 0
         numObs = 0

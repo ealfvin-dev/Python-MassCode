@@ -1,6 +1,5 @@
 #:import Factory kivy.factory.Factory
 
-#:set buttonColor (0.08, 0.55, 1, 1)
 #:set buttonColor (0.13, 0.5, 0.95, 0.94)
 
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
@@ -29,8 +28,8 @@
             id: addSeriesButton
             text: "[b]+[/b] Add Series"
             markup: True
-            background_normal: ''
             background_color: (0.00, 0.76, 0.525, 1)
+            background_normal: ''
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
             on_press: root.addSeries()
@@ -39,155 +38,73 @@
             id: series1
             seriesNum: 1
             text: "[color=#000000]Series 1[/color]"
-            background_color: (0.906, 0.918, 0.926, 1)
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
+            background_color: (0.906, 0.918, 0.926, 1)
             exists: True
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series2
             seriesNum: 2
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series3
             seriesNum: 3
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series4
             seriesNum: 4
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series5
             seriesNum: 5
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series6
             seriesNum: 6
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series7
             seriesNum: 7
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series8
             seriesNum: 8
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series9
             seriesNum: 9
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series10
             seriesNum: 10
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series11
             seriesNum: 11
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series12
             seriesNum: 12
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series13
             seriesNum: 13
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: outputFileTab
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
             on_press: root.openOutputFile(self)
 
         Button:
@@ -195,7 +112,7 @@
             text: "[color=#FFFFFF]Remove\nLast Series[/color]"
             markup: True
             background_normal: ''
-            background_color: (0.70, 0.135, 0.05, 0.90)
+            background_color: (0.70, 0.135, 0.05, 0.92)
             font_size: dp(self.width / (buttonSizer*1.1))
             halign: 'center'
             on_release: root.removeLastSeries()
@@ -215,25 +132,34 @@
             Button:
                 id: openFile
                 text: "Open File"
+                background_color: (0.155, 0.217, 0.292, 0.65)
                 on_release: app.openFilePop()
 
             Button:
                 id: searchDB
                 text: "Search DB"
+                background_color: (0.155, 0.217, 0.292, 0.65)
+                background_normal: ''
 
             Button:
                 id: newFile
                 text: "New File"
+                background_color: (0.155, 0.217, 0.292, 0.65)
+                background_normal: ''
                 on_release: app.openNewFilePop()
 
             Button:
                 id: validation
                 text: "Run Validation"
+                background_color: (0.155, 0.217, 0.292, 0.65)
+                background_normal: ''
                 on_release: app.openValidationPop()
 
             Button:
                 id: tutorial
                 text: "Tutorial"
+                background_color: (0.155, 0.217, 0.292, 0.65)
+                background_normal: ''
 
         BoxLayout:
             id: content
@@ -265,24 +191,16 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: labInfoButton
                         text: "Report No.\nNotes"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openLabInfoPop()
 
-                    Button:
+                    InputButton:
                         id: restraintButton
                         text: "Starting\nRestraint"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openRestraintPop()
 
                     Label:
@@ -311,34 +229,23 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: dateButton
                         text: "Date\nTechnicion"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openDatePop()
 
-                    Button:
+                    InputButton:
                         id: balanceButton
                         text: "Balance"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openBalancePop()
 
-                    Button:
+                    InputButton:
                         id: gravityButton
                         text: "Gravity\nGradient\n(Optional)"
-                        markup: True
-                        background_normal: ''
                         background_color: (0.368, 0.49, 0.60, 1)
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openGravityPop()
 
                 BoxLayout:
@@ -360,14 +267,10 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: statisticsButton
                         text: "Statistics"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openStatisticsPop()
 
                     Label:
@@ -403,34 +306,22 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: designButton
                         text: "Design"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openDesignPop()
 
-                    Button:
+                    InputButton:
                         id: weightsButton
                         text: "Weights"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openWeightsPop()
 
-                    Button:
+                    InputButton:
                         id: positionVectorsButton
                         text: "Position\nVectors"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openVectorsPop()
 
                 BoxLayout:
@@ -452,24 +343,16 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: swButton
                         text: "Sensitivity\nWeight"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openSwPop()
 
-                    Button:
+                    InputButton:
                         id: measurementsButton
                         text: "Measurements"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openMeasurementsPop()
 
                     Label:
