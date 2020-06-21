@@ -1,6 +1,5 @@
 #:import Factory kivy.factory.Factory
 
-#:set buttonColor (0.08, 0.55, 1, 1)
 #:set buttonColor (0.13, 0.5, 0.95, 0.94)
 
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
@@ -39,155 +38,73 @@
             id: series1
             seriesNum: 1
             text: "[color=#000000]Series 1[/color]"
-            background_color: (0.906, 0.918, 0.926, 1)
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
+            background_color: (0.906, 0.918, 0.926, 1)
             exists: True
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series2
             seriesNum: 2
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series3
             seriesNum: 3
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series4
             seriesNum: 4
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series5
             seriesNum: 5
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series6
             seriesNum: 6
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series7
             seriesNum: 7
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series8
             seriesNum: 8
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series9
             seriesNum: 9
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series10
             seriesNum: 10
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series11
             seriesNum: 11
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series12
             seriesNum: 12
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series13
             seriesNum: 13
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
-            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: outputFileTab
-            text: ""
-            markup: True
-            background_normal: ''
-            background_down: ''
             font_size: dp(self.width / menuButtonSizer)
-            halign: 'center'
             on_press: root.openOutputFile(self)
 
         Button:
@@ -280,6 +197,7 @@
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
+                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
                         on_release: app.openLabInfoPop()
@@ -290,6 +208,7 @@
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
+                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
                         on_release: app.openRestraintPop()
@@ -326,6 +245,7 @@
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
+                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
                         on_release: app.openDatePop()
@@ -336,6 +256,7 @@
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
+                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
                         on_release: app.openBalancePop()
@@ -346,6 +267,7 @@
                         markup: True
                         background_normal: ''
                         background_color: (0.368, 0.49, 0.60, 1)
+                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
                         on_release: app.openGravityPop()
@@ -375,6 +297,7 @@
                         markup: True
                         background_normal: ''
                         background_color: buttonColor
+                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
                         on_release: app.openStatisticsPop()
