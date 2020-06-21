@@ -649,6 +649,17 @@ class SeriesButton(Button):
     def handleGoToSeries(self, event):
         self.parent.parent.goToSeries(self.seriesNum, self.exists)
 
+class InputButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.background_normal = ''
+        #self.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.markup = True
+        self.halign = 'center'
+        #self.color = (0, 0, 0, 1)
+
 # class RoundedButton(Button):
 #     def __init__(self, **kwargs):
 #         super().__init__()

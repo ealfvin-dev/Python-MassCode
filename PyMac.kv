@@ -112,7 +112,7 @@
             text: "[color=#FFFFFF]Remove\nLast Series[/color]"
             markup: True
             background_normal: ''
-            background_color: (0.70, 0.135, 0.05, 0.90)
+            background_color: (0.70, 0.135, 0.05, 0.92)
             font_size: dp(self.width / (buttonSizer*1.1))
             halign: 'center'
             on_release: root.removeLastSeries()
@@ -191,26 +191,16 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: labInfoButton
                         text: "Report No.\nNotes"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openLabInfoPop()
 
-                    Button:
+                    InputButton:
                         id: restraintButton
                         text: "Starting\nRestraint"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openRestraintPop()
 
                     Label:
@@ -239,37 +229,23 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: dateButton
                         text: "Date\nTechnicion"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openDatePop()
 
-                    Button:
+                    InputButton:
                         id: balanceButton
                         text: "Balance"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openBalancePop()
 
-                    Button:
+                    InputButton:
                         id: gravityButton
                         text: "Gravity\nGradient\n(Optional)"
-                        markup: True
-                        background_normal: ''
                         background_color: (0.368, 0.49, 0.60, 1)
-                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openGravityPop()
 
                 BoxLayout:
@@ -291,15 +267,10 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: statisticsButton
                         text: "Statistics"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
-                        color: (0, 0, 0, 1)
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openStatisticsPop()
 
                     Label:
@@ -335,34 +306,22 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: designButton
                         text: "Design"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openDesignPop()
 
-                    Button:
+                    InputButton:
                         id: weightsButton
                         text: "Weights"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openWeightsPop()
 
-                    Button:
+                    InputButton:
                         id: positionVectorsButton
                         text: "Position\nVectors"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openVectorsPop()
 
                 BoxLayout:
@@ -384,24 +343,16 @@
                     spacing: self.width / 12
                     padding: (0, 0, 0, 20)
 
-                    Button:
+                    InputButton:
                         id: swButton
                         text: "Sensitivity\nWeight"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openSwPop()
 
-                    Button:
+                    InputButton:
                         id: measurementsButton
                         text: "Measurements"
-                        markup: True
-                        background_normal: ''
-                        background_color: buttonColor
                         font_size: dp(self.width / buttonSizer)
-                        halign: 'center'
                         on_release: app.openMeasurementsPop()
 
                     Label:
