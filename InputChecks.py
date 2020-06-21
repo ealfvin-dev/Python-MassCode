@@ -55,6 +55,59 @@ def checkIfAllTags(seriesTexts, requiredTags, sendError, goToSeries):
 
     return True
 
+def checkForRepeats(seriesTexts, sendError, highlightError):
+    #Check for repeated tags
+    seriesNum = 0
+    lineNum = 0
+
+    singleTags = {"<Report-Number>": 0,\
+        "<Restraint-ID>": 0,\
+        "<Unc-Restraint>": 0,\
+        "<Random-Error>": 0,\
+        "<Date>": 0,\
+        "<Technician-ID>": 0,\
+        "<Check-Standard-ID>": 0,\
+        "<Balance-ID>": 0,\
+        "<Direct-Readings>": 0,\
+        "<Direct-Reading-SF>": 0,\
+        "<Design-ID>": 0,\
+        "<Pounds>": 0,\
+        "<Restraint>": 0,\
+        "<Check-Standard>": 0,\
+        "<Linear-Combo>": 0,\
+        "<Pass-Down>": 0,\
+        "<Sigma-t>": 0,\
+        "<Sigma-w>": 0,\
+        "<sw-Mass>": 0,\
+        "<sw-Density>": 0,\
+        "<sw-CCE>": 0}
+
+    for seriesText in seriesTexts:
+        seriesNum += 1
+        lineNum = 0
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.strip().split()
+
+            if(len(line) == 0):
+                continue
+
+            try:
+                singleTags[line[0]] += 1
+            except KeyError:
+                continue
+
+            if(singleTags[line[0]] > 1):
+                sendError("SERIES " + str(seriesNum) + ": MULTIPLE " + line[0] + " TAGS FOUND\nMARK THE START OF EACH SERIES WITH THE @SERIES ANNOTATION BEOFRE <Date>")
+                highlightError(seriesNum, lineNum)
+                return False
+
+        lineNum = 0
+        for key, value in singleTags.items():
+            singleTags[key] = 0 
+
+    return True
+
 def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
     #Runs required checks on user input file before running and identifies errors that prevent Runfile.run
     seriesNum = 0
@@ -127,6 +180,8 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                     sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nENVIRONMENTALS MUST BE ENTERED IN THE FORM <Environmentals>  T P RH")
                     highlightError(seriesNum, lineNum)
                     return False
+
+            #Check that pass down nominal matches next restraint
 
         #Check number of balace readings, envs
         if(numObs != designObs):

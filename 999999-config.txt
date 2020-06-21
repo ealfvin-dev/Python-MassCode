@@ -24,6 +24,7 @@
 
 
 <Design-ID>  221
+
 <Design>  1 -1  0  0
 <Design>  1  0 -1  0
 <Design>  1  0  0 -1
@@ -142,7 +143,7 @@
 
 @SERIES
 
-	<Date> 11 28 2019
+			<Date> 07 20 2020
               <Technician-ID> 19
                  <Balance-ID> 22
           <Check-Standard-ID> 27
@@ -195,7 +196,7 @@
            <Balance-Reading>   0.5241
            <Balance-Reading>   0.0894
            <Balance-Reading>   0.0072
-           <Balance-Reading>   -0.0814	
+           <Balance-Reading>   -0.0814
 
 
              <Environmentals> 19.781 736.426 46.995
@@ -215,7 +216,7 @@
 
 @SERIES
 
-	<Date> 11 28 2019
+		<Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
           <Check-Standard-ID> 27
@@ -244,8 +245,7 @@
               <Design> 0 0 1 -1
 
 
-                  <Restraint> 0 1 1 0
-        <Restraint> 0 1 1 0
+            <Restraint> 0 1  1 0
              <Check-Standard> 0 0 0 1 
                <Linear-Combo> 0 0 1 1 
 
@@ -305,7 +305,7 @@
                    <Position> T10g                 10         7.9550   0.000045
                    <Position> Tsum                 10         7.95945  0.000045
 
-                  <Design-ID> 221
+                  <Design-ID> 112
               <Design> 1 -1 -1  1 -1  0
               <Design> 1 -1 -1  0  1 -1
               <Design> 1 -1 -1 -1  0  1
