@@ -1060,19 +1060,35 @@ class ValidationPopup(Popup):
 
         #Run tests from RunTest.TestSuite class
         testSuite = RunTest.TestSuite()
+        results = testSuite.runFromFE()
 
-        testSuite.passTest("IMPORT KIVY")
-        testSuite.testRunFile()
-        testSuite.testWriteOutFile()
-        testSuite.testAirDesities()
-        testSuite.testOutFileData()
-
-        self.ids.validationText.text = testSuite.returnSummary()
+        self.ids.validationText.text = results
         self.ids.testingMessage.text = ""
         self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
 
+        return
+
 class StartupTestsPopup(Popup):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.bind(on_open=self.runTestThread)
+
+    def runTestThread(self, *args):
+        threading.Thread(target=self.runStartupTests).start()
+
+    def runStartupTests(self):
+        testSuite = RunTest.TestSuite()
+        testSuite.runFromFE()
+
+        if(testSuite.failed == 0):
+            self.dismiss()
+        else:
+            self.ids.testStatus.color = (0.9, 0.05, 0.05, 0.85)
+            self.ids.testStatus.text = "[b]" + str(testSuite.failed) + " INTERNAL TESTING FAILURE/S. OPEN LOGS TO SEE DETAILS[/b]"
+            self.ids.openLogButton.bind(on_release=self.dismiss)
+            self.ids.openLogButton.background_color = (0.13, 0.5, 0.95, 0.94)
+
+        return
 
 class RequestClosePopUp(Popup):
     pass
@@ -1083,13 +1099,11 @@ class PyMac(App):
         return MainLayout()
 
     def on_start(self):
-        Clock.schedule_once(self.runStartupTests, 0)
+        Clock.schedule_once(self.openStartTests, 0)
 
-    def runStartupTests(self, dt):
-        startTests = StartupTestsPopup()
-        startTests.open()
-        print("Running tests")
-        startTests.dismiss()
+    def openStartTests(self, dt):
+        startTestsPop = StartupTestsPopup()
+        startTestsPop.open()
 
     def on_request_close(self, *args):
         if(self.root.saved == False):

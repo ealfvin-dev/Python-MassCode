@@ -1,4 +1,4 @@
-class TestClass:
+class TestBase:
     def __init__(self):
         self.testNum = 1
         self.passed = 0
@@ -6,6 +6,7 @@ class TestClass:
 
         self.passedTests = []
         self.failedTests = []
+        self.log = []
 
     def passTest(self, testName):
         self.passed += 1
@@ -24,9 +25,13 @@ class TestClass:
             self.passTest(test)
         else:
             self.failTest(test)
+            self.log.append(test + "\n  expected: " + str(var1) + "\n   recieved: " + str(var2))
 
     def printSummary(self):
         summary = "\n############## TEST SUITE ##############\n"
+
+        summary += "\nLOG:\n\n"
+        summary += "    " + "\n    ".join(self.log) + "\n"
 
         summary += "\nTESTS PASSED:\n\n"
         summary += "    " + "\n    ".join(self.passedTests) + "\n"
@@ -40,6 +45,9 @@ class TestClass:
 
     def returnSummary(self):
         summary = "\n############## TEST SUITE ##############\n"
+
+        summary += "\nLOG:\n\n"
+        summary += "    " + "\n    ".join(self.log) + "\n"
 
         summary += "\nTESTS PASSED:\n\n"
         summary += "    " + "\n    ".join(self.passedTests) + "\n"

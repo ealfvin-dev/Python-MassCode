@@ -1,10 +1,10 @@
 import RunFile
-import TestClass
+import TestBase
 import numpy as np
 import sys
 import os
 
-class TestSuite(TestClass.TestClass):
+class TestSuite(TestBase.TestBase):
     def testKivy(self):
         #Test if Kivy can import
         try:
@@ -152,12 +152,25 @@ class TestSuite(TestClass.TestClass):
         if(os.path.exists("Test2-out.txt")):
             os.remove("Test2-out.txt")
 
+    #Test non-invertible matrix throws error
+    #Test other data entry errors throw errors (from fe and be?)
+
+    def runAll(self):
+        self.testKivy()
+        self.testRunFile()
+        self.testWriteOutFile()
+        self.testAirDesities()
+        self.testOutFileData()
+        self.printSummary()
+
+    def runFromFE(self):
+        self.passTest("IMPORT KIVY")
+        self.testRunFile()
+        self.testWriteOutFile()
+        self.testAirDesities()
+        self.testOutFileData()
+        return self.returnSummary()
+
 if(__name__ == "__main__"):
     suite = TestSuite()
-    suite.testKivy()
-    suite.testRunFile()
-    suite.testWriteOutFile()
-    suite.testAirDesities()
-    suite.testOutFileData()
-
-    suite.printSummary()
+    suite.runAll()
