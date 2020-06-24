@@ -8,6 +8,7 @@ Config.set('graphics', 'window_state', 'maximized')
 Config.write()
 
 from kivy.graphics import Color, Rectangle
+from kivy.clock import Clock
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -293,82 +294,82 @@ class MainLayout(BoxLayout):
 
         #Lab Info Button
         if(self.currentSeries == 1 and tags["<Report-Number>"] == False):
-            self.ids.labInfoButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.labInfoButton.colorBlue()
         else:
-            self.ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.labInfoButton.colorGrey()
 
         #Restraint Button
         if(self.currentSeries == 1 and (tags["<Restraint-ID>"] == False or tags["<Unc-Restraint>"] == False or tags["<Random-Error>"] == False)):
-            self.ids.restraintButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.restraintButton.colorBlue()
         else:
-            self.ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.restraintButton.colorGrey()
 
         #Date Button
         if(tags["<Date>"] and tags["<Technician-ID>"] and tags["<Check-Standard-ID>"]):
-            self.ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.dateButton.colorGrey()
         else:
-            self.ids.dateButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.dateButton.colorBlue()
 
         #Balance Button
         if(tags["<Balance-ID>"] and tags["<Direct-Readings>"] and tags["<Direct-Reading-SF>"]):
-            self.ids.balanceButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.balanceButton.colorGrey()
         else:
-            self.ids.balanceButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.balanceButton.colorBlue()
 
         #Gravity Button
         if(tags["<COM-Diff>"] and tags["<Gravity-Grad>"]):
-            self.ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.gravityButton.colorGrey()
         else:
             self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
 
         #Statistics Buttons
         if(tags["<Sigma-t>"] and tags["<Sigma-w>"]):
-            self.ids.statisticsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.statisticsButton.colorGrey()
         else:
-            self.ids.statisticsButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.statisticsButton.colorBlue()
 
         #Design Button
         if(tags["<Design>"] and tags["<Design-ID>"]):
-            self.ids.designButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.designButton.colorGrey()
         else:
-            self.ids.designButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.designButton.colorBlue()
 
         #Weights Button
         if(tags["<Position>"] and tags["<Pounds>"]):
-            self.ids.weightsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.weightsButton.colorGrey()
         else:
-            self.ids.weightsButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.weightsButton.colorBlue()
 
         #Positions Button
         if(tags["<Restraint>"] and tags["<Check-Standard>"] and tags["<Linear-Combo>"] and tags["<Pass-Down>"]):
-            self.ids.positionVectorsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.positionVectorsButton.colorGrey()
         else:
-            self.ids.positionVectorsButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.positionVectorsButton.colorBlue()
 
         #Sensitivity Weight Button
         if(tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]):
-            self.ids.swButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.swButton.colorGrey()
         else:
-            self.ids.swButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.swButton.colorBlue()
 
         #Measurements Button
         if(tags["<Balance-Reading>"] and tags["<Environmentals>"] and tags["<Env-Corrections>"]):
-            self.ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.measurementsButton.colorGrey()
         else:
-            self.ids.measurementsButton.background_color = (0.08, 0.55, 1, 1)
+            self.ids.measurementsButton.colorBlue()
 
     def greyOutButtons(self):
-        self.ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.balanceButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.statisticsButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.designButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.weightsButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.positionVectorsButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.swButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.labInfoButton.colorGrey()
+        self.ids.restraintButton.colorGrey()
+        self.ids.dateButton.colorGrey()
+        self.ids.balanceButton.colorGrey()
+        self.ids.gravityButton.colorGrey()
+        self.ids.statisticsButton.colorGrey()
+        self.ids.designButton.colorGrey()
+        self.ids.weightsButton.colorGrey()
+        self.ids.positionVectorsButton.colorGrey()
+        self.ids.swButton.colorGrey()
+        self.ids.measurementsButton.colorGrey()
 
     def addSeries(self):
         if(self.numberOfSeries == 13):
@@ -658,7 +659,12 @@ class InputButton(Button):
         self.background_color = (0.13, 0.5, 0.95, 0.94)
         self.markup = True
         self.halign = 'center'
-        #self.color = (0, 0, 0, 1)
+
+    def colorGrey(self):
+        self.background_color = ((0.62, 0.62, 0.62, 0.62))
+
+    def colorBlue(self):
+        self.background_color = (0.13, 0.5, 0.95, 0.94)
 
 # class RoundedButton(Button):
 #     def __init__(self, **kwargs):
@@ -699,8 +705,7 @@ class LabInfoPopup(Popup):
         #Highlight the block added across total textLength. Add 1 because there is one extra line break character between sections
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
-        self.parent.children[1].ids.labInfoButton.background_color = (0.62, 0.62, 0.62, 0.62)
-        #self.parent.children[1].ids.labInfoButton.completed = True
+        self.parent.children[1].ids.labInfoButton.colorGrey()
 
         self.dismiss()
 
@@ -724,7 +729,7 @@ class RestraintPopup(Popup):
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
-        self.parent.children[1].ids.restraintButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.restraintButton.colorGrey()
 
         self.dismiss()
 
@@ -748,7 +753,7 @@ class DatePopup(Popup):
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
-        self.parent.children[1].ids.dateButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.dateButton.colorGrey()
 
         self.dismiss()
 
@@ -772,7 +777,7 @@ class BalancePopup(Popup):
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
-        self.parent.children[1].ids.balanceButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.balanceButton.colorGrey()
 
         self.dismiss()
 
@@ -838,7 +843,7 @@ class DesignPopup(Popup):
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
-        self.parent.children[1].ids.designButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.designButton.colorGrey()
 
         self.dismiss()
 
@@ -859,7 +864,7 @@ class WeightsPopup(Popup):
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
-        self.parent.children[1].ids.weightsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.weightsButton.colorGrey()
 
         #Render series nominal
         seriesButtonId = "series" + str(self.parent.children[1].currentSeries)
@@ -890,7 +895,7 @@ class VectorsPopup(Popup):
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + 3)
 
-        self.parent.children[1].ids.positionVectorsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.positionVectorsButton.colorGrey()
 
         self.dismiss()
 
@@ -911,7 +916,7 @@ class StatisticsPopup(Popup):
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
-        self.parent.children[1].ids.statisticsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.statisticsButton.colorGrey()
 
         self.dismiss()
 
@@ -935,7 +940,7 @@ class SwPopup(Popup):
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
-        self.parent.children[1].ids.swButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.parent.children[1].ids.swButton.colorGrey()
 
         self.dismiss()
 
@@ -978,7 +983,8 @@ class MeasurementsPopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-        self.parent.children[1].ids.measurementsButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.parent.children[1].ids.measurementsButton.colorGrey()
 
         self.dismiss()
 
@@ -998,7 +1004,8 @@ class GravityPopup(Popup):
         cursorStart2, textLength2 = self.parent.children[1].writeText(COMText, COMOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-        self.parent.children[1].ids.gravityButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
+        self.parent.children[1].ids.gravityButton.colorGrey()
 
         self.dismiss()
 
@@ -1056,17 +1063,21 @@ class ValidationPopup(Popup):
         self.ids.testingMessage.text = "Running Tests..."
         self.ids.validationText.text = ""
 
+        #Run tests from RunTest.TestSuite class
         testSuite = RunTest.TestSuite()
 
-        #Run tests from RunTest.TestSuite class
         testSuite.passTest("IMPORT KIVY")
-        testSuite.testZero()
-        testSuite.testOne()
-        testSuite.testTwo()
+        testSuite.testRunFile()
+        testSuite.testWriteOutFile()
+        testSuite.testAirDesities()
+        testSuite.testOutFileData()
 
-        self.ids.validationText.text = testSuite.printSummary()
+        self.ids.validationText.text = testSuite.returnSummary()
         self.ids.testingMessage.text = ""
         self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
+
+class StartupTestsPopup(Popup):
+    pass
 
 class RequestClosePopUp(Popup):
     pass
@@ -1075,6 +1086,15 @@ class PyMac(App):
     def build(self):
         Window.bind(on_request_close=self.on_request_close)
         return MainLayout()
+
+    def on_start(self):
+        Clock.schedule_once(self.runStartupTests, 0)
+
+    def runStartupTests(self, dt):
+        startTests = StartupTestsPopup()
+        startTests.open()
+        print("Running tests")
+        startTests.dismiss()
 
     def on_request_close(self, *args):
         if(self.root.saved == False):
