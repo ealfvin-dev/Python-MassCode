@@ -1,50 +1,12 @@
 import RunFile
+import TestClass
 import numpy as np
 import sys
 import os
 
-class TestSuite():
-    def __init__(self):
-        self.expectedNumTests = 35
-        self.testNum = 1
-        self.passed = 0
-        self.failed = 0
-
-        self.longOutput = ""
-
-        self.passedTests = []
-        self.failedTests = []
-
-    def passTest(self, testName):
-        self.passed += 1
-        self.passedTests.append("TEST " + str(self.testNum) + " - " + testName)
-        self.longOutput += "\n" + testName + ".........PASS"
-        self.testNum += 1
-
-    def failTest(self, testName):
-        self.failed += 1
-        self.failedTests.append("TEST " + str(self.testNum) + " - " + testName)
-        self.longOutput += "\n" + testName + ".........FAIL"
-        self.testNum += 1
-
-    def printSummary(self):
-        summary = "\n############## TESTING SUITE ##############\n"
-
-        summary += self.longOutput + "\n"
-
-        summary += "\nTESTS PASSED:\n\n"
-        summary += "    " + "\n    ".join(self.passedTests) + "\n"
-        summary += "\n\nTESTS FAILED:\n\n"
-        summary += "    " + "\n    ".join(self.failedTests) + "\n"
-
-        summary += "\n*** RAN " + str(self.passed + self.failed) + "/" + str(self.expectedNumTests) + " TESTS ***\n\n"
-        summary += str(self.passed) + " PASSED\n"+str(self.failed) + " FAILED\n\n"
-
-        return summary
-
+class TestSuite(TestClass.TestClass):
     def testKivy(self):
-        #Test if Kivy can be imported
-        self.longOutput += "\n\n###RUNNING IMPORT KIVY...\n\n"
+        #Test if Kivy can import
         try:
             import kivy
 
@@ -52,20 +14,18 @@ class TestSuite():
         except:
             self.failTest("IMPORT KIVY")
 
-    def testZero(self):
+    def testRunFile(self):
         #Test if config file can be run and output file can be written
-        self.longOutput += "\n\n###RUNNING TEST: RUN FILE...\n\n"
-
         try:
             data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt", False)
-
             self.passTest("RUN TEST FILE")
         except:
             self.failTest("RUN TEST FILE")
 
+    def testWriteOutFile(self):
+        #Test if output file can be written
         try:
             data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt")
-
             self.passTest("WRITE OUT FILE")
         except:
             self.failTest("WRITE OUT FILE")
@@ -73,10 +33,8 @@ class TestSuite():
         if(os.path.exists("Test0-AirDensity-out.txt")):
             os.remove("Test0-AirDensity-out.txt")
 
-    def testOne(self):
+    def testAirDesities(self):
         #Test if calculated air densities match expected
-        self.longOutput += "\n\n###RUNNING TEST: AIR DENSITY CALCULATION...\n\n"
-
         try:
             data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt", False)
 
@@ -93,9 +51,6 @@ class TestSuite():
                 0.0011842805431003785,\
                 0.0010969698894584734]
 
-            self.longOutput += "EXPECTED AIR DENSITIES: \n" + "\n".join(str(x) for x in expectedDensities) + "\n\n"
-            self.longOutput += "CALCULATED AIR DENSITIES: \n" + "\n".join(str(x) for x in data[0].airDensities) + "\n\n"
-
             isCloseRes = np.isclose(data[0].airDensities, expectedDensities, atol=1e-8)
 
             for i in range(len(isCloseRes)):
@@ -106,10 +61,8 @@ class TestSuite():
         except:
             self.failTest("AIR DENSITIES WERE NOT CALCULATED")
 
-    def testTwo(self):
+    def testOutFileData(self):
         #Test writing stuff into output file
-        self.longOutput += "\n\n###RUNNING TEST: WRITING DATA TO OUTPUT FILE...\n\n"
-
         try:
             data = RunFile.run("./Testing/PyMacTest/Test2-config.txt")
 
@@ -176,84 +129,22 @@ class TestSuite():
                             inputAcceptedCSCorr = float(m[5])
 
             #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
-            self.longOutput += "EXPECTED MASSES: \n" + "\n".join(str(x) for x in expectedMasses) + "\n\n"
-            self.longOutput += "OUTPUT FILE MASSES: \n" + "\n".join(str(x) for x in outFileMasses) + "\n\n"
-
             for i in range(len(expectedMasses)):
-                if(outFileMasses[i] == round(expectedMasses[i], 8)):
-                    self.passTest("DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
-                else:
-                    self.failTest("DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
+                self.assertEqual(outFileMasses[i], round(expectedMasses[i], 8), "DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
 
             #Test if densities in output file match input
-            self.longOutput += "\n\nINPUT FILE DENSITIES: \n" + "\n".join(str(x) for x in inputDensities) + "\n\n"
-            self.longOutput += "OUTPUT FILE DENSITIES: \n" + "\n".join(str(x) for x in outFileDensities) + "\n"
-
             for i in range(len(inputDensities)):
-                if(inputDensities[i] == outFileDensities[i]):
-                    self.passTest("DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
-                else:
-                    self.failTest("DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
+                self.assertEqual(inputDensities[i], outFileDensities[i], "DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
 
             #Test if statistics were written out correctly
-            self.longOutput += "\n\nSTATISTICS:\n\n"
-            self.longOutput += "CALCULATED SW OBSERVED: " + str(calculatedSw) + "\n"
-            self.longOutput += "OUTPUT FILE SW OBSERVED: " + str(outFilesw) + "\n\n"
-            self.longOutput += "INPUT SW ACCEPTED: " + str(inputSw) + "\n"
-            self.longOutput += "OUTPUT FILE SW ACCEPTED: " + str(outFileswAccepted) + "\n\n"
-            self.longOutput += "CALCULATED F-CRITICAL: " + str(calculatedFcrit) + "\n"
-            self.longOutput += "OUTPUT FILE F-CRITICAL: " + str(outFileFcrit) + "\n\n"
-            self.longOutput += "CALCULATED F-VALUE: " + str(calculatedFvalue) + "\n"
-            self.longOutput += "OUTPUT FILE F-VALUE: " + str(outFileFvalue) + "\n\n"
-
-            self.longOutput += "CALCULATED CHECK STANDARD CORRECTION: " + str(calculatedCheckStd) + "\n"
-            self.longOutput += "OUTPUT FILE CHECK STANDARD CORRECTION: " + str(outFileCheckStd) + "\n\n"
-            self.longOutput += "INPUT ACCEPTED CHECK STANDARD CORRECTION: " + str(inputAcceptedCSCorr) + "\n"
-            self.longOutput += "OUTPUT ACCEPTED CHECK STANDARD CORRECTION: " + str(outFileCheckStdAccepted) + "\n\n"
-            self.longOutput += "CALCULATED T-CRITICAL: " + str(calculatedTcrit) + "\n"
-            self.longOutput += "OUTPUT FILE T-CRITICAL: " + str(outFileTcrit) + "\n\n"
-            self.longOutput += "CALCULATED T-VALUE: " + str(calculatedTvalue) + "\n"
-            self.longOutput += "OUTPUT FILE T-VALUE: " + str(outFileTvalue) + "\n\n"
-
-            if(outFilesw == calculatedSw):
-                self.passTest("DATA WRITING TO OUTPUT FILE SW OBSERVED")
-            else:
-                self.failTest("DATA WRITING TO OUTPUT FILE SW OBSERVED")
-
-            if(outFileswAccepted == inputSw):
-                self.passTest("DATA WRITING TO OUTPUT FILE SW ACCEPTED")
-            else:
-                self.failTest("DATA WRITING TO OUTPUT FILE SW ACCEPTED")
-
-            if(outFileFcrit == calculatedFcrit):
-                self.passTest("DATA WRITING TO OUTPUT FILE F-CRITICAL")
-            else:
-                self.failTest("DATA WRITING TO OUTPUT FILE F-CRITICAL")
-
-            if(outFileFvalue == calculatedFvalue):
-                self.passTest("DATA WRITING TO OUTPUT FILE F-VALUE")
-            else:
-                self.failTest("DATA WRITING TO OUTPUT FILE F-VALUE")
-
-            if(outFileCheckStd == calculatedCheckStd):
-                self.passTest("DATA WRITING TO OUTPUT FILE CALCULATED CHECK STANDARD CORRECTION")
-            else:
-                self.failTest("DATA WRITING TO OUTPUT FILE CALCULATED CHECK STANDARD CORRECTION")
-
-            if(outFileCheckStdAccepted == inputAcceptedCSCorr):
-                self.passTest("DATA WRITING TO OUTPUT FILE ACCEPTED CHECK STANDARD CORRECTION")
-            else:
-                self.failTest("DATA WRITING TO OUTPUT FILE ACCEPTED CHECK STANDARD CORRECTION")
-
-            if(outFileTcrit == calculatedTcrit):
-                self.passTest("DATA WRITING TO OUTPUT FILE T-CRITICAL")
-            else:
-                self.failTest("DATA WRITING TO OUTPUT FILE T-CRITICAL")
-
-            if(outFileTvalue == calculatedTvalue):
-                self.passTest("DATA WRITING TO OUTPUT FILE T-VALUE")
-            else:
-                self.failTest("DATA WRITING TO OUTPUT FILE T-VALUE")
+            self.assertEqual(outFilesw, calculatedSw, "DATA WRITING TO OUTPUT FILE SW OBSERVED")
+            self.assertEqual(outFileswAccepted, inputSw, "DATA WRITING TO OUTPUT FILE SW ACCEPTED")
+            self.assertEqual(outFileFcrit, calculatedFcrit, "DATA WRITING TO OUTPUT FILE F-CRITICAL")
+            self.assertEqual(outFileFvalue, calculatedFvalue, "DATA WRITING TO OUTPUT FILE F-VALUE")
+            self.assertEqual(outFileCheckStd, calculatedCheckStd, "DATA WRITING TO OUTPUT FILE CALCULATED CHECK STANDARD CORRECTION")
+            self.assertEqual(outFileCheckStdAccepted, inputAcceptedCSCorr, "DATA WRITING TO OUTPUT FILE ACCEPTED CHECK STANDARD CORRECTION")
+            self.assertEqual(outFileTcrit, calculatedTcrit, "DATA WRITING TO OUTPUT FILE T-CRITICAL")
+            self.assertEqual(outFileTvalue, calculatedTvalue, "DATA WRITING TO OUTPUT FILE T-VALUE")
 
         except:
             self.failTest("ERROR IN RUN/OUTPUT REPORT GENERATION")
@@ -262,11 +153,11 @@ class TestSuite():
             os.remove("Test2-out.txt")
 
 if(__name__ == "__main__"):
-    testSuite = TestSuite()
+    suite = TestSuite()
+    suite.testKivy()
+    suite.testRunFile()
+    suite.testWriteOutFile()
+    suite.testAirDesities()
+    suite.testOutFileData()
 
-    testSuite.testKivy()
-    testSuite.testZero()
-    testSuite.testOne()
-    testSuite.testTwo()
-
-    print(testSuite.printSummary())
+    suite.printSummary()

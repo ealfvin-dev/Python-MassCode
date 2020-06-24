@@ -8,6 +8,7 @@ Config.set('graphics', 'window_state', 'maximized')
 Config.write()
 
 from kivy.graphics import Color, Rectangle
+from kivy.clock import Clock
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -57,8 +58,6 @@ class MainLayout(BoxLayout):
             self.bind(size=self._update_rect, pos=self._update_rect)
 
         self.saved = False
-        self.buttonClickedColor = (0.08, 0.55, 1, 1)
-        self.buttonUnClickedColor = (0.62, 0.62, 0.62, 0.62)
 
         self.orderOfTags = {"#": 0, \
             "<Report-Number>": 1, \
@@ -1059,17 +1058,21 @@ class ValidationPopup(Popup):
         self.ids.testingMessage.text = "Running Tests..."
         self.ids.validationText.text = ""
 
+        #Run tests from RunTest.TestSuite class
         testSuite = RunTest.TestSuite()
 
-        #Run tests from RunTest.TestSuite class
         testSuite.passTest("IMPORT KIVY")
-        testSuite.testZero()
-        testSuite.testOne()
-        testSuite.testTwo()
+        testSuite.testRunFile()
+        testSuite.testWriteOutFile()
+        testSuite.testAirDesities()
+        testSuite.testOutFileData()
 
-        self.ids.validationText.text = testSuite.printSummary()
+        self.ids.validationText.text = testSuite.returnSummary()
         self.ids.testingMessage.text = ""
         self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
+
+class StartupTestsPopup(Popup):
+    pass
 
 class RequestClosePopUp(Popup):
     pass
@@ -1078,6 +1081,15 @@ class PyMac(App):
     def build(self):
         Window.bind(on_request_close=self.on_request_close)
         return MainLayout()
+
+    def on_start(self):
+        Clock.schedule_once(self.runStartupTests, 0)
+
+    def runStartupTests(self, dt):
+        startTests = StartupTestsPopup()
+        startTests.open()
+        print("Running tests")
+        startTests.dismiss()
 
     def on_request_close(self, *args):
         if(self.root.saved == False):
