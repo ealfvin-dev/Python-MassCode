@@ -1,6 +1,5 @@
 import RunFile
 import TestBase
-import numpy as np
 import sys
 import os
 
@@ -37,6 +36,7 @@ class TestSuite(TestBase.TestBase):
         #Test if calculated air densities match expected
         try:
             data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt", False)
+            calculatedDesities = data[0].airDensities
 
             expectedDensities = [0.0011627477621149957,\
                 0.0011319900687371933,\
@@ -51,13 +51,9 @@ class TestSuite(TestBase.TestBase):
                 0.0011842805431003785,\
                 0.0010969698894584734]
 
-            isCloseRes = np.isclose(data[0].airDensities, expectedDensities, atol=1e-8)
+            for i in range(len(expectedDensities)):
+                self.assertClose(expectedDensities[i], calculatedDesities[i], 1e-8, "AIR DENSITY CALC " + str(i + 1))
 
-            for i in range(len(isCloseRes)):
-                if isCloseRes[i] == True:
-                    self.passTest("AIR DENSITY CALC " + str(i + 1))
-                else:
-                    self.failTest("AIR DENSITY CALC " + str(i + 1))
         except:
             self.failTest("AIR DENSITIES WERE NOT CALCULATED")
 
@@ -151,6 +147,9 @@ class TestSuite(TestBase.TestBase):
 
         if(os.path.exists("Test2-out.txt")):
             os.remove("Test2-out.txt")
+
+    def testNonInvertible(self):
+        pass
 
     #Test non-invertible matrix throws error
     #Test other data entry errors throw errors (from fe and be?)

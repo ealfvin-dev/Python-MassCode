@@ -23,7 +23,7 @@ from kivy.uix.button import Button
 from kivy.uix.checkbox import CheckBox
 
 import RunFile
-import RunTest
+import TestSuite
 import InputChecks
 import PyMacException
 
@@ -1062,7 +1062,7 @@ class ValidationPopup(Popup):
         self.ids.validationText.text = ""
 
         #Run tests from RunTest.TestSuite class
-        testSuite = RunTest.TestSuite()
+        testSuite = TestSuite.TestSuite()
         results = testSuite.runFromFE()
 
         self.ids.validationText.text = results
@@ -1078,7 +1078,7 @@ class StartupTestsPopup(Popup):
         threading.Thread(target=self.runStartupTests).start()
 
     def runStartupTests(self):
-        testSuite = RunTest.TestSuite()
+        testSuite = TestSuite.TestSuite()
         testSuite.runFromFE()
 
         if(testSuite.failed == 0):
