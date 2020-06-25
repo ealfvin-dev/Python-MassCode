@@ -1,6 +1,5 @@
-#  Test #2
-#  Validation of results written to output file
-#  PyMac Input
+#  Test if balance observations != design observations raised MARSException
+#  MARS Input
 
     <Report-Number>  Test2
 
@@ -10,7 +9,7 @@
 
 @SERIES
 
-             <Date>  05 03 2020
+             <Date>  07 24 2020
     <Technician-ID>  019
 <Check-Standard-ID>  43
 
@@ -62,7 +61,6 @@
   <Balance-Reading>  0.02  0.64 100.67 100.04
   <Balance-Reading>  0     0.59 100.61 100.01
   <Balance-Reading>  0.05 -0.11  99.90 100.03
-  <Balance-Reading>  0.06  0.61 100.64 100.07
 
    <Environmentals>  19.608 739.7 47.7
    <Environmentals>  19.608 739.7 47.7
@@ -77,5 +75,3 @@
    <Environmentals>  19.608 739.7 47.7
 
   <Env-Corrections>  0 0 0.29
-
-

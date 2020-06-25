@@ -1,10 +1,10 @@
 import RunFile
-import TestClass
-import numpy as np
+import TestBase
+import MARSException
 import sys
 import os
 
-class TestSuite(TestClass.TestClass):
+class TestSuite(TestBase.TestBase):
     def testKivy(self):
         #Test if Kivy can import
         try:
@@ -17,7 +17,7 @@ class TestSuite(TestClass.TestClass):
     def testRunFile(self):
         #Test if config file can be run and output file can be written
         try:
-            data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt", False)
+            data = RunFile.run("./Testing/MARSTest/Test0-AirDensity-config.txt", False)
             self.passTest("RUN TEST FILE")
         except:
             self.failTest("RUN TEST FILE")
@@ -25,7 +25,7 @@ class TestSuite(TestClass.TestClass):
     def testWriteOutFile(self):
         #Test if output file can be written
         try:
-            data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt")
+            data = RunFile.run("./Testing/MARSTest/Test0-AirDensity-config.txt")
             self.passTest("WRITE OUT FILE")
         except:
             self.failTest("WRITE OUT FILE")
@@ -36,7 +36,8 @@ class TestSuite(TestClass.TestClass):
     def testAirDesities(self):
         #Test if calculated air densities match expected
         try:
-            data = RunFile.run("./Testing/PyMacTest/Test0-AirDensity-config.txt", False)
+            data = RunFile.run("./Testing/MARSTest/Test0-AirDensity-config.txt", False)
+            calculatedDesities = data[0].airDensities
 
             expectedDensities = [0.0011627477621149957,\
                 0.0011319900687371933,\
@@ -51,20 +52,16 @@ class TestSuite(TestClass.TestClass):
                 0.0011842805431003785,\
                 0.0010969698894584734]
 
-            isCloseRes = np.isclose(data[0].airDensities, expectedDensities, atol=1e-8)
+            for i in range(len(expectedDensities)):
+                self.assertClose(expectedDensities[i], calculatedDesities[i], 1e-8, "AIR DENSITY CALC " + str(i + 1))
 
-            for i in range(len(isCloseRes)):
-                if isCloseRes[i] == True:
-                    self.passTest("AIR DENSITY CALC " + str(i + 1))
-                else:
-                    self.failTest("AIR DENSITY CALC " + str(i + 1))
         except:
             self.failTest("AIR DENSITIES WERE NOT CALCULATED")
 
     def testOutFileData(self):
         #Test writing stuff into output file
         try:
-            data = RunFile.run("./Testing/PyMacTest/Test2-config.txt")
+            data = RunFile.run("./Testing/MARSTest/Test2-config.txt")
 
             outFileDensities = []
             outFileMasses = []
@@ -118,7 +115,7 @@ class TestSuite(TestClass.TestClass):
                         outFileTvalue = float(m[2])
 
             #Pull useful stuff out of input file
-            with open("./Testing/PyMacTest/Test2-config.txt", 'r') as configFile:
+            with open("./Testing/MARSTest/Test2-config.txt", 'r') as configFile:
                 for line in configFile:
                     m = line.strip().split()
                     if(m == [] or m[0] == "\n"):
@@ -152,12 +149,72 @@ class TestSuite(TestClass.TestClass):
         if(os.path.exists("Test2-out.txt")):
             os.remove("Test2-out.txt")
 
+    def testNonInvertible(self):
+        #Test non-invertible matrix raises MARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/NonInvertible-test-config.txt")
+            self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+        except MARSException.MARSException:
+            self.passTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+        except:
+            self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+
+    def testUnequalBalanceObs(self):
+        #Test if balance readings != observations raises MARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/UnEqualBalObs-test-config.txt")
+            self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+        except MARSException.MARSException:
+            self.passTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+        except:
+            self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+
+    def testUnequalEnvObs(self):
+        #Test if environmental readings != observations raises MARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/UnEqualEnvObs-test-config.txt")
+            self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+        except MARSException.MARSException:
+            self.passTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+        except:
+            self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+
+    def testNoRestraintPassed(self):
+        #Test if no restraint passed to series raises MARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/NoRestraintPassed-test-config.txt")
+            self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+        except MARSException.MARSException:
+            self.passTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+        except:
+            self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+
+    #Test other data entry errors throw errors (from fe and be?)
+
+    def runAll(self):
+        self.testKivy()
+        self.testRunFile()
+        self.testWriteOutFile()
+        self.testAirDesities()
+        self.testOutFileData()
+        self.testNonInvertible()
+        self.testUnequalBalanceObs()
+        self.testUnequalEnvObs()
+        self.testNoRestraintPassed()
+        self.printSummary()
+
+    def runFromFE(self):
+        self.passTest("IMPORT KIVY")
+        self.testRunFile()
+        self.testWriteOutFile()
+        self.testAirDesities()
+        self.testOutFileData()
+        self.testNonInvertible()
+        self.testUnequalBalanceObs()
+        self.testUnequalEnvObs()
+        self.testNoRestraintPassed()
+        return self.returnSummary()
+
 if(__name__ == "__main__"):
     suite = TestSuite()
-    suite.testKivy()
-    suite.testRunFile()
-    suite.testWriteOutFile()
-    suite.testAirDesities()
-    suite.testOutFileData()
-
-    suite.printSummary()
+    suite.runAll()

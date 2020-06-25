@@ -1,16 +1,16 @@
-"""
-Author: Erik Alfvin
-Run with Python 3.7, numpy 1.17.2
-PyMac Version 1
-Version Date: 2019-12-15
-Results are for experimental purposes only
 
-This program is designed to reduce data from weighing designs using a least squares
-best fit. The program returns best fit mass values and within process standard deviations.
+# Author: Erik Alfvin
+# Run with Python 3.7, numpy 1.17.2
+# MARS Version 1
+# Version Date: 2020-07-24
+# Results are for experimental purposes only
 
-The T-test tests the observed value of the check standard against its accepted value.
-The F-test tests the within-process standard deviation agianst the accepted standard deviation.
-"""
+# This program is designed to reduce data from weighing designs using a least squares
+# best fit. The program returns best fit mass values and within process standard deviations.
+
+# The T-test tests the observed value of the check standard against its accepted value.
+# The F-test tests the within-process standard deviation agianst the accepted standard deviation.
+
 
 import sys
 import numpy as np
@@ -18,18 +18,17 @@ import scipy.stats
 from statistics import mean, stdev
 from math import sqrt, exp
 
-import PyMacException
+import MARSException
 
 class MatrixSolution:
-    """
-    The MatrixSolution class holds all calibration data and data reduction results for a given series.
-    The vector self.nextRestraint contains the position of the weights to be passed down to the next series.
+    # The MatrixSolution class holds all calibration data and data reduction results for a given series.
+    # The vector self.nextRestraint contains the position of the weights to be passed down to the next series.
 
-    The parser needs to push read data into MatrixSolution class instance variables for each series.
-    The variable self.seriesNumber holds the series number 0 = first series
+    # The parser needs to push read data into MatrixSolution class instance variables for each series.
+    # The variable self.seriesNumber holds the series number 0 = first series
 
-    Functions: calculateAirDensity, calculateDoubleSubs, solution, doStatistics
-    """
+    # Functions: calculateAirDensity, calculateDoubleSubs, solution, doStatistics
+
     def __init__(self):
         self.reportNumber = "000000"
         self.notes = []
@@ -209,11 +208,10 @@ class MatrixSolution:
             self.loads.append(nominal)
 
     def calculateDoubleSubs(self, estimateMasses, averageSensitivities):
-        """
-        Calculates resulting "a" values of double subs. This function is called iteratively, passing the latest calculated values (estimateMasses) in to do line-by-line air buoyancy corrections.
-        The first pass through uses the nominal values as a first guess at masses. Sensitivity is passed in and the average sensitivity for each load is used. Automated balances use Direct-Readings-SF 
-        as the sensitivity factor. 
-        """
+        # Calculates resulting "a" values of double subs. This function is called iteratively, passing the latest calculated values (estimateMasses) in to do line-by-line air buoyancy corrections.
+        # The first pass through uses the nominal values as a first guess at masses. Sensitivity is passed in and the average sensitivity for each load is used. Automated balances use Direct-Readings-SF 
+        # as the sensitivity factor.
+
 
         for i in range(len(self.balanceReadings)):
             airDensity = self.calculateAirDensity(\
@@ -268,7 +266,7 @@ class MatrixSolution:
                 deltaLab = -1 * self.balanceReadings[i][0] * averageSensitivities['balance'] / 1000
             
             else:
-                raise PyMacException.PyMacException("SERIES " + str(self.seriesNumber + 1) + " PLEASE ENTER A VALID DIRECT-READINGS ARGUMENT.\n1 = DIRECT READINGS ENTERED, 0 = DOUBLE SUBSTITUTION OBSERVATIONS ENTERED")
+                raise MARSException.MARSException("SERIES " + str(self.seriesNumber + 1) + " PLEASE ENTER A VALID DIRECT-READINGS ARGUMENT.\n1 = DIRECT READINGS ENTERED, 0 = DOUBLE SUBSTITUTION OBSERVATIONS ENTERED")
             
             if self.heightDifferences != []:
                 deltaLab = deltaLab - (estimatedMassTwo / 9.807) * ((self.heightDifferences[i]/1000) * -1 * self.gravityGradient)
@@ -278,8 +276,8 @@ class MatrixSolution:
             self.matrixY[i, 0] = -1 * deltaVaccum
 
     def solution(self, seriesObjects):
-        if len(self.environmentals) != len(self.balanceReadings):
-            raise PyMacException.PyMacException("SERIES " + str(self.seriesNumber + 1) + ": USE THE SAME NUMBER OF LINES FOR DESIGN-MATRIX, BALANCE-READINGS AND ENVIRONMENTALS IN INPUT FILE")
+        if(len(self.environmentals) != self.observations or len(self.balanceReadings) != self.observations):
+            raise MARSException.MARSException("SERIES " + str(self.seriesNumber + 1) + ": UNEQUAL NUMBER OF OBSERVATIONS, BALANCE OBSERVATIONS AND ENVIRONMENTALS")
 
         designTranspose = np.matrix.transpose(self.designMatrix)
         transposeXdesign = np.matmul(designTranspose, self.designMatrix)
@@ -287,15 +285,15 @@ class MatrixSolution:
         #Build matrix A by stacking restraintPos and restraintPos' on transpose x design matrix:
         matrixAtemp = np.hstack((transposeXdesign, np.matrix.transpose(self.restraintPos)))
         matrixA = np.vstack((matrixAtemp, np.append(self.restraintPos, 0)))
-
+        
         try:
             inverseA = np.linalg.inv(matrixA)
         except:
-            raise PyMacException.PyMacException("SERIES " + str(self.seriesNumber + 1) + " DESIGN MATRIX HAS NO INVERSE")
+            raise MARSException.MARSException("SERIES " + str(self.seriesNumber + 1) + " DESIGN MATRIX HAS NO INVERSE")
 
         #Check that the inverse of matrixA got calculated correctly within a tolerance:
         if not np.allclose(np.matmul(matrixA, inverseA), np.identity(transposeXdesign.shape[0] + 1)):
-            raise PyMacException.PyMacException("SERIES " + str(self.seriesNumber + 1) + ": SOMETHING WENT WRONG WITH THE INVERSE MATRIX CALCULATION")
+            raise MARSException.MARSException("SERIES " + str(self.seriesNumber + 1) + ": SOMETHING WENT WRONG WITH THE INVERSE MATRIX CALCULATION")
 
         matrixH = inverseA[np.shape(inverseA)[0] - 1:np.shape(inverseA)[0], 0:np.shape(inverseA)[1] - 1]
         matrixQ = inverseA[0:np.shape(inverseA)[0] - 1, 0:np.shape(inverseA)[1] - 1]
@@ -305,7 +303,7 @@ class MatrixSolution:
             rStar = (np.matmul(self.restraintPos, np.matrix.transpose(self.referenceValues)) / 1000) + np.matmul(self.restraintPos, np.matrix.transpose(self.weightNominals))
         else:
             if np.count_nonzero(seriesObjects[self.seriesNumber - 1].nextRestraint) == 0:
-                raise PyMacException.PyMacException("NO RESTRAINT PASSED TO SERIES " + str(self.seriesNumber + 1))
+                raise MARSException.MARSException("NO RESTRAINT PASSED TO SERIES " + str(self.seriesNumber + 1))
 
             #Pull restraint from last series:
             rStar = np.matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, np.matrix.transpose(seriesObjects[self.seriesNumber - 1].calculatedMasses))

@@ -2,6 +2,7 @@
 
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
 #:set popLabelColor (0.95, 0.95, 0.96, 1)
+#:set buttonBlue (0.13, 0.5, 0.95, 0.94)
 
 #:set buttonSizer 20
 #:set menuButtonSizer 22
@@ -129,7 +130,7 @@
 
             Label:
                 id: logo
-                text: "[color=#00C486][b]L E M U R[/b][/color]"
+                text: "[color=#00C486][b]M A R S[/b][/color]"
                 markup: True
                 color: (0, 0, 0, 1)
                 font_size: dp(self.size[1] / 2.5)
@@ -1868,16 +1869,9 @@
                 markup: True
                 on_release: root.dismiss()
 
-            Button:
-                id: runTestButton
-                size_hint: (1, 1)
-                text: "Run Tests"
-                font_size: dp(self.width / buttonSizer)
-                background_normal: ''
-                background_color: (0, 0.82, 0.3, 0.9)
-                halign: 'center'
-                markup: True
-                on_release: root.runTestThread()
+            Label:
+                size_hint: (1, 0.2)
+                text: ""
 
 <StartupTestsPopup>:
     id: StartupTestsPop
@@ -1886,14 +1880,41 @@
     title_size: dp(18)
     size_hint: (0.35, 0.28)
 
-    Label:
-        size_hint: (1, 0.6)
-        font_size: popUpLabelSize
-        text: "Running startup tests..."
-        markup: True
-        color: (0.05, 0.95, 0.09, 1)
-        text_size: self.size
-        halign: "left"
+    BoxLayout:
+        id: startupTestsPLayout
+        orientation: "vertical"
+        spacing: 35
+        padding: 20, 0, 20, 20
+
+        Label:
+            id: testStatus
+            size_hint: (1, 0.6)
+            font_size: popUpLabelSize
+            text: "[b]Running startup tests...[/b]"
+            markup: True
+            color: (0.05, 0.95, 0.09, 0.9)
+            text_size: self.size
+            halign: "left"
+            valign: "bottom"
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: root.width / 3
+            padding: (0, 35)
+            size_hint: (1, 0.92)
+
+            Button:
+                id: openLogButton
+                size_hint: (1, 1)
+                text: "Open Log"
+                font_size: dp(self.width / buttonSizer)
+                background_normal: ''
+                background_color: (0.62, 0.62, 0.62, 0.62)
+                halign: 'center'
+
+            Label:
+                size_hint: (1, 1)
+                text: ""
 
 <RequestClosePopup>:
     id: RequestClosePop

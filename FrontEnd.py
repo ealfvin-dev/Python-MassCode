@@ -23,9 +23,9 @@ from kivy.uix.button import Button
 from kivy.uix.checkbox import CheckBox
 
 import RunFile
-import RunTest
+import TestSuite
 import InputChecks
-import PyMacException
+import MARSException
 
 import sys
 import os
@@ -559,7 +559,7 @@ class MainLayout(BoxLayout):
             secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
             if(secondaryChecks):
                 InputChecks.checkResults(results)
-        except PyMacException.PyMacException as ex:
+        except MARSException.MARSException as ex:
             self.sendError("RUNTIME ERROR: " + str(ex))
         except:
             self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
@@ -1037,13 +1037,13 @@ class OpenNewFilePopup(Popup):
         self.parent.children[1].save()
 
         fileSearchPop = OpenFilePopup()
-        fileSearchPop.open()
         self.dismiss()
+        fileSearchPop.open()
 
     def openFileSearchNoSave(self, e):
         fileSearchPop = OpenFilePopup()
-        fileSearchPop.open()
         self.dismiss()
+        fileSearchPop.open()
 
     def openNewFile(self, e):
         self.parent.children[1].save()
@@ -1055,29 +1055,54 @@ class OpenNewFilePopup(Popup):
         self.dismiss()
 
 class ValidationPopup(Popup):
-    def runTestThread(self):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.bind(on_open=self.runTestThread)
+
+    def runTestThread(self, e):
         threading.Thread(target=self.runTestSuite).start()
 
     def runTestSuite(self):
-        self.ids.runTestButton.background_color = (0.7, 0.7, 0.7, 1)
         self.ids.testingMessage.text = "Running Tests..."
         self.ids.validationText.text = ""
 
         #Run tests from RunTest.TestSuite class
-        testSuite = RunTest.TestSuite()
+        testSuite = TestSuite.TestSuite()
+        results = testSuite.runFromFE()
 
-        testSuite.passTest("IMPORT KIVY")
-        testSuite.testRunFile()
-        testSuite.testWriteOutFile()
-        testSuite.testAirDesities()
-        testSuite.testOutFileData()
-
-        self.ids.validationText.text = testSuite.returnSummary()
+        self.ids.validationText.text = results
         self.ids.testingMessage.text = ""
-        self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
+        return
 
 class StartupTestsPopup(Popup):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.bind(on_open=self.runTestThread)
+
+    def runTestThread(self, *args):
+        threading.Thread(target=self.runStartupTests).start()
+
+    def runStartupTests(self):
+        start = time.time()
+        testSuite = TestSuite.TestSuite()
+        testSuite.runFromFE()
+        end = time.time()
+        print(str((end - start)*1000) + " ms")
+
+        if(testSuite.failed == 0):
+            self.dismiss()
+        else:
+            self.ids.testStatus.color = (0.9, 0.05, 0.05, 0.85)
+            self.ids.testStatus.text = "[b]" + str(testSuite.failed) + " INTERNAL TESTING FAILURE/S. OPEN LOGS TO SEE DETAILS[/b]"
+            self.ids.openLogButton.bind(on_release=self.openTestLog)
+            self.ids.openLogButton.background_color = (0.13, 0.5, 0.95, 0.94)
+
+        return
+
+    def openTestLog(self, e):
+        testLogPop = ValidationPopup()
+        self.dismiss()
+        testLogPop.open()
 
 class RequestClosePopUp(Popup):
     pass
@@ -1088,13 +1113,11 @@ class PyMac(App):
         return MainLayout()
 
     def on_start(self):
-        Clock.schedule_once(self.runStartupTests, 0)
+        Clock.schedule_once(self.openStartTests, 0)
 
-    def runStartupTests(self, dt):
-        startTests = StartupTestsPopup()
-        startTests.open()
-        print("Running tests")
-        startTests.dismiss()
+    def openStartTests(self, dt):
+        startTestsPop = StartupTestsPopup()
+        startTestsPop.open()
 
     def on_request_close(self, *args):
         if(self.root.saved == False):
