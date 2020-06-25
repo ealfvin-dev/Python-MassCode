@@ -1032,13 +1032,13 @@ class OpenNewFilePopup(Popup):
         self.parent.children[1].save()
 
         fileSearchPop = OpenFilePopup()
-        fileSearchPop.open()
         self.dismiss()
+        fileSearchPop.open()
 
     def openFileSearchNoSave(self, e):
         fileSearchPop = OpenFilePopup()
-        fileSearchPop.open()
         self.dismiss()
+        fileSearchPop.open()
 
     def openNewFile(self, e):
         self.parent.children[1].save()
@@ -1050,11 +1050,14 @@ class OpenNewFilePopup(Popup):
         self.dismiss()
 
 class ValidationPopup(Popup):
-    def runTestThread(self):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.bind(on_open=self.runTestThread)
+
+    def runTestThread(self, e):
         threading.Thread(target=self.runTestSuite).start()
 
     def runTestSuite(self):
-        self.ids.runTestButton.background_color = (0.7, 0.7, 0.7, 1)
         self.ids.testingMessage.text = "Running Tests..."
         self.ids.validationText.text = ""
 
@@ -1064,8 +1067,6 @@ class ValidationPopup(Popup):
 
         self.ids.validationText.text = results
         self.ids.testingMessage.text = ""
-        self.ids.runTestButton.background_color = (0, 0.82, 0.3, 0.9)
-
         return
 
 class StartupTestsPopup(Popup):
@@ -1085,10 +1086,15 @@ class StartupTestsPopup(Popup):
         else:
             self.ids.testStatus.color = (0.9, 0.05, 0.05, 0.85)
             self.ids.testStatus.text = "[b]" + str(testSuite.failed) + " INTERNAL TESTING FAILURE/S. OPEN LOGS TO SEE DETAILS[/b]"
-            self.ids.openLogButton.bind(on_release=self.dismiss)
+            self.ids.openLogButton.bind(on_release=self.openTestLog)
             self.ids.openLogButton.background_color = (0.13, 0.5, 0.95, 0.94)
 
         return
+
+    def openTestLog(self, e):
+        testLogPop = ValidationPopup()
+        self.dismiss()
+        testLogPop.open()
 
 class RequestClosePopUp(Popup):
     pass

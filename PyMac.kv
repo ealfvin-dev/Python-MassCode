@@ -130,7 +130,7 @@
 
             Label:
                 id: logo
-                text: "[color=#00C486][b]L E M U R[/b][/color]"
+                text: "[color=#00C486][b]M A R S[/b][/color]"
                 markup: True
                 color: (0, 0, 0, 1)
                 font_size: dp(self.size[1] / 2.5)
@@ -1869,16 +1869,9 @@
                 markup: True
                 on_release: root.dismiss()
 
-            Button:
-                id: runTestButton
-                size_hint: (1, 1)
-                text: "Run Tests"
-                font_size: dp(self.width / buttonSizer)
-                background_normal: ''
-                background_color: (0, 0.82, 0.3, 0.9)
-                halign: 'center'
-                markup: True
-                on_release: root.runTestThread()
+            Label:
+                size_hint: (1, 0.2)
+                text: ""
 
 <StartupTestsPopup>:
     id: StartupTestsPop
