@@ -25,7 +25,7 @@ from kivy.uix.checkbox import CheckBox
 import RunFile
 import TestSuite
 import InputChecks
-import PyMacException
+import MARSException
 
 import sys
 import os
@@ -559,7 +559,7 @@ class MainLayout(BoxLayout):
             secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
             if(secondaryChecks):
                 InputChecks.checkResults(results)
-        except PyMacException.PyMacException as ex:
+        except MARSException.MARSException as ex:
             self.sendError("RUNTIME ERROR: " + str(ex))
         except:
             self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
@@ -1078,8 +1078,11 @@ class StartupTestsPopup(Popup):
         threading.Thread(target=self.runStartupTests).start()
 
     def runStartupTests(self):
+        start = time.time()
         testSuite = TestSuite.TestSuite()
         testSuite.runFromFE()
+        end = time.time()
+        print(str((end - start)*1000) + " ms")
 
         if(testSuite.failed == 0):
             self.dismiss()

@@ -1,6 +1,6 @@
 class Error(Exception):
     pass
 
-class PyMacException(Error):
+class MARSException(Error):
     def __init__(self, message):
         self.message = message

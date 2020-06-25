@@ -81,5 +81,3 @@
 <Environmentals>  19.800 737.866 46.962
 
 <Env-Corrections>  -0.3 0.9 0.7
-
-
