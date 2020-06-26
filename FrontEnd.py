@@ -650,6 +650,14 @@ class SeriesButton(Button):
     def handleGoToSeries(self, event):
         self.parent.parent.goToSeries(self.seriesNum, self.exists)
 
+class TopMenuButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.halign = 'center'
+        self.background_normal = ''
+        self.background_color = (0.155, 0.217, 0.292, 0.65)
+
 class InputButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
