@@ -12,7 +12,6 @@ from kivy.clock import Clock
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
-from kivy.factory import Factory
 from kivy.core.window import Window
 
 from kivy.app import App
@@ -195,10 +194,9 @@ class MainLayout(BoxLayout):
 
     def textAdded(self):
         if(self.saved):
+            self.saved = False
             self.ids.saveButton.background_color = (0.20, 0.68, 0.27, 0.98)
             self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
-
-            self.saved = False
 
     def getReportNum(self, text):
         for line in text:
@@ -674,6 +672,26 @@ class InputButton(Button):
     def colorBlue(self):
         self.background_color = (0.13, 0.5, 0.95, 0.94)
 
+class CancelButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.background_normal = ''
+        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.text = "Cancel"
+        self.halign = 'center'
+
+class WriteButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.background_normal = ''
+        self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.text = "Write"
+        self.halign = 'center'
+
+        #self.bind(on_release=root.submit)
+
 # class RoundedButton(Button):
 #     def __init__(self, **kwargs):
 #         super().__init__()
@@ -1115,7 +1133,7 @@ class StartupTestsPopup(Popup):
 class RequestClosePopUp(Popup):
     pass
 
-class PyMac(App):
+class Mars(App):
     def build(self):
         Window.bind(on_request_close=self.on_request_close)
         return MainLayout()
@@ -1285,5 +1303,5 @@ class PyMac(App):
         pop.open()
 
 if(__name__ == "__main__"):
-    mainApp = PyMac()
+    mainApp = Mars()
     mainApp.run()
