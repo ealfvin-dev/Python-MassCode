@@ -194,10 +194,9 @@ class MainLayout(BoxLayout):
 
     def textAdded(self):
         if(self.saved):
+            self.saved = False
             self.ids.saveButton.background_color = (0.20, 0.68, 0.27, 0.98)
             self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
-
-            self.saved = False
 
     def getReportNum(self, text):
         for line in text:
@@ -1129,7 +1128,7 @@ class StartupTestsPopup(Popup):
 class RequestClosePopUp(Popup):
     pass
 
-class PyMac(App):
+class Mars(App):
     def build(self):
         Window.bind(on_request_close=self.on_request_close)
         return MainLayout()
@@ -1299,5 +1298,5 @@ class PyMac(App):
         pop.open()
 
 if(__name__ == "__main__"):
-    mainApp = PyMac()
+    mainApp = Mars()
     mainApp.run()

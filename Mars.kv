@@ -27,8 +27,8 @@
             id: addSeriesButton
             text: "[b]+[/b] Add Series"
             markup: True
-            background_color: (0.00, 0.76, 0.525, 1)
             background_normal: ''
+            background_color: (0.00, 0.76, 0.525, 1)
             font_size: dp(self.width / buttonSizer)
             halign: 'center'
             on_press: root.addSeries()
@@ -1617,7 +1617,7 @@
                 text: "Open"
                 font_size: dp(self.width / buttonSizer)
                 background_normal: ''
-                background_color: (0, 0.6, 0.82, 1)
+                background_color: (0.13, 0.5, 0.95, 0.94)
                 halign: 'center'
                 on_release: root.parent.children[1].openFile(root.ids.openFileText.text); root.dismiss()
 
@@ -1626,7 +1626,7 @@
                 text: "[color=#FFFFFF]Cancel[/color]"
                 font_size: dp(self.width / buttonSizer)
                 background_normal: ''
-                background_color: (0.95, 0.1, 0.15, 0.95)
+                background_color: (0.70, 0.135, 0.05, 0.92)
                 halign: 'center'
                 markup: True
                 on_release: root.dismiss()
@@ -1667,7 +1667,7 @@
                 text: ""
                 font_size: dp(self.width / buttonSizer)
                 background_normal: ''
-                background_color: (0, 0.6, 0.82, 1)
+                background_color: (0.13, 0.5, 0.95, 0.94)
                 halign: 'center'
 
             Button:
@@ -1676,7 +1676,7 @@
                 text: "[color=#FFFFFF]Cancel[/color]"
                 font_size: dp(self.width / buttonSizer)
                 background_normal: ''
-                background_color: (0.95, 0.1, 0.15, 0.95)
+                background_color: (0.70, 0.135, 0.05, 0.92)
                 halign: 'center'
                 markup: True
                 on_release: root.dismiss()
@@ -1736,7 +1736,7 @@
                 text: "Close"
                 font_size: dp(self.width / buttonSizer)
                 background_normal: ''
-                background_color: (0, 0.6, 0.82, 1)
+                background_color: (0.13, 0.5, 0.95, 0.94)
                 halign: 'center'
                 markup: True
                 on_release: root.dismiss()
@@ -1791,7 +1791,7 @@
 <RequestClosePopup>:
     id: RequestClosePop
     auto_dismiss: True
-    title: "Close PyMac"
+    title: "Close MARS"
     title_size: dp(18)
     size_hint: (0.35, 0.28)
 
@@ -1822,7 +1822,7 @@
                 text: "Cancel"
                 font_size: dp(self.width / buttonSizer)
                 background_normal: ''
-                background_color: (0, 0.6, 0.82, 1)
+                background_color: (0.13, 0.5, 0.95, 0.94)
                 halign: 'center'
                 on_release: root.dismiss()
 
@@ -1831,7 +1831,7 @@
                 text: "[color=#FFFFFF]Close Without\nSaving[/color]"
                 font_size: dp(self.width / buttonSizer)
                 background_normal: ''
-                background_color: (0.95, 0.1, 0.15, 0.95)
+                background_color: (0.70, 0.135, 0.05, 0.92)
                 halign: 'center'
                 markup: True
                 on_release: app.closeApp()
