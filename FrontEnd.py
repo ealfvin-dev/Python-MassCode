@@ -12,7 +12,6 @@ from kivy.clock import Clock
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
-from kivy.factory import Factory
 from kivy.core.window import Window
 
 from kivy.app import App
@@ -673,6 +672,26 @@ class InputButton(Button):
 
     def colorBlue(self):
         self.background_color = (0.13, 0.5, 0.95, 0.94)
+
+class CancelButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.background_normal = ''
+        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.text = "Cancel"
+        self.halign = 'center'
+
+class WriteButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.background_normal = ''
+        self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.text = "Write"
+        self.halign = 'center'
+
+        #self.bind(on_release=root.submit)
 
 # class RoundedButton(Button):
 #     def __init__(self, **kwargs):
