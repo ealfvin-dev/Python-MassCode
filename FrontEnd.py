@@ -13,6 +13,7 @@ from kivy.clock import Clock
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.core.window import Window
+from kivy.metrics import dp, mm
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -195,7 +196,7 @@ class MainLayout(BoxLayout):
     def textAdded(self):
         if(self.saved):
             self.saved = False
-            self.ids.saveButton.background_color = (0.20, 0.68, 0.27, 0.98)
+            self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
             self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def getReportNum(self, text):
@@ -519,7 +520,7 @@ class MainLayout(BoxLayout):
 
         self.renderButtons(self.ids.userText.text)
 
-        self.ids.runButton.background_color = (0.20, 0.68, 0.27, 0.98)
+        self.ids.runButton.background_color = (0.0314, 0.62, 0.165, 0.9)
         self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
     def run(self):

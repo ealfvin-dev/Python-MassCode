@@ -29,7 +29,7 @@
             markup: True
             background_normal: ''
             background_color: (0.00, 0.76, 0.525, 1)
-            font_size: dp(self.width / buttonSizer)
+            font_size: self.width / buttonSizer
             halign: 'center'
             on_press: root.addSeries()
 
@@ -37,14 +37,14 @@
             id: series1
             seriesNum: 1
             text: "[color=#000000]Series 1[/color]"
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
             background_color: (0.906, 0.918, 0.926, 1)
             exists: True
 
         SeriesButton:
             id: series2
             seriesNum: 2
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
 
         SeriesButton:
             id: series3
@@ -130,7 +130,7 @@
 
             Label:
                 id: logo
-                text: "[color=#00C486][b]M A R S[/b][/color]"
+                text: "[color=#B3220D][b]M A R S[/b][/color]"
                 markup: True
                 color: (0, 0, 0, 1)
                 font_size: dp(self.size[1] / 2.5)
@@ -151,7 +151,7 @@
 
             TopMenuButton:
                 id: validation
-                text: "Run Validation"
+                text: "Run Tests"
                 on_release: app.openValidationPop()
 
             TopMenuButton:
@@ -381,7 +381,7 @@
                         text: "[color=#FFFFFF][b]SAVE[/b][/color]"
                         markup: True
                         background_normal: ''
-                        background_color: (0.20, 0.68, 0.27, 0.98)
+                        background_color: (0.0314, 0.62, 0.165, 0.9)
                         font_size: dp(self.width / buttonSizer)
                         halign: 'center'
                         on_release: root.save()
@@ -411,7 +411,7 @@
 
                 TextInput:
                     id: userText
-                    font_size: mm(3.1)
+                    font_size: '12sp'
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
                     font_name: "./Menlo.ttc"
@@ -423,7 +423,7 @@
 
                 TextInput:
                     id: errors
-                    font_size: mm(3.1)
+                    font_size: '12sp'
                     padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
                     background_normal: ''
                     font_name: "./Menlo.ttc"
