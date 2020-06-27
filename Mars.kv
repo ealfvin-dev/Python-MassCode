@@ -4,9 +4,9 @@
 #:set popLabelColor (0.95, 0.95, 0.96, 1)
 #:set buttonBlue (0.13, 0.5, 0.95, 0.94)
 
-#:set buttonSizer 20
-#:set menuButtonSizer 22
-#:set labelSizer 14
+#:set buttonSizer 10
+#:set menuButtonSizer 11
+#:set labelSizer 1.25
 #:set popUpFontSize mm(3.5)
 #:set popUpLabelSize mm(4)
 
@@ -40,70 +40,83 @@
             font_size: self.width / menuButtonSizer
             background_color: (0.906, 0.918, 0.926, 1)
             exists: True
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series2
             seriesNum: 2
             font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series3
             seriesNum: 3
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series4
             seriesNum: 4
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series5
             seriesNum: 5
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series6
             seriesNum: 6
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series7
             seriesNum: 7
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series8
             seriesNum: 8
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series9
             seriesNum: 9
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series10
             seriesNum: 10
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series11
             seriesNum: 11
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series12
             seriesNum: 12
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series13
             seriesNum: 13
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
+            on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: outputFileTab
-            font_size: dp(self.width / menuButtonSizer)
+            font_size: self.width / menuButtonSizer
             on_press: root.openOutputFile(self)
 
         Button:
@@ -112,7 +125,7 @@
             markup: True
             background_normal: ''
             background_color: (0.70, 0.135, 0.05, 0.92)
-            font_size: dp(self.width / (buttonSizer*1.1))
+            font_size: self.width / (buttonSizer*1.1)
             halign: 'center'
             on_release: root.removeLastSeries()
             size_hint: (1, 0.85)
@@ -133,7 +146,7 @@
                 text: "[color=#B3220D][b]M A R S[/b][/color]"
                 markup: True
                 color: (0, 0, 0, 1)
-                font_size: dp(self.size[1] / 2.5)
+                font_size: self.width / 7
 
             TopMenuButton:
                 id: openFile
@@ -178,7 +191,7 @@
                         text: "[b]\nSeries 1 Header[/b]"
                         markup: True
                         color: labelColor
-                        font_size: dp(self.size[1] / 2.5)
+                        font_size: self.height / labelSizer
                         text_size: self.size
                         halign: 'left'
 
@@ -191,20 +204,20 @@
                     InputButton:
                         id: labInfoButton
                         text: "Report No.\nNotes"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openLabInfoPop()
 
                     InputButton:
                         id: restraintButton
                         text: "Starting\nRestraint"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openRestraintPop()
 
                     Label:
                         text: ""
-                        markup: True
                         color: labelColor
-                        font_size: dp(self.height)
+                        font_size: self.height / labelSizer
+                        text_size: self.size
                         halign: 'left'
 
                 BoxLayout:
@@ -216,7 +229,7 @@
                         text: "[b]\nSeries Setup[/b]"
                         markup: True
                         color: labelColor
-                        font_size: dp(self.size[1] / 2.5)
+                        font_size: self.height / labelSizer
                         text_size: self.size
                         halign: 'left'
 
@@ -229,13 +242,13 @@
                     InputButton:
                         id: dateButton
                         text: "Date\nTechnicion"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openDatePop()
 
                     InputButton:
                         id: balanceButton
                         text: "Balance"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openBalancePop()
 
                     InputButton:
@@ -243,7 +256,7 @@
                         text: "Gravity\nGradient\n(Optional)"
                         background_color: (0.368, 0.49, 0.60, 1)
                         color: (1, 1, 1, 1)
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openGravityPop()
 
                 BoxLayout:
@@ -255,7 +268,7 @@
                         text: "[b]\nStatistics[/b]"
                         markup: True
                         color: labelColor
-                        font_size: dp(self.size[1] / 2.5)
+                        font_size: self.height / labelSizer
                         text_size: self.size
                         halign: 'left'
 
@@ -268,21 +281,21 @@
                     InputButton:
                         id: statisticsButton
                         text: "Statistics"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openStatisticsPop()
 
                     Label:
                         text: ""
-                        markup: True
                         color: labelColor
-                        font_size: dp(self.height)
+                        font_size: self.height / labelSizer
+                        text_size: self.size
                         halign: 'left'
 
                     Label:
                         text: ""
-                        markup: True
                         color: labelColor
-                        font_size: dp(self.height)
+                        font_size: self.height / labelSizer
+                        text_size: self.size
                         halign: 'left'
 
                 BoxLayout:
@@ -294,7 +307,7 @@
                         text: "[b]\nDesign[/b]"
                         markup: True
                         color: labelColor
-                        font_size: dp(self.size[1] / 2.5)
+                        font_size: self.height / labelSizer
                         text_size: self.size
                         halign: 'left'
 
@@ -307,19 +320,19 @@
                     InputButton:
                         id: designButton
                         text: "Design"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openDesignPop()
 
                     InputButton:
                         id: weightsButton
                         text: "Weights"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openWeightsPop()
 
                     InputButton:
                         id: positionVectorsButton
                         text: "Position\nVectors"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openVectorsPop()
 
                 BoxLayout:
@@ -331,7 +344,7 @@
                         text: "[b]\nMeasurement Data[/b]"
                         markup: True
                         color: labelColor
-                        font_size: dp(self.size[1] / 2.5)
+                        font_size: self.height / labelSizer
                         text_size: self.size
                         halign: 'left'
 
@@ -344,20 +357,19 @@
                     InputButton:
                         id: swButton
                         text: "Sensitivity\nWeight"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openSwPop()
 
                     InputButton:
                         id: measurementsButton
                         text: "Measurements"
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / buttonSizer
                         on_release: app.openMeasurementsPop()
 
                     Label:
                         text: ""
-                        markup: True
                         color: labelColor
-                        font_size: dp(self.height)
+                        font_size: self.height / labelSizer
                         halign: 'left'
 
                 BoxLayout:
@@ -367,7 +379,8 @@
 
                     Label:
                         text: ""
-                        font_size: dp(self.height)
+                        color: labelColor
+                        font_size: self.height / labelSizer
                         halign: 'left'
 
                 BoxLayout:
@@ -382,7 +395,7 @@
                         markup: True
                         background_normal: ''
                         background_color: (0.0314, 0.62, 0.165, 0.9)
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / (buttonSizer - 1)
                         halign: 'center'
                         on_release: root.save()
 
@@ -392,14 +405,14 @@
                         markup: True
                         background_normal: ''
                         background_color: (0.62, 0.62, 0.62, 0.62)
-                        font_size: dp(self.width / buttonSizer)
+                        font_size: self.width / (buttonSizer - 1)
                         halign: 'center'
                         on_release: root.run()
 
                     Label:
                         text: ""
                         color: labelColor
-                        font_size: dp(self.width / labelSizer)
+                        font_size: self.height / labelSizer
                         halign: 'center'
 
             BoxLayout:
@@ -434,7 +447,7 @@
 
         Label:
             id: footer
-            font_size: mm(2.5)
+            font_size: dp(10)
             text: "[color='000000']Copywrite Erik Alfvin, 2020[/color]"
             markup: True
             size_hint: (1.0, 0.01)
@@ -514,11 +527,11 @@
             size_hint: (1, 0.74)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <RestraintPopup>:
@@ -618,11 +631,11 @@
             size_hint: (1, 0.95)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <DatePopup>:
@@ -722,11 +735,11 @@
             size_hint: (1, 0.95)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <BalancePopup>:
@@ -824,11 +837,11 @@
             size_hint: (1, 0.95)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <DesignPopup>:
@@ -890,7 +903,7 @@
                     size_hint: (0.8, 0.5)
                     text: "Presets"
                     halign: 'center'
-                    font_size: dp(self.width / buttonSizer)
+                    font_size: self.width / buttonSizer
                     on_release: dropDownn.open(self)
 
                 DropDown:
@@ -989,12 +1002,12 @@
 
             WriteButton:
                 size_hint: (1, 1.7)
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
                 size_hint: (1, 1.7)
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <WeightsPopup>:
@@ -1071,11 +1084,11 @@
             size_hint: (1, 0.74)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <VectorsPopup>:
@@ -1197,11 +1210,11 @@
             size_hint: (1, 0.90)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <StatisticsPopup>:
@@ -1277,11 +1290,11 @@
             size_hint: (1, 0.95)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <SwPopup>:
@@ -1381,11 +1394,11 @@
             size_hint: (1, 0.95)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <MeasurementsPopup>:
@@ -1485,11 +1498,11 @@
             size_hint: (1, 0.74)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <GravityPopup>:
@@ -1566,11 +1579,11 @@
             size_hint: (1, 0.74)
 
             WriteButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <OpenFilePopup>:
@@ -1615,7 +1628,7 @@
             Button:
                 size_hint: (1, 1)
                 text: "Open"
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 background_normal: ''
                 background_color: (0.13, 0.5, 0.95, 0.94)
                 halign: 'center'
@@ -1624,7 +1637,7 @@
             Button:
                 size_hint: (1, 1)
                 text: "[color=#FFFFFF]Cancel[/color]"
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 background_normal: ''
                 background_color: (0.70, 0.135, 0.05, 0.92)
                 halign: 'center'
@@ -1665,7 +1678,7 @@
                 id: openNewFileButton
                 size_hint: (1, 1)
                 text: ""
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 background_normal: ''
                 background_color: (0.13, 0.5, 0.95, 0.94)
                 halign: 'center'
@@ -1674,7 +1687,7 @@
                 id: cancelNewFileButton
                 size_hint: (1, 1)
                 text: "[color=#FFFFFF]Cancel[/color]"
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 background_normal: ''
                 background_color: (0.70, 0.135, 0.05, 0.92)
                 halign: 'center'
@@ -1734,7 +1747,7 @@
             Button:
                 size_hint: (1, 1)
                 text: "Close"
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 background_normal: ''
                 background_color: (0.13, 0.5, 0.95, 0.94)
                 halign: 'center'
@@ -1779,7 +1792,7 @@
                 id: openLogButton
                 size_hint: (1, 1)
                 text: "Open Log"
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 background_normal: ''
                 background_color: (0.62, 0.62, 0.62, 0.62)
                 halign: 'center'
@@ -1820,7 +1833,7 @@
             Button:
                 size_hint: (1, 1)
                 text: "Cancel"
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 background_normal: ''
                 background_color: (0.13, 0.5, 0.95, 0.94)
                 halign: 'center'
@@ -1829,7 +1842,7 @@
             Button:
                 size_hint: (1, 1)
                 text: "[color=#FFFFFF]Close Without\nSaving[/color]"
-                font_size: dp(self.width / buttonSizer)
+                font_size: self.width / buttonSizer
                 background_normal: ''
                 background_color: (0.70, 0.135, 0.05, 0.92)
                 halign: 'center'
