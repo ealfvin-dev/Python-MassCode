@@ -80,18 +80,19 @@ def writeOut(seriesList):
         f.write(tabulate(table, tablefmt="plain") + "\n\n")
 
         #Sensitivities
-        f.write("##SENSITIVITIES##\n")
+        f.write("##METRICS##\n")
         table = []
         for i in range(len(series.balanceReadings)):
             line = []
             load = series.loads[i]
-
             line.append(str(i + 1) + ": ")
 
             if(int(load) == float(load)):
                 line.append(int(load))
             else:
                 line.append(float(load))
+
+            line.append(series.deltas[i])
 
             if(series.directReadings == 0):
                 line.append(float(series.sensitivities[i]*1000))
@@ -105,27 +106,7 @@ def writeOut(seriesList):
 
             table.append(line)
 
-        f.write(tabulate(table, headers=["", "LOAD\n(g)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"], floatfmt=("", ".5f", ".5f", ".5f"), tablefmt="plain", colalign=("left", "center", "center", "center")) + "\n\n")
-
-        #Deltas
-        f.write("##DELTAS##\n")
-        table = []
-        for i in range(len(series.balanceReadings)):
-            line = []
-            load = series.loads[i]
-
-            line.append(str(i + 1) + ": ")
-
-            if(int(load) == float(load)):
-                line.append(int(load))
-            else:
-                line.append(float(load))
-
-            line.append(series.deltas[i])
-
-            table.append(line)
-
-        f.write(tabulate(table, headers=["", "LOAD\n(g)", "DELTA\n(MG)"], floatfmt=("", ".5f", ".5f"), tablefmt="plain", colalign=("left", "center", "decimal")) + "\n\n")
+        f.write(tabulate(table, headers=["", "LOAD\n(g)", "DELTA(MG)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"], floatfmt=("", ".5f", ".5f", ".5f", ".5f"), tablefmt="plain", colalign=("left", "center", "center", "center", "center")) + "\n\n")
 
         #Statistics
         #F-test

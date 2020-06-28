@@ -240,8 +240,8 @@ class TestSuite(TestBase.TestBase):
 
     def runAll(self):
         self.testPythonVersion()
-        self.testNumpy()
-        self.testSciPy()
+        #self.testNumpy()
+        #self.testSciPy()
         self.testKivy()
         self.testRunFile()
         self.testWriteOutFile()
@@ -255,8 +255,8 @@ class TestSuite(TestBase.TestBase):
 
     def runFromFE(self):
         self.testPythonVersion()
-        self.testNumpy()
-        self.testSciPy()
+        #self.testNumpy()
+        #self.testSciPy()
         self.passTest("IMPORT KIVY")
         self.testRunFile()
         self.testWriteOutFile()
