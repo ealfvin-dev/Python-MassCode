@@ -536,7 +536,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 10)
+            padding: (0, self.height / 17.5)
             size_hint: (1, 0.74)
 
             WriteButton:
@@ -640,7 +640,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.95)
 
             WriteButton:
@@ -744,7 +744,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.95)
 
             WriteButton:
@@ -846,7 +846,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.95)
 
             WriteButton:
@@ -1010,16 +1010,16 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.58)
 
             WriteButton:
-                size_hint: (1, 1.7)
+                size_hint: (1, 1.5)
                 font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                size_hint: (1, 1.7)
+                size_hint: (1, 1.5)
                 font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
@@ -1093,7 +1093,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 10)
+            padding: (0, self.height / 17.5)
             size_hint: (1, 0.74)
 
             WriteButton:
@@ -1219,7 +1219,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.90)
 
             WriteButton:
@@ -1299,7 +1299,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.95)
 
             WriteButton:
@@ -1403,7 +1403,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.95)
 
             WriteButton:
@@ -1507,7 +1507,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 10)
+            padding: (0, self.height / 17.5)
             size_hint: (1, 0.74)
 
             WriteButton:
@@ -1588,7 +1588,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 10)
+            padding: (0, self.height / 17.5)
             size_hint: (1, 0.74)
 
             WriteButton:
@@ -1635,7 +1635,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.92)
 
             Button:
@@ -1684,7 +1684,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.92)
 
             Button:
@@ -1754,7 +1754,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.50)
 
             Button:
@@ -1798,7 +1798,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.92)
 
             Button:
@@ -1824,14 +1824,13 @@
     BoxLayout:
         id: RequestClosePlayout
         orientation: "vertical"
-        spacing: 35
+        spacing: root.height / 10
         padding: 20, 0, 20, 20
 
         Label:
             size_hint: (1, 0.6)
             font_size: popUpLabelSize
             text: "Close without saving input file?"
-            markup: True
             color: popLabelColor
             text_size: self.size
             halign: "left"
@@ -1840,7 +1839,7 @@
         BoxLayout:
             orientation: "horizontal"
             spacing: root.width / 3
-            padding: (0, 35)
+            padding: (0, self.height / 5)
             size_hint: (1, 0.92)
 
             Button:
