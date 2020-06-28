@@ -5,11 +5,36 @@ import sys
 import os
 
 class TestSuite(TestBase.TestBase):
+    def testPythonVersion(self):
+        #Assert current version of python >= 3.5
+        try:
+            assert sys.version_info >= (3, 5)
+            self.passTest("PYTHON VERSION >= 3.5")
+        except AssertionError:
+            self.failTest("PYTHON VERSION >= 3.5")
+
+    def testNumpy(self):
+        #Test if Numpy can import, check version
+        try:
+            import numpy
+            self.passTest("IMPORT NUMPY")
+            self.assertEqual(numpy.__version__, '1.17.2', "NUMPY VERSION")
+        except:
+            self.failTest("IMPORT NUMPY")
+
+    def testSciPy(self):
+        #Test if SciPy can import, check version
+        try:
+            import scipy
+            self.passTest("IMPORT SCIPY")
+            self.assertEqual(scipy.__version__, '1.3.1', "SCIPY VERSION")
+        except:
+            self.failTest("IMPORT SCIPY")
+
     def testKivy(self):
         #Test if Kivy can import
         try:
             import kivy
-
             self.passTest("IMPORT KIVY")
         except:
             self.failTest("IMPORT KIVY")
@@ -195,6 +220,9 @@ class TestSuite(TestBase.TestBase):
     #Test other data entry errors throw errors (from fe and be?)
 
     def runAll(self):
+        self.testPythonVersion()
+        self.testNumpy()
+        self.testSciPy()
         self.testKivy()
         self.testRunFile()
         self.testWriteOutFile()
@@ -207,6 +235,9 @@ class TestSuite(TestBase.TestBase):
         self.printSummary()
 
     def runFromFE(self):
+        self.testPythonVersion()
+        self.testNumpy()
+        self.testSciPy()
         self.passTest("IMPORT KIVY")
         self.testRunFile()
         self.testWriteOutFile()

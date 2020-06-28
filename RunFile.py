@@ -2,6 +2,7 @@ import sys
 import numpy as np
 from SeriesReduction import MatrixSolution
 from WriteOutFile import writeOut
+assert sys.version_info >= (3, 5)
 
 def parse(fileName):
     header = {}
