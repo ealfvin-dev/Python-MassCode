@@ -37,7 +37,7 @@ class TestBase:
     def printSummary(self):
         summary = "\n############## TEST SUITE ##############\n"
 
-        summary += "\n***LOG\n\n"
+        summary += "\n*** LOG\n\n"
         summary += "    " + "\n    ".join(self.log) + "\n"
 
         summary += "\nTESTS PASSED:\n\n"
@@ -56,7 +56,7 @@ class TestBase:
     def returnSummary(self):
         summary = "\n############## TEST SUITE ##############\n"
 
-        summary += "\n***LOG\n\n"
+        summary += "\n*** LOG\n\n"
         summary += "    " + "\n    ".join(self.log) + "\n"
 
         summary += "\nTESTS PASSED:\n\n"

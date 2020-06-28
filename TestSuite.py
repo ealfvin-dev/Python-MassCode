@@ -1,6 +1,6 @@
 import RunFile
 import TestBase
-import MARSException
+from MARSException import MARSException
 import sys
 import os
 
@@ -182,7 +182,7 @@ class TestSuite(TestBase.TestBase):
         try:
             data = RunFile.run("./Testing/MARSTest/Test-NonInvertible-config.txt", False)
             self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
-        except MARSException.MARSException:
+        except MARSException:
             self.passTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
         except:
             self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
@@ -192,7 +192,7 @@ class TestSuite(TestBase.TestBase):
         try:
             data = RunFile.run("./Testing/MARSTest/Test-UnEqualBalObs-config.txt", False)
             self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
-        except MARSException.MARSException:
+        except MARSException:
             self.passTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
         except:
             self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
@@ -202,7 +202,7 @@ class TestSuite(TestBase.TestBase):
         try:
             data = RunFile.run("./Testing/MARSTest/Test-UnEqualEnvObs-config.txt", False)
             self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
-        except MARSException.MARSException:
+        except MARSException:
             self.passTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
         except:
             self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
@@ -212,7 +212,7 @@ class TestSuite(TestBase.TestBase):
         try:
             data = RunFile.run("./Testing/MARSTest/Test-NoRestraintPassed-config.txt", False)
             self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
-        except MARSException.MARSException:
+        except MARSException:
             self.passTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
         except:
             self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
