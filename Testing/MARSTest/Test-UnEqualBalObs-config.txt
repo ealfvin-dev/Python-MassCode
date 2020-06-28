@@ -1,7 +1,7 @@
-#  Test if environmental observations != design observations raised MARSException
+#  Test if balance observations != design observations raised MARSException
 #  MARS Input
 
-    <Report-Number>  Test2
+    <Report-Number>  Test-UnEqualBalObs
 
      <Restraint-ID>  42
     <Unc-Restraint>  0.050
@@ -61,8 +61,8 @@
   <Balance-Reading>  0.02  0.64 100.67 100.04
   <Balance-Reading>  0     0.59 100.61 100.01
   <Balance-Reading>  0.05 -0.11  99.90 100.03
-  <Balance-Reading>  0.06  0.61 100.64 100.07
 
+   <Environmentals>  19.608 739.7 47.7
    <Environmentals>  19.608 739.7 47.7
    <Environmentals>  19.608 739.7 47.7
    <Environmentals>  19.608 739.7 47.7

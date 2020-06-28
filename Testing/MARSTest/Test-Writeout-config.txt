@@ -1,21 +1,21 @@
-#  Test if balance observations != design observations raised MARSException
+#  Test results written to output file
 #  MARS Input
 
-    <Report-Number>  Test2
+    <Report-Number>  Test-Writeout
 
-     <Restraint-ID>  42
+     <Restraint-ID>  042
     <Unc-Restraint>  0.050
      <Random-Error>  0
 
 @SERIES
 
-             <Date>  07 24 2020
+             <Date>  07 27 2020
     <Technician-ID>  019
 <Check-Standard-ID>  43
 
        <Balance-ID>  099
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
+<Direct-Reading-SF>  1
 
         <Design-ID>  032
            <Design>  1 -1 -1  1 -1  0
@@ -61,6 +61,7 @@
   <Balance-Reading>  0.02  0.64 100.67 100.04
   <Balance-Reading>  0     0.59 100.61 100.01
   <Balance-Reading>  0.05 -0.11  99.90 100.03
+  <Balance-Reading>  0.06  0.61 100.64 100.07
 
    <Environmentals>  19.608 739.7 47.7
    <Environmentals>  19.608 739.7 47.7
@@ -75,3 +76,5 @@
    <Environmentals>  19.608 739.7 47.7
 
   <Env-Corrections>  0 0 0.29
+
+

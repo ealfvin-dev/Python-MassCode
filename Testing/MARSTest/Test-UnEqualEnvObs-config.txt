@@ -1,7 +1,7 @@
-#  Test for MARSException on non-invertible matrix
+#  Test if environmental observations != design observations raised MARSException
 #  MARS Input
 
-    <Report-Number>  Test2
+    <Report-Number>  Test-UnEqualEnvObs
 
      <Restraint-ID>  42
     <Unc-Restraint>  0.050
@@ -17,18 +17,18 @@
   <Direct-Readings>  0
 <Direct-Reading-SF>  1.0
 
-        <Design-ID>  999
+        <Design-ID>  032
            <Design>  1 -1 -1  1 -1  0
            <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1 -1  0  1
+           <Design>  1 -1 -1  0  0  0
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1 -1
+           <Design>  0  1 -1 -1  1 -1
+           <Design>  0  1 -1 -1 -1  1
+           <Design>  0  0  1 -1 -1  0
+           <Design>  0  0  1 -1  0 -1
+           <Design>  0  0  1  0 -1 -1
 
            <Pounds>  0
 
@@ -63,7 +63,6 @@
   <Balance-Reading>  0.05 -0.11  99.90 100.03
   <Balance-Reading>  0.06  0.61 100.64 100.07
 
-   <Environmentals>  19.608 739.7 47.7
    <Environmentals>  19.608 739.7 47.7
    <Environmentals>  19.608 739.7 47.7
    <Environmentals>  19.608 739.7 47.7
