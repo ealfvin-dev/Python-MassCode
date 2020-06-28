@@ -11,13 +11,11 @@ class TestBase:
     def passTest(self, testName):
         self.passed += 1
         self.passedTests.append("TEST " + str(self.testNum) + " - " + testName)
-        #self.longOutput += "\n" + testName + ".........PASS"
         self.testNum += 1
 
     def failTest(self, testName):
         self.failed += 1
         self.failedTests.append("TEST " + str(self.testNum) + " - " + testName)
-        #self.longOutput += "\n" + testName + ".........FAIL"
         self.testNum += 1
 
     def assertEqual(self, var1, var2, test):

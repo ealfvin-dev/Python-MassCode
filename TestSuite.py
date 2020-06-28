@@ -12,6 +12,7 @@ class TestSuite(TestBase.TestBase):
             self.passTest("PYTHON VERSION")
         except AssertionError:
             self.failTest("PYTHON VERSION")
+            self.logFailure(["Requires Python >= 3.5", str(sys.version_info)], "PYTHON VERSION")
 
     def testNumpy(self):
         #Test if Numpy can import, check version
@@ -21,6 +22,7 @@ class TestSuite(TestBase.TestBase):
             self.assertEqual(numpy.__version__, '1.17.2', "NUMPY VERSION")
         except:
             self.failTest("IMPORT NUMPY")
+            self.logFailure(["Could not import Numpy"], "IMPORT NUMPY")
 
     def testSciPy(self):
         #Test if SciPy can import, check version
@@ -30,6 +32,7 @@ class TestSuite(TestBase.TestBase):
             self.assertEqual(scipy.__version__, '1.3.1', "SCIPY VERSION")
         except:
             self.failTest("IMPORT SCIPY")
+            self.logFailure(["Could not import SciPy"], "IMPORT SCIPY")
 
     def testKivy(self):
         #Test if Kivy can import
@@ -38,6 +41,7 @@ class TestSuite(TestBase.TestBase):
             self.passTest("IMPORT KIVY")
         except:
             self.failTest("IMPORT KIVY")
+            self.logFailure(["Could not import Kivy"], "IMPORT KIVY")
 
     def testRunFile(self):
         #Test if config file can be run
@@ -46,6 +50,7 @@ class TestSuite(TestBase.TestBase):
             self.passTest("RUN TEST FILE")
         except:
             self.failTest("RUN TEST FILE")
+            self.logFailure(["Could not run test file"], "RUN TEST FILE")
 
     def testWriteOutFile(self):
         #Test if output file can be written out
@@ -55,8 +60,10 @@ class TestSuite(TestBase.TestBase):
                 self.passTest("WRITE OUT FILE")
             else:
                 self.failTest("WRITE OUT FILE")
+                self.logFailure(["Could not write out test file"], "WRITE OUT FILE")
         except:
             self.failTest("WRITE OUT FILE")
+            self.logFailure(["Could not write out test file"], "WRITE OUT FILE")
 
         if(os.path.exists("Test-Writeout-out.txt")):
             os.remove("Test-Writeout-out.txt")
@@ -84,7 +91,8 @@ class TestSuite(TestBase.TestBase):
                 self.assertClose(expectedDensities[i], calculatedDesities[i], 1e-8, "AIR DENSITY CALC " + str(i + 1))
 
         except:
-            self.failTest("AIR DENSITIES WERE NOT CALCULATED")
+            self.failTest("CALCULATE AIR DENSITIES")
+            self.logFailure(["Air densities were not calculated"], "CALCULATE AIR DENSITIES")
 
     def testOutFileData(self):
         #Test writing stuff into output file
@@ -174,7 +182,8 @@ class TestSuite(TestBase.TestBase):
             self.assertEqual(outFileTvalue, calculatedTvalue, "DATA WRITING TO OUTPUT FILE T-VALUE")
 
         except:
-            self.failTest("ERROR IN RUN/OUTPUT REPORT GENERATION")
+            self.failTest("OUTPUT FILE DATA")
+            self.logFailure(["Error in run/output report generation"], "OUTPUT FILE DATA")
 
         if(os.path.exists("Test-Writeout-out.txt")):
             os.remove("Test-Writeout-out.txt")
@@ -184,47 +193,55 @@ class TestSuite(TestBase.TestBase):
         try:
             data = RunFile.run("./Testing/MARSTest/Test-NonInvertible-config.txt", False)
             self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+            self.logFailure(["Non-invertible matrix did not raise MARSException"], "NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
         except MARSException:
             self.passTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
         except:
             self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+            self.logFailure(["Non-invertible matrix did not raise MARSException"], "NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
 
     def testUnequalBalanceObs(self):
         #Test if balance readings != observations raises MARSException
         try:
             data = RunFile.run("./Testing/MARSTest/Test-UnEqualBalObs-config.txt", False)
             self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+            self.logFailure(["Unequal balance observations did not raise MARSException"], "UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
         except MARSException:
             self.passTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
         except:
             self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+            self.logFailure(["Unequal balance observations did not raise MARSException"], "UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
 
     def testUnequalEnvObs(self):
         #Test if environmental readings != observations raises MARSException
         try:
             data = RunFile.run("./Testing/MARSTest/Test-UnEqualEnvObs-config.txt", False)
             self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+            self.logFailure(["Unequal environmental observations did not raise MARSException"], "UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
         except MARSException:
             self.passTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
         except:
             self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+            self.logFailure(["Unequal environmental observations did not raise MARSException"], "UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
 
     def testNoRestraintPassed(self):
         #Test if no restraint passed to series raises MARSException
         try:
             data = RunFile.run("./Testing/MARSTest/Test-NoRestraintPassed-config.txt", False)
             self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+            self.logFailure(["No restraint passed down did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
         except MARSException:
             self.passTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
         except:
             self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+            self.logFailure(["No restraint passed down did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
 
     #Test other data entry errors throw errors (from fe and be?)
 
     def runAll(self):
         self.testPythonVersion()
-        self.testNumpy()
-        self.testSciPy()
+        #self.testNumpy()
+        #self.testSciPy()
         self.testKivy()
         self.testRunFile()
         self.testWriteOutFile()
@@ -238,8 +255,8 @@ class TestSuite(TestBase.TestBase):
 
     def runFromFE(self):
         self.testPythonVersion()
-        self.testNumpy()
-        self.testSciPy()
+        #self.testNumpy()
+        #self.testSciPy()
         self.passTest("IMPORT KIVY")
         self.testRunFile()
         self.testWriteOutFile()
