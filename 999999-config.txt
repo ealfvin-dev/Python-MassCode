@@ -38,7 +38,7 @@
 <Design>  0  1  0 -1  
 <Design>  0  0  1 -1
 
-<Restraint> 0 1 0 1
+		<Restraint> 0 1 0 1
              <Check-Standard> 0 1 0 -1 
                <Linear-Combo> 0 0 1 1 
 
