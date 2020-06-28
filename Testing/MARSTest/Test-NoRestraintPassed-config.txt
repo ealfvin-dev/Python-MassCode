@@ -1,0 +1,152 @@
+#Test if no restraint passed to series raises MARSException
+#MARS input
+
+    <Report-Number>  Test-AirDensity
+
+     <Restraint-ID>  055
+    <Unc-Restraint>  0.034
+     <Random-Error>  0
+
+@SERIES
+
+             <Date>  07 27 2020
+    <Technician-ID>  019
+<Check-Standard-ID>  54
+
+       <Balance-ID>  003
+  <Direct-Readings>  1
+<Direct-Reading-SF>  1.0
+
+        <Design-ID>  112
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+
+           <Pounds>  0
+
+         <Position>  A1kg           1000 7.9436 0.000045
+         <Position>  B1kg           1000 7.9926 0.000045 3.961
+         <Position>  C1kg           1000 7.9435 0.000045
+         <Position>  D1kg           1000 7.9926 0.000045 6.353
+
+        <Restraint>  0 1 0 1
+   <Check-Standard>  0 -1 0 1
+     <Linear-Combo>  0 0 0 0
+        <Pass-Down>  0 0 0 0
+
+          <Sigma-t>  0.003
+          <Sigma-w>  0.0013
+
+          <sw-Mass>  50
+       <sw-Density>  8
+           <sw-CCE>  0.000045
+
+  <Balance-Reading>  -6.7570
+  <Balance-Reading>  0.0018
+  <Balance-Reading>  -9.1448
+  <Balance-Reading>  6.7572
+  <Balance-Reading>  -2.3888
+  <Balance-Reading>  -9.1465
+  <Balance-Reading>  -6.7574
+  <Balance-Reading>  0.0010
+  <Balance-Reading>  -9.1446
+  <Balance-Reading>  6.7592
+  <Balance-Reading>  -2.3887
+  <Balance-Reading>  -9.1477
+
+   <Environmentals>  19.80 737.86 46.96
+   <Environmentals>  19.70 717.86 41.96
+   <Environmentals>  19.60 767.86 55.96
+   <Environmentals>  19.50 777.86 59.96
+   <Environmentals>  19.40 737.86 35.96
+   <Environmentals>  19.30 747.86 45.96
+   <Environmentals>  18.50 727.86 41.96
+   <Environmentals>  17.50 777.86 40.96
+   <Environmentals>  19.80 767.86 36.96
+   <Environmentals>  20.80 757.86 38.96
+   <Environmentals>  21.80 757.86 58.96
+   <Environmentals>  23.80 707.86 60.96
+
+  <Env-Corrections>  -0.3 0.9 0.7
+
+
+@SERIES
+
+             <Date>  07 27 2020
+    <Technician-ID>  019
+<Check-Standard-ID>  54
+
+       <Balance-ID>  003
+  <Direct-Readings>  1
+<Direct-Reading-SF>  1.0
+
+        <Design-ID>  112
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+
+           <Pounds>  0
+
+         <Position>  A1kg           1000 7.9436 0.000045
+         <Position>  B1kg           1000 7.9926 0.000045 3.961
+         <Position>  C1kg           1000 7.9435 0.000045
+         <Position>  D1kg           1000 7.9926 0.000045 6.353
+
+        <Restraint>  0 1 0 1
+   <Check-Standard>  0 -1 0 1
+     <Linear-Combo>  0 0 0 0
+        <Pass-Down>  0 0 0 0
+
+          <Sigma-t>  0.003
+          <Sigma-w>  0.0013
+
+          <sw-Mass>  50
+       <sw-Density>  8
+           <sw-CCE>  0.000045
+
+  <Balance-Reading>  -6.7570
+  <Balance-Reading>  0.0018
+  <Balance-Reading>  -9.1448
+  <Balance-Reading>  6.7572
+  <Balance-Reading>  -2.3888
+  <Balance-Reading>  -9.1465
+  <Balance-Reading>  -6.7574
+  <Balance-Reading>  0.0010
+  <Balance-Reading>  -9.1446
+  <Balance-Reading>  6.7592
+  <Balance-Reading>  -2.3887
+  <Balance-Reading>  -9.1477
+
+   <Environmentals>  19.80 737.86 46.96
+   <Environmentals>  19.70 717.86 41.96
+   <Environmentals>  19.60 767.86 55.96
+   <Environmentals>  19.50 777.86 59.96
+   <Environmentals>  19.40 737.86 35.96
+   <Environmentals>  19.30 747.86 45.96
+   <Environmentals>  18.50 727.86 41.96
+   <Environmentals>  17.50 777.86 40.96
+   <Environmentals>  19.80 767.86 36.96
+   <Environmentals>  20.80 757.86 38.96
+   <Environmentals>  21.80 757.86 58.96
+   <Environmentals>  23.80 707.86 60.96
+
+  <Env-Corrections>  -0.3 0.9 0.7
+

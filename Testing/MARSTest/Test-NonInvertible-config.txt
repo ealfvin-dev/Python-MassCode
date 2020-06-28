@@ -1,8 +1,7 @@
-#  Test #2
-#  Validation of results written to output file
+#  Test for MARSException on non-invertible matrix
 #  MARS Input
 
-    <Report-Number>  Test2
+    <Report-Number>  Test-NonInvertible
 
      <Restraint-ID>  42
     <Unc-Restraint>  0.050
@@ -10,7 +9,7 @@
 
 @SERIES
 
-             <Date>  05 03 2020
+             <Date>  07 24 2020
     <Technician-ID>  019
 <Check-Standard-ID>  43
 
@@ -18,18 +17,18 @@
   <Direct-Readings>  0
 <Direct-Reading-SF>  1.0
 
-        <Design-ID>  032
+        <Design-ID>  999
            <Design>  1 -1 -1  1 -1  0
            <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1 -1  0  1
-           <Design>  1 -1 -1  0  0  0
-           <Design>  1  0 -1 -1 -1 -1
-           <Design>  0  1 -1  1 -1 -1
-           <Design>  0  1 -1 -1  1 -1
-           <Design>  0  1 -1 -1 -1  1
-           <Design>  0  0  1 -1 -1  0
-           <Design>  0  0  1 -1  0 -1
-           <Design>  0  0  1  0 -1 -1
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  0  1 -1
 
            <Pounds>  0
 

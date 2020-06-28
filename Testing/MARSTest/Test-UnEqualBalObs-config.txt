@@ -1,7 +1,7 @@
 #  Test if balance observations != design observations raised MARSException
 #  MARS Input
 
-    <Report-Number>  Test2
+    <Report-Number>  Test-UnEqualBalObs
 
      <Restraint-ID>  42
     <Unc-Restraint>  0.050

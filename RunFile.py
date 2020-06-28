@@ -2,6 +2,8 @@ import sys
 import numpy as np
 from SeriesReduction import MatrixSolution
 from WriteOutFile import writeOut
+from MARSException import MARSException
+assert sys.version_info >= (3, 5)
 
 def parse(fileName):
     header = {}
@@ -20,7 +22,7 @@ def parse(fileName):
         for line in configFile:
             lines += 1
             if lines > 5000:
-                sys.exit("CONFIGURATION FILE EXCEEDS 5000 LINE LIMIT")
+                raise MARSException("CONFIGURATION FILE EXCEEDS 5000 LINE LIMIT")
 
             splitLine = line.strip().split(maxsplit=15)
 
@@ -235,7 +237,7 @@ def parse(fileName):
                 seriesObjects[seriesNumber].heightDifferences.append(float(splitLine[1]))
                 continue
 
-            sys.exit("UNKNOWN TAG AT LINE " + str(lines) + " IN CONFIGURATION FILE: " + str(splitLine[0]))
+            raise MARSException("UNKNOWN TAG AT LINE " + str(lines) + " IN CONFIGURATION FILE: " + str(splitLine[0]))
 
     return seriesObjects
 

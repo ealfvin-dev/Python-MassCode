@@ -1,7 +1,7 @@
 #  Test if environmental observations != design observations raised MARSException
 #  MARS Input
 
-    <Report-Number>  Test2
+    <Report-Number>  Test-UnEqualEnvObs
 
      <Restraint-ID>  42
     <Unc-Restraint>  0.050

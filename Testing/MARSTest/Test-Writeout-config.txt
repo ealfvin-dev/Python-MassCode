@@ -1,34 +1,34 @@
-#  Test for MARSException on non-invertible matrix
+#  Test results written to output file
 #  MARS Input
 
-    <Report-Number>  Test2
+    <Report-Number>  Test-Writeout
 
-     <Restraint-ID>  42
+     <Restraint-ID>  042
     <Unc-Restraint>  0.050
      <Random-Error>  0
 
 @SERIES
 
-             <Date>  07 24 2020
+             <Date>  07 27 2020
     <Technician-ID>  019
 <Check-Standard-ID>  43
 
        <Balance-ID>  099
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
+<Direct-Reading-SF>  1
 
-        <Design-ID>  999
+        <Design-ID>  032
            <Design>  1 -1 -1  1 -1  0
            <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  0  1 -1
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  1 -1  0
-           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1 -1  0  1
+           <Design>  1 -1 -1  0  0  0
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1 -1
+           <Design>  0  1 -1 -1  1 -1
+           <Design>  0  1 -1 -1 -1  1
+           <Design>  0  0  1 -1 -1  0
+           <Design>  0  0  1 -1  0 -1
+           <Design>  0  0  1  0 -1 -1
 
            <Pounds>  0
 
@@ -44,8 +44,8 @@
      <Linear-Combo>  0 0 0 0 0 0
         <Pass-Down>  0 0 0 0 0 0
 
-          <Sigma-t>  0.05
-          <Sigma-w>  0.0255
+          <Sigma-t>  0.051245
+          <Sigma-w>  0.025512
 
           <sw-Mass>  99.98989
        <sw-Density>  7.95
@@ -76,3 +76,5 @@
    <Environmentals>  19.608 739.7 47.7
 
   <Env-Corrections>  0 0 0.29
+
+

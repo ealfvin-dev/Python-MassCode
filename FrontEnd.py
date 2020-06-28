@@ -25,7 +25,7 @@ from kivy.uix.checkbox import CheckBox
 import RunFile
 import TestSuite
 import InputChecks
-import MARSException
+from MARSException import MARSException
 
 import sys
 import os
@@ -558,8 +558,10 @@ class MainLayout(BoxLayout):
             secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
             if(secondaryChecks):
                 InputChecks.checkResults(results)
-        except MARSException.MARSException as ex:
+        except MARSException as ex:
             self.sendError("RUNTIME ERROR: " + str(ex))
+        except AssertionError:
+            self.sendError("REQUIRED PYTHON 3.5 OR LATER")
         except:
             self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
 

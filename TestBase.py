@@ -25,19 +25,28 @@ class TestBase:
             self.passTest(test)
         else:
             self.failTest(test)
-            self.log.append(test + "\n      Expected: " + str(var1) + "\n      Recieved: " + str(var2) + "\n      Not equal\n")
+            self.logFailure(["Expected: " + str(var1), "Recieved: " + str(var2), "Not equal"], test)
 
     def assertClose(self, var1, var2, precision, test):
         if(abs(var1 - var2) <= precision):
             self.passTest(test)
         else:
             self.failTest(test)
-            self.log.append(test + "\n      Expected: " + str(var1) + "\n      Recieved: " + str(var2) + "\n      Not within tolerance " + str(precision) + "\n")
+            self.logFailure(["Expected: " + str(var1), "Recieved: " + str(var2), "Not within tolerance " + str(precision)], test)
+
+    def logFailure(self, message, test):
+        #Message as an array. Each item is a new log line
+        finalMessage = test
+        for line in message:
+            finalMessage += "\n      " + line
+
+        finalMessage += "\n"
+        self.log.append(finalMessage)
 
     def printSummary(self):
         summary = "\n############## TEST SUITE ##############\n"
 
-        summary += "\n***LOG\n\n"
+        summary += "\n*** LOG\n\n"
         summary += "    " + "\n    ".join(self.log) + "\n"
 
         summary += "\nTESTS PASSED:\n\n"
@@ -49,14 +58,14 @@ class TestBase:
         summary += str(self.passed) + " PASSED\n"+str(self.failed) + " FAILED\n\n"
 
         if(self.failed > 0):
-            summary += "\nSEE TEST FAILURE LOGS ABOVE"
+            summary += "\nSEE TEST FAILURE LOGS ABOVE\n"
 
         print(summary)
 
     def returnSummary(self):
         summary = "\n############## TEST SUITE ##############\n"
 
-        summary += "\n***LOG\n\n"
+        summary += "\n*** LOG\n\n"
         summary += "    " + "\n    ".join(self.log) + "\n"
 
         summary += "\nTESTS PASSED:\n\n"
@@ -68,6 +77,6 @@ class TestBase:
         summary += str(self.passed) + " PASSED\n"+str(self.failed) + " FAILED\n\n"
 
         if(self.failed > 0):
-            summary += "\nSEE TEST FAILURE LOGS ABOVE"
+            summary += "\nSEE TEST FAILURE LOGS ABOVE\n"
 
         return summary
