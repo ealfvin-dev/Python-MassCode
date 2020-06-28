@@ -42,7 +42,7 @@ class TestBase:
         self.log.append(finalMessage)
 
     def printSummary(self):
-        summary = "\n############## TEST SUITE ##############\n"
+        summary = "\n####################### TEST SUITE #######################\n"
 
         summary += "\n*** LOG\n\n"
         summary += "    " + "\n    ".join(self.log) + "\n"
@@ -61,7 +61,7 @@ class TestBase:
         print(summary)
 
     def returnSummary(self):
-        summary = "\n############## TEST SUITE ##############\n"
+        summary = "\n#######################\ TEST SUITE #######################\n"
 
         summary += "\n*** LOG\n\n"
         summary += "    " + "\n    ".join(self.log) + "\n"

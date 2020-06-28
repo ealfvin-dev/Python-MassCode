@@ -6,7 +6,7 @@
 
 #:set buttonSizer 10
 #:set menuButtonSizer 11
-#:set labelSizer 1.25
+#:set labelSizer 1.23
 #:set popUpFontSize sp(13)
 #:set popUpLabelSize sp(15)
 
@@ -143,10 +143,10 @@
 
             Label:
                 id: logo
-                text: "[color=#B3220D][b]M A R S[/b][/color]"
+                text: "[b]M A R S[/b]"
                 markup: True
-                color: (0, 0, 0, 1)
-                font_size: self.width / 7
+                color: labelColor
+                font_size: self.width / 10
 
             TopMenuButton:
                 id: openFile
@@ -175,7 +175,7 @@
             id: content
             orientation: 'horizontal'
             spacing: self.width / 15
-            padding: (0, 50, 30, 30)
+            padding: (0, 10, 30, 30)
 
             BoxLayout:
                 id: menu
@@ -418,9 +418,19 @@
             BoxLayout:
                 id: textAreas
                 orientation: "vertical"
-                spacing: 20
+                spacing: 12
                 padding: (0, 0, 0, 0)
                 size_hint: (1.5, 1.0)
+
+                Label:
+                    id: configFileName
+                    font_size: dp(13)
+                    text: ""
+                    color: labelColor
+                    text_size: userText.width, None
+                    size: userText.width, self.texture_size[1]
+                    halign: 'left'
+                    size_hint: (1, 0.01)
 
                 TextInput:
                     id: userText
@@ -447,9 +457,12 @@
 
         Label:
             id: footer
-            font_size: dp(10)
-            text: "[color='000000']Copywrite Erik Alfvin, 2020[/color]"
+            font_size: dp(9)
+            text: "[color=#000000]Copywrite Erik Alfvin, 2020[/color]"
             markup: True
+            text_size: root.width, None
+            size: self.texture_size
+            halign: 'center'
             size_hint: (1.0, 0.01)
 
 <LabInfoPopup>:

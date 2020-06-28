@@ -7,6 +7,7 @@ assert sys.version_info >= (3, 5)
 
 def parse(fileName):
     header = {}
+    notes = []
     seriesObjects = []
 
     lines = 0
@@ -45,8 +46,6 @@ def parse(fileName):
     #Open configuration file, read line by line, make MatrixSolution object for each series,
     #Assign atributes to MatrixSolution object based on the series number
     with open(fileName, 'r') as configFile:
-        notes = []
-
         for line in configFile:
             lines += 1
             splitLine = line.strip().split(maxsplit=15)
@@ -62,6 +61,10 @@ def parse(fileName):
 
                 seriesObjects.append(MatrixSolution())
                 seriesObjects[seriesNumber].seriesNumber = seriesNumber
+                seriesObjects[seriesNumber].reportNumber = header["<Report-Number>"]
+
+                if(seriesNumber == 0):
+                    seriesObjects[0].notes = notes
 
                 seriesObjects[seriesNumber].positions = posObs[seriesNumber][0]
                 seriesObjects[seriesNumber].observations = posObs[seriesNumber][1]
@@ -92,9 +95,6 @@ def parse(fileName):
                 seriesObjects[seriesNumber].date.append(str(splitLine[1]))
                 seriesObjects[seriesNumber].date.append(str(splitLine[2]))
                 seriesObjects[seriesNumber].date.append(str(splitLine[3]))
-
-                seriesObjects[seriesNumber].reportNumber = header["<Report-Number>"]
-                seriesObjects[seriesNumber].notes = notes
                 continue
 
             if splitLine[0] == "<Technician-ID>":

@@ -199,20 +199,25 @@ class MainLayout(BoxLayout):
             self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
             self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
-    def getReportNum(self, text):
-        for line in text:
-            if(len(line.strip().split()) == 0):
+    def getReportNum(self, text=None):
+        if(text == None): text = self.seriesTexts[0]
+
+        for line in text.splitlines():
+            if(len(line.split()) == 0):
                 continue
 
-            if(line.strip().split()[0] == "<Report-Number>"):
+            if(line.split()[0] == "<Report-Number>"):
                 try:
-                    self.reportNum = line.strip().split()[1]
-                    return line.strip().split()[1]
+                    self.reportNum = line.split()[1]
+                    self.ids.configFileName.text = line.split()[1] + "-config.txt"
+                    return line.split()[1]
                 except IndexError:
                     self.reportNum = ""
+                    self.ids.configFileName.text = ""
                     return False
 
         self.reportNum = ""
+        self.ids.configFileName.text = ""
         return False
 
     def displaySeriesNominal(self, inputText, seriesButton):
@@ -382,6 +387,11 @@ class MainLayout(BoxLayout):
 
         self.seriesTexts.append("@SERIES\n\n")
 
+        if(self.saved):
+            self.saved = False
+            self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
+            self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
+
     def goToSeries(self, seriesNum, exists):
         if(exists):
             if(self.currentSeries != None):
@@ -416,6 +426,7 @@ class MainLayout(BoxLayout):
             targetButton.background_color = (0.906, 0.918, 0.926, 1)
             targetButton.text = "[color=#000000]" + targetButton.text[15:]
 
+            self.getReportNum()
             self.renderButtons(self.ids.userText.text)
 
     def removeLastSeries(self):
@@ -486,7 +497,7 @@ class MainLayout(BoxLayout):
 
         self.ids.userText.do_backspace()    
         self.goToSeries(1, True)
-        self.getReportNum(self.seriesTexts[0].splitlines())
+        self.getReportNum()
         self.grabOutputFile()
 
     def save(self):
@@ -497,7 +508,7 @@ class MainLayout(BoxLayout):
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
-        reportNum = self.getReportNum(self.seriesTexts[0].splitlines())
+        reportNum = self.getReportNum()
 
         if(reportNum == False):
             self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1, CANNOT SAVE")
@@ -725,6 +736,7 @@ class LabInfoPopup(Popup):
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
         self.parent.children[1].ids.labInfoButton.colorGrey()
+        self.parent.children[1].getReportNum(text=self.parent.children[1].ids.userText.text)
 
         self.dismiss()
 
@@ -1033,7 +1045,11 @@ class OpenFilePopup(Popup):
 
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
-        rep = self.parent.children[1].getReportNum(self.parent.children[1].ids.userText.text.splitlines())
+        #Save current working series Text into self.seriesTexts array
+        seriesNum = self.parent.children[1].currentSeries
+        self.parent.children[1].seriesTexts[seriesNum - 1] = self.parent.children[1].ids.userText.text
+
+        rep = self.parent.children[1].getReportNum()
         if(rep == False):
             self.ids.newFileMessage.text = "No report number provided in Series 1,\nfile cannot be saved. Open new file anyway?"
             self.ids.openNewFileButton.text = "Don't Save &\nOpen"
