@@ -9,9 +9,9 @@ class TestSuite(TestBase.TestBase):
         #Assert current version of python >= 3.5
         try:
             assert sys.version_info >= (3, 5)
-            self.passTest("PYTHON VERSION >= 3.5")
+            self.passTest("PYTHON VERSION")
         except AssertionError:
-            self.failTest("PYTHON VERSION >= 3.5")
+            self.failTest("PYTHON VERSION")
 
     def testNumpy(self):
         #Test if Numpy can import, check version
@@ -103,7 +103,6 @@ class TestSuite(TestBase.TestBase):
             outFileTvalue = 0.0
 
             calculatedSw = round(data[0].swObs, 6)
-            inputSw = round(data[0].sigmaW, 6)
             calculatedFcrit = round(data[0].fCritical, 2)
             calculatedFvalue = round(data[0].fValue, 2)
             calculatedCheckStd = round(data[0].calculatedCheckCorrection, 6)
@@ -111,6 +110,7 @@ class TestSuite(TestBase.TestBase):
             calculatedTvalue = round(data[0].tValue, 2)
 
             inputDensities = []
+            inputSw = 0.0
             inputAcceptedCSCorr = 0.0
 
             expectedMasses = data[0].calculatedMasses[0]
@@ -148,7 +148,9 @@ class TestSuite(TestBase.TestBase):
                     m = line.strip().split()
                     if(m == [] or m[0] == "\n"):
                         continue
-                    if(m[0] == "<Position>"):
+                    elif(m[0] == "<Sigma-w>"):
+                        inputSw = float(m[1])
+                    elif(m[0] == "<Position>"):
                         inputDensities.append(float(m[3]))
                         if(m[1] == "P100g"):
                             inputAcceptedCSCorr = float(m[5])

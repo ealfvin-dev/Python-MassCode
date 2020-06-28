@@ -44,8 +44,8 @@
      <Linear-Combo>  0 0 0 0 0 0
         <Pass-Down>  0 0 0 0 0 0
 
-          <Sigma-t>  0.05
-          <Sigma-w>  0.0255
+          <Sigma-t>  0.051245
+          <Sigma-w>  0.025512
 
           <sw-Mass>  99.98989
        <sw-Density>  7.95

@@ -560,6 +560,8 @@ class MainLayout(BoxLayout):
                 InputChecks.checkResults(results)
         except MARSException as ex:
             self.sendError("RUNTIME ERROR: " + str(ex))
+        except AssertionError:
+            self.sendError("REQUIRED PYTHON 3.5 OR LATER")
         except:
             self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
 
