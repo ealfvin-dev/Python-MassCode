@@ -90,10 +90,6 @@ class MainLayout(BoxLayout):
             "<Gravity-Grad>": 28, \
             "<COM-Diff>": 29}
 
-        self.requiredTags = ["<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
-            "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
-            "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
-
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
         self.backgroundRect.size = instance.size
@@ -548,7 +544,7 @@ class MainLayout(BoxLayout):
         if(not checkStructure):
             return
             
-        checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.requiredTags, self.sendError, self.goToSeries)
+        checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.sendError, self.goToSeries)
         if(not checkAllExist):
             return
 

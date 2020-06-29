@@ -47,10 +47,6 @@
                     <Sigma-w> 0.00090
                     <Sigma-t> 0.00286
 
-    <sw-Mass> 20.0245
- <sw-Density> 2.70
-     <sw-CCE> 0.000069
-
            <Balance-Reading>  -0.5459
            <Balance-Reading>  -0.4764
            <Balance-Reading>  -0.4670
@@ -115,10 +111,6 @@
                     <Sigma-w> 0.0095
                     <Sigma-t> 0.038
 
-    <sw-Mass> 20.0245
- <sw-Density> 2.70
-     <sw-CCE> 0.000069
-
            <Balance-Reading>  1.0904
            <Balance-Reading>  1.0906
            <Balance-Reading>  0.5654
@@ -181,9 +173,6 @@
                     <Sigma-t> 0.0095
 					<Sigma-w> 0.0095
 
-    <sw-Mass> 20.0245
- <sw-Density> 2.70
-     <sw-CCE> 0.000069
 
            <Balance-Reading>   0.5169
            <Balance-Reading>   0.6058
@@ -254,9 +243,6 @@
                     <Sigma-w> 0.0095
                     <Sigma-t> 0.038
 
-    <sw-Mass> 20.0245
- <sw-Density> 2.70
-     <sw-CCE> 0.000069
 
            <Balance-Reading>   0.0295
            <Balance-Reading>   -0.0282
