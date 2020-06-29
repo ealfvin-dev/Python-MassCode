@@ -1,5 +1,44 @@
 #Module to hold functions that perform checks on user input data and results
 
+def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
+    #Check structure of input file in UI (split into series)
+    seriesNum = 0
+    numSeries = 0
+    lineNum = 0
+
+    for seriesText in seriesTexts:
+        seriesNum += 1
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.strip().split()
+
+            if(len(line) == 0):
+                continue
+            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
+                continue
+
+            if(line[0] == "@SERIES"):
+                numSeries += 1
+
+                #Check if more than 1 series is entered in each text block
+                if(numSeries > 1):
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENTER ONE @SERIES BLOCK PER SERIES\nUSING OPEN FILE FROM THE MENU WILL AUTOMATICALLY SPLIT INPUT TEXT INTO INDIVIDUAL SERIES")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+                continue
+
+            #Check that @SERIES marks the start of the series
+            if(numSeries == 0):
+                sendError("SERIES " + str(seriesNum) + ": THERE MUST BE AN @SERIES ANNOTATION BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
+                goToSeries(seriesNum, True)
+                return False
+
+        numSeries = 0
+        lineNum = 0
+
+    return True
+
 def checkTags(seriesArray, seriesNum, orderOfTags, highlightError, sendError):
     #Checks if currently written tags exist in the known tags dictionary
     seriesNumber = 0
@@ -52,7 +91,6 @@ def checkIfAllTags(seriesTexts, requiredTags, sendError, goToSeries):
                 return False
 
         seriesNum += 1
-
     return True
 
 def checkForRepeats(seriesTexts, sendError, highlightError):
@@ -113,7 +151,6 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
     seriesNum = 0
     lineNum = 0
 
-    numSeries = 0
     designObs = 0
     numObs = 0
     numEnvs = 0
@@ -132,21 +169,6 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
                 continue
 
-            if(line[0] == "@SERIES"):
-                numSeries += 1
-
-            #Check that @SERIES marks the start of the series
-            if(numSeries == 0):
-                sendError("SERIES " + str(seriesNum) + " @SERIES ANNOTATION MUST BE PRESENT BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
-                goToSeries(seriesNum, True)
-                return False
-
-            #Check if more than 1 series is entered in each text block
-            if(numSeries > 1):
-                sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENTER ONE @SERIES BLOCK PER SERIES\nUSING OPEN FILE FROM THE MENU WILL AUTOMATICALLY SPLIT INPUT TEXT INTO INDIVIDUAL SERIES")
-                highlightError(seriesNum, lineNum)
-                return False
-
             #Make sure all connected series have results passed down
             if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
                 total = 0
@@ -161,14 +183,17 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             #Count number of observations, balace readings, env lines provided
             if(line[0] == "<Design>"):
                 designObs += 1
+                continue
 
             if(line[0] == "<Balance-Reading>"):
                 numObs += 1
                 if(obsStartLine == 0): obsStartLine = lineNum
+                continue
 
             if(line[0] == "<Environmentals>"):
                 numEnvs += 1
                 if(envStartLine == 0): envStartLine = lineNum
+                continue
 
             #Check if environmentals provided correctly
             if(line[0] == "<Environmentals>"):
@@ -180,21 +205,22 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                     sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nENVIRONMENTALS MUST BE ENTERED IN THE FORM <Environmentals>  T P RH")
                     highlightError(seriesNum, lineNum)
                     return False
+                continue
 
             #Check that pass down nominal matches next restraint
 
-        #Check number of balace readings, envs
+        #Check number of balace readings
         if(numObs != designObs):
             sendError("SERIES " + str(seriesNum) + " NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
             highlightError(seriesNum, obsStartLine, obsStartLine + numObs - 1)
             return False
 
+        #Check number of balace environmentals
         if(numEnvs != designObs):
             sendError("SERIES " + str(seriesNum) + " NUMBER OF ENVIRONMENTAL OBSERVATIONS DO NOT MATCH THE DESIGN")
             highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
             return False
 
-        numSeries = 0
         lineNum = 0
         designObs = 0
         numObs = 0
@@ -230,7 +256,6 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
             
             lineNum += 1
         lineNum = 1
-
     return True
 
 def checkResults(results):

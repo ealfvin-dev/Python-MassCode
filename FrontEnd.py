@@ -543,6 +543,10 @@ class MainLayout(BoxLayout):
         if(not self.saved):
             self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
             return
+
+        checkStructure = InputChecks.checkStructure(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkStructure):
+            return
             
         checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.requiredTags, self.sendError, self.goToSeries)
         if(not checkAllExist):
@@ -569,6 +573,7 @@ class MainLayout(BoxLayout):
             secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
             if(secondaryChecks):
                 InputChecks.checkResults(results)
+
         except MARSException as ex:
             self.sendError("RUNTIME ERROR: " + str(ex))
         except AssertionError:

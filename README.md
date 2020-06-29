@@ -25,13 +25,13 @@
 
 ## Runinng MARS:
 There are two options for running an input file - through the user interface or directly through the command line. Output files are written out to the current working directory.
- - ### Command line:
+ - #### Command line:
     ```
     python RunFile.py 12345-config.txt
     ```
     Output file will be saved as 12345-out.txt
 
- - ### User Interface:
+ - #### User Interface:
     Lauch UI:
     ```
     python FrontEnd.py &
@@ -39,7 +39,7 @@ There are two options for running an input file - through the user interface or 
 
     Build input file with the input buttons and run with the Run button.
 
-- ### Running Tests:
+- #### Running Tests:
     Tests are run automatically on startup of the frontend. Tests can also be run through the front end, clicking on Run Tests in the top menu.  
     Tests can manually be run by starting the test suite directly:
     ```
