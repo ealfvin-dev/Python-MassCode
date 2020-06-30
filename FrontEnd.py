@@ -448,6 +448,7 @@ class MainLayout(BoxLayout):
             self.numberOfSeries -= 1
         else:
             self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
+            self.goToSeries(self.numberOfSeries, True)
 
     def openFile(self, fileName):
         #fileName = None to open a new file
@@ -504,10 +505,15 @@ class MainLayout(BoxLayout):
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
+        #Run tests to check on the provided report number
         reportNum = self.getReportNum()
-
         if(reportNum == False):
             self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1, CANNOT SAVE")
+            self.goToSeries(1, True)
+            return
+
+        checkReportNum = InputChecks.checkReportNumber(self.seriesTexts[0], self.sendError, self.highlightError)
+        if(checkReportNum == False):
             return
 
         seriesButtonId = "series" + str(self.currentSeries)

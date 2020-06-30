@@ -28,6 +28,25 @@ def determineIfDirectReadings(inputText):
 
     return False
 
+def checkReportNumber(inputText, sendError, highlightError):
+    #Check if report number has spaces
+    lineNum = 0
+
+    for line in inputText.splitlines():
+        lineNum += 1
+        if(line.split() == []):
+            continue
+
+        if(line.split()[0] == "<Report-Number>"):
+            try:
+                error = line.split()[2]
+                sendError("SERIES 1, LINE " + str(lineNum) + ": ENTER A REPORT NUMBER WITHOUT SPACES")
+                highlightError(1, lineNum)
+                return False
+            except IndexError:
+                break
+    return True
+
 def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
     #Check structure of input file in UI (split into series)
     seriesNum = 0
@@ -197,19 +216,19 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
 
             if(len(line) == 0):
                 continue
-            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
-                continue
 
-            #Make sure all connected series have results passed down
-            if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
-                total = 0
-                for position in line[1:]:
-                    total += int(position)
-                
-                if(total == 0):
-                    sendError("NO RESTRAINT PASSED TO SERIES " + str(seriesNum + 1))
+            #Check if report number is entered without spaces
+            if(line[0] == "<Report-Number>"):
+                try:
+                    error = line[2]
+                    sendError("SERIES " + str(seriesNum) + ", LINE " + str(lineNum) + ": ENTER A REPORT NUMBER WITHOUT SPACES")
                     highlightError(seriesNum, lineNum)
                     return False
+                except IndexError:
+                    continue
+
+            if(line[0][0] == "#" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
+                continue
 
             #Check format of date
             if(line[0] == "<Date>"):
@@ -232,6 +251,17 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                         return False
                 except IndexError:
                     sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nDIRECT READING VALUE NEEDED. (1=DIRECT READINGS, 0=DOUBLE SUBSTITUTIONS)")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            #Make sure all connected series have results passed down
+            if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
+                total = 0
+                for position in line[1:]:
+                    total += int(position)
+                
+                if(total == 0):
+                    sendError("NO RESTRAINT PASSED TO SERIES " + str(seriesNum + 1))
                     highlightError(seriesNum, lineNum)
                     return False
 
