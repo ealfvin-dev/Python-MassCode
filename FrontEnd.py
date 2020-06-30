@@ -347,7 +347,7 @@ class MainLayout(BoxLayout):
             self.ids.positionVectorsButton.colorBlue()
 
         #Sensitivity Weight Button
-        if(tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]):
+        if((tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]) or InputChecks.determineIfDirectReadings(seriesText)):
             self.ids.swButton.colorGrey()
         else:
             self.ids.swButton.colorBlue()
@@ -810,6 +810,8 @@ class BalancePopup(Popup):
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
         self.parent.children[1].ids.balanceButton.colorGrey()
+        if(directReadingsText.strip() == "1"):
+            self.parent.children[1].ids.swButton.colorGrey()
 
         self.dismiss()
 
