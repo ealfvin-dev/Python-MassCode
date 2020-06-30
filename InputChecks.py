@@ -1,5 +1,91 @@
 #Module to hold functions that perform checks on user input data and results
 
+requiredTags = ["<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", \
+            "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
+            "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
+            "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
+
+requiredTagsDR = ["<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", \
+            "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
+            "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
+            "<Sigma-t>", "<Sigma-w>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
+
+def determineIfDirectReadings(inputText):
+    #Helper function to determine if direct readings are used
+    for line in inputText.splitlines():
+        if(line.split() == []):
+            continue
+
+        if(line.split()[0] == "<Direct-Readings>"):
+            try:
+                dr = line.split()[1]
+                if(dr == "1"):
+                    return True
+                else:
+                    return False
+            except IndexError:
+                return False
+
+    return False
+
+def checkReportNumber(inputText, sendError, highlightError):
+    #Check if report number has spaces
+    lineNum = 0
+
+    for line in inputText.splitlines():
+        lineNum += 1
+        if(line.split() == []):
+            continue
+
+        if(line.split()[0] == "<Report-Number>"):
+            try:
+                error = line.split()[2]
+                sendError("SERIES 1, LINE " + str(lineNum) + ": ENTER A REPORT NUMBER WITHOUT SPACES")
+                highlightError(1, lineNum)
+                return False
+            except IndexError:
+                break
+    return True
+
+def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
+    #Check structure of input file in UI (split into series)
+    seriesNum = 0
+    numSeries = 0
+    lineNum = 0
+
+    for seriesText in seriesTexts:
+        seriesNum += 1
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.split()
+
+            if(len(line) == 0):
+                continue
+            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
+                continue
+
+            if(line[0] == "@SERIES"):
+                numSeries += 1
+
+                #Check if more than 1 series is entered in each text block
+                if(numSeries > 1):
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENTER ONE @SERIES BLOCK PER SERIES\nUSING OPEN FILE FROM THE MENU WILL AUTOMATICALLY SPLIT INPUT TEXT INTO INDIVIDUAL SERIES")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+                continue
+
+            #Check that @SERIES marks the start of the series
+            if(numSeries == 0):
+                sendError("SERIES " + str(seriesNum) + ": THERE MUST BE AN @SERIES ANNOTATION BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
+                goToSeries(seriesNum, True)
+                return False
+
+        numSeries = 0
+        lineNum = 0
+
+    return True
+
 def checkTags(seriesArray, seriesNum, orderOfTags, highlightError, sendError):
     #Checks if currently written tags exist in the known tags dictionary
     seriesNumber = 0
@@ -12,30 +98,33 @@ def checkTags(seriesArray, seriesNum, orderOfTags, highlightError, sendError):
             lineNum += 1
 
             if(line.split() == []):
-                pass
-            elif(line.split()[0].strip() == ""):
-                pass
+                continue
             else:
                 try:
-                    orderOfTags[line.split()[0].strip()]
+                    orderOfTags[line.split()[0]]
                 except KeyError:
                     if(seriesNum):
                         snText = str(seriesNum)
                     else:
                         snText = str(seriesNumber)
 
-                    errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0].strip()
+                    errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0]
                     highlightError(int(snText), lineNum)
                     sendError(errorMessage)
                     return False
                     
     return True
 
-def checkIfAllTags(seriesTexts, requiredTags, sendError, goToSeries):
+def checkIfAllTags(seriesTexts, sendError, goToSeries):
     #Checks if all tags in known tags dictionary exist in each seriesTexts
     seriesNum = 1
     for inputText in seriesTexts:
-        for tag in requiredTags:
+        if(determineIfDirectReadings(inputText)):
+            tagSet = requiredTagsDR
+        else:
+            tagSet = requiredTags
+
+        for tag in tagSet:
             if((tag == "<Report-Number>" or tag == "<Restraint-ID>" or tag == "<Unc-Restraint>" or tag == "<Random-Error>") and seriesNum != 1):
                 continue
 
@@ -52,7 +141,6 @@ def checkIfAllTags(seriesTexts, requiredTags, sendError, goToSeries):
                 return False
 
         seriesNum += 1
-
     return True
 
 def checkForRepeats(seriesTexts, sendError, highlightError):
@@ -87,7 +175,7 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
         lineNum = 0
         for line in seriesText.splitlines():
             lineNum += 1
-            line = line.strip().split()
+            line = line.split()
 
             if(len(line) == 0):
                 continue
@@ -113,7 +201,6 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
     seriesNum = 0
     lineNum = 0
 
-    numSeries = 0
     designObs = 0
     numObs = 0
     numEnvs = 0
@@ -125,27 +212,47 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
         seriesNum += 1
         for line in seriesText.splitlines():
             lineNum += 1
-            line = line.strip().split()
+            line = line.split()
 
             if(len(line) == 0):
                 continue
-            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
+
+            #Check if report number is entered without spaces
+            if(line[0] == "<Report-Number>"):
+                try:
+                    error = line[2]
+                    sendError("SERIES " + str(seriesNum) + ", LINE " + str(lineNum) + ": ENTER A REPORT NUMBER WITHOUT SPACES")
+                    highlightError(seriesNum, lineNum)
+                    return False
+                except IndexError:
+                    continue
+
+            if(line[0][0] == "#" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
                 continue
 
-            if(line[0] == "@SERIES"):
-                numSeries += 1
+            #Check format of date
+            if(line[0] == "<Date>"):
+                if(len(line) != 4):
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nDATE IS ENTERED IN THE FORM <Date>  MM DD YYYY")
+                    highlightError(seriesNum, lineNum)
+                    return False
 
-            #Check that @SERIES marks the start of the series
-            if(numSeries == 0):
-                sendError("SERIES " + str(seriesNum) + " @SERIES ANNOTATION MUST BE PRESENT BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
-                goToSeries(seriesNum, True)
-                return False
-
-            #Check if more than 1 series is entered in each text block
-            if(numSeries > 1):
-                sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENTER ONE @SERIES BLOCK PER SERIES\nUSING OPEN FILE FROM THE MENU WILL AUTOMATICALLY SPLIT INPUT TEXT INTO INDIVIDUAL SERIES")
-                highlightError(seriesNum, lineNum)
-                return False
+            #Check direct readings value
+            if(line[0] == "<Direct-Readings>"):
+                try:
+                    dr = line[1]
+                    if(dr == "1"):
+                        continue
+                    elif(dr == "0"):
+                        continue
+                    else:
+                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nUNKNOWN DIRECT READING VALUE. (1=DIRECT READINGS, 0=DOUBLE SUBSTITUTIONS)")
+                        highlightError(seriesNum, lineNum)
+                        return False
+                except IndexError:
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nDIRECT READING VALUE NEEDED. (1=DIRECT READINGS, 0=DOUBLE SUBSTITUTIONS)")
+                    highlightError(seriesNum, lineNum)
+                    return False
 
             #Make sure all connected series have results passed down
             if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
@@ -161,14 +268,17 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             #Count number of observations, balace readings, env lines provided
             if(line[0] == "<Design>"):
                 designObs += 1
+                continue
 
             if(line[0] == "<Balance-Reading>"):
                 numObs += 1
                 if(obsStartLine == 0): obsStartLine = lineNum
+                continue
 
             if(line[0] == "<Environmentals>"):
                 numEnvs += 1
                 if(envStartLine == 0): envStartLine = lineNum
+                continue
 
             #Check if environmentals provided correctly
             if(line[0] == "<Environmentals>"):
@@ -177,24 +287,25 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                     pressure = float(line[2])
                     humidity = float(line[3])
                 except:
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nENVIRONMENTALS MUST BE ENTERED IN THE FORM <Environmentals>  T P RH")
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
                     highlightError(seriesNum, lineNum)
                     return False
+                continue
 
             #Check that pass down nominal matches next restraint
 
-        #Check number of balace readings, envs
+        #Check number of balace readings
         if(numObs != designObs):
             sendError("SERIES " + str(seriesNum) + " NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
             highlightError(seriesNum, obsStartLine, obsStartLine + numObs - 1)
             return False
 
+        #Check number of balace environmentals
         if(numEnvs != designObs):
             sendError("SERIES " + str(seriesNum) + " NUMBER OF ENVIRONMENTAL OBSERVATIONS DO NOT MATCH THE DESIGN")
             highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
             return False
 
-        numSeries = 0
         lineNum = 0
         designObs = 0
         numObs = 0
@@ -212,7 +323,7 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
     for seriesText in seriesTexts:
         seriesNum += 1
         for line in seriesText.splitlines():
-            line = line.strip().split()
+            line = line.split()
             if(len(line) == 0):
                 lineNum += 1
                 continue
@@ -230,7 +341,6 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
             
             lineNum += 1
         lineNum = 1
-
     return True
 
 def checkResults(results):

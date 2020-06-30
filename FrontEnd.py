@@ -90,10 +90,6 @@ class MainLayout(BoxLayout):
             "<Gravity-Grad>": 28, \
             "<COM-Diff>": 29}
 
-        self.requiredTags = ["<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
-            "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
-            "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
-
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
         self.backgroundRect.size = instance.size
@@ -351,7 +347,7 @@ class MainLayout(BoxLayout):
             self.ids.positionVectorsButton.colorBlue()
 
         #Sensitivity Weight Button
-        if(tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]):
+        if((tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]) or InputChecks.determineIfDirectReadings(seriesText)):
             self.ids.swButton.colorGrey()
         else:
             self.ids.swButton.colorBlue()
@@ -452,6 +448,7 @@ class MainLayout(BoxLayout):
             self.numberOfSeries -= 1
         else:
             self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
+            self.goToSeries(self.numberOfSeries, True)
 
     def openFile(self, fileName):
         #fileName = None to open a new file
@@ -508,10 +505,15 @@ class MainLayout(BoxLayout):
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
+        #Run tests to check on the provided report number
         reportNum = self.getReportNum()
-
         if(reportNum == False):
             self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1, CANNOT SAVE")
+            self.goToSeries(1, True)
+            return
+
+        checkReportNum = InputChecks.checkReportNumber(self.seriesTexts[0], self.sendError, self.highlightError)
+        if(checkReportNum == False):
             return
 
         seriesButtonId = "series" + str(self.currentSeries)
@@ -543,8 +545,12 @@ class MainLayout(BoxLayout):
         if(not self.saved):
             self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
             return
+
+        checkStructure = InputChecks.checkStructure(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkStructure):
+            return
             
-        checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.requiredTags, self.sendError, self.goToSeries)
+        checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.sendError, self.goToSeries)
         if(not checkAllExist):
             return
 
@@ -569,6 +575,7 @@ class MainLayout(BoxLayout):
             secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
             if(secondaryChecks):
                 InputChecks.checkResults(results)
+
         except MARSException as ex:
             self.sendError("RUNTIME ERROR: " + str(ex))
         except AssertionError:
@@ -814,6 +821,8 @@ class BalancePopup(Popup):
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
         self.parent.children[1].ids.balanceButton.colorGrey()
+        if(directReadingsText.strip() == "1"):
+            self.parent.children[1].ids.swButton.colorGrey()
 
         self.dismiss()
 

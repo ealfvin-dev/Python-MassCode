@@ -121,9 +121,9 @@ def writeOut(seriesList):
         f.write("OBSERVED_F-VALUE = " + str(round(series.fValue, 2)) + "\n")
 
         if(series.fValue <= series.fCritical):
-            f.write("--------\n| PASS |\n--------\n")
+            f.write("--------\n| PASS |\n--------\n\n")
         else:
-            f.write("--------\n| FAIL |\n--------\n")
+            f.write("--------\n| FAIL |\n--------\n\n")
 
         if(series.fValue > series.fCritical):
             f.write("################################################################\n")
