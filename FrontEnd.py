@@ -112,6 +112,10 @@ class MainLayout(BoxLayout):
             elif(line == "\n"):
                 textInput.cursor = (0, row)
                 cursorStart += 1
+            elif(line.strip()[0] == "#"):
+                textInput.cursor = (len(line), row)
+                cursorStart += len(line)
+                cursorStart += 1
             elif(orderNum < self.orderOfTags[line.strip().split()[0]]):
                 break
             else:
@@ -286,11 +290,14 @@ class MainLayout(BoxLayout):
             "<COM-Diff>": False}
 
         for line in seriesText.splitlines():
-            if(line.strip() != "" and line.strip != "\n"):
-                try:
-                    tags[line.strip().split()[0]] = True
-                except KeyError:
-                    pass
+            if(line.split() == []):
+                continue
+
+            try:
+                tags[line.split()[0]]
+                tags[line.split()[0]] = True
+            except KeyError:
+                pass
 
         #Lab Info Button
         if(self.currentSeries == 1 and tags["<Report-Number>"] == False):
@@ -554,7 +561,7 @@ class MainLayout(BoxLayout):
         if(not checkAllExist):
             return
 
-        checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.orderOfTags, self.highlightError, self.sendError)
+        checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.highlightError, self.sendError)
         if(not checkWrittenTags):
             return
 
@@ -1179,7 +1186,7 @@ class Mars(App):
         if(self.root.currentSeries == 1):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1190,7 +1197,7 @@ class Mars(App):
         if(self.root.currentSeries == 1):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1201,7 +1208,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1212,7 +1219,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1223,7 +1230,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1235,7 +1242,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1246,7 +1253,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1257,7 +1264,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1268,7 +1275,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1279,7 +1286,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1290,7 +1297,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()

@@ -52,6 +52,54 @@ class TestSuite(TestBase.TestBase):
             self.failTest("RUN TEST FILE")
             self.logFailure(["Could not run test file"], "RUN TEST FILE")
 
+    def testNonInvertible(self):
+        #Test non-invertible matrix raises MARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/Test-NonInvertible-config.txt", False)
+            self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+            self.logFailure(["Non-invertible matrix did not raise MARSException"], "NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+        except MARSException:
+            self.passTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+        except:
+            self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+            self.logFailure(["Non-invertible matrix did not raise MARSException"], "NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+
+    def testUnequalBalanceObs(self):
+        #Test if balance readings != observations raises MARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/Test-UnEqualBalObs-config.txt", False)
+            self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+            self.logFailure(["Unequal balance observations did not raise MARSException"], "UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+        except MARSException:
+            self.passTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+        except:
+            self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+            self.logFailure(["Unequal balance observations did not raise MARSException"], "UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+
+    def testUnequalEnvObs(self):
+        #Test if environmental readings != observations raises MARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/Test-UnEqualEnvObs-config.txt", False)
+            self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+            self.logFailure(["Unequal environmental observations did not raise MARSException"], "UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+        except MARSException:
+            self.passTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+        except:
+            self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+            self.logFailure(["Unequal environmental observations did not raise MARSException"], "UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+
+    def testNoRestraintPassed(self):
+        #Test if no restraint passed to series raises MARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/Test-NoRestraintPassed-config.txt", False)
+            self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+            self.logFailure(["No restraint passed down did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+        except MARSException:
+            self.passTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+        except:
+            self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+            self.logFailure(["No restraint passed down did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+
     def testWriteOutFile(self):
         #Test if output file can be written out
         try:
@@ -67,32 +115,6 @@ class TestSuite(TestBase.TestBase):
 
         if(os.path.exists("Test-Writeout-out.txt")):
             os.remove("Test-Writeout-out.txt")
-
-    def testAirDesities(self):
-        #Test if calculated air densities match expected
-        try:
-            data = RunFile.run("./Testing/MARSTest/Test-AirDensity-config.txt", False)
-            calculatedDesities = data[0].airDensities
-
-            expectedDensities = [0.0011627477621149957,\
-                0.0011319900687371933,\
-                0.0012102483268084932,\
-                0.001226150777103154,\
-                0.001165592451710878,\
-                0.001180867465458547,\
-                0.0011528885073334091,\
-                0.00123707837957592,\
-                0.0012113502660840957,\
-                0.0011909600963592097,\
-                0.0011842805431003785,\
-                0.0010969698894584734]
-
-            for i in range(len(expectedDensities)):
-                self.assertClose(expectedDensities[i], calculatedDesities[i], 1e-8, "AIR DENSITY CALC " + str(i + 1))
-
-        except:
-            self.failTest("CALCULATE AIR DENSITIES")
-            self.logFailure(["Air densities were not calculated"], "CALCULATE AIR DENSITIES")
 
     def testOutFileData(self):
         #Test writing stuff into output file
@@ -188,53 +210,31 @@ class TestSuite(TestBase.TestBase):
         if(os.path.exists("Test-Writeout-out.txt")):
             os.remove("Test-Writeout-out.txt")
 
-    def testNonInvertible(self):
-        #Test non-invertible matrix raises MARSException
+    def testAirDesities(self):
+        #Test if calculated air densities match expected
         try:
-            data = RunFile.run("./Testing/MARSTest/Test-NonInvertible-config.txt", False)
-            self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
-            self.logFailure(["Non-invertible matrix did not raise MARSException"], "NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
-        except MARSException:
-            self.passTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
-        except:
-            self.failTest("NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
-            self.logFailure(["Non-invertible matrix did not raise MARSException"], "NON-INVERTIBLE MATRIX RAISES MARSEXCEPTION")
+            data = RunFile.run("./Testing/MARSTest/Test-AirDensity-config.txt", False)
+            calculatedDesities = data[0].airDensities
 
-    def testUnequalBalanceObs(self):
-        #Test if balance readings != observations raises MARSException
-        try:
-            data = RunFile.run("./Testing/MARSTest/Test-UnEqualBalObs-config.txt", False)
-            self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
-            self.logFailure(["Unequal balance observations did not raise MARSException"], "UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
-        except MARSException:
-            self.passTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
-        except:
-            self.failTest("UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
-            self.logFailure(["Unequal balance observations did not raise MARSException"], "UNEQUAL BALANCE OBSERVATIONS RAISES MARSEXCEPTION")
+            expectedDensities = [0.0011627477621149957,\
+                0.0011319900687371933,\
+                0.0012102483268084932,\
+                0.001226150777103154,\
+                0.001165592451710878,\
+                0.001180867465458547,\
+                0.0011528885073334091,\
+                0.00123707837957592,\
+                0.0012113502660840957,\
+                0.0011909600963592097,\
+                0.0011842805431003785,\
+                0.0010969698894584734]
 
-    def testUnequalEnvObs(self):
-        #Test if environmental readings != observations raises MARSException
-        try:
-            data = RunFile.run("./Testing/MARSTest/Test-UnEqualEnvObs-config.txt", False)
-            self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
-            self.logFailure(["Unequal environmental observations did not raise MARSException"], "UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
-        except MARSException:
-            self.passTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
-        except:
-            self.failTest("UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
-            self.logFailure(["Unequal environmental observations did not raise MARSException"], "UNEQUAL ENVIRONMENTAL OBSERVATIONS RAISES MARSEXCEPTION")
+            for i in range(len(expectedDensities)):
+                self.assertClose(expectedDensities[i], calculatedDesities[i], 1e-8, "AIR DENSITY CALC " + str(i + 1))
 
-    def testNoRestraintPassed(self):
-        #Test if no restraint passed to series raises MARSException
-        try:
-            data = RunFile.run("./Testing/MARSTest/Test-NoRestraintPassed-config.txt", False)
-            self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
-            self.logFailure(["No restraint passed down did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
-        except MARSException:
-            self.passTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
         except:
-            self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
-            self.logFailure(["No restraint passed down did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+            self.failTest("CALCULATE AIR DENSITIES")
+            self.logFailure(["Air densities were not calculated"], "CALCULATE AIR DENSITIES")
 
     #Test other data entry errors throw errors (from fe and be?)
 
@@ -244,13 +244,13 @@ class TestSuite(TestBase.TestBase):
         #self.testSciPy()
         self.testKivy()
         self.testRunFile()
-        self.testWriteOutFile()
-        self.testAirDesities()
-        self.testOutFileData()
         self.testNonInvertible()
         self.testUnequalBalanceObs()
         self.testUnequalEnvObs()
         self.testNoRestraintPassed()
+        self.testWriteOutFile()
+        self.testOutFileData()
+        self.testAirDesities()
         self.printSummary()
 
     def runFromFE(self):
@@ -259,13 +259,13 @@ class TestSuite(TestBase.TestBase):
         #self.testSciPy()
         self.passTest("IMPORT KIVY")
         self.testRunFile()
-        self.testWriteOutFile()
-        self.testAirDesities()
-        self.testOutFileData()
         self.testNonInvertible()
         self.testUnequalBalanceObs()
         self.testUnequalEnvObs()
         self.testNoRestraintPassed()
+        self.testWriteOutFile()
+        self.testOutFileData()
+        self.testAirDesities()
         return self.returnSummary()
 
 if(__name__ == "__main__"):
