@@ -33,10 +33,18 @@ class TestBase:
             self.logFailure(["Expected: " + str(var1), "Recieved: " + str(var2), "Not within tolerance " + str(precision)], test)
 
     def assertTrue(self, var, test):
-        pass
+        if(var == True):
+            self.passTest(test)
+        else:
+            self.failTest(test)
+            self.logFailure(["Expected: True", "Recieved: False"], test)
 
     def assertFalse(self, var, test):
-        pass
+        if(var == False):
+            self.passTest(test)
+        else:
+            self.failTest(test)
+            self.logFailure(["Expected: False", "Recieved: True"], test)
 
     def logFailure(self, message, test):
         #Message as an array. Each item is a new log line

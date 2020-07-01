@@ -1,32 +1,14 @@
 #Module to hold functions that perform checks on user input data and results
 
-acceptedTags = {"@SERIES": False, \
-                "<Report-Number>": False, \
-                "<Restraint-ID>": False, \
-                "<Unc-Restraint>": False, \
-                "<Random-Error>": False, \
-                "<Date>": False, \
-                "<Technician-ID>": False, \
-                "<Check-Standard-ID>": False, \
-                "<Balance-ID>": False, \
-                "<Direct-Readings>": False, \
-                "<Direct-Reading-SF>": False, \
-                "<Design-ID>": False, \
-                "<Design>": False, \
-                "<Pounds>": False, \
-                "<Position>": False, \
-                "<Restraint>": False, \
-                "<Check-Standard>": False, \
-                "<Linear-Combo>": False, \
-                "<Pass-Down>": False, \
-                "<Sigma-t>": False, \
-                "<Sigma-w>": False, \
-                "<sw-Mass>": False, \
-                "<sw-Density>": False, \
-                "<sw-CCE>": False, \
-                "<Balance-Reading>": False, \
-                "<Environmentals>": False, \
-                "<Env-Corrections>": False}
+#determineIfDirectReadings (helper)
+#checkReportNumber
+#checkStructure
+#checkTags
+#checkIfAllTags
+#checkForRepeats
+#runRequiredChecks
+#runSecondaryChecks
+#checkResults
 
 def determineIfDirectReadings(inputText):
     #Helper function to determine if direct readings are used
@@ -47,7 +29,7 @@ def determineIfDirectReadings(inputText):
     return False
 
 def checkReportNumber(inputText, sendError, highlightError):
-    #Check if report number has spaces
+    #Check that report number does not have spaces
     lineNum = 0
 
     for line in inputText.splitlines():
@@ -104,11 +86,39 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
 
     return True
 
-def checkTags(seriesArray, seriesNum, highlightError, sendError):
+def checkTags(seriesTexts, seriesNum, highlightError, sendError):
     #Checks if currently written tags exist in the known tags dictionary
+    acceptedTags = {"@SERIES": False, \
+                    "<Report-Number>": False, \
+                    "<Restraint-ID>": False, \
+                    "<Unc-Restraint>": False, \
+                    "<Random-Error>": False, \
+                    "<Date>": False, \
+                    "<Technician-ID>": False, \
+                    "<Check-Standard-ID>": False, \
+                    "<Balance-ID>": False, \
+                    "<Direct-Readings>": False, \
+                    "<Direct-Reading-SF>": False, \
+                    "<Design-ID>": False, \
+                    "<Design>": False, \
+                    "<Pounds>": False, \
+                    "<Position>": False, \
+                    "<Restraint>": False, \
+                    "<Check-Standard>": False, \
+                    "<Linear-Combo>": False, \
+                    "<Pass-Down>": False, \
+                    "<Sigma-t>": False, \
+                    "<Sigma-w>": False, \
+                    "<sw-Mass>": False, \
+                    "<sw-Density>": False, \
+                    "<sw-CCE>": False, \
+                    "<Balance-Reading>": False, \
+                    "<Environmentals>": False, \
+                    "<Env-Corrections>": False}
+
     seriesNumber = 0
 
-    for seriesText in seriesArray:
+    for seriesText in seriesTexts:
         seriesNumber += 1
         lineNum = 0
 

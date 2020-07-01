@@ -1,10 +1,21 @@
-import RunFile
 import TestBase
+import RunFile
+import InputChecks
 from MARSException import MARSException
 import sys
 import os
 
 class TestSuite(TestBase.TestBase):
+    #Mocked functions
+    def sendErrorMock(self, message):
+        pass
+
+    def highlightErrorMock(self, series, startLine, endLine=None):
+        pass
+
+    def goToSeriesMock(self, seriesNum, exists):
+        pass
+
     def testPythonVersion(self):
         #Assert current version of python >= 3.5
         try:
@@ -99,6 +110,34 @@ class TestSuite(TestBase.TestBase):
         except:
             self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
             self.logFailure(["No restraint passed down did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+
+    def testFEGoodFile(self):
+        #Test if a correctly-made input file passes front end input checks
+        try:
+            with open("./Testing/MARSTest/Test-FEGoodFile-config.txt") as file:
+                text = file.read()
+
+            seriesTexts = text.split("@SERIES")
+            seriesTexts[1] = "@SERIES\n" + seriesTexts[1]
+            seriesTexts[2] = "@SERIES\n" + seriesTexts[2]
+            seriesTexts[3] = "@SERIES\n" + seriesTexts[3]
+            seriesTexts[4] = "@SERIES\n" + seriesTexts[4]
+
+            seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
+            seriesTexts.pop(0)
+            
+            self.assertTrue(InputChecks.determineIfDirectReadings(seriesTexts[0]), "DIRECT READING DETERMINATION +")
+            self.assertFalse(InputChecks.determineIfDirectReadings(seriesTexts[1]), "DIRECT READING DETERMINATION -")
+            self.assertTrue(InputChecks.checkReportNumber(seriesTexts[0], self.sendErrorMock, self.highlightErrorMock), "REPORT NUMBER FORMAT DETERMINATION +")
+            self.assertTrue(InputChecks.checkStructure(seriesTexts, self.sendErrorMock, self.highlightErrorMock, self.goToSeriesMock), "FILE STRUCTURE DETERMINATION +")
+            self.assertTrue(InputChecks.checkTags(seriesTexts, False, self.highlightErrorMock, self.sendErrorMock), "CHECK INPUT TAGS +")
+            self.assertTrue(InputChecks.checkIfAllTags(seriesTexts, self.sendErrorMock, self.goToSeriesMock), "CHECK IF ALL INPUT TAGS +")
+            self.assertTrue(InputChecks.checkForRepeats(seriesTexts, self.sendErrorMock, self.highlightErrorMock), "CHECK FOR REPEATED TAGS +")
+            self.assertTrue(InputChecks.runRequiredChecks(seriesTexts, 4, self.sendErrorMock, self.highlightErrorMock, self.goToSeriesMock), "REQUIRED INPUT CHECKS +")
+            self.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile", self.sendErrorMock, self.highlightErrorMock), "SECONDARY INPUT CHECKS +")
+        except:
+            self.failTest("GOOD FILE PASSES FE INPUT CHECKS")
+            self.logFailure(["Error running front end input checks"], "GOOD FILE PASSES FE INPUT CHECKS")
 
     def testWriteOutFile(self):
         #Test if output file can be written out
@@ -248,6 +287,7 @@ class TestSuite(TestBase.TestBase):
         self.testUnequalBalanceObs()
         self.testUnequalEnvObs()
         self.testNoRestraintPassed()
+        self.testFEGoodFile()
         self.testWriteOutFile()
         self.testOutFileData()
         self.testAirDesities()
@@ -263,6 +303,7 @@ class TestSuite(TestBase.TestBase):
         self.testUnequalBalanceObs()
         self.testUnequalEnvObs()
         self.testNoRestraintPassed()
+        self.testFEGoodFile()
         self.testWriteOutFile()
         self.testOutFileData()
         self.testAirDesities()
