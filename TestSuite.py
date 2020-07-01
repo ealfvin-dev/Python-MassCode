@@ -139,6 +139,59 @@ class TestSuite(TestBase.TestBase):
             self.failTest("GOOD FILE PASSES FE INPUT CHECKS")
             self.logFailure(["Error running front end input checks"], "GOOD FILE PASSES FE INPUT CHECKS")
 
+    def testFEBadReportNum(self):
+        #Test if a report number with a space is caught in Input checks
+        try:
+            with open("./Testing/MARSTest/Test-FEBadReportNum-config.txt") as file:
+                seriesText = file.read()
+            
+            self.assertFalse(InputChecks.checkReportNumber(seriesText, self.sendErrorMock, self.highlightErrorMock), "REPORT NUMBER FORMAT DETERMINATION -")
+        except:
+            self.failTest("REPORT NUMBER FORMAT DETERMINATION -")
+            self.logFailure(["Error running front end input checks"], "REPORT NUMBER FORMAT DETERMINATION -")
+
+    def testFEBadStructure(self):
+        #Test if an input file missing a @SERIES is caught in Input checks
+        try:
+            with open("./Testing/MARSTest/Test-FEGoodFile-config.txt") as file:
+                text = file.read()
+
+            seriesTexts = text.split("@SERIES")
+            seriesTexts[1] = "@SERIES\n" + seriesTexts[1]
+            seriesTexts[2] = "@SERIES\n" + seriesTexts[2]
+            seriesTexts[3] = "@SERIES\n" + seriesTexts[3]
+            #seriesTexts[4] = "@SERIES\n" + seriesTexts[4] -> Missing @SERIES in the last series
+
+            seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
+            seriesTexts.pop(0)
+            
+            self.assertFalse(InputChecks.checkStructure(seriesTexts, self.sendErrorMock, self.highlightErrorMock, self.goToSeriesMock), "FILE STRUCTURE DETERMINATION -")
+        except:
+            self.failTest("INPUT STRUCTURE DETERMINATION -")
+            self.logFailure(["Error running front end input checks"], "INPUT STRUCTURE DETERMINATION -")
+
+    def testFEBadTags(self):
+        #Test if unrecognized, duplicate, missing tags are found by Input checks
+        try:
+            with open("./Testing/MARSTest/Test-FEBadTags-config.txt") as file:
+                text = file.read()
+
+            seriesTexts = text.split("@SERIES")
+            seriesTexts[1] = "@SERIES\n" + seriesTexts[1]
+            seriesTexts[2] = "@SERIES\n" + seriesTexts[2]
+            seriesTexts[3] = "@SERIES\n" + seriesTexts[3]
+            seriesTexts[4] = "@SERIES\n" + seriesTexts[4]
+
+            seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
+            seriesTexts.pop(0)
+            
+            self.assertFalse(InputChecks.checkTags(seriesTexts, False, self.highlightErrorMock, self.sendErrorMock), "CHECK INPUT TAGS -")
+            self.assertFalse(InputChecks.checkIfAllTags(seriesTexts, self.sendErrorMock, self.goToSeriesMock), "CHECK IF ALL INPUT TAGS -")
+            self.assertFalse(InputChecks.checkForRepeats(seriesTexts, self.sendErrorMock, self.highlightErrorMock), "CHECK FOR REPEATED TAGS -")
+        except:
+            self.failTest("TAG DETERMINATIONS -")
+            self.logFailure(["Error running front end input checks"], "TAG DETERMINATIONS -")
+
     def testWriteOutFile(self):
         #Test if output file can be written out
         try:
@@ -288,6 +341,9 @@ class TestSuite(TestBase.TestBase):
         self.testUnequalEnvObs()
         self.testNoRestraintPassed()
         self.testFEGoodFile()
+        self.testFEBadReportNum()
+        self.testFEBadStructure()
+        self.testFEBadTags()
         self.testWriteOutFile()
         self.testOutFileData()
         self.testAirDesities()
@@ -304,6 +360,9 @@ class TestSuite(TestBase.TestBase):
         self.testUnequalEnvObs()
         self.testNoRestraintPassed()
         self.testFEGoodFile()
+        self.testFEBadReportNum()
+        self.testFEBadStructure()
+        self.testFEBadTags()
         self.testWriteOutFile()
         self.testOutFileData()
         self.testAirDesities()
