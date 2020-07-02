@@ -476,7 +476,7 @@ class MainLayout(BoxLayout):
                 splitTexts[i] = "@SERIES" + splitTexts[i]
 
         if(len(splitTexts) == 0):
-            pass
+            splitTexts.append("@SERIES\n\n")
         elif(len(splitTexts) == 1):
             pass
         else:
@@ -1324,7 +1324,7 @@ class Mars(App):
             pop.open()
             pop.setMessage(True)
         else:
-            self.root.openFile("@SERIES\n\n")
+            self.root.splitSeries("@SERIES\n\n")
 
     def openValidationPop(self):
         pop = ValidationPopup()
