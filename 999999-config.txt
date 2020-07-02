@@ -76,6 +76,7 @@
 
                 <Env-Corrections> 0 0 0.488
 
+
 @SERIES
 
 	<Date> 11 28 2019
@@ -132,6 +133,7 @@
 
 
                 <Env-Corrections> 0 0 0.488
+
 
 @SERIES
 
@@ -203,6 +205,7 @@
 
 	     <Env-Corrections> 0 0 0.488
 
+
 @SERIES
 
 		<Date> 11 28 2019
@@ -272,6 +275,7 @@
              <Environmentals> 19.800 730.27 47.469
 
                 <Env-Corrections> 0 0 0.488
+
 
 @SERIES
 						
@@ -343,4 +347,5 @@
              <Environmentals> 19.585 736.75 48.6
 
                <Env-Corrections> 0 0 0.48
+
 

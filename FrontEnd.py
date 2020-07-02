@@ -457,49 +457,42 @@ class MainLayout(BoxLayout):
             self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
             self.goToSeries(self.numberOfSeries, True)
 
-    def openFile(self, fileName):
-        #fileName = None to open a new file
-        if(fileName == None):
-            configFile = ["@SERIES", "\n", "\n"]
-        else:
-            #Check if file exists
-            try:
-                configFile = open(fileName, 'r')
-            except(FileNotFoundError):
-                self.sendError("FILE NOT FOUND")
-                return
-
-        #Remove existing series
+    def splitSeries(self, fileText):
+        #Remove all series
         self.goToSeries(1, True)
-        self.ids.userText.text = ""
-
         for i in range(self.numberOfSeries):
             self.seriesTexts[self.numberOfSeries - 1] = ""
             self.removeLastSeries()
 
+        self.ids.userText.text = ""
         self.clearErrors()
-        seriesNum = 0
 
-        for line in configFile:
-            if(line.strip() == "@SERIES"):
-                seriesNum += 1
-                if(seriesNum > 1):
-                    self.ids.userText.do_backspace()
-
-                    self.addSeries()
-                    self.goToSeries(seriesNum, True)
-
-                    self.ids.userText.text = "@SERIES\n"
-                    continue
-                else:
-                    self.ids.userText.text += "@SERIES\n"
+        #Split fileText and populate series
+        splitTexts = fileText.split("@SERIES")
+        for i in range(len(splitTexts)):
+            if(i == 0):
+                pass
             else:
-                self.ids.userText.text += line
+                splitTexts[i] = "@SERIES" + splitTexts[i]
 
-        if(fileName != None):
-            configFile.close()
+        if(len(splitTexts) == 0):
+            pass
+        elif(len(splitTexts) == 1):
+            pass
+        else:
+            splitTexts[1] = splitTexts[0] + splitTexts[1]
+            splitTexts.pop(0)
 
-        self.ids.userText.do_backspace()    
+        #Populate series with splitTexts
+        for i in range(len(splitTexts)):
+            if(i == 0):
+                self.ids.userText.text = splitTexts[0]
+                continue
+
+            self.addSeries()
+            self.goToSeries(i + 1, True)
+            self.ids.userText.text = splitTexts[i]
+
         self.goToSeries(1, True)
         self.getReportNum()
         self.grabOutputFile()
@@ -1057,7 +1050,17 @@ class GravityPopup(Popup):
         self.dismiss()
 
 class OpenFilePopup(Popup):
-    pass
+    def openFile(self, fileName):
+        try:
+            with open(fileName) as configFile:
+                fileText = configFile.read()
+        except(FileNotFoundError):
+            self.parent.children[1].sendError(fileName + " NOT FOUND IN CURRENT DIRECTORY")
+            self.dismiss()
+            return
+
+        self.parent.children[1].splitSeries(fileText)
+        self.dismiss()
 
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
@@ -1098,11 +1101,11 @@ class OpenNewFilePopup(Popup):
 
     def openNewFile(self, e):
         self.parent.children[1].save()
-        self.parent.children[1].openFile(None)
+        self.parent.children[1].splitSeries("@SERIES\n\n")
         self.dismiss()
 
     def openNewFileNoSave(self, e):
-        self.parent.children[1].openFile(None)
+        self.parent.children[1].splitSeries("@SERIES\n\n")
         self.dismiss()
 
 class ValidationPopup(Popup):
@@ -1321,7 +1324,7 @@ class Mars(App):
             pop.open()
             pop.setMessage(True)
         else:
-            self.root.openFile(None)
+            self.root.openFile("@SERIES\n\n")
 
     def openValidationPop(self):
         pop = ValidationPopup()
