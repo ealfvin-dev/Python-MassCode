@@ -492,6 +492,7 @@ class MainLayout(BoxLayout):
             self.addSeries()
             self.goToSeries(i + 1, True)
             self.ids.userText.text = splitTexts[i]
+            self.ids.userText.do_backspace()
 
         self.goToSeries(1, True)
         self.getReportNum()
