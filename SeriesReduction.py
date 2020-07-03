@@ -88,8 +88,10 @@ class MatrixSolution:
         self.loads = []
         self.aveSensitivities = None
 
-        self.gravityGradient = 0
-        self.heightDifferences = []
+        self.localGravity = 9.8
+        self.gravityGradient = 0.0 #1/s2
+        self.weightHeights = np.zeros(shape=0) #m
+        self.referenceHeight = 0.0 #m
 
         #Statistics Stuff:
         self.df = 0
@@ -257,7 +259,8 @@ class MatrixSolution:
                 obsThree = self.balanceReadings[i][2]
                 obsFour = self.balanceReadings[i][3]
 
-                deltaLab = (((obsTwo - obsOne) + (obsThree - obsFour)) / 2) * averageSensitivities[round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
+                deltaLab = (((obsTwo - obsOne) + (obsThree - obsFour)) / 2) * \
+                    averageSensitivities[round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
 
             elif self.directReadings == 1:
                 deltaLab = -1 * self.balanceReadings[i][0] * averageSensitivities['balance'] / 1000
@@ -265,8 +268,18 @@ class MatrixSolution:
             else:
                 raise MARSException("SERIES " + str(self.seriesNumber + 1) + " PLEASE ENTER A VALID DIRECT-READINGS ARGUMENT.\n1 = DIRECT READINGS ENTERED, 0 = DOUBLE SUBSTITUTION OBSERVATIONS ENTERED")
             
-            if self.heightDifferences != []:
-                deltaLab = deltaLab - (estimatedMassTwo / 9.807) * ((self.heightDifferences[i]/1000) * -1 * self.gravityGradient)
+            #Gravity corrections
+            if(self.weightHeights.size != 0):
+                #Calculate COMs of massOne and massTwo
+                mass1Array = np.multiply(positionMassOne, estimateMasses)
+                mass2Array = np.multiply(positionMassTwo, estimateMasses)
+
+                COM1 = np.matmul(mass1Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass1Array)
+                COM2 = np.matmul(mass2Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass2Array)
+
+                #Perform gravitational correction back to reference height
+                deltaLab = deltaLab + (self.gravityGradient / self.localGravity) * \
+                    (estimatedMassTwo * (COM2 - self.referenceHeight) - estimatedMassOne * (COM1 - self.referenceHeight))
 
             #Extrapolate what delta would be in vaccum and add to matrixY
             deltaVaccum = deltaLab + airDensity * ((estimatedMassTwo / effectiveDensityMassTwo) - (estimatedMassOne / effectiveDensityMassOne)) #grams

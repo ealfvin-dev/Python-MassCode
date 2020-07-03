@@ -1533,7 +1533,7 @@
         padding: 20, 0, 20, 20        
 
         Label:
-            text: "COM Height Differences (cm):"
+            text: "Weight Heights (cm):"
             size_hint: (1, 0.6)
             markup: True
             color: popLabelColor
@@ -1543,15 +1543,15 @@
             valign: "bottom"
         
         OrderedText:
-            id: COMText
+            id: heightText
             size_hint: (1, 2.2)
             font_name: "./Menlo.ttc"
             text: ""
-            hint_text: "-0.5\n-1.0\n-1.0\n-0.5\n-0.5\n0.0"
+            hint_text: "3.3\n3.5\n4.0\n3.7\n3.5\n3.5"
             font_size: popUpFontSize
             padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
             background_normal: ''
-            orderNum: 29
+            orderNum: 30
 
         Label:
             text: "Gravity Gradient (1/s" + chr(178) + "):"

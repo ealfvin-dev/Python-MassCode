@@ -13,7 +13,6 @@ from kivy.clock import Clock
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.core.window import Window
-from kivy.metrics import dp, mm
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -88,7 +87,9 @@ class MainLayout(BoxLayout):
             "<Environmentals>": 26, \
             "<Env-Corrections>": 27, \
             "<Gravity-Grad>": 28, \
-            "<COM-Diff>": 29}
+            "<Gravity-Local>": 29, \
+            "<Height>": 30, \
+            "<Height-Ref>": 31}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -157,8 +158,8 @@ class MainLayout(BoxLayout):
         return cursorStart, textBlockLength
 
     def getTag(self, orderNum):
-        for tag in self.orderOfTags:
-            if(self.orderOfTags[tag] == orderNum):
+        for tag, order in self.orderOfTags.items():
+            if(order == orderNum):
                 return tag
 
     def highlight(self, startPos, textLength):
@@ -287,7 +288,9 @@ class MainLayout(BoxLayout):
             "<Environmentals>": False, \
             "<Env-Corrections>": False, \
             "<Gravity-Grad>": False, \
-            "<COM-Diff>": False}
+            "<Gravity-Local>": False, \
+            "<Height>": False, \
+            "<Height-Ref>": False}
 
         for line in seriesText.splitlines():
             if(line.split() == []):
@@ -324,7 +327,7 @@ class MainLayout(BoxLayout):
             self.ids.balanceButton.colorBlue()
 
         #Gravity Button
-        if(tags["<COM-Diff>"] and tags["<Gravity-Grad>"]):
+        if(tags["<Height>"] and tags["<Gravity-Grad>"] and tags["<Gravity-Local>"] and tags["<Height-Ref>"]):
             self.ids.gravityButton.colorGrey()
         else:
             self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
@@ -1032,17 +1035,17 @@ class MeasurementsPopup(Popup):
 class GravityPopup(Popup):
     def submit(self):
         gradientText = self.ids.gradientText.text
-        COMText = self.ids.COMText.text
+        heightText = self.ids.heightText.text
 
         gradientOrder = self.ids.gradientText.orderNum
-        COMOrder = self.ids.COMText.orderNum
+        heightOrder = self.ids.heightText.orderNum
 
-        if(gradientText == "" or COMText == ""):
+        if(gradientText == "" or heightText == ""):
             self.ids.gravityPopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(gradientText, gradientOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(COMText, COMOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(heightText, heightOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
