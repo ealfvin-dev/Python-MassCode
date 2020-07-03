@@ -13,7 +13,6 @@ from kivy.clock import Clock
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.core.window import Window
-from kivy.metrics import dp, mm
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -88,7 +87,9 @@ class MainLayout(BoxLayout):
             "<Environmentals>": 26, \
             "<Env-Corrections>": 27, \
             "<Gravity-Grad>": 28, \
-            "<COM-Diff>": 29}
+            "<Gravity-Local>": 29, \
+            "<Height>": 30, \
+            "<Height-Ref>": 31}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -111,6 +112,10 @@ class MainLayout(BoxLayout):
                 cursorStart += 1
             elif(line == "\n"):
                 textInput.cursor = (0, row)
+                cursorStart += 1
+            elif(line.strip()[0] == "#"):
+                textInput.cursor = (len(line), row)
+                cursorStart += len(line)
                 cursorStart += 1
             elif(orderNum < self.orderOfTags[line.strip().split()[0]]):
                 break
@@ -153,8 +158,8 @@ class MainLayout(BoxLayout):
         return cursorStart, textBlockLength
 
     def getTag(self, orderNum):
-        for tag in self.orderOfTags:
-            if(self.orderOfTags[tag] == orderNum):
+        for tag, order in self.orderOfTags.items():
+            if(order == orderNum):
                 return tag
 
     def highlight(self, startPos, textLength):
@@ -283,14 +288,19 @@ class MainLayout(BoxLayout):
             "<Environmentals>": False, \
             "<Env-Corrections>": False, \
             "<Gravity-Grad>": False, \
-            "<COM-Diff>": False}
+            "<Gravity-Local>": False, \
+            "<Height>": False, \
+            "<Height-Ref>": False}
 
         for line in seriesText.splitlines():
-            if(line.strip() != "" and line.strip != "\n"):
-                try:
-                    tags[line.strip().split()[0]] = True
-                except KeyError:
-                    pass
+            if(line.split() == []):
+                continue
+
+            try:
+                tags[line.split()[0]]
+                tags[line.split()[0]] = True
+            except KeyError:
+                pass
 
         #Lab Info Button
         if(self.currentSeries == 1 and tags["<Report-Number>"] == False):
@@ -317,7 +327,7 @@ class MainLayout(BoxLayout):
             self.ids.balanceButton.colorBlue()
 
         #Gravity Button
-        if(tags["<COM-Diff>"] and tags["<Gravity-Grad>"]):
+        if(tags["<Height>"] and tags["<Gravity-Grad>"] and tags["<Gravity-Local>"] and tags["<Height-Ref>"]):
             self.ids.gravityButton.colorGrey()
         else:
             self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
@@ -450,49 +460,43 @@ class MainLayout(BoxLayout):
             self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
             self.goToSeries(self.numberOfSeries, True)
 
-    def openFile(self, fileName):
-        #fileName = None to open a new file
-        if(fileName == None):
-            configFile = ["@SERIES", "\n", "\n"]
-        else:
-            #Check if file exists
-            try:
-                configFile = open(fileName, 'r')
-            except(FileNotFoundError):
-                self.sendError("FILE NOT FOUND")
-                return
-
-        #Remove existing series
+    def splitSeries(self, fileText):
+        #Remove all series
         self.goToSeries(1, True)
-        self.ids.userText.text = ""
-
         for i in range(self.numberOfSeries):
             self.seriesTexts[self.numberOfSeries - 1] = ""
             self.removeLastSeries()
 
+        self.ids.userText.text = ""
         self.clearErrors()
-        seriesNum = 0
 
-        for line in configFile:
-            if(line.strip() == "@SERIES"):
-                seriesNum += 1
-                if(seriesNum > 1):
-                    self.ids.userText.do_backspace()
-
-                    self.addSeries()
-                    self.goToSeries(seriesNum, True)
-
-                    self.ids.userText.text = "@SERIES\n"
-                    continue
-                else:
-                    self.ids.userText.text += "@SERIES\n"
+        #Split fileText and populate series
+        splitTexts = fileText.split("@SERIES")
+        for i in range(len(splitTexts)):
+            if(i == 0):
+                pass
             else:
-                self.ids.userText.text += line
+                splitTexts[i] = "@SERIES" + splitTexts[i]
 
-        if(fileName != None):
-            configFile.close()
+        if(len(splitTexts) == 0):
+            splitTexts.append("@SERIES\n\n")
+        elif(len(splitTexts) == 1):
+            pass
+        else:
+            splitTexts[1] = splitTexts[0] + splitTexts[1]
+            splitTexts.pop(0)
 
-        self.ids.userText.do_backspace()    
+        #Populate series with splitTexts
+        for i in range(len(splitTexts)):
+            if(i == 0):
+                self.ids.userText.text = splitTexts[0]
+                continue
+
+            self.addSeries()
+            self.goToSeries(i + 1, True)
+            self.ids.userText.text = splitTexts[i]
+            self.ids.userText.do_backspace()
+
         self.goToSeries(1, True)
         self.getReportNum()
         self.grabOutputFile()
@@ -554,7 +558,7 @@ class MainLayout(BoxLayout):
         if(not checkAllExist):
             return
 
-        checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.orderOfTags, self.highlightError, self.sendError)
+        checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.highlightError, self.sendError)
         if(not checkWrittenTags):
             return
 
@@ -1036,17 +1040,17 @@ class MeasurementsPopup(Popup):
 class GravityPopup(Popup):
     def submit(self):
         gradientText = self.ids.gradientText.text
-        COMText = self.ids.COMText.text
+        heightText = self.ids.heightText.text
 
         gradientOrder = self.ids.gradientText.orderNum
-        COMOrder = self.ids.COMText.orderNum
+        heightOrder = self.ids.heightText.orderNum
 
-        if(gradientText == "" or COMText == ""):
+        if(gradientText == "" or heightText == ""):
             self.ids.gravityPopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(gradientText, gradientOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(COMText, COMOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(heightText, heightOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
 
@@ -1055,7 +1059,17 @@ class GravityPopup(Popup):
         self.dismiss()
 
 class OpenFilePopup(Popup):
-    pass
+    def openFile(self, fileName):
+        try:
+            with open(fileName) as configFile:
+                fileText = configFile.read()
+        except(FileNotFoundError):
+            self.parent.children[1].sendError(fileName + " NOT FOUND IN CURRENT DIRECTORY")
+            self.dismiss()
+            return
+
+        self.parent.children[1].splitSeries(fileText)
+        self.dismiss()
 
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
@@ -1096,11 +1110,11 @@ class OpenNewFilePopup(Popup):
 
     def openNewFile(self, e):
         self.parent.children[1].save()
-        self.parent.children[1].openFile(None)
+        self.parent.children[1].splitSeries("@SERIES\n\n")
         self.dismiss()
 
     def openNewFileNoSave(self, e):
-        self.parent.children[1].openFile(None)
+        self.parent.children[1].splitSeries("@SERIES\n\n")
         self.dismiss()
 
 class ValidationPopup(Popup):
@@ -1184,7 +1198,7 @@ class Mars(App):
         if(self.root.currentSeries == 1):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1195,7 +1209,7 @@ class Mars(App):
         if(self.root.currentSeries == 1):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1206,7 +1220,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1217,7 +1231,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1228,7 +1242,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
             
             if(checkOK):
                 self.root.clearErrors()
@@ -1240,7 +1254,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1251,7 +1265,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1262,7 +1276,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1273,7 +1287,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1284,7 +1298,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1295,7 +1309,7 @@ class Mars(App):
         if(self.root.currentSeries != None):
             seriesText = self.root.ids.userText.text
 
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.orderOfTags, self.root.highlightError, self.root.sendError)
+            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
 
             if(checkOK):
                 self.root.clearErrors()
@@ -1319,7 +1333,7 @@ class Mars(App):
             pop.open()
             pop.setMessage(True)
         else:
-            self.root.openFile(None)
+            self.root.splitSeries("@SERIES\n\n")
 
     def openValidationPop(self):
         pop = ValidationPopup()

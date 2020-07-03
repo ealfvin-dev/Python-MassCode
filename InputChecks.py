@@ -1,14 +1,14 @@
 #Module to hold functions that perform checks on user input data and results
 
-requiredTags = ["<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", \
-            "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
-            "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
-            "<Sigma-t>", "<Sigma-w>", "<sw-Mass>", "<sw-Density>", "<sw-CCE>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
-
-requiredTagsDR = ["<Report-Number>", "<Restraint-ID>", "<Unc-Restraint>", "<Random-Error>", "<Date>", "<Technician-ID>", \
-            "<Check-Standard-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>", \
-            "<Design-ID>", "<Design>", "<Pounds>", "<Position>", "<Restraint>", "<Check-Standard>", "<Linear-Combo>", "<Pass-Down>", \
-            "<Sigma-t>", "<Sigma-w>", "<Balance-Reading>", "<Environmentals>", "<Env-Corrections>"]
+#determineIfDirectReadings (helper)
+#checkReportNumber
+#checkStructure
+#checkTags
+#checkIfAllTags
+#checkForRepeats
+#runRequiredChecks
+#runSecondaryChecks
+#checkResults
 
 def determineIfDirectReadings(inputText):
     #Helper function to determine if direct readings are used
@@ -29,7 +29,7 @@ def determineIfDirectReadings(inputText):
     return False
 
 def checkReportNumber(inputText, sendError, highlightError):
-    #Check if report number has spaces
+    #Check that report number does not have spaces
     lineNum = 0
 
     for line in inputText.splitlines():
@@ -39,7 +39,7 @@ def checkReportNumber(inputText, sendError, highlightError):
 
         if(line.split()[0] == "<Report-Number>"):
             try:
-                error = line.split()[2]
+                line.split()[2]
                 sendError("SERIES 1, LINE " + str(lineNum) + ": ENTER A REPORT NUMBER WITHOUT SPACES")
                 highlightError(1, lineNum)
                 return False
@@ -86,11 +86,43 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
 
     return True
 
-def checkTags(seriesArray, seriesNum, orderOfTags, highlightError, sendError):
+def checkTags(seriesTexts, seriesNum, highlightError, sendError):
     #Checks if currently written tags exist in the known tags dictionary
+    acceptedTags = {"@SERIES": False, \
+                    "<Report-Number>": False, \
+                    "<Restraint-ID>": False, \
+                    "<Unc-Restraint>": False, \
+                    "<Random-Error>": False, \
+                    "<Date>": False, \
+                    "<Technician-ID>": False, \
+                    "<Check-Standard-ID>": False, \
+                    "<Balance-ID>": False, \
+                    "<Direct-Readings>": False, \
+                    "<Direct-Reading-SF>": False, \
+                    "<Design-ID>": False, \
+                    "<Design>": False, \
+                    "<Pounds>": False, \
+                    "<Position>": False, \
+                    "<Restraint>": False, \
+                    "<Check-Standard>": False, \
+                    "<Linear-Combo>": False, \
+                    "<Pass-Down>": False, \
+                    "<Sigma-t>": False, \
+                    "<Sigma-w>": False, \
+                    "<sw-Mass>": False, \
+                    "<sw-Density>": False, \
+                    "<sw-CCE>": False, \
+                    "<Balance-Reading>": False, \
+                    "<Environmentals>": False, \
+                    "<Env-Corrections>": False, \
+                    "<Gravity-Grad>": False, \
+                    "<Gravity-Local>": False, \
+                    "<Height>": False, \
+                    "<Height-Ref>": False}
+
     seriesNumber = 0
 
-    for seriesText in seriesArray:
+    for seriesText in seriesTexts:
         seriesNumber += 1
         lineNum = 0
 
@@ -99,9 +131,12 @@ def checkTags(seriesArray, seriesNum, orderOfTags, highlightError, sendError):
 
             if(line.split() == []):
                 continue
+
+            if(line.split()[0][0] == "#"):
+                continue
             else:
                 try:
-                    orderOfTags[line.split()[0]]
+                    acceptedTags[line.split()[0]]
                 except KeyError:
                     if(seriesNum):
                         snText = str(seriesNum)
@@ -120,26 +155,80 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
     seriesNum = 1
     for inputText in seriesTexts:
         if(determineIfDirectReadings(inputText)):
-            tagSet = requiredTagsDR
+            tagSet = {"<Report-Number>": False, \
+                        "<Restraint-ID>": False, \
+                        "<Unc-Restraint>": False, \
+                        "<Random-Error>": False, \
+                        "<Date>": False, \
+                        "<Technician-ID>": False, \
+                        "<Check-Standard-ID>": False, \
+                        "<Balance-ID>": False, \
+                        "<Direct-Readings>": False, \
+                        "<Direct-Reading-SF>": False, \
+                        "<Design-ID>": False, \
+                        "<Design>": False, \
+                        "<Pounds>": False, \
+                        "<Position>": False, \
+                        "<Restraint>": False, \
+                        "<Check-Standard>": False, \
+                        "<Linear-Combo>": False, \
+                        "<Pass-Down>": False, \
+                        "<Sigma-t>": False, \
+                        "<Sigma-w>": False, \
+                        "<Balance-Reading>": False, \
+                        "<Environmentals>": False, \
+                        "<Env-Corrections>": False}
         else:
-            tagSet = requiredTags
+            tagSet = {"<Report-Number>": False, \
+                        "<Restraint-ID>": False, \
+                        "<Unc-Restraint>": False, \
+                        "<Random-Error>": False, \
+                        "<Date>": False, \
+                        "<Technician-ID>": False, \
+                        "<Check-Standard-ID>": False, \
+                        "<Balance-ID>": False, \
+                        "<Direct-Readings>": False, \
+                        "<Direct-Reading-SF>": False, \
+                        "<Design-ID>": False, \
+                        "<Design>": False, \
+                        "<Pounds>": False, \
+                        "<Position>": False, \
+                        "<Restraint>": False, \
+                        "<Check-Standard>": False, \
+                        "<Linear-Combo>": False, \
+                        "<Pass-Down>": False, \
+                        "<Sigma-t>": False, \
+                        "<Sigma-w>": False, \
+                        "<sw-Mass>": False, \
+                        "<sw-Density>": False, \
+                        "<sw-CCE>": False, \
+                        "<Balance-Reading>": False, \
+                        "<Environmentals>": False, \
+                        "<Env-Corrections>": False}
 
-        for tag in tagSet:
+        #Record required tags found in the series
+        for line in inputText.splitlines():
+            if(line.split() == []):
+                continue
+
+            try:
+                tagSet[line.split()[0]]
+                tagSet[line.split()[0]] = True
+            except KeyError:
+                pass
+
+        #Check if all keys in tag set are now true (header tags only in series 1)
+        for tag, value in tagSet.items():
+            if(value == True):
+                continue
+
             if((tag == "<Report-Number>" or tag == "<Restraint-ID>" or tag == "<Unc-Restraint>" or tag == "<Random-Error>") and seriesNum != 1):
                 continue
 
-            exists = 0
-            for line in inputText.splitlines():
-                if(line.split() != []):
-                    if(line.split()[0] == tag):
-                        exists = 1
-                        break
-
-            if(exists == 0):
-                sendError(tag + " DOES NOT EXIST IN SERIES " + str(seriesNum))
-                goToSeries(seriesNum, True)
-                return False
-
+            sendError(tag + " DOES NOT EXIST IN SERIES " + str(seriesNum))
+            goToSeries(seriesNum, True)
+            return False
+                
         seriesNum += 1
     return True
 
@@ -168,7 +257,10 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
         "<Sigma-w>": 0,\
         "<sw-Mass>": 0,\
         "<sw-Density>": 0,\
-        "<sw-CCE>": 0}
+        "<sw-CCE>": 0,\
+        "<Gravity-Local>": 0,\
+        "<Gravity-Grad>": 0,\
+        "<Height-Ref>": 0}
 
     for seriesText in seriesTexts:
         seriesNum += 1

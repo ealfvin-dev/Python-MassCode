@@ -12,10 +12,6 @@ def parse(fileName):
 
     lines = 0
     seriesNumber = -1
-    designRow = 0
-    positionRow = 0
-
-    nominalsInPounds = 1
 
     #Determine number of positions and observations in each series
     posObs = []
@@ -33,12 +29,15 @@ def parse(fileName):
             if splitLine[0] == "@SERIES":
                 seriesNumber += 1
                 posObs.append([0, 0])
+                continue
 
             if splitLine[0] == "<Position>":
                 posObs[seriesNumber][0] += 1
+                continue
             
             if splitLine[0] == "<Design>":
                 posObs[seriesNumber][1] += 1
+                continue
 
     seriesNumber = -1
     lines = 0
@@ -57,6 +56,7 @@ def parse(fileName):
                 seriesNumber += 1
                 designRow = 0
                 positionRow = 0
+                heightRow = 0
                 nominalsInPounds = 1
 
                 seriesObjects.append(MatrixSolution())
@@ -233,8 +233,21 @@ def parse(fileName):
                 seriesObjects[seriesNumber].gravityGradient = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "<COM-Diff>":
-                seriesObjects[seriesNumber].heightDifferences.append(float(splitLine[1]))
+            if splitLine[0] == "<Gravity-Local>":
+                seriesObjects[seriesNumber].localGravity = float(splitLine[1])
+                continue
+
+            if splitLine[0] == "<Height-Ref>":
+                seriesObjects[seriesNumber].referenceHeight = float(splitLine[1]) / 100
+                continue
+
+            if splitLine[0] == "<Height>":
+                if(seriesObjects[seriesNumber].weightHeights.size == 0):
+                    #Initialize np matrix
+                    seriesObjects[seriesNumber].weightHeights = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
+
+                seriesObjects[seriesNumber].weightHeights[0, heightRow] = float(splitLine[1]) / 100
+                heightRow += 1
                 continue
 
             raise MARSException("UNKNOWN TAG AT LINE " + str(lines) + " IN CONFIGURATION FILE: " + str(splitLine[0]))

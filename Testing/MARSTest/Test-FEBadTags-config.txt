@@ -1,0 +1,272 @@
+# Test if bad tags, repeats, missing tags can be recognized
+# MARS input
+# Notes
+
+    <Report-Number>  Test-FEBadTags
+
+     <Restraint-ID>  055
+    <Unc-Restraint>  0.034
+     <Random-Error>  0
+
+@SERIES
+
+             <Date>  07 27 2020
+    <Technician-ID>  019
+<Check-Standard-ID>  54
+
+       <Balance-ID>  003
+  <Direct-Readings>  1
+<Direct-Reading-SF>  1.01
+
+        <Design-ID>  112
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+
+           <Pounds>  0
+
+         <Position>  A1kg           1000 7.9436 0.000045
+         <Position>  B1kg           1000 7.9926 0.000045 3.961
+         <Position>  X500+300+200g  1000 7.9435 0.000045
+         <Position>  D1kg           1000 7.9926 0.000045 6.353
+
+        <Restraint>  0 1 0 1
+   <Check-Standard>  0 -1 0 1
+     <Linear-Combo>  0 0 0 0
+        <Pass-Down>  0 0 1 0
+
+          <Sigma-t>  0.003
+          <Sigma-w>  0.0013
+
+  <Balance-Reading>  -6.7570
+  <Balance-Reading>  0.0018
+  <Balance-Reading>  -9.1448
+  <Balance-Reading>  6.7572
+  <Balance-Reading>  -2.3888
+  <Balance-Reading>  -9.1465
+  <Balance-Reading>  -6.7574
+  <Balance-Reading>  0.0010
+  <Balance-Reading>  -9.1446
+  <Balance-Reading>  6.7592
+  <Balance-Reading>  -2.3887
+  <Balance-Reading>  -9.1477
+
+   <Environmentals>  19.80 737.86 46.96
+   <Environmentals>  19.70 737.56 45.96
+   <Environmentals>  19.80 737.86 46.96
+   <Environmentals>  19.70 737.56 45.96
+   <Environmentals>  19.80 737.86 46.96
+   <Environmentals>  19.70 737.56 45.96
+   <Environmentals>  19.80 737.86 46.96
+   <Environmentals>  19.70 737.56 45.96
+   <Environmentals>  19.80 737.86 46.96
+   <Environmentals>  19.70 737.56 45.96
+   <Environmentals>  19.80 737.86 46.96
+   <Environmentals>  19.70 737.56 45.96
+
+  <Env-Corrections>  -0.3 0.9 0.0
+@SERIES
+
+             <Date>  07 30 2020
+    <Technician-ID>  019
+<Check-Standard-ID>  22
+
+       <Balance-ID>  99
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+
+        <Design-ID>  032
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1 -1  0  1
+           <Design>  1 -1 -1  0  0  0
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1 -1
+           <Design>  0  1 -1 -1  1 -1
+           <Design>  0  1 -1 -1 -1  1
+           <Design>  0  0  1 -1 -1  0
+           <Design>  0  0  1 -1  0 -1
+           <Design>  0  0  1  0 -1 -1
+
+           <Pounds>  0
+
+         <Position>  W500g          500 7.9500  0.000045
+         <Position>  W300g          300 7.9500  0.000045
+         <Position>  W200g          200 7.9500  0.000045
+         <Position>  W100g          100 7.9500  0.000045
+         <Position>  P100g          100 7.9918  0.000045 0.6877
+         <Position>  Wsum           100 7.9500  0.000045
+
+        <Restrant>  1 1 1 0 0 0
+   <Check-Standard>  0 0 0 0 1 0
+     <Linear-Combo>  0 0 0 0 0 0
+        <Pass-Down>  0 0 0 0 0 1
+
+          <Sigma-t>  0.035
+          <Sigma-w>  0.0255
+
+          <sw-Mass>  99.98989
+       <sw-Density>  7.95
+           <sw-CCE>  0.000045
+
+  <Balance-Reading>  0     0.96 100.97 99.97
+  <Balance-Reading>  0.66  0.21 100.23 100.64
+  <Balance-Reading>  -0.06 0.30 100.32 99.94
+  <Balance-Reading>  0     0.32 100.33 99.99
+  <Balance-Reading>  0.04  0.78 100.79 99.99
+  <Balance-Reading>  0     0.56 100.57 100.00
+  <Balance-Reading>  0.71 -0.08  99.93 100.69
+  <Balance-Reading>  0.02  0.64 100.67 100.04
+  <Balance-Reading>  0     0.59 100.61 100.01
+  <Balance-Reading>  0.05 -0.11  99.90 100.03
+  <Balance-Reading>  0.06  0.61 100.64 100.07
+
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+   <Environmentals>  19.604 740.4 47.7
+
+  <Env-Corrections>  0 0.29 0
+
+
+@SERIES
+
+             <Date>  07 30 2020
+    <Technician-ID>  019
+<Check-Standard-ID>  23
+
+       <Balance-ID>  099
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+
+        <Design-ID>  310
+           <Design>  1 -1 -1 -1 -1  1
+           <Design>  1 -1 -1 -1  1 -1
+           <Design>  1 -1 -1  1 -1 -1
+           <Design>  1 -1  0 -1 -1 -1
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1  0
+           <Design>  0  1 -1 -1  0  1
+           <Design>  0  1 -1  0  1 -1
+
+           <Pounds>  0
+
+         <Position>  W50g           50 7.9500  0.000045
+         <Position>  W20g           20 7.9500  0.000045
+         <Position>  W20.g          20 7.9500  0.000045
+         <Position>  W10g           10 7.9500  0.000045
+         <Position>  P10g           10 8.0175  0.000045 0.0255
+         <Position>  Wsum           10 7.9500  0.000045
+
+        <Restraint>  1 1 1 1 0 0
+   <Check-Standard>  0 0 0 0 1 0
+     <Linear-Combo>  0 0 0 0 0 0
+        <Pass-Down>  0 0 0 0 0 1
+
+          <Sigma-t>  0.0035
+          <Sigma-w>  0.0025
+
+          <sw-Mass>  19.99885
+       <sw-Density>  7.95
+           <sw-CCE>  0.000045
+
+  <Balance-Reading>  0       0.058 20.059 20.000
+  <Balance-Reading>  0.052   0.011 20.015 20.060
+  <Balance-Reading>  0.031   0.040 20.044 20.027
+  <Balance-Reading>  0       0.017 20.019 19.995
+  <Balance-Reading>  -0.001  0.010 20.015 20.006
+  <Balance-Reading>  0       0.021 20.021 20.001
+  <Balance-Reading>  -0.013  0.001 20.006 19.989
+  <Balance-Reading>  0.044  -0.010 19.991 20.051
+
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+
+  <Env-Corrections>  0 0.29 0
+
+<Date>  07 30 2020
+
+
+@SERIES
+
+             <Date>  07 30 2020
+    <Technician-ID>  019
+<Check-Standard-ID>  24
+
+       <Balance-ID>  99
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+
+        <Design-ID>  310
+           <Design>  1 -1 -1 -1 -1  1
+           <Design>  1 -1 -1 -1  1 -1
+           <Design>  1 -1 -1  1 -1 -1
+           <Design>  1 -1  0 -1 -1 -1
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1  0
+           <Design>  0  1 -1 -1  0  1
+           <Design>  0  1 -1  0  1 -1
+
+           <Pounds>  0
+
+         <Position>  W5g            5 7.9500  0.000045
+         <Position>  W2g            2 7.9500  0.000045
+         <Position>  W2.g           2 7.9500  0.000045
+         <Position>  W1g            1 7.9500  0.000045
+         <Position>  P1g            1 8.0455  0.000045 0.04452
+         <Position>  Wsum           1 7.9500  0.000045
+
+        <Restraint>  1 1 1 1 0 0
+   <Check-Standard>  0 0 0 0 1 0
+     <Linear-Combo>  0 0 0 0 0 0
+        <Pass-Down>  0 0 0 0 0 0
+
+          <Sigma-t>  0.0009
+          <Sigma-w>  0.00072
+
+          <sw-Mass>  10.08039
+           <sw-CCE>  0.000045
+
+  <Balance-Reading>  0        0.0204 10.0997 10.0790
+  <Balance-Reading>  0.0432  -0.0267 10.0547 10.1244
+  <Balance-Reading>  -0.0064  0.0233 10.1047 10.0756
+  <Balance-Reading>  0        0.0260 10.1070 10.0810
+  <Balance-Reading>  0.0002   0.0347 10.1148 10.0805
+  <Balance-Reading>  0        0.0576 10.1385 10.0810
+  <Balance-Reading>  0.0062   0.0087 10.0891 10.0864
+  <Balance-Reading>  0.0519   0.0140 10.0943 10.1321
+
+   <Environmentals>  19.604 740.5 47.1
+   <Environmentals>  19.604 740.5 47.1
+   <Environmentals>  19.604 740.5 47.1
+   <Environmentals>  19.604 740.5 47.1
+   <Environmentals>  19.604 740.5 47.1
+   <Environmentals>  19.604 740.5 47.1
+   <Environmentals>  19.604 740.5 47.1
+   <Environmentals>  19.604 740.5 47.1
+
+  <Env-Corrections>  0 0 0
+
+
