@@ -1051,25 +1051,24 @@ class MeasurementsPopup(Popup):
         self.dismiss()
 
 class GravityPopup(PopupBase):
-    def _update_rect(self, instance, value):
-        self.backgroundRect.pos = instance.pos
-        self.backgroundRect.size = instance.size
-
     def submit(self):
         gradientText = self.ids.gradientText.text
+        localGravText = self.ids.localGravityText.text
         heightText = self.ids.heightText.text
 
         gradientOrder = self.ids.gradientText.orderNum
+        localGravOrder = self.ids.localGravityText.orderNum
         heightOrder = self.ids.heightText.orderNum
 
-        if(gradientText == "" or heightText == ""):
+        if(gradientText == "" or heightText == "" or localGravText == ""):
             self.ids.gravityPopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(gradientText, gradientOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(heightText, heightOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(localGravText, localGravOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(heightText, heightOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
 
         self.parent.children[1].ids.gravityButton.colorGrey()
 
