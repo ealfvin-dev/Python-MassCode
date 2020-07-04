@@ -57,7 +57,7 @@ class TestSuite(TestBase.TestBase):
     def testRunFile(self):
         #Test if config file can be run
         try:
-            data = RunFile.run("./Testing/MARSTest/Test-Writeout-config.txt", False)
+            data = RunFile.run("./Testing/MARSTest/Test-FEGoodFile-config.txt", False)
             self.passTest("RUN TEST FILE")
         except:
             self.failTest("RUN TEST FILE")
@@ -110,6 +110,18 @@ class TestSuite(TestBase.TestBase):
         except:
             self.failTest("NO RESTRAINT PASSED RAISES MARSEXCEPTION")
             self.logFailure(["No restraint passed down did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+
+    def testZeroHeight(self):
+        #Test if height of 0 raisesMARSException
+        try:
+            data = RunFile.run("./Testing/MARSTest/Test-ZeroHeight-config.txt", False)
+            self.failTest("HEIGHT OF 0 RAISES MARSEXCEPTION")
+            self.logFailure(["Weight height of 0 did not raise MARSException"], "NO RESTRAINT PASSED RAISES MARSEXCEPTION")
+        except MARSException:
+            self.passTest("HEIGHT OF 0 RAISES MARSEXCEPTION")
+        except:
+            self.failTest("HEIGHT OF 0 RAISES MARSEXCEPTION")
+            self.logFailure(["Weight height of 0 did not raise MARSException"], "HEIGHT OF 0 RAISES MARSEXCEPTION")
 
     def testFEGoodFile(self):
         #Test if a correctly-made input file passes front end input checks
@@ -340,6 +352,7 @@ class TestSuite(TestBase.TestBase):
         self.testUnequalBalanceObs()
         self.testUnequalEnvObs()
         self.testNoRestraintPassed()
+        self.testZeroHeight()
         self.testFEGoodFile()
         self.testFEBadReportNum()
         self.testFEBadStructure()
@@ -359,6 +372,7 @@ class TestSuite(TestBase.TestBase):
         self.testUnequalBalanceObs()
         self.testUnequalEnvObs()
         self.testNoRestraintPassed()
+        self.testZeroHeight()
         self.testFEGoodFile()
         self.testFEBadReportNum()
         self.testFEBadStructure()

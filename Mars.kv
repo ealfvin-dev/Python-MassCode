@@ -1,7 +1,7 @@
 #:import Factory kivy.factory.Factory
 
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
-#:set popLabelColor (0.95, 0.95, 0.96, 1)
+#:set popLabelColor (0.095, 0.095, 0.096, 0.9)
 #:set buttonBlue (0.13, 0.5, 0.95, 0.94)
 
 #:set buttonSizer 10
@@ -1522,82 +1522,94 @@
 <GravityPopup>:
     id: gravityPop
     auto_dismiss: False
-    title: "Local Gravity"
+    title: "Local Gravity Corrections"
     title_size: dp(18)
-    size_hint: (0.42, 0.56)
+    size_hint: (None, None)
+    size: (dp(500), dp(550))
 
     BoxLayout:
         id: gravityPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20        
+        spacing: 15
+        padding: 20, 20, 20, 20
 
-        Label:
-            text: "Weight Heights (cm):"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: heightText
-            size_hint: (1, 2.2)
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "3.3\n3.5\n4.0\n3.7\n3.5\n3.5"
-            font_size: popUpFontSize
-            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
-            background_normal: ''
-            orderNum: 30
-
-        Label:
-            text: "Gravity Gradient (1/s" + chr(178) + "):"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-
-        OrderedText:
-            id: gradientText
-            size_hint: (1, 0.5)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "0.0000031"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 28
-
-        Label:
-            id: gravityPopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+        PopupLabel:
+            text: "Weight Heights (cm)"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 17.5)
-            size_hint: (1, 0.74)
+            size_hint: (1, 3)
+        
+            OrderedText:
+                id: heightText
+                size_hint: (0.7, 1)
+                hint_text: "3.3\n3.5\n4.0\n3.7\n3.5\n3.5"
+                padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
+                orderNum: 30
+
+            Label:
+                id: gravityPositionsText
+                size_hint: (0.3, None)
+                height: heightText.height
+                text_size: (self.width, self.height)
+                text: "P1\nP1\nP3\nP1\nP1\nP6"
+                color: popLabelColor
+                font_size: sp(13)
+                padding: (10, 10 + 0.5 * (heightText.height - (10 + 10)) % heightText.line_height)
+                halign: "left"
+                valign: "top"
+
+        PopupLabel:
+            text: "Gravity Gradient (1/s" + chr(178) + "):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: gradientText
+            size_hint: (0.5, None)
+            height: 3 * popUpFontSize
+            multiline: False
+            padding: [10, 10, 10, 10]
+            hint_text: "0.0000031"
+            orderNum: 28
+
+        PopupLabel:
+            text: "Local Acceleration of\nGravity (m/s" + chr(178) + "):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: localGravityText
+            size_hint: (0.5, None)
+            height: 3 * popUpFontSize
+            multiline: False
+            padding: [10, 10, 10, 10]
+            hint_text: "9.8"
+            orderNum: 29
+
+        PopupLabel:
+            id: gravityPopError
+            text: ""
+            color: (0.95, 0.05, 0.09, 1)
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(160)
 
             WriteButton:
-                font_size: self.width / buttonSizer
+                font_size: popUpLabelSize * 1.2
                 on_release: root.submit()
 
             CancelButton:
-                font_size: self.width / buttonSizer
+                font_size: popUpLabelSize * 1.2
                 on_release: root.dismiss()
 
 <OpenFilePopup>:

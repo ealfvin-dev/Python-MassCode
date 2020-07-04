@@ -60,7 +60,7 @@
     <Gravity-Local>  9.8
            <Height>  1
            <Height>  1
-           <Height>  1
+           <Height>  0
            <Height>  2
 	   <Height-Ref>  1
 
