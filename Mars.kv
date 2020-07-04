@@ -1419,7 +1419,7 @@
     id: measurementsPop
     auto_dismiss: False
     title: "Measurements"
-    size: (dp(800), dp(560))
+    size: (dp(800), dp(540))
 
     BoxLayout:
         id: measurementsPLayout
@@ -1473,10 +1473,12 @@
             orientation: "horizontal"
             size_hint: (1, None)
             spacing: dp(12)
+            height: dp(40)
 
             Label:
-                size_hint: (0.65, 1)
+                size_hint: (0.65, None)
                 text: ""
+                height: self.texture_size[1]
 
             PopupLabel:
                 text: "Environmental Corrections\n(" + chr(730) + "C, mmHg, %):"
@@ -1488,10 +1490,12 @@
             orientation: "horizontal"
             size_hint: (1, None)
             spacing: dp(12)
+            height: dp(42)
 
             Label:
-                size_hint: (0.65, 1)
+                size_hint: (0.65, None)
                 text: ""
+                height: self.texture_size[1]
 
             OrderedText:
                 id: envCorrectionsText
@@ -1505,12 +1509,14 @@
             size_hint: (1, None)
             text: ""
             color: (0.95, 0.05, 0.09, 1)
-            height: self.texture_size[1]
+            height: dp(20)
             text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
             spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
                 on_release: root.submit()
@@ -1592,12 +1598,14 @@
             text: ""
             color: (0.95, 0.05, 0.09, 1)
             size_hint: (1, None)
-            height: self.texture_size[1]
+            height: dp(20)
             text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
             spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
                 on_release: root.submit()
