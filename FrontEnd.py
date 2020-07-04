@@ -656,6 +656,7 @@ class OrderedText(TextInput):
         self.background_normal = ''
         self.font_size = sp(13)
         self.write_tab = False
+        self.padding = [dp(5), dp(5), dp(5), dp(5)]
 
     def _update_rect(self, instance, value):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
@@ -702,7 +703,7 @@ class CancelButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint = (None, None)
-        self.size = (dp(160), dp(50))
+        self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
         self.text = "Cancel"
@@ -712,7 +713,7 @@ class WriteButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint = (None, None)
-        self.size = (dp(160), dp(50))
+        self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_color = (0.13, 0.5, 0.95, 0.94)
         self.text = "Write"
@@ -724,6 +725,8 @@ class PopupBase(Popup):
         super().__init__()
         self.background = './Popup_Background.png'
         self.title_color = (0, 0, 0, 1)
+        self.title_size = dp(18)
+        self.size_hint = (None, None)
 
     #     with self.canvas.before:
     #         Color(0.906, 0.918, 0.926, 1)
@@ -788,7 +791,6 @@ class RestraintPopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.restraintButton.colorGrey()
 
         self.dismiss()
@@ -812,7 +814,6 @@ class DatePopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.dateButton.colorGrey()
 
         self.dismiss()
@@ -836,8 +837,8 @@ class BalancePopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(directReadingsSFText, directReadingsSFOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.balanceButton.colorGrey()
+
         if(directReadingsText.strip() == "1"):
             self.parent.children[1].ids.swButton.colorGrey()
 
@@ -904,7 +905,6 @@ class DesignPopup(Popup):
         cursorStart2, textLength2 = self.parent.children[1].writeText(designText, designOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
         self.parent.children[1].ids.designButton.colorGrey()
 
         self.dismiss()
@@ -925,7 +925,6 @@ class WeightsPopup(Popup):
         cursorStart2, textLength2 = self.parent.children[1].writeText(weightsText, weightsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
         self.parent.children[1].ids.weightsButton.colorGrey()
 
         #Render series nominal
@@ -956,7 +955,6 @@ class VectorsPopup(Popup):
         cursorStart4, textLength4 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + 3)
-
         self.parent.children[1].ids.positionVectorsButton.colorGrey()
 
         self.dismiss()
@@ -977,7 +975,6 @@ class StatisticsPopup(Popup):
         cursorStart2, textLength2 = self.parent.children[1].writeText(sigmawText, sigmawOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
         self.parent.children[1].ids.statisticsButton.colorGrey()
 
         self.dismiss()
@@ -1001,7 +998,6 @@ class SwPopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(swCCEText, swCCEOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.swButton.colorGrey()
 
         self.dismiss()
@@ -1045,7 +1041,6 @@ class MeasurementsPopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.measurementsButton.colorGrey()
 
         self.dismiss()
@@ -1069,7 +1064,6 @@ class GravityPopup(PopupBase):
         cursorStart3, textLength3 = self.parent.children[1].writeText(heightText, heightOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.gravityButton.colorGrey()
 
         self.dismiss()

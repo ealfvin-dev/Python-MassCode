@@ -1523,15 +1523,13 @@
     id: gravityPop
     auto_dismiss: False
     title: "Local Gravity Corrections"
-    title_size: dp(18)
-    size_hint: (None, None)
-    size: (dp(500), dp(550))
+    size: (dp(500), dp(560))
 
     BoxLayout:
         id: gravityPLayout
         orientation: "vertical"
-        spacing: 15
-        padding: 20, 20, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
             text: "Weight Heights (cm)"
@@ -1541,13 +1539,14 @@
 
         BoxLayout:
             orientation: "horizontal"
-            size_hint: (1, 3)
+            size_hint: (1, None)
+            height: dp(200)
         
             OrderedText:
                 id: heightText
                 size_hint: (0.7, 1)
-                hint_text: "3.3\n3.5\n4.0\n3.7\n3.5\n3.5"
-                padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
+                hint_text: "10.3\n10.5\n14.0\n9.7"
+                padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 orderNum: 30
 
             Label:
@@ -1558,7 +1557,7 @@
                 text: "P1\nP1\nP3\nP1\nP1\nP6"
                 color: popLabelColor
                 font_size: sp(13)
-                padding: (10, 10 + 0.5 * (heightText.height - (10 + 10)) % heightText.line_height)
+                padding: (dp(5), dp(5) + 0.5 * (heightText.height - 2*dp(5)) % heightText.line_height)
                 halign: "left"
                 valign: "top"
 
@@ -1573,7 +1572,6 @@
             size_hint: (0.5, None)
             height: 3 * popUpFontSize
             multiline: False
-            padding: [10, 10, 10, 10]
             hint_text: "0.0000031"
             orderNum: 28
 
@@ -1588,7 +1586,6 @@
             size_hint: (0.5, None)
             height: 3 * popUpFontSize
             multiline: False
-            padding: [10, 10, 10, 10]
             hint_text: "9.8"
             orderNum: 29
 
@@ -1602,7 +1599,7 @@
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: self.width - 2*dp(160)
+            spacing: self.width - 2*dp(150)
 
             WriteButton:
                 font_size: popUpLabelSize * 1.2
