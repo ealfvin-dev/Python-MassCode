@@ -270,8 +270,6 @@ class MatrixSolution:
             #Gravity corrections
             if(self.weightHeights.size != 0):
                 if(np.count_nonzero(self.weightHeights) == self.positions):
-                    #Calculate reference height (COM of restraint):
-
                     #Calculate COMs of massOne and massTwo
                     mass1Array = np.multiply(positionMassOne, estimateMasses)
                     mass2Array = np.multiply(positionMassTwo, estimateMasses)
@@ -279,9 +277,13 @@ class MatrixSolution:
                     COM1 = np.matmul(mass1Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass1Array)
                     COM2 = np.matmul(mass2Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass2Array)
 
+                    #Calculate reference height (COM of restraint):
+                    massRArray = np.multiply(self.restraintPos, estimateMasses)
+                    COMref = np.matmul(massRArray, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(massRArray)
+
                     #Perform gravitational correction back to reference height
                     deltaLab = deltaLab + (self.gravityGradient / self.localGravity) * \
-                        (estimatedMassTwo * (COM2 - referenceHeight) - estimatedMassOne * (COM1 - referenceHeight))
+                        (estimatedMassTwo * (COM2 - COMref) - estimatedMassOne * (COM1 - COMref))
 
                 else:
                     raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": UNEQUAL NUMBER OF WEIGHT HEIGHTS AND POSITIONS\nHEIGHTS MUST BE > 0")
