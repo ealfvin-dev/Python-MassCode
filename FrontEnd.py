@@ -656,6 +656,7 @@ class OrderedText(TextInput):
         self.background_normal = ''
         self.font_size = sp(13)
         self.write_tab = False
+        self.multiline = False
         self.padding = [dp(5), dp(5), dp(5), dp(5)]
 
     def _update_rect(self, instance, value):
@@ -706,6 +707,7 @@ class CancelButton(Button):
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.font_size = sp(16)
         self.text = "Cancel"
         self.halign = 'center'
 
@@ -716,6 +718,7 @@ class WriteButton(Button):
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.font_size = sp(16)
         self.text = "Write"
         self.halign = 'center'
         #self.bind(on_release=root.submit)
@@ -1002,7 +1005,7 @@ class SwPopup(Popup):
 
         self.dismiss()
 
-class MeasurementsPopup(Popup):
+class MeasurementsPopup(PopupBase):
     def submit(self):
         balanceReadingsText = self.ids.balanceReadingsText.text
         envText = self.ids.envText.text

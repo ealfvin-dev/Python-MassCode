@@ -1419,104 +1419,103 @@
     id: measurementsPop
     auto_dismiss: False
     title: "Measurements"
-    title_size: dp(18)
-    size_hint: (0.42, 0.8)
+    size: (dp(800), dp(560))
 
     BoxLayout:
         id: measurementsPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20        
-
-        Label:
-            text: "Balance Readings:"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: balanceReadingsText
-            size_hint: (1, 2.2)
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "0     -0.61 19.42 20.02\n0.00  -0.59 19.42 20.03\n0.01  -0.51 19.51 20.02\n-0.60 -0.61 19.42 19.42"
-            font_size: popUpFontSize
-            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
-            background_normal: ''
-            orderNum: 25
-            write_tab: True
-
-        Label:
-            text: "Environmentals (" + chr(730) + "C, mmHg, %):"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: envText
-            size_hint: (1, 2.2)
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "20.9 749.24 46.74\n20.8 749.26 46.81\n20.8 749.29 46.99\n20.9 749.31 47.11"
-            font_size: popUpFontSize
-            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
-            background_normal: ''
-            orderNum: 26
-            write_tab: True
-
-        Label:
-            text: "Environmental Corrections (" + chr(730) + "C, mmHg, %):"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-
-        OrderedText:
-            id: envCorrectionsText
-            size_hint: (1, 0.5)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "0.05 0.105 -0.07"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 27
-
-        Label:
-            id: measurementsPopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 17.5)
-            size_hint: (1, 0.74)
+            size_hint: (1, None)
+            spacing: dp(12)
+            height: dp(20)
+
+            PopupLabel:
+                text: "Balance Readings:"
+                size_hint: (0.65, None)
+                height: self.texture_size[1]
+                text_size: (self.width, None)
+
+            PopupLabel:
+                text: "Environmentals (" + chr(730) + "C, mmHg, %):"
+                size_hint: (0.35, None)
+                height: self.texture_size[1]
+                text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, None)
+            spacing: dp(12)
+            height: dp(240)
+            
+            OrderedText:
+                id: balanceReadingsText
+                size_hint: (0.65, 1)
+                hint_text: "0     -0.61 19.42 20.02\n0.00  -0.59 19.42 20.03\n0.01  -0.51 19.51 20.02\n-0.60 -0.61 19.42 19.42"
+                padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
+                write_tab: True
+                multiline: True
+                orderNum: 25
+            
+            OrderedText:
+                id: envText
+                size_hint: (0.35, 1)
+                hint_text: "20.9 749.24 46.74\n20.8 749.26 46.81\n20.8 749.29 46.99\n20.9 749.31 47.11"
+                padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
+                write_tab: True
+                multiline: True
+                orderNum: 26
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, None)
+            spacing: dp(12)
+
+            Label:
+                size_hint: (0.65, 1)
+                text: ""
+
+            PopupLabel:
+                text: "Environmental Corrections\n(" + chr(730) + "C, mmHg, %):"
+                size_hint: (0.35, None)
+                height: self.texture_size[1]
+                text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, None)
+            spacing: dp(12)
+
+            Label:
+                size_hint: (0.65, 1)
+                text: ""
+
+            OrderedText:
+                id: envCorrectionsText
+                size_hint: (0.35, None)
+                height: 3 * popUpFontSize
+                hint_text: "0.05 0.105 -0.07"
+                orderNum: 27
+
+        PopupLabel:
+            id: measurementsPopError
+            size_hint: (1, None)
+            text: ""
+            color: (0.95, 0.05, 0.09, 1)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
 
             WriteButton:
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <GravityPopup>:
@@ -1546,6 +1545,7 @@
                 id: heightText
                 size_hint: (0.7, 1)
                 hint_text: "10.3\n10.5\n14.0\n9.7"
+                multiline: True
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 orderNum: 30
 
@@ -1571,7 +1571,6 @@
             id: gradientText
             size_hint: (0.5, None)
             height: 3 * popUpFontSize
-            multiline: False
             hint_text: "0.0000031"
             orderNum: 28
 
@@ -1585,7 +1584,6 @@
             id: localGravityText
             size_hint: (0.5, None)
             height: 3 * popUpFontSize
-            multiline: False
             hint_text: "9.8"
             orderNum: 29
 
@@ -1602,11 +1600,9 @@
             spacing: self.width - 2*dp(150)
 
             WriteButton:
-                font_size: popUpLabelSize * 1.2
                 on_release: root.submit()
 
             CancelButton:
-                font_size: popUpLabelSize * 1.2
                 on_release: root.dismiss()
 
 <OpenFilePopup>:
