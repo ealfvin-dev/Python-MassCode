@@ -8,7 +8,7 @@
 #:set menuButtonSizer 11
 #:set labelSizer 1.23
 #:set popUpFontSize sp(13)
-#:set popUpLabelSize sp(15)
+#:set popUpLabelSize dp(15)
 
 <MainLayout>:
     id: mainBox
@@ -433,10 +433,10 @@
                     halign: 'left'
                     size_hint: (1, 0.01)
 
-                TextInput:
+                UserInput:
                     id: userText
                     font_size: '12sp'
-                    padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
+                    padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
                     font_name: "./Menlo.ttc"
                     text: "@SERIES\n\n"
@@ -448,8 +448,9 @@
                 TextInput:
                     id: errors
                     font_size: '12sp'
-                    padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
+                    padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
+                    background_active: ''
                     font_name: "./Menlo.ttc"
                     text: ""
                     foreground_color: (0.9, 0.05, 0.05, 0.85)
@@ -1562,7 +1563,7 @@
                 text_size: (self.width, self.height)
                 text: "P1\nP1\nP3\nP1\nP1\nP6"
                 color: popLabelColor
-                font_size: sp(13)
+                font_size: dp(13)
                 padding: (dp(5), dp(5) + 0.5 * (heightText.height - 2*dp(5)) % heightText.line_height)
                 halign: "left"
                 valign: "top"

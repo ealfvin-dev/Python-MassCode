@@ -646,7 +646,7 @@ class OrderedText(TextInput):
         super().__init__()
 
         with self.canvas.before:
-            Color(0, 0, 0, 1)
+            Color(0.155, 0.217, 0.292, 0.65)
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
             self.bind(size=self._update_rect, pos=self._update_rect)
 
@@ -659,6 +659,19 @@ class OrderedText(TextInput):
         self.multiline = False
         self.padding = [dp(5), dp(5), dp(5), dp(5)]
 
+    def _update_rect(self, instance, value):
+        self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
+        self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
+
+class UserInput(TextInput):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        with self.canvas.before:
+            Color(0.155, 0.217, 0.292, 0.65)
+            self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
+            self.bind(size=self._update_rect, pos=self._update_rect)
+    
     def _update_rect(self, instance, value):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
         self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
@@ -707,7 +720,7 @@ class CancelButton(Button):
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
-        self.font_size = sp(16)
+        self.font_size = dp(16)
         self.text = "Cancel"
         self.halign = 'center'
 
@@ -718,7 +731,7 @@ class WriteButton(Button):
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_color = (0.13, 0.5, 0.95, 0.94)
-        self.font_size = sp(16)
+        self.font_size = dp(16)
         self.text = "Write"
         self.halign = 'center'
         #self.bind(on_release=root.submit)
