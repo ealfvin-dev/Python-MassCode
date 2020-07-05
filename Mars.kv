@@ -199,7 +199,7 @@
                 BoxLayout:
                     id: menuRow1
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
                     padding: (0, 0, 0, 20)
 
                     InputButton:
@@ -222,6 +222,17 @@
                         halign: 'left'
 
                 BoxLayout:
+                    id: headerSeparater-blank
+                    orientation: 'horizontal'
+                    size_hint: (1, 0.4)
+
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        halign: 'left'
+
+                BoxLayout:
                     id: menuLabel2
                     orientation: 'horizontal'
                     size_hint: (1.0, 0.25)
@@ -237,20 +248,20 @@
                 BoxLayout:
                     id: menuRow2
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
                     padding: (0, 0, 0, 20)
 
                     InputButton:
                         id: dateButton
-                        text: "Date\nTechnicion"
+                        text: "Balance &\nDate"
                         font_size: self.width / buttonSizer
                         on_release: app.openDatePop()
 
                     InputButton:
-                        id: balanceButton
-                        text: "Balance"
+                        id: weightsButton
+                        text: "Weights"
                         font_size: self.width / buttonSizer
-                        on_release: app.openBalancePop()
+                        on_release: app.openWeightsPop()
 
                     InputButton:
                         id: gravityButton
@@ -266,7 +277,7 @@
                     size_hint: (1.0, 0.25)
 
                     Label:
-                        text: "[b]\nStatistics[/b]"
+                        text: "[b]\nDesign[/b]"
                         markup: True
                         color: labelColor
                         font_size: self.height / labelSizer
@@ -276,7 +287,82 @@
                 BoxLayout:
                     id: menuRow3
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
+                    padding: (0, 0, 0, 20)
+
+                    InputButton:
+                        id: designButton
+                        text: "Design"
+                        font_size: self.width / buttonSizer
+                        on_release: app.openDesignPop()
+
+                    InputButton:
+                        id: positionVectorsButton
+                        text: "Position\nVectors"
+                        font_size: self.width / buttonSizer
+                        on_release: app.openVectorsPop()
+
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel4
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
+
+                    Label:
+                        text: "[b]\nMeasurement Data[/b]"
+                        markup: True
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow4
+                    orientation: 'horizontal'
+                    spacing: self.width / 10
+                    padding: (0, 0, 0, 20)
+
+                    InputButton:
+                        id: swButton
+                        text: "Sensitivity\nWeight"
+                        font_size: self.width / buttonSizer
+                        on_release: app.openSwPop()
+
+                    InputButton:
+                        id: measurementsButton
+                        text: "Measurements"
+                        font_size: self.width / buttonSizer
+                        on_release: app.openMeasurementsPop()
+
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel5
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
+
+                    Label:
+                        text: "[b]\nStatistics[/b]"
+                        markup: True
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow5
+                    orientation: 'horizontal'
+                    spacing: self.width / 10
                     padding: (0, 0, 0, 20)
 
                     InputButton:
@@ -300,80 +386,6 @@
                         halign: 'left'
 
                 BoxLayout:
-                    id: menuLabel4
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
-
-                    Label:
-                        text: "[b]\nDesign[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
-
-                BoxLayout:
-                    id: menuRow4
-                    orientation: 'horizontal'
-                    spacing: self.width / 12
-                    padding: (0, 0, 0, 20)
-
-                    InputButton:
-                        id: designButton
-                        text: "Design"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openDesignPop()
-
-                    InputButton:
-                        id: weightsButton
-                        text: "Weights"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openWeightsPop()
-
-                    InputButton:
-                        id: positionVectorsButton
-                        text: "Position\nVectors"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openVectorsPop()
-
-                BoxLayout:
-                    id: menuLabel5
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
-
-                    Label:
-                        text: "[b]\nMeasurement Data[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
-
-                BoxLayout:
-                    id: menuRow5
-                    orientation: 'horizontal'
-                    spacing: self.width / 12
-                    padding: (0, 0, 0, 20)
-
-                    InputButton:
-                        id: swButton
-                        text: "Sensitivity\nWeight"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openSwPop()
-
-                    InputButton:
-                        id: measurementsButton
-                        text: "Measurements"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openMeasurementsPop()
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        halign: 'left'
-
-                BoxLayout:
                     id: menuRow6-blank
                     orientation: 'horizontal'
                     size_hint: (1, 0.75)
@@ -387,7 +399,7 @@
                 BoxLayout:
                     id: menuCol7
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
                     padding: (0, 20, 0, 0)
 
                     Button: 
@@ -656,207 +668,131 @@
 <DatePopup>:
     id: datePop
     auto_dismiss: False
-    title: "Date, IDs"
-    title_size: dp(18)
-    size_hint: (0.42, 0.54)
+    title: "Date, Balance"
+    size: (dp(570), dp(410))
 
     BoxLayout:
         id: datePLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Date:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: dateText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "MM DD YYYY"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 6
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, None)
+            spacing: dp(20)
+            height: dp(230)
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Technicion ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: techIDText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "019"
-            font_size: popUpFontSize
-            background_normal: ''            
-            orderNum: 7
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: (0.5, None)
+                spacing: dp(8)
+                padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Check ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: checkIDText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "62"
-            font_size: popUpFontSize
-            background_normal: ''            
-            orderNum: 8
+                PopupLabel:
+                    text: "Date:"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
 
-        Label:
+                OrderedText:
+                    id: dateText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    hint_text: "MM DD YYYY"
+                    orderNum: 6
+
+                PopupLabel:
+                    text: "Technician ID:"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                OrderedText:
+                    id: techIDText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    hint_text: "019"
+                    orderNum: 7
+
+                PopupLabel:
+                    text: ""
+                    size_hint: (1, None)
+                    height: SFLabel.height
+                    text_size: (self.width, None)
+
+                PopupLabel:
+                    text: ""
+                    size_hint: (1, None)
+                    height: techIDText.height
+                    text_size: (self.width, None)
+
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: (0.5, None)
+                spacing: dp(8)
+                padding: dp(10), dp(10), dp(10), dp(10)
+
+                PopupLabel:
+                    text: "Balance ID:"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                OrderedText:
+                    id: balanceIDText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    hint_text: "14"
+                    orderNum: 8
+
+                PopupLabel:
+                    text: "Direct Readings (1 = Yes, 0 = No):"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                OrderedText:
+                    id: directReadingsText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    text: "0"
+                    hint_text: "0"
+                    orderNum: 9
+
+                PopupLabel:
+                    id: SFLabel
+                    text: "Direct Reading Sensitivity Factor\n(mg/div):"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                OrderedText:
+                    id: directReadingsSFText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    text: "1.0"
+                    hint_text: "1.0"
+                    orderNum: 10
+
+        PopupLabel:
             id: datePopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: self.width / buttonSizer
-                on_release: root.dismiss()
-
-<BalancePopup>:
-    id: balancePop
-    auto_dismiss: False
-    title: "Balance Data"
-    title_size: dp(18)
-    size_hint: (0.42, 0.54)
-
-    BoxLayout:
-        id: balancePLayout
-        orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Balance ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: balanceIDText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "049"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 9
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Direct Readings (1 = Yes, 0 = No):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: directReadingsText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: "0"
-            font_size: popUpFontSize
-            background_normal: ''            
-            orderNum: 10
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Direct Reading Sensitivity Factor (mg/div):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: directReadingsSFText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: "1.0"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 11
-
-        Label:
-            id: balancePopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
-
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
-
-            WriteButton:
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
-
-            CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <DesignPopup>:

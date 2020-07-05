@@ -317,10 +317,10 @@ class MainLayout(BoxLayout):
             self.ids.dateButton.colorBlue()
 
         #Balance Button
-        if(tags["<Balance-ID>"] and tags["<Direct-Readings>"] and tags["<Direct-Reading-SF>"]):
-            self.ids.balanceButton.colorGrey()
-        else:
-            self.ids.balanceButton.colorBlue()
+        # if(tags["<Balance-ID>"] and tags["<Direct-Readings>"] and tags["<Direct-Reading-SF>"]):
+        #     self.ids.balanceButton.colorGrey()
+        # else:
+        #     self.ids.balanceButton.colorBlue()
 
         #Gravity Button
         if(tags["<Height>"] and tags["<Gravity-Grad>"] and tags["<Gravity-Local>"]):
@@ -368,7 +368,6 @@ class MainLayout(BoxLayout):
         self.ids.labInfoButton.colorGrey()
         self.ids.restraintButton.colorGrey()
         self.ids.dateButton.colorGrey()
-        self.ids.balanceButton.colorGrey()
         self.ids.gravityButton.colorGrey()
         self.ids.statisticsButton.colorGrey()
         self.ids.designButton.colorGrey()
@@ -804,25 +803,22 @@ class RestraintPopup(Popup):
 
         self.dismiss()
 
-class DatePopup(Popup):
+class DatePopup(PopupBase):
     def submit(self):
         dateText = self.ids.dateText.text
         techIDText = self.ids.techIDText.text
-        checkIDText = self.ids.checkIDText.text
 
         dateOrder = self.ids.dateText.orderNum
         techIDOrder = self.ids.techIDText.orderNum
-        checkIDOrder = self.ids.checkIDText.orderNum
 
-        if(dateText == "" or techIDText == "" or checkIDText == ""):
+        if(dateText == "" or techIDText == ""):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(dateText, dateOrder)
         cursorStart2, textLength2 = self.parent.children[1].writeText(techIDText, techIDOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
         self.parent.children[1].ids.dateButton.colorGrey()
 
         self.dismiss()
@@ -1244,17 +1240,6 @@ class Mars(App):
             if(checkOK):
                 self.root.clearErrors()
                 pop = DatePopup()
-                pop.open()
-
-    def openBalancePop(self):
-        if(self.root.currentSeries != None):
-            seriesText = self.root.ids.userText.text
-
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
-            
-            if(checkOK):
-                self.root.clearErrors()
-                pop = BalancePopup()
                 pop.open()
 
     def openDesignPop(self):
