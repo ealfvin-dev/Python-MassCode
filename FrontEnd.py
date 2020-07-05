@@ -435,13 +435,13 @@ class MainLayout(BoxLayout):
         if(self.numberOfSeries == 1):
             return
 
-        lastSeriesText = self.seriesTexts[len(self.seriesTexts) - 1].strip().splitlines()
+        lastSeriesText = self.seriesTexts[len(self.seriesTexts) - 1].strip()
 
         #If user is currently working in the last series
         if(self.currentSeries == self.numberOfSeries):
-            lastSeriesText = self.ids.userText.text.strip().splitlines()
+            lastSeriesText = self.ids.userText.text.strip()
 
-        if(lastSeriesText == []):
+        if(lastSeriesText == "" or lastSeriesText == "@SERIES"):
             self.clearErrors()
 
             if(self.currentSeries == self.numberOfSeries):

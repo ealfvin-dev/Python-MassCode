@@ -21,9 +21,9 @@ def parse(fileName):
             if lines > 5000:
                 raise MARSException("CONFIGURATION FILE EXCEEDS 5000 LINE LIMIT")
 
-            splitLine = line.strip().split(maxsplit=15)
+            splitLine = line.split()
 
-            if (len(splitLine) == 0):
+            if (splitLine == []):
                 continue
 
             if splitLine[0] == "@SERIES":
@@ -47,9 +47,9 @@ def parse(fileName):
     with open(fileName, 'r') as configFile:
         for line in configFile:
             lines += 1
-            splitLine = line.strip().split(maxsplit=15)
+            splitLine = line.split()
 
-            if(splitLine == [] or splitLine[0] == "\n"):
+            if (splitLine == []):
                 continue
 
             if splitLine[0] == "@SERIES":
