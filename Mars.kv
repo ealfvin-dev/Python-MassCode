@@ -1029,81 +1029,87 @@
     id: weightsPop
     auto_dismiss: False
     title: "Weights"
-    title_size: dp(18)
-    size_hint: (0.42, 0.56)
+    size: (dp(600), dp(495))
 
     BoxLayout:
         id: weightsPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            text: "Weight Data - ID, Nominal (g/lb), Density, CCE (/" + chr(730) + "C), Correction (mg):"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+        PopupLabel:
+            text: "Weight Data:\nID  |  Nominal(g,lb)  |  Density(g/cm3)  |  CCE (/" + chr(730) + "C)  |  Correction (mg):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: weightsText
-            size_hint: (1, 2.2)
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
             hint_text: "P1.kg     1000  7.9826  0.000045  2.345\nP1..kg    1000  7.9834  0.000045  1.824\nT1.kg     1000  8.0451  0.000045 \nT1..kg    1000  8.0405  0.000045"
-            font_size: popUpFontSize
-            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
-            background_normal: ''
-            orderNum: 15
+            padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
             write_tab: True
-
-        Label:
-            text: "Nominal Units (0 = g, 1 = lb):"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-
-        OrderedText:
-            id: nominalsText
-            size_hint: (1, 0.5)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: "0"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 14
-
-        Label:
-            id: weightsPopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            multiline: True
+            height: dp(200)
+            orderNum: 13
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 17.5)
-            size_hint: (1, 0.74)
+            size_hint: (1, None)
+            spacing: dp(12)
+            height: dp(20)
+
+            PopupLabel:
+                text: "Nominal Units (0 = g, 1 = lb):"
+                size_hint: (0.5, None)
+                height: self.texture_size[1]
+                text_size: (self.width, None)
+
+            PopupLabel:
+                text: "Check Standard ID:"
+                size_hint: (0.5, None)
+                height: self.texture_size[1]
+                text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, None)
+            spacing: dp(12)
+            height: dp(42)
+
+            OrderedText:
+                id: nominalsText
+                size_hint: (0.5, None)
+                height: 3 * popUpFontSize
+                hint_text: "0"
+                text: "0"
+                orderNum: 14
+
+            OrderedText:
+                id: checkIDText
+                size_hint: (0.5, None)
+                height: 3 * popUpFontSize
+                hint_text: "54"
+                orderNum: 15
+
+        PopupLabel:
+            id: weightsPopError
+            size_hint: (1, None)
+            text: ""
+            color: (0.95, 0.05, 0.09, 1)
+            height: dp(20)
+            text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <VectorsPopup>:
@@ -1128,6 +1134,7 @@
             font_size: popUpLabelSize
             halign: "left"
             valign: "bottom"
+            
         
         OrderedText:
             id: restraintVectorText

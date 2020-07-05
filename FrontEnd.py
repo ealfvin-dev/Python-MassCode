@@ -918,7 +918,7 @@ class DesignPopup(Popup):
 
         self.dismiss()
 
-class WeightsPopup(Popup):
+class WeightsPopup(PopupBase):
     def submit(self):
         weightsText = self.ids.weightsText.text
         nominalsText = self.ids.nominalsText.text
