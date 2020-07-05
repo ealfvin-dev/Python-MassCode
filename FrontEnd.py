@@ -853,7 +853,7 @@ class BalancePopup(Popup):
 
         self.dismiss()
 
-class DesignPopup(Popup):
+class DesignPopup(PopupBase):
     def writeDesign(self, design):
         if(design == "3-1"):
             self.ids.designText.text = "1 -1  0\n1  0 -1\n0  1 -1"

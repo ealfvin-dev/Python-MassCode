@@ -863,62 +863,48 @@
     id: designPop
     auto_dismiss: False
     title: "Design"
-    title_size: dp(18)
-    size_hint: (0.42, 0.6)
+    size: (dp(570), dp(550))
 
     BoxLayout:
         id: designPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Design Matrix:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: 25
-            padding: 0, 0, 0, 0
-            size_hint: (1, 2)
+            size_hint: (1, None)
+            spacing: dp(20)
+            height: dp(280)
+
+            OrderedText:
+                id: designText
+                size_hint: (0.7, 1)
+                hint_text: "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
+                padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
+                write_tab: True
+                multiline: True
+                on_text: root.evalDesign()
+                orderNum: 13
 
             BoxLayout:
                 orientation: "vertical"
-                spacing: 5
-                padding: 0, 0, 0, 0
-
-                Label:
-                    id: designLabel
-                    size_hint: (1, 0.6)
-                    text: "Design Matrix:"
-                    markup: True
-                    color: popLabelColor
-                    text_size: self.size
-                    font_size: popUpLabelSize
-                    halign: "left"
-                    valign: "bottom"
-                
-                OrderedText:
-                    id: designText
-                    size_hint: (1, 2.5)
-                    font_name: "./Menlo.ttc"
-                    text: ""
-                    hint_text: "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
-                    font_size: popUpFontSize
-                    padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
-                    background_normal: ''
-                    orderNum: 13
-                    on_text: root.evalDesign()
-                    write_tab: True
-
-            BoxLayout:
-                orientation: "vertical"
-                spacing: 5
-                padding: 0, designLabel.height + 5, 0, 0
-                size_hint: (0.5, 1)
+                spacing: dp(50)
+                size_hint: (0.3, 1)
 
                 Button:
                     id: dropDownMain
-                    size_hint: (0.8, 0.5)
+                    size_hint: (None, None)
+                    size: (dp(140), dp(50))
                     text: "Presets"
                     halign: 'center'
-                    font_size: self.width / buttonSizer
+                    font_size: dp(15)
                     on_release: dropDownn.open(self)
 
                 DropDown:
@@ -927,102 +913,78 @@
                     Button:
                         text: "3-1"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "4-1"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "5-1"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "532111"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "522111"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
-                Label:
+                PopupLabel:
                     id: positionsLabel
-                    size_hint: (1, 0.6)
                     text: "Positions:"
-                    markup: True
-                    color: popLabelColor
-                    text_size: self.size
-                    font_size: mm(5)
-                    halign: "left"
-                    valign: "bottom"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
 
-                Label:
+                PopupLabel:
                     id: observationsLabel
-                    size_hint: (1, 0.6)
                     text: "Observations:"
-                    markup: True
-                    color: popLabelColor
-                    text_size: self.size
-                    font_size: mm(5)
-                    halign: "left"
-                    valign: "bottom"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Design ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: designIDText
-            size_hint: (1, 0.39)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (0.4, None)
+            height: 3 * popUpFontSize
             hint_text: "112"
-            font_size: popUpFontSize
-            background_normal: ''            
             orderNum: 12
 
-        Label:
+        PopupLabel:
             id: designPopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.58)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
-                size_hint: (1, 1.5)
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                size_hint: (1, 1.5)
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <WeightsPopup>:
@@ -1038,7 +1000,7 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            text: "Weight Data:\nID  |  Nominal(g,lb)  |  Density(g/cm3)  |  CCE (/" + chr(730) + "C)  |  Correction (mg):"
+            text: "Weight Data:\nID  |  Nominal(g, lb)  |  Density(g/cm3)  |  CCE (/" + chr(730) + "C)  |  Correction (mg):"
             size_hint: (1, None)
             height: self.texture_size[1]
             text_size: (self.width, None)
@@ -1056,7 +1018,7 @@
         BoxLayout:
             orientation: "horizontal"
             size_hint: (1, None)
-            spacing: dp(12)
+            spacing: dp(20)
             height: dp(20)
 
             PopupLabel:
@@ -1074,7 +1036,7 @@
         BoxLayout:
             orientation: "horizontal"
             size_hint: (1, None)
-            spacing: dp(12)
+            spacing: dp(20)
             height: dp(42)
 
             OrderedText:
