@@ -9,7 +9,7 @@ Config.write()
 
 from kivy.graphics import Color, Rectangle, Line
 from kivy.clock import Clock
-from kivy.metrics import dp, sp
+from kivy.metrics import dp
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -502,7 +502,7 @@ class MainLayout(BoxLayout):
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
-        #Run tests to check on the provided report number
+        #Run tests to check the provided report number before saving
         reportNum = self.getReportNum()
         if(reportNum == False):
             self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1, CANNOT SAVE")
@@ -513,8 +513,7 @@ class MainLayout(BoxLayout):
         if(checkReportNum == False):
             return
 
-        seriesButtonId = "series" + str(self.currentSeries)
-        self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+        self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids["series" + str(self.currentSeries)])
         
         fileText = ""
         for seriesText in self.seriesTexts:
@@ -535,6 +534,7 @@ class MainLayout(BoxLayout):
 
     def run(self):
         #Perform checks to make sure the input file is in a runnable state
+        #######################
         start = time.time()
         if(self.currentSeries == None):
             return
@@ -562,8 +562,9 @@ class MainLayout(BoxLayout):
         requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
         if(not requiredChecks):
             return
-
+        #######################
         self.clearErrors()
+
         try:
             results = RunFile.run(self.reportNum + "-config.txt")
             self.grabOutputFile()
@@ -630,7 +631,6 @@ class MainLayout(BoxLayout):
 
             for sn in range(1, 14):
                 seriesID = "series" + str(sn)
-
                 self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
 
                 if(self.ids[seriesID].exists):
@@ -654,7 +654,7 @@ class OrderedText(TextInput):
         self.text = ""
         self.orderNum = 0
         self.background_normal = ''
-        self.font_size = sp(13)
+        self.font_size = dp(13)
         self.write_tab = False
         self.multiline = False
         self.padding = [dp(5), dp(5), dp(5), dp(5)]
@@ -744,16 +744,6 @@ class PopupBase(Popup):
         self.title_size = dp(18)
         self.size_hint = (None, None)
 
-    #     with self.canvas.before:
-    #         Color(0.906, 0.918, 0.926, 1)
-    #         self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
-
-    #         self.bind(size=self._update_rect, pos=self._update_rect)
-
-    # def _update_rect(self, instance, value):
-    #     self.backgroundRect.pos = instance.pos
-    #     self.backgroundRect.size = instance.size
-
 class PopupLabel(Label):
     def __init__(self, **kwargs):
         super().__init__()
@@ -761,7 +751,7 @@ class PopupLabel(Label):
         self.halign = "left"
         self.valign = "bottom"
         self.color = (0.095, 0.095, 0.096, 0.9)
-        self.font_size = sp(15)
+        self.font_size = dp(15)
 
 class LabInfoPopup(Popup):
     def submit(self):
@@ -995,7 +985,7 @@ class StatisticsPopup(Popup):
 
         self.dismiss()
 
-class SwPopup(Popup):
+class SwPopup(PopupBase):
     def submit(self):
         swMassText = self.ids.swMassText.text
         swDensityText = self.ids.swDensityText.text

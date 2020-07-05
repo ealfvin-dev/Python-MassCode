@@ -1316,104 +1316,71 @@
     id: swPop
     auto_dismiss: False
     title: "Sensitivity Weight"
-    title_size: dp(18)
-    size_hint: (0.42, 0.54)
+    size: (dp(400), dp(380))
 
     BoxLayout:
         id: swPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "sw True Mass (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: swMassText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "50.1023"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 22
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "sw Density:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+        PopupLabel:
+            text: "sw Density (g/cm3):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: swDensityText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "7.95"
-            font_size: popUpFontSize
-            background_normal: ''            
             orderNum: 23
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "sw CCE:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+        PopupLabel:
+            text: "sw CCE (/" + chr(730) + "C):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: swCCEText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "0.000045"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 24
 
-        Label:
+        PopupLabel:
             id: swPopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <MeasurementsPopup>:
