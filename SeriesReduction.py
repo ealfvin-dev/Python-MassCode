@@ -91,7 +91,6 @@ class MatrixSolution:
         self.localGravity = 9.8
         self.gravityGradient = 0.0 #1/s2
         self.weightHeights = np.zeros(shape=0) #m
-        self.referenceHeight = 0.0 #m
 
         #Statistics Stuff:
         self.df = 0
@@ -266,20 +265,28 @@ class MatrixSolution:
                 deltaLab = -1 * self.balanceReadings[i][0] * averageSensitivities['balance'] / 1000
             
             else:
-                raise MARSException("SERIES " + str(self.seriesNumber + 1) + " PLEASE ENTER A VALID DIRECT-READINGS ARGUMENT.\n1 = DIRECT READINGS ENTERED, 0 = DOUBLE SUBSTITUTION OBSERVATIONS ENTERED")
+                raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": PLEASE ENTER A VALID DIRECT-READINGS ARGUMENT.\n1 = DIRECT READINGS ENTERED, 0 = DOUBLE SUBSTITUTION OBSERVATIONS ENTERED")
             
             #Gravity corrections
             if(self.weightHeights.size != 0):
-                #Calculate COMs of massOne and massTwo
-                mass1Array = np.multiply(positionMassOne, estimateMasses)
-                mass2Array = np.multiply(positionMassTwo, estimateMasses)
+                if(np.count_nonzero(self.weightHeights) == self.positions):
+                    #Calculate COMs of massOne and massTwo
+                    mass1Array = np.multiply(positionMassOne, estimateMasses)
+                    mass2Array = np.multiply(positionMassTwo, estimateMasses)
 
-                COM1 = np.matmul(mass1Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass1Array)
-                COM2 = np.matmul(mass2Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass2Array)
+                    COM1 = np.matmul(mass1Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass1Array)
+                    COM2 = np.matmul(mass2Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass2Array)
 
-                #Perform gravitational correction back to reference height
-                deltaLab = deltaLab + (self.gravityGradient / self.localGravity) * \
-                    (estimatedMassTwo * (COM2 - self.referenceHeight) - estimatedMassOne * (COM1 - self.referenceHeight))
+                    #Calculate reference height (COM of restraint):
+                    massRArray = np.multiply(self.restraintPos, estimateMasses)
+                    COMref = np.matmul(massRArray, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(massRArray)
+
+                    #Perform gravitational correction back to reference height
+                    deltaLab = deltaLab + (self.gravityGradient / self.localGravity) * \
+                        (estimatedMassTwo * (COM2 - COMref) - estimatedMassOne * (COM1 - COMref))
+
+                else:
+                    raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": UNEQUAL NUMBER OF WEIGHT HEIGHTS AND POSITIONS\nHEIGHTS MUST BE > 0")
 
             #Extrapolate what delta would be in vaccum and add to matrixY
             deltaVaccum = deltaLab + airDensity * ((estimatedMassTwo / effectiveDensityMassTwo) - (estimatedMassOne / effectiveDensityMassOne)) #grams

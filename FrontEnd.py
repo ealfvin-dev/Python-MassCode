@@ -7,8 +7,9 @@ Config.set('graphics', 'fullscreen', 0)
 Config.set('graphics', 'window_state', 'maximized')
 Config.write()
 
-from kivy.graphics import Color, Rectangle
+from kivy.graphics import Color, Rectangle, Line
 from kivy.clock import Clock
+from kivy.metrics import dp, sp
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -32,13 +33,6 @@ import threading
 
 #import sqlite3
 import time
-def getNumChacacters(text):
-    chars = 0
-
-    for char in text:
-        chars += 1
-
-    return chars
 
 class MainLayout(BoxLayout):
     reportNum = ""
@@ -52,6 +46,7 @@ class MainLayout(BoxLayout):
 
         with self.canvas.before:
             Color(0.906, 0.918, 0.926, 1)
+            #Color(0.936, 0.938, 0.946, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
             self.bind(size=self._update_rect, pos=self._update_rect)
@@ -88,8 +83,7 @@ class MainLayout(BoxLayout):
             "<Env-Corrections>": 27, \
             "<Gravity-Grad>": 28, \
             "<Gravity-Local>": 29, \
-            "<Height>": 30, \
-            "<Height-Ref>": 31}
+            "<Height>": 30}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -289,8 +283,7 @@ class MainLayout(BoxLayout):
             "<Env-Corrections>": False, \
             "<Gravity-Grad>": False, \
             "<Gravity-Local>": False, \
-            "<Height>": False, \
-            "<Height-Ref>": False}
+            "<Height>": False}
 
         for line in seriesText.splitlines():
             if(line.split() == []):
@@ -327,7 +320,7 @@ class MainLayout(BoxLayout):
             self.ids.balanceButton.colorBlue()
 
         #Gravity Button
-        if(tags["<Height>"] and tags["<Gravity-Grad>"] and tags["<Gravity-Local>"] and tags["<Height-Ref>"]):
+        if(tags["<Height>"] and tags["<Gravity-Grad>"] and tags["<Gravity-Local>"]):
             self.ids.gravityButton.colorGrey()
         else:
             self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
@@ -652,8 +645,36 @@ class OrderedText(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
 
+        with self.canvas.before:
+            Color(0.155, 0.217, 0.292, 0.65)
+            self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
+            self.bind(size=self._update_rect, pos=self._update_rect)
+
+        self.font_name = "./Menlo.ttc"
+        self.text = ""
         self.orderNum = 0
+        self.background_normal = ''
+        self.font_size = sp(13)
         self.write_tab = False
+        self.multiline = False
+        self.padding = [dp(5), dp(5), dp(5), dp(5)]
+
+    def _update_rect(self, instance, value):
+        self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
+        self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
+
+class UserInput(TextInput):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        with self.canvas.before:
+            Color(0.155, 0.217, 0.292, 0.65)
+            self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
+            self.bind(size=self._update_rect, pos=self._update_rect)
+    
+    def _update_rect(self, instance, value):
+        self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
+        self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
 
 class SeriesButton(Button):
     def __init__(self, **kwargs):
@@ -695,36 +716,52 @@ class InputButton(Button):
 class CancelButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
-
+        self.size_hint = (None, None)
+        self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.font_size = dp(16)
         self.text = "Cancel"
         self.halign = 'center'
 
 class WriteButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
-
+        self.size_hint = (None, None)
+        self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.font_size = dp(16)
         self.text = "Write"
         self.halign = 'center'
-
         #self.bind(on_release=root.submit)
 
-# class RoundedButton(Button):
-#     def __init__(self, **kwargs):
-#         super().__init__()
+class PopupBase(Popup):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.background = './Popup_Background.png'
+        self.title_color = (0, 0, 0, 1)
+        self.title_size = dp(18)
+        self.size_hint = (None, None)
 
-#         self.completed = False
-#         self.background_color = 0,0,0,0
-#         self.canvasColor = (0.08, 0.55, 1, 1)
+    #     with self.canvas.before:
+    #         Color(0.906, 0.918, 0.926, 1)
+    #         self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
-#         with self.canvas.before:
-#             Color(self.canvasColor)
-#             pos = self.pos
-#             size = self.size
-#             radius = [self.size[0] / 12,]
+    #         self.bind(size=self._update_rect, pos=self._update_rect)
+
+    # def _update_rect(self, instance, value):
+    #     self.backgroundRect.pos = instance.pos
+    #     self.backgroundRect.size = instance.size
+
+class PopupLabel(Label):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.markup = True
+        self.halign = "left"
+        self.valign = "bottom"
+        self.color = (0.095, 0.095, 0.096, 0.9)
+        self.font_size = sp(15)
 
     def goToSeries(self, exists, seriesNum):
         if(exists):
@@ -775,7 +812,6 @@ class RestraintPopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.restraintButton.colorGrey()
 
         self.dismiss()
@@ -799,7 +835,6 @@ class DatePopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.dateButton.colorGrey()
 
         self.dismiss()
@@ -823,8 +858,8 @@ class BalancePopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(directReadingsSFText, directReadingsSFOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.balanceButton.colorGrey()
+
         if(directReadingsText.strip() == "1"):
             self.parent.children[1].ids.swButton.colorGrey()
 
@@ -891,7 +926,6 @@ class DesignPopup(Popup):
         cursorStart2, textLength2 = self.parent.children[1].writeText(designText, designOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
         self.parent.children[1].ids.designButton.colorGrey()
 
         self.dismiss()
@@ -912,7 +946,6 @@ class WeightsPopup(Popup):
         cursorStart2, textLength2 = self.parent.children[1].writeText(weightsText, weightsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
         self.parent.children[1].ids.weightsButton.colorGrey()
 
         #Render series nominal
@@ -943,7 +976,6 @@ class VectorsPopup(Popup):
         cursorStart4, textLength4 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + 3)
-
         self.parent.children[1].ids.positionVectorsButton.colorGrey()
 
         self.dismiss()
@@ -964,7 +996,6 @@ class StatisticsPopup(Popup):
         cursorStart2, textLength2 = self.parent.children[1].writeText(sigmawText, sigmawOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
         self.parent.children[1].ids.statisticsButton.colorGrey()
 
         self.dismiss()
@@ -988,12 +1019,11 @@ class SwPopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(swCCEText, swCCEOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.swButton.colorGrey()
 
         self.dismiss()
 
-class MeasurementsPopup(Popup):
+class MeasurementsPopup(PopupBase):
     def submit(self):
         balanceReadingsText = self.ids.balanceReadingsText.text
         envText = self.ids.envText.text
@@ -1032,28 +1062,29 @@ class MeasurementsPopup(Popup):
         cursorStart3, textLength3 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-
         self.parent.children[1].ids.measurementsButton.colorGrey()
 
         self.dismiss()
 
-class GravityPopup(Popup):
+class GravityPopup(PopupBase):
     def submit(self):
         gradientText = self.ids.gradientText.text
+        localGravText = self.ids.localGravityText.text
         heightText = self.ids.heightText.text
 
         gradientOrder = self.ids.gradientText.orderNum
+        localGravOrder = self.ids.localGravityText.orderNum
         heightOrder = self.ids.heightText.orderNum
 
-        if(gradientText == "" or heightText == ""):
+        if(gradientText == "" or heightText == "" or localGravText == ""):
             self.ids.gravityPopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(gradientText, gradientOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(heightText, heightOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(localGravText, localGravOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(heightText, heightOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
-
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
         self.parent.children[1].ids.gravityButton.colorGrey()
 
         self.dismiss()

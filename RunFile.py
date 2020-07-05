@@ -237,10 +237,6 @@ def parse(fileName):
                 seriesObjects[seriesNumber].localGravity = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "<Height-Ref>":
-                seriesObjects[seriesNumber].referenceHeight = float(splitLine[1]) / 100
-                continue
-
             if splitLine[0] == "<Height>":
                 if(seriesObjects[seriesNumber].weightHeights.size == 0):
                     #Initialize np matrix

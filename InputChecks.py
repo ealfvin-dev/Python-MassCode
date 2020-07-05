@@ -117,8 +117,7 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
                     "<Env-Corrections>": False, \
                     "<Gravity-Grad>": False, \
                     "<Gravity-Local>": False, \
-                    "<Height>": False, \
-                    "<Height-Ref>": False}
+                    "<Height>": False}
 
     seriesNumber = 0
 
@@ -259,8 +258,7 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
         "<sw-Density>": 0,\
         "<sw-CCE>": 0,\
         "<Gravity-Local>": 0,\
-        "<Gravity-Grad>": 0,\
-        "<Height-Ref>": 0}
+        "<Gravity-Grad>": 0}
 
     for seriesText in seriesTexts:
         seriesNum += 1

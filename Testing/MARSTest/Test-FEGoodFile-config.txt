@@ -74,6 +74,14 @@
    <Environmentals>  19.70 737.56 45.96
 
   <Env-Corrections>  -0.3 0.9 0.0
+
+     <Gravity-Grad>  0.0000031
+    <Gravity-Local>  9.8
+           <Height>  1
+           <Height>  1.5
+           <Height>  1
+           <Height>  2
+
 @SERIES
 
              <Date>  07 30 2020
@@ -143,6 +151,15 @@
    <Environmentals>  19.604 740.4 47.7
 
   <Env-Corrections>  0 0.29 0
+
+     <Gravity-Grad>  0.0000031
+    <Gravity-Local>  9.8
+           <Height>  2
+           <Height>  2
+           <Height>  1.5
+           <Height>  1
+	   <Height>  1
+           <Height>  1
 
 
 @SERIES
