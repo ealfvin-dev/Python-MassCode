@@ -968,7 +968,7 @@ class VectorsPopup(Popup):
 
         self.dismiss()
 
-class StatisticsPopup(Popup):
+class StatisticsPopup(PopupBase):
     def submit(self):
         sigmatText = self.ids.sigmatText.text
         sigmawText = self.ids.sigmawText.text

@@ -1236,80 +1236,58 @@
     id: statisticsPop
     auto_dismiss: False
     title: "Statistics"
-    title_size: dp(18)
-    size_hint: (0.42, 0.44)
+    size: (dp(400), dp(310))
 
     BoxLayout:
         id: sigmaPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
+        PopupLabel:
             text: chr(963) + "[size=3mm]t[/size] (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: sigmatText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "0.008"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 20
 
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
+        PopupLabel:
             text: chr(963) + "[size=3mm]w[/size] (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: sigmawText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "0.012"
-            font_size: popUpFontSize
-            background_normal: ''            
             orderNum: 21
 
-        Label:
+        PopupLabel:
             id: sigmaPopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <SwPopup>:
