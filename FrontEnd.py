@@ -188,17 +188,20 @@ class MainLayout(BoxLayout):
         self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
         self.ids.userText.select_text(startPosition, endPosition)
 
-    def textAdded(self):
+    def textAdded(self, cursor_row):
         if(self.saved):
             self.saved = False
             self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
             self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
+        if(self.currentSeries == 1):
+            self.getReportNum(self.ids.userText.text)
+
     def getReportNum(self, text=None):
         if(text == None): text = self.seriesTexts[0]
 
         for line in text.splitlines():
-            if(len(line.split()) == 0):
+            if(line.split() == []):
                 continue
 
             if(line.split()[0] == "<Report-Number>"):
