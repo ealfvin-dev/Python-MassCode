@@ -314,43 +314,6 @@
                     size_hint: (1.0, 0.25)
 
                     Label:
-                        text: "[b]\nMeasurement Data[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
-
-                BoxLayout:
-                    id: menuRow4
-                    orientation: 'horizontal'
-                    spacing: self.width / 10
-                    padding: (0, 0, 0, 20)
-
-                    InputButton:
-                        id: swButton
-                        text: "Sensitivity\nWeight"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openSwPop()
-
-                    InputButton:
-                        id: measurementsButton
-                        text: "Measurements"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openMeasurementsPop()
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        halign: 'left'
-
-                BoxLayout:
-                    id: menuLabel5
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
-
-                    Label:
                         text: "[b]\nStatistics[/b]"
                         markup: True
                         color: labelColor
@@ -359,7 +322,7 @@
                         halign: 'left'
 
                 BoxLayout:
-                    id: menuRow5
+                    id: menuRow4
                     orientation: 'horizontal'
                     spacing: self.width / 10
                     padding: (0, 0, 0, 20)
@@ -382,6 +345,43 @@
                         color: labelColor
                         font_size: self.height / labelSizer
                         text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel5
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
+
+                    Label:
+                        text: "[b]\nMeasurement Data[/b]"
+                        markup: True
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow5
+                    orientation: 'horizontal'
+                    spacing: self.width / 10
+                    padding: (0, 0, 0, 20)
+
+                    InputButton:
+                        id: swButton
+                        text: "Sensitivity\nWeight"
+                        font_size: self.width / buttonSizer
+                        on_release: app.openSwPop()
+
+                    InputButton:
+                        id: measurementsButton
+                        text: "Measurements"
+                        font_size: self.width / buttonSizer
+                        on_release: app.openMeasurementsPop()
+
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: self.height / labelSizer
                         halign: 'left'
 
                 BoxLayout:
@@ -530,11 +530,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <RestraintPopup>:
     auto_dismiss: False
@@ -600,11 +600,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <DatePopup>:
     auto_dismiss: False
@@ -728,11 +728,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <DesignPopup>:
     auto_dismiss: False
@@ -764,7 +764,7 @@
                 write_tab: True
                 multiline: True
                 on_text: root.evalDesign()
-                orderNum: 13
+                orderNum: 18
 
             BoxLayout:
                 orientation: "vertical"
@@ -838,7 +838,7 @@
             size_hint: (0.4, None)
             height: 3 * popUpFontSize
             hint_text: "112"
-            orderNum: 12
+            orderNum: 17
 
         PopupLabel:
             id: designPopError
@@ -854,11 +854,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <WeightsPopup>:
     auto_dismiss: False
@@ -884,7 +884,7 @@
             write_tab: True
             multiline: True
             height: dp(200)
-            orderNum: 13
+            orderNum: 16
 
         BoxLayout:
             orientation: "horizontal"
@@ -893,7 +893,7 @@
             height: dp(20)
 
             PopupLabel:
-                text: "Nominal Units (0 = g, 1 = lb):"
+                text: "Nominal Units (1 = g, 0 = lb):"
                 size_hint: (0.5, None)
                 height: self.texture_size[1]
                 text_size: (self.width, None)
@@ -914,16 +914,16 @@
                 id: nominalsText
                 size_hint: (0.5, None)
                 height: 3 * popUpFontSize
-                hint_text: "0"
-                text: "0"
-                orderNum: 14
+                hint_text: "1"
+                text: "1"
+                orderNum: 15
 
             OrderedText:
                 id: checkIDText
                 size_hint: (0.5, None)
                 height: 3 * popUpFontSize
                 hint_text: "54"
-                orderNum: 15
+                orderNum: 14
 
         PopupLabel:
             id: weightsPopError
@@ -939,11 +939,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <VectorsPopup>:
     auto_dismiss: False
@@ -966,7 +966,7 @@
             size_hint: (1, None)
             height: 3 * popUpFontSize
             hint_text: "1 1 0 0"
-            orderNum: 16
+            orderNum: 19
 
         PopupLabel:
             text: "Check Standard Position:"
@@ -979,7 +979,7 @@
             size_hint: (1, None)
             height: 3 * popUpFontSize
             hint_text: "1 -1 0 0"
-            orderNum: 17
+            orderNum: 20
 
         PopupLabel:
             text: "Next Series Restraint:"
@@ -992,7 +992,7 @@
             size_hint: (1, None)
             height: 3 * popUpFontSize
             hint_text: "0 0 0 0"
-            orderNum: 18
+            orderNum: 21
 
         PopupLabel:
             id: vectorsPopError
@@ -1008,11 +1008,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <StatisticsPopup>:
     auto_dismiss: False
@@ -1035,7 +1035,7 @@
             size_hint: (1, None)
             height: 3 * popUpFontSize
             hint_text: "0.008"
-            orderNum: 20
+            orderNum: 22
 
         PopupLabel:
             text: chr(963) + "[size=3mm]w[/size] (mg):"
@@ -1048,7 +1048,7 @@
             size_hint: (1, None)
             height: 3 * popUpFontSize
             hint_text: "0.012"
-            orderNum: 21
+            orderNum: 23
 
         PopupLabel:
             id: sigmaPopError
@@ -1064,11 +1064,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <SwPopup>:
     auto_dismiss: False
@@ -1091,7 +1091,7 @@
             size_hint: (1, None)
             height: 3 * popUpFontSize
             hint_text: "50.1023"
-            orderNum: 22
+            orderNum: 24
 
         PopupLabel:
             text: "sw Density (g/cm3):"
@@ -1104,7 +1104,7 @@
             size_hint: (1, None)
             height: 3 * popUpFontSize
             hint_text: "7.95"
-            orderNum: 23
+            orderNum: 25
 
         PopupLabel:
             text: "sw CCE (/" + chr(730) + "C):"
@@ -1117,7 +1117,7 @@
             size_hint: (1, None)
             height: 3 * popUpFontSize
             hint_text: "0.000045"
-            orderNum: 24
+            orderNum: 26
 
         PopupLabel:
             id: swPopError
@@ -1133,11 +1133,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <MeasurementsPopup>:
     auto_dismiss: False
@@ -1180,7 +1180,7 @@
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 write_tab: True
                 multiline: True
-                orderNum: 25
+                orderNum: 29
             
             OrderedText:
                 id: envText
@@ -1189,7 +1189,7 @@
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 write_tab: True
                 multiline: True
-                orderNum: 26
+                orderNum: 27
 
         BoxLayout:
             orientation: "horizontal"
@@ -1224,7 +1224,7 @@
                 size_hint: (0.35, None)
                 height: 3 * popUpFontSize
                 hint_text: "0.05 0.105 -0.07"
-                orderNum: 27
+                orderNum: 28
 
         PopupLabel:
             id: measurementsPopError
@@ -1240,11 +1240,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <GravityPopup>:
     auto_dismiss: False
@@ -1273,7 +1273,7 @@
                 hint_text: "10.3\n10.5\n14.0\n9.7"
                 multiline: True
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
-                orderNum: 30
+                orderNum: 13
 
             Label:
                 id: gravityPositionsText
@@ -1298,7 +1298,7 @@
             size_hint: (0.5, None)
             height: 3 * popUpFontSize
             hint_text: "0.0000031"
-            orderNum: 28
+            orderNum: 11
 
         PopupLabel:
             text: "Local Acceleration of\nGravity (m/s" + chr(178) + "):"
@@ -1311,7 +1311,7 @@
             size_hint: (0.5, None)
             height: 3 * popUpFontSize
             hint_text: "9.8"
-            orderNum: 29
+            orderNum: 12
 
         PopupLabel:
             id: gravityPopError
@@ -1327,11 +1327,11 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <OpenFilePopup>:
     auto_dismiss: False

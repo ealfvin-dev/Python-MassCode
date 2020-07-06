@@ -23,7 +23,7 @@
 <Design>  1  0 -1
 <Design>  0  1 -1
 
-<Pounds>  1
+<Grams>  0
 
 <Position>  A3000lb        3000 7.2320 0.000037 9122
 <Position>  B3000lb        3000 7.1000 0.000035 25036

@@ -32,7 +32,7 @@
            <Design>  0  1  0 -1
            <Design>  0  0  1 -1
 
-           <Pounds>  0
+           <Grams>  1
 
          <Position>  A1kg           1000 7.9436 0.000045
          <Position>  B1kg           1000 7.9926 0.000045 3.961
@@ -96,7 +96,7 @@
            <Design>  0  0  1 -1  0 -1
            <Design>  0  0  1  0 -1 -1
 
-           <Pounds>  0
+           <Grams>  1
 
          <Position>  W500g          500 7.9500  0.000045
          <Position>  W300g          300 7.9500  0.000045
@@ -163,7 +163,7 @@
            <Design>  0  1 -1 -1  0  1
            <Design>  0  1 -1  0  1 -1
 
-           <Pounds>  0
+           <Grams>  1
 
          <Position>  W50g           50 7.9500  0.000045
          <Position>  W20g           20 7.9500  0.000045
@@ -226,7 +226,7 @@
            <Design>  0  1 -1 -1  0  1
            <Design>  0  1 -1  0  1 -1
 
-           <Pounds>  0
+           <Grams>  1
 
          <Position>  W5g            5 7.9500  0.000045
          <Position>  W2g            2 7.9500  0.000045

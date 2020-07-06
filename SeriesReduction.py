@@ -47,7 +47,7 @@ class MatrixSolution:
 
         self.restraintPos = None
         self.checkStandardPos = None
-        self.linearCombos = []
+        #self.linearCombos = []
         self.acceptedCheckCorrection = 0
         self.calculatedCheckCorrection = 0
 

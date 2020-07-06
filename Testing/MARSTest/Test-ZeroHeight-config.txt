@@ -23,7 +23,7 @@
            <Design>  0  1  0 -1
            <Design>  0  0  1 -1
 
-           <Pounds>  0
+           <Grams>  1
 
          <Position>  A	500	8	0.000045 1
          <Position>  B	500	8	0.000045
