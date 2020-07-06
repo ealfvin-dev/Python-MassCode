@@ -753,7 +753,7 @@ class PopupLabel(Label):
         self.color = (0.095, 0.095, 0.096, 0.9)
         self.font_size = dp(15)
 
-class LabInfoPopup(Popup):
+class LabInfoPopup(PopupBase):
     def submit(self):
         #Check if all fields have been entered
         labInfoText = self.ids.labInfoText.text
