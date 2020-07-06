@@ -105,7 +105,6 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
                     "<Position>": False, \
                     "<Restraint>": False, \
                     "<Check-Standard>": False, \
-                    "<Linear-Combo>": False, \
                     "<Pass-Down>": False, \
                     "<Sigma-t>": False, \
                     "<Sigma-w>": False, \
@@ -170,7 +169,6 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Position>": False, \
                         "<Restraint>": False, \
                         "<Check-Standard>": False, \
-                        "<Linear-Combo>": False, \
                         "<Pass-Down>": False, \
                         "<Sigma-t>": False, \
                         "<Sigma-w>": False, \
@@ -194,7 +192,6 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Position>": False, \
                         "<Restraint>": False, \
                         "<Check-Standard>": False, \
-                        "<Linear-Combo>": False, \
                         "<Pass-Down>": False, \
                         "<Sigma-t>": False, \
                         "<Sigma-w>": False, \
@@ -250,7 +247,6 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
         "<Pounds>": 0,\
         "<Restraint>": 0,\
         "<Check-Standard>": 0,\
-        "<Linear-Combo>": 0,\
         "<Pass-Down>": 0,\
         "<Sigma-t>": 0,\
         "<Sigma-w>": 0,\

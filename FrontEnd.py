@@ -71,7 +71,6 @@ class MainLayout(BoxLayout):
             "<Position>": 15, \
             "<Restraint>": 16, \
             "<Check-Standard>": 17, \
-            "<Linear-Combo>": 18, \
             "<Pass-Down>": 19, \
             "<Sigma-t>": 20, \
             "<Sigma-w>": 21, \
@@ -274,7 +273,6 @@ class MainLayout(BoxLayout):
             "<Position>": False, \
             "<Restraint>": False, \
             "<Check-Standard>": False, \
-            "<Linear-Combo>": False, \
             "<Pass-Down>": False, \
             "<Sigma-t>": False, \
             "<Sigma-w>": False, \
@@ -347,7 +345,7 @@ class MainLayout(BoxLayout):
             self.ids.weightsButton.colorBlue()
 
         #Positions Button
-        if(tags["<Restraint>"] and tags["<Check-Standard>"] and tags["<Linear-Combo>"] and tags["<Pass-Down>"]):
+        if(tags["<Restraint>"] and tags["<Check-Standard>"] and tags["<Pass-Down>"]):
             self.ids.positionVectorsButton.colorGrey()
         else:
             self.ids.positionVectorsButton.colorBlue()
@@ -938,28 +936,25 @@ class WeightsPopup(PopupBase):
 
         self.dismiss()
 
-class VectorsPopup(Popup):
+class VectorsPopup(PopupBase):
     def submit(self):
         restraintText = self.ids.restraintVectorText.text
         checkText = self.ids.checkVectorText.text
-        linearComboText = self.ids.linearComboText.text
         nextRestraintText = self.ids.nextRestraintText.text
 
         restraintOrder = self.ids.restraintVectorText.orderNum
         checkOrder = self.ids.checkVectorText.orderNum
-        linearComboOrder = self.ids.linearComboText.orderNum
         nextRestraintOrder = self.ids.nextRestraintText.orderNum
 
-        if(restraintText == "" or checkText == "" or linearComboText == "" or nextRestraintText == ""):
+        if(restraintText == "" or checkText == "" or nextRestraintText == ""):
             self.ids.vectorsPopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(restraintText, restraintOrder)
         cursorStart2, textLength2 = self.parent.children[1].writeText(checkText, checkOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(linearComboText, linearComboOrder)
-        cursorStart4, textLength4 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + 3)
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
         self.parent.children[1].ids.positionVectorsButton.colorGrey()
 
         self.dismiss()

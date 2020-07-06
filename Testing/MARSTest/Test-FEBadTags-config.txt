@@ -41,7 +41,6 @@
 
         <Restraint>  0 1 0 1
    <Check-Standard>  0 -1 0 1
-     <Linear-Combo>  0 0 0 0
         <Pass-Down>  0 0 1 0
 
           <Sigma-t>  0.003
@@ -108,7 +107,6 @@
 
         <Restrant>  1 1 1 0 0 0
    <Check-Standard>  0 0 0 0 1 0
-     <Linear-Combo>  0 0 0 0 0 0
         <Pass-Down>  0 0 0 0 0 1
 
           <Sigma-t>  0.035
@@ -176,7 +174,6 @@
 
         <Restraint>  1 1 1 1 0 0
    <Check-Standard>  0 0 0 0 1 0
-     <Linear-Combo>  0 0 0 0 0 0
         <Pass-Down>  0 0 0 0 0 1
 
           <Sigma-t>  0.0035
@@ -240,7 +237,6 @@
 
         <Restraint>  1 1 1 1 0 0
    <Check-Standard>  0 0 0 0 1 0
-     <Linear-Combo>  0 0 0 0 0 0
         <Pass-Down>  0 0 0 0 0 0
 
           <Sigma-t>  0.0009

@@ -31,7 +31,6 @@
 
 <Restraint>  1 0 0
 <Check-Standard>  0 1 0
-<Linear-Combo>  0 0 0
 <Pass-Down>  0 0 0
 
 <Sigma-t>  3900

@@ -11,7 +11,6 @@
 #:set popUpLabelSize dp(15)
 
 <MainLayout>:
-    id: mainBox
     orientation: 'horizontal'
     spacing: self.size[1] / 50
     padding: 0, 0, 0, 0
@@ -470,7 +469,6 @@
                     readonly: True
 
         Label:
-            id: footer
             font_size: dp(9)
             text: "[color=#000000]Copywrite Erik Alfvin, 2020[/color]"
             markup: True
@@ -480,14 +478,12 @@
             size_hint: (1.0, 0.01)
 
 <LabInfoPopup>:
-    id: labInfoPop
     auto_dismiss: False
     title: "Header"
     title_size: dp(18)
     size_hint: (0.42, 0.56)
 
     BoxLayout:
-        id: LabInfoPLayout
         orientation: "vertical"
         spacing: 5
         padding: 20, 0, 20, 20        
@@ -562,14 +558,12 @@
                 on_release: root.dismiss()
 
 <RestraintPopup>:
-    id: restraintPop
     auto_dismiss: False
     title: "Starting Restraint Data"
     title_size: dp(18)
     size_hint: (0.42, 0.54)
 
     BoxLayout:
-        id: RestraintPLayout
         orientation: "vertical"
         spacing: 5
         padding: 20, 0, 20, 20
@@ -666,13 +660,11 @@
                 on_release: root.dismiss()
 
 <DatePopup>:
-    id: datePop
     auto_dismiss: False
     title: "Date, Balance"
     size: (dp(570), dp(410))
 
     BoxLayout:
-        id: datePLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -796,13 +788,11 @@
                 on_release: root.dismiss()
 
 <DesignPopup>:
-    id: designPop
     auto_dismiss: False
     title: "Design"
     size: (dp(570), dp(550))
 
     BoxLayout:
-        id: designPLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -924,13 +914,11 @@
                 on_release: root.dismiss()
 
 <WeightsPopup>:
-    id: weightsPop
     auto_dismiss: False
     title: "Weights"
     size: (dp(600), dp(495))
 
     BoxLayout:
-        id: weightsPLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -1011,140 +999,80 @@
                 on_release: root.dismiss()
 
 <VectorsPopup>:
-    id: vectorsPop
     auto_dismiss: False
     title: "Position Vectors"
-    title_size: dp(18)
-    size_hint: (0.42, 0.67)
+    size: (dp(400), dp(380))
 
     BoxLayout:
-        id: vectorsPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Restraint Position:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
             
-        
+        PopupLabel:
+            text: "Restraint Position:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: restraintVectorText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "1 1 0 0"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 16
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Check Standard Position:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: checkVectorText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "1 -1 0 0"
-            font_size: popUpFontSize
-            background_normal: ''            
             orderNum: 17
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Linear Combo Position:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: linearComboText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "0 0 0 0"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 18
-
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Next Series Restraint:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: nextRestraintText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "0 0 0 0"
-            font_size: popUpFontSize
-            background_normal: ''            
-            orderNum: 19
+            orderNum: 18
 
-        Label:
+        PopupLabel:
             id: vectorsPopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.90)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <StatisticsPopup>:
-    id: statisticsPop
     auto_dismiss: False
     title: "Statistics"
     size: (dp(400), dp(310))
 
     BoxLayout:
-        id: sigmaPLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -1196,13 +1124,11 @@
                 on_release: root.dismiss()
 
 <SwPopup>:
-    id: swPop
     auto_dismiss: False
     title: "Sensitivity Weight"
     size: (dp(400), dp(380))
 
     BoxLayout:
-        id: swPLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -1267,13 +1193,11 @@
                 on_release: root.dismiss()
 
 <MeasurementsPopup>:
-    id: measurementsPop
     auto_dismiss: False
     title: "Measurements"
     size: (dp(800), dp(540))
 
     BoxLayout:
-        id: measurementsPLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -1376,13 +1300,11 @@
                 on_release: root.dismiss()
 
 <GravityPopup>:
-    id: gravityPop
     auto_dismiss: False
     title: "Local Gravity Corrections"
     size: (dp(500), dp(560))
 
     BoxLayout:
-        id: gravityPLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -1465,14 +1387,12 @@
                 on_release: root.dismiss()
 
 <OpenFilePopup>:
-    id: openFilePop
     auto_dismiss: False
     title: "Open File"
     title_size: dp(18)
     size_hint: (0.35, 0.32)
 
     BoxLayout:
-        id: openFilePLayout
         orientation: "vertical"
         spacing: 35
         padding: 20, 0, 20, 20
@@ -1523,14 +1443,12 @@
                 on_release: root.dismiss()
 
 <OpenNewFilePopup>:
-    id: openNewFilePop
     auto_dismiss: True
     title: "Open New File"
     title_size: dp(18)
     size_hint: (0.35, 0.28)
 
     BoxLayout:
-        id: openFilePLayout
         orientation: "vertical"
         spacing: 35
         padding: 20, 0, 20, 20
@@ -1573,14 +1491,12 @@
                 on_release: root.dismiss()
 
 <ValidationPopup>:
-    id: validationPop
     auto_dismiss: False
     title: "Unit Testing"
     title_size: dp(18)
     size_hint: (0.45, 0.85)
 
     BoxLayout:
-        id: validationPLayout
         orientation: "vertical"
         spacing: 15
         padding: 20, -1 * self.size[1]/15, 20, 20
@@ -1637,14 +1553,12 @@
                 text: ""
 
 <StartupTestsPopup>:
-    id: StartupTestsPop
     auto_dismiss: False
     title: "Startup Tests"
     title_size: dp(18)
     size_hint: (0.35, 0.28)
 
     BoxLayout:
-        id: startupTestsPLayout
         orientation: "vertical"
         spacing: 35
         padding: 20, 0, 20, 20
@@ -1680,14 +1594,12 @@
                 text: ""
 
 <RequestClosePopup>:
-    id: RequestClosePop
     auto_dismiss: True
     title: "Close MARS"
     title_size: dp(18)
     size_hint: (0.35, 0.28)
 
     BoxLayout:
-        id: RequestClosePlayout
         orientation: "vertical"
         spacing: root.height / 10
         padding: 20, 0, 20, 20
