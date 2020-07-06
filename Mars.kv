@@ -209,7 +209,7 @@
 
                     InputButton:
                         id: restraintButton
-                        text: "Starting\nRestraint"
+                        text: "Series 1\nRestraint"
                         font_size: self.width / buttonSizer
                         on_release: app.openRestraintPop()
 
@@ -559,104 +559,72 @@
 
 <RestraintPopup>:
     auto_dismiss: False
-    title: "Starting Restraint Data"
-    title_size: dp(18)
-    size_hint: (0.42, 0.54)
+    title: "Series 1 Restraint Data"
+    size: (dp(400), dp(380))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Restraint ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: restraintIDText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "049"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 2
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Restraint Uncertainty (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: restraintUncertaintyText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "0.062"
-            font_size: popUpFontSize
-            background_normal: ''            
             orderNum: 3
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Random Error (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: randomErrorText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             text: "0"
             hint_text: "0"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 4
 
-        Label:
+        PopupLabel:
             id: restraintPopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             WriteButton:
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
 <DatePopup>:

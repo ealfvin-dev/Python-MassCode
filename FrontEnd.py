@@ -778,7 +778,7 @@ class LabInfoPopup(Popup):
 
         self.dismiss()
 
-class RestraintPopup(Popup):
+class RestraintPopup(PopupBase):
     def submit(self):
         restraintIDText = self.ids.restraintIDText.text
         restraintUncertaintyText = self.ids.restraintUncertaintyText.text
