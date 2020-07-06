@@ -29,7 +29,7 @@
 <Design>  0  1  0 -1
 <Design>  0  0  1 -1
 
-<Pounds>  1
+<Grams>  0
 
 <Position>  A500lb            504 7.2031   0.0000351
 <Position>  B500lb            504 7.1049   0.0000351
@@ -38,7 +38,6 @@
 
 <Restraint>  0 0 1 1
 <Check-Standard>  0 0 1 -1
-<Linear-Combo>  0 0 0 0
 <Pass-Down>  0 0 0 0
 
 <Sigma-t>  139.75

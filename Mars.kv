@@ -11,7 +11,6 @@
 #:set popUpLabelSize dp(15)
 
 <MainLayout>:
-    id: mainBox
     orientation: 'horizontal'
     spacing: self.size[1] / 50
     padding: 0, 0, 0, 0
@@ -199,7 +198,7 @@
                 BoxLayout:
                     id: menuRow1
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
                     padding: (0, 0, 0, 20)
 
                     InputButton:
@@ -210,7 +209,7 @@
 
                     InputButton:
                         id: restraintButton
-                        text: "Starting\nRestraint"
+                        text: "Series 1\nRestraint"
                         font_size: self.width / buttonSizer
                         on_release: app.openRestraintPop()
 
@@ -219,6 +218,17 @@
                         color: labelColor
                         font_size: self.height / labelSizer
                         text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: headerSeparater-blank
+                    orientation: 'horizontal'
+                    size_hint: (1, 0.4)
+
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: self.height / labelSizer
                         halign: 'left'
 
                 BoxLayout:
@@ -237,20 +247,20 @@
                 BoxLayout:
                     id: menuRow2
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
                     padding: (0, 0, 0, 20)
 
                     InputButton:
                         id: dateButton
-                        text: "Date\nTechnicion"
+                        text: "Balance &\nDate"
                         font_size: self.width / buttonSizer
                         on_release: app.openDatePop()
 
                     InputButton:
-                        id: balanceButton
-                        text: "Balance"
+                        id: weightsButton
+                        text: "Weights"
                         font_size: self.width / buttonSizer
-                        on_release: app.openBalancePop()
+                        on_release: app.openWeightsPop()
 
                     InputButton:
                         id: gravityButton
@@ -266,7 +276,7 @@
                     size_hint: (1.0, 0.25)
 
                     Label:
-                        text: "[b]\nStatistics[/b]"
+                        text: "[b]\nDesign[/b]"
                         markup: True
                         color: labelColor
                         font_size: self.height / labelSizer
@@ -276,7 +286,45 @@
                 BoxLayout:
                     id: menuRow3
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
+                    padding: (0, 0, 0, 20)
+
+                    InputButton:
+                        id: designButton
+                        text: "Design"
+                        font_size: self.width / buttonSizer
+                        on_release: app.openDesignPop()
+
+                    InputButton:
+                        id: positionVectorsButton
+                        text: "Position\nVectors"
+                        font_size: self.width / buttonSizer
+                        on_release: app.openVectorsPop()
+
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuLabel4
+                    orientation: 'horizontal'
+                    size_hint: (1.0, 0.25)
+
+                    Label:
+                        text: "[b]\nStatistics[/b]"
+                        markup: True
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        text_size: self.size
+                        halign: 'left'
+
+                BoxLayout:
+                    id: menuRow4
+                    orientation: 'horizontal'
+                    spacing: self.width / 10
                     padding: (0, 0, 0, 20)
 
                     InputButton:
@@ -300,43 +348,6 @@
                         halign: 'left'
 
                 BoxLayout:
-                    id: menuLabel4
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
-
-                    Label:
-                        text: "[b]\nDesign[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
-
-                BoxLayout:
-                    id: menuRow4
-                    orientation: 'horizontal'
-                    spacing: self.width / 12
-                    padding: (0, 0, 0, 20)
-
-                    InputButton:
-                        id: designButton
-                        text: "Design"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openDesignPop()
-
-                    InputButton:
-                        id: weightsButton
-                        text: "Weights"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openWeightsPop()
-
-                    InputButton:
-                        id: positionVectorsButton
-                        text: "Position\nVectors"
-                        font_size: self.width / buttonSizer
-                        on_release: app.openVectorsPop()
-
-                BoxLayout:
                     id: menuLabel5
                     orientation: 'horizontal'
                     size_hint: (1.0, 0.25)
@@ -352,7 +363,7 @@
                 BoxLayout:
                     id: menuRow5
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
                     padding: (0, 0, 0, 20)
 
                     InputButton:
@@ -387,7 +398,7 @@
                 BoxLayout:
                     id: menuCol7
                     orientation: 'horizontal'
-                    spacing: self.width / 12
+                    spacing: self.width / 10
                     padding: (0, 20, 0, 0)
 
                     Button: 
@@ -443,7 +454,7 @@
                     foreground_color: 0, 0, 0, 1
                     markup: True
                     on_focus: self.selection_color = 0.1843, 0.6549, 0.8313, 0.27
-                    on_text: root.textAdded()
+                    on_text: root.textAdded(self.cursor_row)
 
                 TextInput:
                     id: errors
@@ -458,7 +469,6 @@
                     readonly: True
 
         Label:
-            id: footer
             font_size: dp(9)
             text: "[color=#000000]Copywrite Erik Alfvin, 2020[/color]"
             markup: True
@@ -468,457 +478,306 @@
             size_hint: (1.0, 0.01)
 
 <LabInfoPopup>:
-    id: labInfoPop
     auto_dismiss: False
     title: "Header"
-    title_size: dp(18)
-    size_hint: (0.42, 0.56)
+    size: (dp(600), dp(475))
 
     BoxLayout:
-        id: LabInfoPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20        
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
+        PopupLabel:
             text: "Laboratory Information & Notes:"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: labInfoText
-            size_hint: (1, 2.2)
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
             hint_text: "Calibration Laboratory\nAddress Line 1\nAddress Line 2\nAddress Line 3\nItem Description\nNotes"
-            font_size: popUpFontSize
-            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
-            background_normal: ''
-            orderNum: 0
+            padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
             write_tab: True
+            multiline: True
+            height: dp(200)
+            orderNum: 0
 
-        Label:
+        PopupLabel:
             text: "Report Number:"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
 
         OrderedText:
             id: reportNumText
-            size_hint: (1, 0.5)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (0.5, None)
+            height: 3 * popUpFontSize
             hint_text: "999999a"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 1
 
-        Label:
+        PopupLabel:
             id: labInfoPopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 17.5)
-            size_hint: (1, 0.74)
-
-            WriteButton:
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <RestraintPopup>:
-    id: restraintPop
     auto_dismiss: False
-    title: "Starting Restraint Data"
-    title_size: dp(18)
-    size_hint: (0.42, 0.54)
+    title: "Series 1 Restraint Data"
+    size: (dp(400), dp(380))
 
     BoxLayout:
-        id: RestraintPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Restraint ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: restraintIDText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "049"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 2
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Restraint Uncertainty (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: restraintUncertaintyText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             hint_text: "0.062"
-            font_size: popUpFontSize
-            background_normal: ''            
             orderNum: 3
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Random Error (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: randomErrorText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
             text: "0"
             hint_text: "0"
-            font_size: popUpFontSize
-            background_normal: ''
             orderNum: 4
 
-        Label:
+        PopupLabel:
             id: restraintPopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
-
-            WriteButton:
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
 
 <DatePopup>:
-    id: datePop
     auto_dismiss: False
-    title: "Date, IDs"
-    title_size: dp(18)
-    size_hint: (0.42, 0.54)
+    title: "Date, Balance"
+    size: (dp(570), dp(410))
 
     BoxLayout:
-        id: datePLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Date:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: dateText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "MM DD YYYY"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 6
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, None)
+            spacing: dp(20)
+            height: dp(230)
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Technicion ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: techIDText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "019"
-            font_size: popUpFontSize
-            background_normal: ''            
-            orderNum: 7
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: (0.5, None)
+                spacing: dp(8)
+                padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Check ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: checkIDText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "62"
-            font_size: popUpFontSize
-            background_normal: ''            
-            orderNum: 8
+                PopupLabel:
+                    text: "Date:"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
 
-        Label:
+                OrderedText:
+                    id: dateText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    hint_text: "MM DD YYYY"
+                    orderNum: 6
+
+                PopupLabel:
+                    text: "Technician ID:"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                OrderedText:
+                    id: techIDText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    hint_text: "019"
+                    orderNum: 7
+
+                PopupLabel:
+                    text: ""
+                    size_hint: (1, None)
+                    height: SFLabel.height
+                    text_size: (self.width, None)
+
+                PopupLabel:
+                    text: ""
+                    size_hint: (1, None)
+                    height: techIDText.height
+                    text_size: (self.width, None)
+
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: (0.5, None)
+                spacing: dp(8)
+                padding: dp(10), dp(10), dp(10), dp(10)
+
+                PopupLabel:
+                    text: "Balance ID:"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                OrderedText:
+                    id: balanceIDText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    hint_text: "14"
+                    orderNum: 8
+
+                PopupLabel:
+                    text: "Direct Readings (1 = Yes, 0 = No):"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                OrderedText:
+                    id: directReadingsText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    text: "0"
+                    hint_text: "0"
+                    orderNum: 9
+
+                PopupLabel:
+                    id: SFLabel
+                    text: "Direct Reading Sensitivity Factor\n(mg/div):"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                OrderedText:
+                    id: directReadingsSFText
+                    size_hint: (1, None)
+                    height: 3 * popUpFontSize
+                    text: "1.0"
+                    hint_text: "1.0"
+                    orderNum: 10
+
+        PopupLabel:
             id: datePopError
-            size_hint: (1, 0.6)
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
-
-            WriteButton:
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
-
-<BalancePopup>:
-    id: balancePop
-    auto_dismiss: False
-    title: "Balance Data"
-    title_size: dp(18)
-    size_hint: (0.42, 0.54)
-
-    BoxLayout:
-        id: balancePLayout
-        orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Balance ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: balanceIDText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "049"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 9
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Direct Readings (1 = Yes, 0 = No):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: directReadingsText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: "0"
-            font_size: popUpFontSize
-            background_normal: ''            
-            orderNum: 10
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Direct Reading Sensitivity Factor (mg/div):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: directReadingsSFText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: "1.0"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 11
-
-        Label:
-            id: balancePopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
-
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
 
             WriteButton:
-                font_size: self.width / buttonSizer
                 on_release: root.submit()
-
-            CancelButton:
-                font_size: self.width / buttonSizer
-                on_release: root.dismiss()
 
 <DesignPopup>:
-    id: designPop
     auto_dismiss: False
     title: "Design"
-    title_size: dp(18)
-    size_hint: (0.42, 0.6)
+    size: (dp(570), dp(550))
 
     BoxLayout:
-        id: designPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Design Matrix:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: 25
-            padding: 0, 0, 0, 0
-            size_hint: (1, 2)
+            size_hint: (1, None)
+            spacing: dp(20)
+            height: dp(280)
+
+            OrderedText:
+                id: designText
+                size_hint: (0.7, 1)
+                hint_text: "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
+                padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
+                write_tab: True
+                multiline: True
+                on_text: root.evalDesign()
+                orderNum: 18
 
             BoxLayout:
                 orientation: "vertical"
-                spacing: 5
-                padding: 0, 0, 0, 0
-
-                Label:
-                    id: designLabel
-                    size_hint: (1, 0.6)
-                    text: "Design Matrix:"
-                    markup: True
-                    color: popLabelColor
-                    text_size: self.size
-                    font_size: popUpLabelSize
-                    halign: "left"
-                    valign: "bottom"
-                
-                OrderedText:
-                    id: designText
-                    size_hint: (1, 2.5)
-                    font_name: "./Menlo.ttc"
-                    text: ""
-                    hint_text: "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
-                    font_size: popUpFontSize
-                    padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
-                    background_normal: ''
-                    orderNum: 13
-                    on_text: root.evalDesign()
-                    write_tab: True
-
-            BoxLayout:
-                orientation: "vertical"
-                spacing: 5
-                padding: 0, designLabel.height + 5, 0, 0
-                size_hint: (0.5, 1)
+                spacing: dp(50)
+                size_hint: (0.3, 1)
 
                 Button:
                     id: dropDownMain
-                    size_hint: (0.8, 0.5)
+                    size_hint: (None, None)
+                    size: (dp(140), dp(50))
                     text: "Presets"
                     halign: 'center'
-                    font_size: self.width / buttonSizer
+                    font_size: dp(15)
                     on_release: dropDownn.open(self)
 
                 DropDown:
@@ -927,503 +786,365 @@
                     Button:
                         text: "3-1"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "4-1"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "5-1"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "532111"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
                     Button:
                         text: "522111"
                         size_hint_y: None
-                        height: 60
+                        height: dp(30)
                         on_press: root.writeDesign(self.text)
 
-                Label:
+                PopupLabel:
                     id: positionsLabel
-                    size_hint: (1, 0.6)
                     text: "Positions:"
-                    markup: True
-                    color: popLabelColor
-                    text_size: self.size
-                    font_size: mm(5)
-                    halign: "left"
-                    valign: "bottom"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
 
-                Label:
+                PopupLabel:
                     id: observationsLabel
-                    size_hint: (1, 0.6)
                     text: "Observations:"
-                    markup: True
-                    color: popLabelColor
-                    text_size: self.size
-                    font_size: mm(5)
-                    halign: "left"
-                    valign: "bottom"
+                    size_hint: (1, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
 
-        Label:
-            size_hint: (1, 0.6)
+        PopupLabel:
             text: "Design ID:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
             id: designIDText
-            size_hint: (1, 0.39)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
+            size_hint: (0.4, None)
+            height: 3 * popUpFontSize
             hint_text: "112"
-            font_size: popUpFontSize
-            background_normal: ''            
-            orderNum: 12
-
-        Label:
-            id: designPopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
-
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.58)
-
-            WriteButton:
-                size_hint: (1, 1.5)
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
-
-            CancelButton:
-                size_hint: (1, 1.5)
-                font_size: self.width / buttonSizer
-                on_release: root.dismiss()
-
-<WeightsPopup>:
-    id: weightsPop
-    auto_dismiss: False
-    title: "Weights"
-    title_size: dp(18)
-    size_hint: (0.42, 0.56)
-
-    BoxLayout:
-        id: weightsPLayout
-        orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
-
-        Label:
-            text: "Weight Data - ID, Nominal (g/lb), Density, CCE (/" + chr(730) + "C), Correction (mg):"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: weightsText
-            size_hint: (1, 2.2)
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "P1.kg     1000  7.9826  0.000045  2.345\nP1..kg    1000  7.9834  0.000045  1.824\nT1.kg     1000  8.0451  0.000045 \nT1..kg    1000  8.0405  0.000045"
-            font_size: popUpFontSize
-            padding: [10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height, 10, 10 + 0.5 * (self.height - (10 + 10)) % self.line_height]
-            background_normal: ''
-            orderNum: 15
-            write_tab: True
-
-        Label:
-            text: "Nominal Units (0 = g, 1 = lb):"
-            size_hint: (1, 0.6)
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-
-        OrderedText:
-            id: nominalsText
-            size_hint: (1, 0.5)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: "0"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 14
-
-        Label:
-            id: weightsPopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
-
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 17.5)
-            size_hint: (1, 0.74)
-
-            WriteButton:
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
-
-            CancelButton:
-                font_size: self.width / buttonSizer
-                on_release: root.dismiss()
-
-<VectorsPopup>:
-    id: vectorsPop
-    auto_dismiss: False
-    title: "Position Vectors"
-    title_size: dp(18)
-    size_hint: (0.42, 0.67)
-
-    BoxLayout:
-        id: vectorsPLayout
-        orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Restraint Position:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: restraintVectorText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "1 1 0 0"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 16
-
-        Label:
-            size_hint: (1, 0.6)
-            text: "Check Standard Position:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: checkVectorText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "1 -1 0 0"
-            font_size: popUpFontSize
-            background_normal: ''            
             orderNum: 17
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Linear Combo Position:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: linearComboText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
+        PopupLabel:
+            id: designPopError
+            size_hint: (1, None)
             text: ""
-            hint_text: "0 0 0 0"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 18
+            color: (0.95, 0.05, 0.09, 1)
+            height: dp(20)
+            text_size: (self.width, None)
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "Next Series Restraint:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
+
+            CancelButton:
+                on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
+
+<WeightsPopup>:
+    auto_dismiss: False
+    title: "Weights"
+    size: (dp(600), dp(495))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Weight Data:\nID  |  Nominal (g, lb)  |  Density (g/cm3)  |  CCE (/" + chr(730) + "C)  |  Correction (mg):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
-            id: nextRestraintText
-            size_hint: (1, 0.45)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
+            id: weightsText
+            size_hint: (1, None)
+            hint_text: "P1.kg     1000  7.9826  0.000045  2.345\nP1..kg    1000  7.9834  0.000045  1.824\nT1.kg     1000  8.0451  0.000045 \nT1..kg    1000  8.0405  0.000045"
+            padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
+            write_tab: True
+            multiline: True
+            height: dp(200)
+            orderNum: 16
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, None)
+            spacing: dp(20)
+            height: dp(20)
+
+            PopupLabel:
+                text: "Nominal Units (1 = g, 0 = lb):"
+                size_hint: (0.5, None)
+                height: self.texture_size[1]
+                text_size: (self.width, None)
+
+            PopupLabel:
+                text: "Check Standard ID:"
+                size_hint: (0.5, None)
+                height: self.texture_size[1]
+                text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, None)
+            spacing: dp(20)
+            height: dp(42)
+
+            OrderedText:
+                id: nominalsText
+                size_hint: (0.5, None)
+                height: 3 * popUpFontSize
+                hint_text: "1"
+                text: "1"
+                orderNum: 15
+
+            OrderedText:
+                id: checkIDText
+                size_hint: (0.5, None)
+                height: 3 * popUpFontSize
+                hint_text: "54"
+                orderNum: 14
+
+        PopupLabel:
+            id: weightsPopError
+            size_hint: (1, None)
             text: ""
-            hint_text: "0 0 0 0"
-            font_size: popUpFontSize
-            background_normal: ''            
+            color: (0.95, 0.05, 0.09, 1)
+            height: dp(20)
+            text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
+
+            CancelButton:
+                on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
+
+<VectorsPopup>:
+    auto_dismiss: False
+    title: "Position Vectors"
+    size: (dp(400), dp(380))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+            
+        PopupLabel:
+            text: "Restraint Position:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: restraintVectorText
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "1 1 0 0"
             orderNum: 19
 
-        Label:
-            id: vectorsPopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
-            color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+        PopupLabel:
+            text: "Check Standard Position:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
 
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.90)
-
-            WriteButton:
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
-
-            CancelButton:
-                font_size: self.width / buttonSizer
-                on_release: root.dismiss()
-
-<StatisticsPopup>:
-    id: statisticsPop
-    auto_dismiss: False
-    title: "Statistics"
-    title_size: dp(18)
-    size_hint: (0.42, 0.44)
-
-    BoxLayout:
-        id: sigmaPLayout
-        orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
-
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
-            text: chr(963) + "[size=3mm]t[/size] (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
-        
         OrderedText:
-            id: sigmatText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            hint_text: "0.008"
-            font_size: popUpFontSize
-            background_normal: ''
+            id: checkVectorText
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "1 -1 0 0"
             orderNum: 20
 
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
-            text: chr(963) + "[size=3mm]w[/size] (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
-        
+        PopupLabel:
+            text: "Next Series Restraint:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
-            id: sigmawText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            hint_text: "0.012"
-            font_size: popUpFontSize
-            background_normal: ''            
+            id: nextRestraintText
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "0 0 0 0"
             orderNum: 21
 
-        Label:
-            id: sigmaPopError
-            size_hint: (1, 0.6)
+        PopupLabel:
+            id: vectorsPopError
+            size_hint: (1, None)
             text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
-
-            WriteButton:
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
-<SwPopup>:
-    id: swPop
+            WriteButton:
+                on_release: root.submit()
+
+<StatisticsPopup>:
     auto_dismiss: False
-    title: "Sensitivity Weight"
-    title_size: dp(18)
-    size_hint: (0.42, 0.54)
+    title: "Statistics"
+    size: (dp(400), dp(310))
 
     BoxLayout:
-        id: swPLayout
         orientation: "vertical"
-        spacing: 5
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "sw True Mass (mg):"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+        PopupLabel:
+            text: chr(963) + "[size=3mm]t[/size] (mg):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
-            id: swMassText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "50.1023"
-            font_size: popUpFontSize
-            background_normal: ''
+            id: sigmatText
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "0.008"
             orderNum: 22
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "sw Density:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
+        PopupLabel:
+            text: chr(963) + "[size=3mm]w[/size] (mg):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
         OrderedText:
-            id: swDensityText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            text: ""
-            hint_text: "7.95"
-            font_size: popUpFontSize
-            background_normal: ''            
+            id: sigmawText
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "0.012"
             orderNum: 23
 
-        Label:
-            size_hint: (1, 0.6)
-            text: "sw CCE:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "bottom"
-        
-        OrderedText:
-            id: swCCEText
-            size_hint: (1, 0.47)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
+        PopupLabel:
+            id: sigmaPopError
+            size_hint: (1, None)
             text: ""
-            hint_text: "0.000045"
-            font_size: popUpFontSize
-            background_normal: ''
-            orderNum: 24
-
-        Label:
-            id: swPopError
-            size_hint: (1, 0.6)
-            text: ""
-            markup: True
             color: (0.95, 0.05, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.95)
-
-            WriteButton:
-                font_size: self.width / buttonSizer
-                on_release: root.submit()
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
 
             CancelButton:
-                font_size: self.width / buttonSizer
                 on_release: root.dismiss()
 
+            WriteButton:
+                on_release: root.submit()
+
+<SwPopup>:
+    auto_dismiss: False
+    title: "Sensitivity Weight"
+    size: (dp(400), dp(380))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "sw True Mass (mg):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: swMassText
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "50.1023"
+            orderNum: 24
+
+        PopupLabel:
+            text: "sw Density (g/cm3):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: swDensityText
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "7.95"
+            orderNum: 25
+
+        PopupLabel:
+            text: "sw CCE (/" + chr(730) + "C):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: swCCEText
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "0.000045"
+            orderNum: 26
+
+        PopupLabel:
+            id: swPopError
+            size_hint: (1, None)
+            text: ""
+            color: (0.95, 0.05, 0.09, 1)
+            height: dp(20)
+            text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
+
+            CancelButton:
+                on_release: root.dismiss()
+
+            WriteButton:
+                on_release: root.submit()
+
 <MeasurementsPopup>:
-    id: measurementsPop
     auto_dismiss: False
     title: "Measurements"
     size: (dp(800), dp(540))
 
     BoxLayout:
-        id: measurementsPLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -1459,7 +1180,7 @@
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 write_tab: True
                 multiline: True
-                orderNum: 25
+                orderNum: 29
             
             OrderedText:
                 id: envText
@@ -1468,7 +1189,7 @@
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 write_tab: True
                 multiline: True
-                orderNum: 26
+                orderNum: 27
 
         BoxLayout:
             orientation: "horizontal"
@@ -1503,7 +1224,7 @@
                 size_hint: (0.35, None)
                 height: 3 * popUpFontSize
                 hint_text: "0.05 0.105 -0.07"
-                orderNum: 27
+                orderNum: 28
 
         PopupLabel:
             id: measurementsPopError
@@ -1519,20 +1240,18 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
 
+            WriteButton:
+                on_release: root.submit()
+
 <GravityPopup>:
-    id: gravityPop
     auto_dismiss: False
     title: "Local Gravity Corrections"
     size: (dp(500), dp(560))
 
     BoxLayout:
-        id: gravityPLayout
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
@@ -1554,7 +1273,7 @@
                 hint_text: "10.3\n10.5\n14.0\n9.7"
                 multiline: True
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
-                orderNum: 30
+                orderNum: 13
 
             Label:
                 id: gravityPositionsText
@@ -1579,7 +1298,7 @@
             size_hint: (0.5, None)
             height: 3 * popUpFontSize
             hint_text: "0.0000031"
-            orderNum: 28
+            orderNum: 11
 
         PopupLabel:
             text: "Local Acceleration of\nGravity (m/s" + chr(178) + "):"
@@ -1592,7 +1311,7 @@
             size_hint: (0.5, None)
             height: 3 * popUpFontSize
             hint_text: "9.8"
-            orderNum: 29
+            orderNum: 12
 
         PopupLabel:
             id: gravityPopError
@@ -1608,21 +1327,19 @@
             size_hint: (1, None)
             height: dp(50)
 
-            WriteButton:
-                on_release: root.submit()
-
             CancelButton:
                 on_release: root.dismiss()
 
+            WriteButton:
+                on_release: root.submit()
+
 <OpenFilePopup>:
-    id: openFilePop
     auto_dismiss: False
     title: "Open File"
     title_size: dp(18)
     size_hint: (0.35, 0.32)
 
     BoxLayout:
-        id: openFilePLayout
         orientation: "vertical"
         spacing: 35
         padding: 20, 0, 20, 20
@@ -1673,14 +1390,12 @@
                 on_release: root.dismiss()
 
 <OpenNewFilePopup>:
-    id: openNewFilePop
     auto_dismiss: True
     title: "Open New File"
     title_size: dp(18)
     size_hint: (0.35, 0.28)
 
     BoxLayout:
-        id: openFilePLayout
         orientation: "vertical"
         spacing: 35
         padding: 20, 0, 20, 20
@@ -1723,14 +1438,12 @@
                 on_release: root.dismiss()
 
 <ValidationPopup>:
-    id: validationPop
     auto_dismiss: False
     title: "Unit Testing"
     title_size: dp(18)
     size_hint: (0.45, 0.85)
 
     BoxLayout:
-        id: validationPLayout
         orientation: "vertical"
         spacing: 15
         padding: 20, -1 * self.size[1]/15, 20, 20
@@ -1787,14 +1500,12 @@
                 text: ""
 
 <StartupTestsPopup>:
-    id: StartupTestsPop
     auto_dismiss: False
     title: "Startup Tests"
     title_size: dp(18)
     size_hint: (0.35, 0.28)
 
     BoxLayout:
-        id: startupTestsPLayout
         orientation: "vertical"
         spacing: 35
         padding: 20, 0, 20, 20
@@ -1830,14 +1541,12 @@
                 text: ""
 
 <RequestClosePopup>:
-    id: RequestClosePop
     auto_dismiss: True
     title: "Close MARS"
     title_size: dp(18)
     size_hint: (0.35, 0.28)
 
     BoxLayout:
-        id: RequestClosePlayout
         orientation: "vertical"
         spacing: root.height / 10
         padding: 20, 0, 20, 20

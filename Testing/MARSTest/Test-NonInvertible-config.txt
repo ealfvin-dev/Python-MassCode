@@ -30,7 +30,7 @@
            <Design>  1 -1 -1  1 -1  0
            <Design>  1 -1 -1  0  1 -1
 
-           <Pounds>  0
+           <Grams>  1
 
          <Position>  W500g          500 7.9565  0.000045 1.222
          <Position>  W300g          300 7.9570  0.000045 0.456
@@ -41,7 +41,6 @@
 
         <Restraint>  1 1 1 0 0 0
    <Check-Standard>  0 0 0 0 1 0
-     <Linear-Combo>  0 0 0 0 0 0
         <Pass-Down>  0 0 0 0 0 0
 
           <Sigma-t>  0.05

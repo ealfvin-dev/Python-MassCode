@@ -101,11 +101,10 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
                     "<Direct-Reading-SF>": False, \
                     "<Design-ID>": False, \
                     "<Design>": False, \
-                    "<Pounds>": False, \
+                    "<Grams>": False, \
                     "<Position>": False, \
                     "<Restraint>": False, \
                     "<Check-Standard>": False, \
-                    "<Linear-Combo>": False, \
                     "<Pass-Down>": False, \
                     "<Sigma-t>": False, \
                     "<Sigma-w>": False, \
@@ -166,11 +165,10 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Direct-Reading-SF>": False, \
                         "<Design-ID>": False, \
                         "<Design>": False, \
-                        "<Pounds>": False, \
+                        "<Grams>": False, \
                         "<Position>": False, \
                         "<Restraint>": False, \
                         "<Check-Standard>": False, \
-                        "<Linear-Combo>": False, \
                         "<Pass-Down>": False, \
                         "<Sigma-t>": False, \
                         "<Sigma-w>": False, \
@@ -190,11 +188,10 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Direct-Reading-SF>": False, \
                         "<Design-ID>": False, \
                         "<Design>": False, \
-                        "<Pounds>": False, \
+                        "<Grams>": False, \
                         "<Position>": False, \
                         "<Restraint>": False, \
                         "<Check-Standard>": False, \
-                        "<Linear-Combo>": False, \
                         "<Pass-Down>": False, \
                         "<Sigma-t>": False, \
                         "<Sigma-w>": False, \
@@ -247,10 +244,9 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
         "<Direct-Readings>": 0,\
         "<Direct-Reading-SF>": 0,\
         "<Design-ID>": 0,\
-        "<Pounds>": 0,\
+        "<Grams>": 0,\
         "<Restraint>": 0,\
         "<Check-Standard>": 0,\
-        "<Linear-Combo>": 0,\
         "<Pass-Down>": 0,\
         "<Sigma-t>": 0,\
         "<Sigma-w>": 0,\

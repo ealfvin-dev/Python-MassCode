@@ -9,7 +9,7 @@ Config.write()
 
 from kivy.graphics import Color, Rectangle, Line
 from kivy.clock import Clock
-from kivy.metrics import dp, sp
+from kivy.metrics import dp
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -61,29 +61,28 @@ class MainLayout(BoxLayout):
             "@SERIES": 5, \
             "<Date>": 6, \
             "<Technician-ID>": 7, \
-            "<Check-Standard-ID>": 8, \
-            "<Balance-ID>": 9, \
-            "<Direct-Readings>": 10, \
-            "<Direct-Reading-SF>": 11, \
-            "<Design-ID>": 12, \
-            "<Design>": 13, \
-            "<Pounds>": 14, \
-            "<Position>": 15, \
-            "<Restraint>": 16, \
-            "<Check-Standard>": 17, \
-            "<Linear-Combo>": 18, \
-            "<Pass-Down>": 19, \
-            "<Sigma-t>": 20, \
-            "<Sigma-w>": 21, \
-            "<sw-Mass>": 22, \
-            "<sw-Density>": 23, \
-            "<sw-CCE>": 24, \
-            "<Balance-Reading>": 25, \
-            "<Environmentals>": 26, \
-            "<Env-Corrections>": 27, \
-            "<Gravity-Grad>": 28, \
-            "<Gravity-Local>": 29, \
-            "<Height>": 30}
+            "<Balance-ID>": 8, \
+            "<Direct-Readings>": 9, \
+            "<Direct-Reading-SF>": 10, \
+            "<Gravity-Grad>": 11, \
+            "<Gravity-Local>": 12, \
+            "<Height>": 13, \
+            "<Check-Standard-ID>": 14, \
+            "<Grams>": 15, \
+            "<Position>": 16, \
+            "<Design-ID>": 17, \
+            "<Design>": 18, \
+            "<Restraint>": 19, \
+            "<Check-Standard>": 20, \
+            "<Pass-Down>": 21, \
+            "<Sigma-t>": 22, \
+            "<Sigma-w>": 23, \
+            "<sw-Mass>": 24, \
+            "<sw-Density>": 25, \
+            "<sw-CCE>": 26, \
+            "<Environmentals>": 27, \
+            "<Env-Corrections>": 28, \
+            "<Balance-Reading>": 29}
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -146,7 +145,7 @@ class MainLayout(BoxLayout):
                     textInput.insert_text("\n")
                     textBlockLength += 1
 
-                if(orderNum == 1 or orderNum == 4 or orderNum == 8 or orderNum == 11 or orderNum == 14 or orderNum == 19 or orderNum == 21 or orderNum == 24 or orderNum == 27):
+                if(orderNum == 1 or orderNum == 4 or orderNum == 10 or orderNum == 21 or orderNum == 23 or orderNum == 26 or orderNum == 28):
                     textInput.insert_text("\n")
 
         return cursorStart, textBlockLength
@@ -188,17 +187,20 @@ class MainLayout(BoxLayout):
         self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
         self.ids.userText.select_text(startPosition, endPosition)
 
-    def textAdded(self):
+    def textAdded(self, cursor_row):
         if(self.saved):
             self.saved = False
             self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
             self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
 
+        if(self.currentSeries == 1):
+            self.getReportNum(self.ids.userText.text)
+
     def getReportNum(self, text=None):
         if(text == None): text = self.seriesTexts[0]
 
         for line in text.splitlines():
-            if(len(line.split()) == 0):
+            if(line.split() == []):
                 continue
 
             if(line.split()[0] == "<Report-Number>"):
@@ -223,23 +225,23 @@ class MainLayout(BoxLayout):
         foundUnits = False
 
         for line in inputText.splitlines():
-            if(len(line.strip().split()) == 0):
+            if(line.split() == []):
                 continue
 
-            if(line.strip().split()[0] == "<Position>" and foundNominal == False):
+            if(line.split()[0] == "<Position>" and foundNominal == False):
                 try:
-                    seriesNominal = line.strip().split()[2]
+                    seriesNominal = line.split()[2]
                     foundNominal = True
                 except IndexError:
                     pass
                 
-            elif(line.strip().split()[0] == "<Pounds>"):
+            elif(line.split()[0] == "<Grams>"):
                 try:
-                    unitsNum = line.strip().split()[1]
-                    if(unitsNum == "0"):
+                    unitsNum = line.split()[1]
+                    if(unitsNum == "1"):
                         units = "g"
                         foundUnits = True
-                    if(unitsNum == "1"):
+                    if(unitsNum == "0"):
                         units = "lb"
                         foundUnits = True
                 except IndexError:
@@ -261,29 +263,28 @@ class MainLayout(BoxLayout):
             "@SERIES": False, \
             "<Date>": False, \
             "<Technician-ID>": False, \
-            "<Check-Standard-ID>": False, \
             "<Balance-ID>": False, \
             "<Direct-Readings>": False, \
             "<Direct-Reading-SF>": False, \
+            "<Gravity-Grad>": False, \
+            "<Gravity-Local>": False, \
+            "<Height>": False, \
+            "<Check-Standard-ID>": False, \
+            "<Grams>": False, \
+            "<Position>": False, \
             "<Design-ID>": False, \
             "<Design>": False, \
-            "<Pounds>": False, \
-            "<Position>": False, \
             "<Restraint>": False, \
             "<Check-Standard>": False, \
-            "<Linear-Combo>": False, \
             "<Pass-Down>": False, \
             "<Sigma-t>": False, \
             "<Sigma-w>": False, \
             "<sw-Mass>": False, \
             "<sw-Density>": False, \
             "<sw-CCE>": False, \
-            "<Balance-Reading>": False, \
             "<Environmentals>": False, \
             "<Env-Corrections>": False, \
-            "<Gravity-Grad>": False, \
-            "<Gravity-Local>": False, \
-            "<Height>": False}
+            "<Balance-Reading>": False}
 
         for line in seriesText.splitlines():
             if(line.split() == []):
@@ -308,16 +309,16 @@ class MainLayout(BoxLayout):
             self.ids.restraintButton.colorGrey()
 
         #Date Button
-        if(tags["<Date>"] and tags["<Technician-ID>"] and tags["<Check-Standard-ID>"]):
+        if(tags["<Date>"] and tags["<Technician-ID>"] and tags["<Balance-ID>"] and tags["<Direct-Readings>"] and tags["<Direct-Reading-SF>"]):
             self.ids.dateButton.colorGrey()
         else:
             self.ids.dateButton.colorBlue()
 
-        #Balance Button
-        if(tags["<Balance-ID>"] and tags["<Direct-Readings>"] and tags["<Direct-Reading-SF>"]):
-            self.ids.balanceButton.colorGrey()
+        #Weights Button
+        if(tags["<Position>"] and tags["<Grams>"] and tags["<Check-Standard-ID>"]):
+            self.ids.weightsButton.colorGrey()
         else:
-            self.ids.balanceButton.colorBlue()
+            self.ids.weightsButton.colorBlue()
 
         #Gravity Button
         if(tags["<Height>"] and tags["<Gravity-Grad>"] and tags["<Gravity-Local>"]):
@@ -325,29 +326,23 @@ class MainLayout(BoxLayout):
         else:
             self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
 
-        #Statistics Buttons
-        if(tags["<Sigma-t>"] and tags["<Sigma-w>"]):
-            self.ids.statisticsButton.colorGrey()
-        else:
-            self.ids.statisticsButton.colorBlue()
-
         #Design Button
         if(tags["<Design>"] and tags["<Design-ID>"]):
             self.ids.designButton.colorGrey()
         else:
             self.ids.designButton.colorBlue()
 
-        #Weights Button
-        if(tags["<Position>"] and tags["<Pounds>"]):
-            self.ids.weightsButton.colorGrey()
-        else:
-            self.ids.weightsButton.colorBlue()
-
         #Positions Button
-        if(tags["<Restraint>"] and tags["<Check-Standard>"] and tags["<Linear-Combo>"] and tags["<Pass-Down>"]):
+        if(tags["<Restraint>"] and tags["<Check-Standard>"] and tags["<Pass-Down>"]):
             self.ids.positionVectorsButton.colorGrey()
         else:
             self.ids.positionVectorsButton.colorBlue()
+
+        #Statistics Buttons
+        if(tags["<Sigma-t>"] and tags["<Sigma-w>"]):
+            self.ids.statisticsButton.colorGrey()
+        else:
+            self.ids.statisticsButton.colorBlue()
 
         #Sensitivity Weight Button
         if((tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]) or InputChecks.determineIfDirectReadings(seriesText)):
@@ -365,7 +360,6 @@ class MainLayout(BoxLayout):
         self.ids.labInfoButton.colorGrey()
         self.ids.restraintButton.colorGrey()
         self.ids.dateButton.colorGrey()
-        self.ids.balanceButton.colorGrey()
         self.ids.gravityButton.colorGrey()
         self.ids.statisticsButton.colorGrey()
         self.ids.designButton.colorGrey()
@@ -432,13 +426,13 @@ class MainLayout(BoxLayout):
         if(self.numberOfSeries == 1):
             return
 
-        lastSeriesText = self.seriesTexts[len(self.seriesTexts) - 1].strip().splitlines()
+        lastSeriesText = self.seriesTexts[len(self.seriesTexts) - 1].strip()
 
         #If user is currently working in the last series
         if(self.currentSeries == self.numberOfSeries):
-            lastSeriesText = self.ids.userText.text.strip().splitlines()
+            lastSeriesText = self.ids.userText.text.strip()
 
-        if(lastSeriesText == []):
+        if(lastSeriesText == "" or lastSeriesText == "@SERIES"):
             self.clearErrors()
 
             if(self.currentSeries == self.numberOfSeries):
@@ -502,7 +496,7 @@ class MainLayout(BoxLayout):
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
-        #Run tests to check on the provided report number
+        #Run tests to check the provided report number before saving
         reportNum = self.getReportNum()
         if(reportNum == False):
             self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1, CANNOT SAVE")
@@ -513,8 +507,7 @@ class MainLayout(BoxLayout):
         if(checkReportNum == False):
             return
 
-        seriesButtonId = "series" + str(self.currentSeries)
-        self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+        self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids["series" + str(self.currentSeries)])
         
         fileText = ""
         for seriesText in self.seriesTexts:
@@ -535,6 +528,7 @@ class MainLayout(BoxLayout):
 
     def run(self):
         #Perform checks to make sure the input file is in a runnable state
+        #######################
         start = time.time()
         if(self.currentSeries == None):
             return
@@ -562,8 +556,9 @@ class MainLayout(BoxLayout):
         requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
         if(not requiredChecks):
             return
-
+        #######################
         self.clearErrors()
+
         try:
             results = RunFile.run(self.reportNum + "-config.txt")
             self.grabOutputFile()
@@ -630,7 +625,6 @@ class MainLayout(BoxLayout):
 
             for sn in range(1, 14):
                 seriesID = "series" + str(sn)
-
                 self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
 
                 if(self.ids[seriesID].exists):
@@ -654,7 +648,7 @@ class OrderedText(TextInput):
         self.text = ""
         self.orderNum = 0
         self.background_normal = ''
-        self.font_size = sp(13)
+        self.font_size = dp(13)
         self.write_tab = False
         self.multiline = False
         self.padding = [dp(5), dp(5), dp(5), dp(5)]
@@ -744,16 +738,6 @@ class PopupBase(Popup):
         self.title_size = dp(18)
         self.size_hint = (None, None)
 
-    #     with self.canvas.before:
-    #         Color(0.906, 0.918, 0.926, 1)
-    #         self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
-
-    #         self.bind(size=self._update_rect, pos=self._update_rect)
-
-    # def _update_rect(self, instance, value):
-    #     self.backgroundRect.pos = instance.pos
-    #     self.backgroundRect.size = instance.size
-
 class PopupLabel(Label):
     def __init__(self, **kwargs):
         super().__init__()
@@ -761,14 +745,9 @@ class PopupLabel(Label):
         self.halign = "left"
         self.valign = "bottom"
         self.color = (0.095, 0.095, 0.096, 0.9)
-        self.font_size = sp(15)
+        self.font_size = dp(15)
 
-    def goToSeries(self, exists, seriesNum):
-        if(exists):
-            self.background_color = (0.25, 0.25, 0.28, 1.0)
-            self.text = "[color=#FFFFFF]" + self.text + "[/color]"
-
-class LabInfoPopup(Popup):
+class LabInfoPopup(PopupBase):
     def submit(self):
         #Check if all fields have been entered
         labInfoText = self.ids.labInfoText.text
@@ -793,7 +772,7 @@ class LabInfoPopup(Popup):
 
         self.dismiss()
 
-class RestraintPopup(Popup):
+class RestraintPopup(PopupBase):
     def submit(self):
         restraintIDText = self.ids.restraintIDText.text
         restraintUncertaintyText = self.ids.restraintUncertaintyText.text
@@ -816,56 +795,36 @@ class RestraintPopup(Popup):
 
         self.dismiss()
 
-class DatePopup(Popup):
+class DatePopup(PopupBase):
     def submit(self):
         dateText = self.ids.dateText.text
         techIDText = self.ids.techIDText.text
-        checkIDText = self.ids.checkIDText.text
+        balanceIDText = self.ids.balanceIDText.text
+        directReadingsText = self.ids.directReadingsText.text
+        directReadingsSFText = self.ids.directReadingsSFText.text
 
         dateOrder = self.ids.dateText.orderNum
         techIDOrder = self.ids.techIDText.orderNum
-        checkIDOrder = self.ids.checkIDText.orderNum
+        balanceOrder = self.ids.balanceIDText.orderNum
+        directReadingsOrder = self.ids.directReadingsText.orderNum
+        directReadingsSFOrder = self.ids.directReadingsSFText.orderNum
 
-        if(dateText == "" or techIDText == "" or checkIDText == ""):
+        if(dateText == "" or techIDText == "" or balanceIDText == "" or directReadingsText == "" or directReadingsSFText == ""):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(dateText, dateOrder)
         cursorStart2, textLength2 = self.parent.children[1].writeText(techIDText, techIDOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(balanceIDText, balanceOrder)
+        cursorStart4, textLength4 = self.parent.children[1].writeText(directReadingsText, directReadingsOrder)
+        cursorStart5, textLength5 = self.parent.children[1].writeText(directReadingsSFText, directReadingsSFOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + textLength5 + 4)
         self.parent.children[1].ids.dateButton.colorGrey()
 
         self.dismiss()
 
-class BalancePopup(Popup):
-    def submit(self):
-        balanceIDText = self.ids.balanceIDText.text
-        directReadingsText = self.ids.directReadingsText.text
-        directReadingsSFText = self.ids.directReadingsSFText.text
-
-        balanceOrder = self.ids.balanceIDText.orderNum
-        directReadingsOrder = self.ids.directReadingsText.orderNum
-        directReadingsSFOrder = self.ids.directReadingsSFText.orderNum
-
-        if(balanceIDText == "" or directReadingsText == "" or directReadingsSFText == ""):
-            self.ids.balancePopError.text = "Enter data for all fields"
-            return
-
-        cursorStart1, textLength1 = self.parent.children[1].writeText(balanceIDText, balanceOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(directReadingsText, directReadingsOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(directReadingsSFText, directReadingsSFOrder)
-
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
-        self.parent.children[1].ids.balanceButton.colorGrey()
-
-        if(directReadingsText.strip() == "1"):
-            self.parent.children[1].ids.swButton.colorGrey()
-
-        self.dismiss()
-
-class DesignPopup(Popup):
+class DesignPopup(PopupBase):
     def writeDesign(self, design):
         if(design == "3-1"):
             self.ids.designText.text = "1 -1  0\n1  0 -1\n0  1 -1"
@@ -930,22 +889,25 @@ class DesignPopup(Popup):
 
         self.dismiss()
 
-class WeightsPopup(Popup):
+class WeightsPopup(PopupBase):
     def submit(self):
-        weightsText = self.ids.weightsText.text
+        checkIDText = self.ids.checkIDText.text
         nominalsText = self.ids.nominalsText.text
+        weightsText = self.ids.weightsText.text
 
-        weightsOrder = self.ids.weightsText.orderNum
+        checkIDOrder = self.ids.checkIDText.orderNum
         nominalsOrder = self.ids.nominalsText.orderNum
+        weightsOrder = self.ids.weightsText.orderNum
 
-        if(weightsText == "" or nominalsText == ""):
+        if(checkIDText == "" or nominalsText == "" or weightsText == ""):
             self.ids.weightsPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(weightsText, weightsOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(weightsText, weightsOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
         self.parent.children[1].ids.weightsButton.colorGrey()
 
         #Render series nominal
@@ -954,33 +916,30 @@ class WeightsPopup(Popup):
 
         self.dismiss()
 
-class VectorsPopup(Popup):
+class VectorsPopup(PopupBase):
     def submit(self):
         restraintText = self.ids.restraintVectorText.text
         checkText = self.ids.checkVectorText.text
-        linearComboText = self.ids.linearComboText.text
         nextRestraintText = self.ids.nextRestraintText.text
 
         restraintOrder = self.ids.restraintVectorText.orderNum
         checkOrder = self.ids.checkVectorText.orderNum
-        linearComboOrder = self.ids.linearComboText.orderNum
         nextRestraintOrder = self.ids.nextRestraintText.orderNum
 
-        if(restraintText == "" or checkText == "" or linearComboText == "" or nextRestraintText == ""):
+        if(restraintText == "" or checkText == "" or nextRestraintText == ""):
             self.ids.vectorsPopError.text = "Enter data for all fields"
             return
 
         cursorStart1, textLength1 = self.parent.children[1].writeText(restraintText, restraintOrder)
         cursorStart2, textLength2 = self.parent.children[1].writeText(checkText, checkOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(linearComboText, linearComboOrder)
-        cursorStart4, textLength4 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + 3)
+        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
         self.parent.children[1].ids.positionVectorsButton.colorGrey()
 
         self.dismiss()
 
-class StatisticsPopup(Popup):
+class StatisticsPopup(PopupBase):
     def submit(self):
         sigmatText = self.ids.sigmatText.text
         sigmawText = self.ids.sigmawText.text
@@ -1000,7 +959,7 @@ class StatisticsPopup(Popup):
 
         self.dismiss()
 
-class SwPopup(Popup):
+class SwPopup(PopupBase):
     def submit(self):
         swMassText = self.ids.swMassText.text
         swDensityText = self.ids.swDensityText.text
@@ -1025,15 +984,15 @@ class SwPopup(Popup):
 
 class MeasurementsPopup(PopupBase):
     def submit(self):
-        balanceReadingsText = self.ids.balanceReadingsText.text
         envText = self.ids.envText.text
         envCorrectionsText = self.ids.envCorrectionsText.text
+        balanceReadingsText = self.ids.balanceReadingsText.text
 
-        balanceReadingsOrder = self.ids.balanceReadingsText.orderNum
         envOrder = self.ids.envText.orderNum
         envCorrectionsOrder = self.ids.envCorrectionsText.orderNum
+        balanceReadingsOrder = self.ids.balanceReadingsText.orderNum
 
-        if(balanceReadingsText == "" or envText == "" or envCorrectionsText == ""):
+        if(envText == "" or envCorrectionsText == "" or balanceReadingsText == ""):
             self.ids.measurementsPopError.text = "Enter data for all fields"
             return
 
@@ -1057,9 +1016,9 @@ class MeasurementsPopup(PopupBase):
             self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required, " + str(numEnvReadings) + " provided"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(envText, envOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(envText, envOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
+        cursorStart3, textLength3 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
         self.parent.children[1].ids.measurementsButton.colorGrey()
@@ -1256,17 +1215,6 @@ class Mars(App):
             if(checkOK):
                 self.root.clearErrors()
                 pop = DatePopup()
-                pop.open()
-
-    def openBalancePop(self):
-        if(self.root.currentSeries != None):
-            seriesText = self.root.ids.userText.text
-
-            checkOK = InputChecks.checkTags([seriesText], self.root.currentSeries, self.root.highlightError, self.root.sendError)
-            
-            if(checkOK):
-                self.root.clearErrors()
-                pop = BalancePopup()
                 pop.open()
 
     def openDesignPop(self):

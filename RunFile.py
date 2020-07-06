@@ -21,9 +21,9 @@ def parse(fileName):
             if lines > 5000:
                 raise MARSException("CONFIGURATION FILE EXCEEDS 5000 LINE LIMIT")
 
-            splitLine = line.strip().split(maxsplit=15)
+            splitLine = line.split()
 
-            if (len(splitLine) == 0):
+            if (splitLine == []):
                 continue
 
             if splitLine[0] == "@SERIES":
@@ -47,9 +47,9 @@ def parse(fileName):
     with open(fileName, 'r') as configFile:
         for line in configFile:
             lines += 1
-            splitLine = line.strip().split(maxsplit=15)
+            splitLine = line.split()
 
-            if(splitLine == [] or splitLine[0] == "\n"):
+            if (splitLine == []):
                 continue
 
             if splitLine[0] == "@SERIES":
@@ -57,7 +57,7 @@ def parse(fileName):
                 designRow = 0
                 positionRow = 0
                 heightRow = 0
-                nominalsInPounds = 1
+                toGrams = 1
 
                 seriesObjects.append(MatrixSolution())
                 seriesObjects[seriesNumber].seriesNumber = seriesNumber
@@ -117,12 +117,12 @@ def parse(fileName):
                 seriesObjects[seriesNumber].directReadingsSF = float(splitLine[1])
                 continue
 
-            if splitLine[0] == "<Pounds>":
-                seriesObjects[seriesNumber].nominalsInPounds = int(splitLine[1])
-                if int(splitLine[1]) == 1:
-                    nominalsInPounds = 453.59237
+            if splitLine[0] == "<Grams>":
+                seriesObjects[seriesNumber].toGrams = int(splitLine[1])
+                if int(splitLine[1]) == 0:
+                    toGrams = 453.59237
                 else:
-                    nominalsInPounds = 1
+                    toGrams = 1
                 continue
 
             if splitLine[0] == "<Design-ID>":
@@ -141,10 +141,10 @@ def parse(fileName):
                     seriesObjects[seriesNumber].matrixY = np.zeros(shape=(seriesObjects[seriesNumber].observations, 1))
                     seriesObjects[seriesNumber].referenceValues = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
 
-                seriesObjects[seriesNumber].weightNominals[0, positionRow] = float(splitLine[2]) * nominalsInPounds
+                seriesObjects[seriesNumber].weightNominals[0, positionRow] = float(splitLine[2]) * toGrams
                 seriesObjects[seriesNumber].ogNominals[0, positionRow] = float(splitLine[2])
 
-                seriesObjects[seriesNumber].calculatedMasses[0, positionRow] = float(splitLine[2]) * nominalsInPounds
+                seriesObjects[seriesNumber].calculatedMasses[0, positionRow] = float(splitLine[2]) * toGrams
 
                 seriesObjects[seriesNumber].weightDensities.append(float(splitLine[3]))
                 seriesObjects[seriesNumber].weightCCEs.append(float(splitLine[4]))
@@ -177,12 +177,12 @@ def parse(fileName):
                     seriesObjects[seriesNumber].checkStandardPos[0, i - 1] = int(splitLine[i])
                 continue
 
-            if splitLine[0] == "<Linear-Combo>":
-                combo = []
-                for i in range(1, len(splitLine)):
-                    combo.append(int(splitLine[i]))
-                seriesObjects[seriesNumber].linearCombos.append(combo)
-                continue
+            # if splitLine[0] == "<Linear-Combo>":
+            #     combo = []
+            #     for i in range(1, len(splitLine)):
+            #         combo.append(int(splitLine[i]))
+            #     seriesObjects[seriesNumber].linearCombos.append(combo)
+            #     continue
 
             if splitLine[0] == "<Pass-Down>":
                 seriesObjects[seriesNumber].nextRestraint = np.zeros(shape=(1, seriesObjects[seriesNumber].positions))
