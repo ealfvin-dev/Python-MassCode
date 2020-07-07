@@ -1503,49 +1503,46 @@
     auto_dismiss: False
     title: "Startup Tests"
     title_size: dp(18)
-    size_hint: (0.35, 0.28)
+    size_hint: (None, None)
+    size: (dp(520), dp(250))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 35
-        padding: 20, 0, 20, 20
+        spacing: dp(50)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
+        PopupLabel:
             id: testStatus
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
             text: "[b]Running startup tests...[/b]"
-            markup: True
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
             color: (0.05, 0.95, 0.09, 0.9)
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.92)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
+            WriteButton:
                 id: openLogButton
-                size_hint: (1, 1)
                 text: "Open Log"
-                font_size: self.width / buttonSizer
-                background_normal: ''
+                size: (dp(150), dp(55))
                 background_color: (0.62, 0.62, 0.62, 0.62)
-                halign: 'center'
 
-            Label:
-                size_hint: (1, 1)
+            PopupLabel:
                 text: ""
+                size_hint: (1, None)
+                height: openLogButton.height
+                text_size: (self.width, None)
 
 <RequestClosePopup>:
     auto_dismiss: True
     title: "Close MARS"
     title_size: dp(18)
     size_hint: (None, None)
-    size: (dp(500), dp(250))
+    size: (dp(520), dp(250))
 
     BoxLayout:
         orientation: "vertical"
@@ -1558,18 +1555,21 @@
             height: self.texture_size[1]
             text_size: (self.width, None)
             color: root.title_color
+            halign: "center"
 
         BoxLayout:
             orientation: "horizontal"
             spacing: self.width - 2*dp(150)
             size_hint: (1, None)
-            height: dp(50)
+            height: dp(60)
 
             WriteButton:
                 text: "Cancel"
+                size: (dp(150), dp(55))
                 on_release: root.dismiss()
 
             CancelButton:
                 text: "[color=#FFFFFF]Close Without\nSaving[/color]"
                 markup: True
+                size: (dp(150), dp(55))
                 on_release: app.closeApp()
