@@ -1393,48 +1393,37 @@
     auto_dismiss: True
     title: "Open New File"
     title_size: dp(18)
-    size_hint: (0.35, 0.28)
+    size_hint: (None, None)
+    size: (dp(520), dp(250))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 35
-        padding: 20, 0, 20, 20
+        spacing: dp(50)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
+        PopupLabel:
             id: newFileMessage
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
             text: ""
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+            color: root.title_color
+            halign: "center"
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.92)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
+            WriteButton:
                 id: openNewFileButton
-                size_hint: (1, 1)
                 text: ""
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.13, 0.5, 0.95, 0.94)
-                halign: 'center'
+                size: (dp(150), dp(55))
 
-            Button:
+            CancelButton:
                 id: cancelNewFileButton
-                size_hint: (1, 1)
-                text: "[color=#FFFFFF]Cancel[/color]"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.70, 0.135, 0.05, 0.92)
-                halign: 'center'
-                markup: True
+                size: (dp(150), dp(55))
                 on_release: root.dismiss()
 
 <ValidationPopup>:
@@ -1569,7 +1558,6 @@
                 on_release: root.dismiss()
 
             CancelButton:
-                text: "[color=#FFFFFF]Close Without\nSaving[/color]"
-                markup: True
+                text: "Close Without\nSaving"
                 size: (dp(150), dp(55))
                 on_release: app.closeApp()

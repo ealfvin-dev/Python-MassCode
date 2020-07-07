@@ -1078,7 +1078,7 @@ class OpenNewFilePopup(Popup):
         else:
             self.ids.newFileMessage.text = "Save before opening new file?"
             self.ids.openNewFileButton.text = "Save & Open"
-            self.ids.cancelNewFileButton.text = "[color=#FFFFFF]Don't Save\n& Open[/color]"
+            self.ids.cancelNewFileButton.text = "Don't Save\n& Open"
             if(newFile == True):
                 self.ids.openNewFileButton.bind(on_release=self.openNewFile)
                 self.ids.cancelNewFileButton.bind(on_release=self.openNewFileNoSave)
