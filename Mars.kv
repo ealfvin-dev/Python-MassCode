@@ -1337,56 +1337,48 @@
     auto_dismiss: False
     title: "Open File"
     title_size: dp(18)
-    size_hint: (0.35, 0.32)
+    size_hint: (None, None)
+    size: (dp(520), dp(250))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 35
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
+        PopupLabel:
+            id: configFileLabel
             text: "Enter Configuration File Name:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
-        
-        TextInput:
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+            color: root.title_color
+
+        OrderedText:
             id: openFileText
-            size_hint: (1, 0.44)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            hint_text: "12345-config.txt"
-            font_size: popUpFontSize
-            background_normal: ''
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "999999a-config.txt"
+            orderNum: 999
+
+        PopupLabel:
+            text: ""
+            size_hint: (1, None)
+            height: configFileLabel.height
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.92)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
-                size_hint: (1, 1)
+            WriteButton:
                 text: "Open"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.13, 0.5, 0.95, 0.94)
-                halign: 'center'
+                size: (dp(150), dp(55))
                 on_release: root.openFile(root.ids.openFileText.text.strip())
 
-            Button:
-                size_hint: (1, 1)
-                text: "[color=#FFFFFF]Cancel[/color]"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.70, 0.135, 0.05, 0.92)
-                halign: 'center'
-                markup: True
+            CancelButton:
+                size: (dp(150), dp(55))
                 on_release: root.dismiss()
 
 <OpenNewFilePopup>:
