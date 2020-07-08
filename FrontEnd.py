@@ -67,7 +67,7 @@ class MainLayout(BoxLayout):
             "<Gravity-Grad>": 11, \
             "<Gravity-Local>": 12, \
             "<Height>": 13, \
-            "<Check-Standard-ID>": 14, \
+            "<Check-ID>": 14, \
             "<Grams>": 15, \
             "<Position>": 16, \
             "<Design-ID>": 17, \
@@ -269,7 +269,7 @@ class MainLayout(BoxLayout):
             "<Gravity-Grad>": False, \
             "<Gravity-Local>": False, \
             "<Height>": False, \
-            "<Check-Standard-ID>": False, \
+            "<Check-ID>": False, \
             "<Grams>": False, \
             "<Position>": False, \
             "<Design-ID>": False, \
@@ -315,7 +315,7 @@ class MainLayout(BoxLayout):
             self.ids.dateButton.colorBlue()
 
         #Weights Button
-        if(tags["<Position>"] and tags["<Grams>"] and tags["<Check-Standard-ID>"]):
+        if(tags["<Position>"] and tags["<Grams>"] and tags["<Check-ID>"]):
             self.ids.weightsButton.colorGrey()
         else:
             self.ids.weightsButton.colorBlue()
@@ -1078,7 +1078,7 @@ class OpenNewFilePopup(Popup):
         else:
             self.ids.newFileMessage.text = "Save before opening new file?"
             self.ids.openNewFileButton.text = "Save & Open"
-            self.ids.cancelNewFileButton.text = "[color=#FFFFFF]Don't Save\n& Open[/color]"
+            self.ids.cancelNewFileButton.text = "Don't Save\n& Open"
             if(newFile == True):
                 self.ids.openNewFileButton.bind(on_release=self.openNewFile)
                 self.ids.cancelNewFileButton.bind(on_release=self.openNewFileNoSave)

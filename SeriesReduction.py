@@ -1,5 +1,5 @@
 # Author: Erik Alfvin
-# Run with Python 3.7, numpy 1.17.2
+# Run with Python 3.7, numpy 1.17.2, sciPy 1.3.1
 # MARS Version 1
 # Version Date: 2020-07-24
 # Results are for experimental purposes only

@@ -9,7 +9,7 @@
 
              <Date>  07 28 2020
     <Technician-ID>  1
-<Check-Standard-ID>  1
+         <Check-ID>  1
 
        <Balance-ID>  1
   <Direct-Readings>  1

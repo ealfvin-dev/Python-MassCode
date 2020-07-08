@@ -95,7 +95,7 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
                     "<Random-Error>": False, \
                     "<Date>": False, \
                     "<Technician-ID>": False, \
-                    "<Check-Standard-ID>": False, \
+                    "<Check-ID>": False, \
                     "<Balance-ID>": False, \
                     "<Direct-Readings>": False, \
                     "<Direct-Reading-SF>": False, \
@@ -159,7 +159,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Random-Error>": False, \
                         "<Date>": False, \
                         "<Technician-ID>": False, \
-                        "<Check-Standard-ID>": False, \
+                        "<Check-ID>": False, \
                         "<Balance-ID>": False, \
                         "<Direct-Readings>": False, \
                         "<Direct-Reading-SF>": False, \
@@ -182,7 +182,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Random-Error>": False, \
                         "<Date>": False, \
                         "<Technician-ID>": False, \
-                        "<Check-Standard-ID>": False, \
+                        "<Check-ID>": False, \
                         "<Balance-ID>": False, \
                         "<Direct-Readings>": False, \
                         "<Direct-Reading-SF>": False, \
@@ -239,7 +239,7 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
         "<Random-Error>": 0,\
         "<Date>": 0,\
         "<Technician-ID>": 0,\
-        "<Check-Standard-ID>": 0,\
+        "<Check-ID>": 0,\
         "<Balance-ID>": 0,\
         "<Direct-Readings>": 0,\
         "<Direct-Reading-SF>": 0,\

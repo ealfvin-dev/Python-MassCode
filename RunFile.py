@@ -105,7 +105,7 @@ def parse(fileName):
                 seriesObjects[seriesNumber].balanceId = splitLine[1]
                 continue
 
-            if splitLine[0] == "<Check-Standard-ID>":
+            if splitLine[0] == "<Check-ID>":
                 seriesObjects[seriesNumber].checkStandardId = splitLine[1]
                 continue
 

@@ -12,7 +12,7 @@
 
 <Date>  03 16 2020
 <Technician-ID>  019
-<Check-Standard-ID>  101
+         <Check-ID>  101
 
 <Balance-ID>  11
 <Direct-Readings>  0

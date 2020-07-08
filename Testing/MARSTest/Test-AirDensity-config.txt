@@ -11,7 +11,7 @@
 
              <Date>  07 27 2020
     <Technician-ID>  019
-<Check-Standard-ID>  54
+         <Check-ID>  54
 
        <Balance-ID>  003
   <Direct-Readings>  1

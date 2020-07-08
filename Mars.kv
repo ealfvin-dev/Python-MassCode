@@ -132,7 +132,7 @@
     BoxLayout:
         id: secondaryMainBox
         orientation: 'vertical'
-        spacing: 5
+        spacing: dp(2)
 
         BoxLayout:
             id: navBar
@@ -174,13 +174,13 @@
             id: content
             orientation: 'horizontal'
             spacing: self.width / 15
-            padding: (0, 10, 30, 30)
+            padding: (0, dp(5), dp(15), dp(15))
 
             BoxLayout:
                 id: menu
                 orientation: 'vertical'
                 spacing: self.width / 50
-                padding: (20, dp(13), 0, 0)
+                padding: (dp(10), dp(13), 0, 0)
 
                 BoxLayout:
                     id: menuLabel1
@@ -199,7 +199,7 @@
                     id: menuRow1
                     orientation: 'horizontal'
                     spacing: self.width / 10
-                    padding: (0, 0, 0, 20)
+                    padding: (0, 0, 0, dp(10))
 
                     InputButton:
                         id: labInfoButton
@@ -248,7 +248,7 @@
                     id: menuRow2
                     orientation: 'horizontal'
                     spacing: self.width / 10
-                    padding: (0, 0, 0, 20)
+                    padding: (0, 0, 0, dp(10))
 
                     InputButton:
                         id: dateButton
@@ -287,7 +287,7 @@
                     id: menuRow3
                     orientation: 'horizontal'
                     spacing: self.width / 10
-                    padding: (0, 0, 0, 20)
+                    padding: (0, 0, 0, dp(10))
 
                     InputButton:
                         id: designButton
@@ -325,7 +325,7 @@
                     id: menuRow4
                     orientation: 'horizontal'
                     spacing: self.width / 10
-                    padding: (0, 0, 0, 20)
+                    padding: (0, 0, 0, dp(10))
 
                     InputButton:
                         id: statisticsButton
@@ -364,7 +364,7 @@
                     id: menuRow5
                     orientation: 'horizontal'
                     spacing: self.width / 10
-                    padding: (0, 0, 0, 20)
+                    padding: (0, 0, 0, dp(10))
 
                     InputButton:
                         id: swButton
@@ -399,7 +399,7 @@
                     id: menuCol7
                     orientation: 'horizontal'
                     spacing: self.width / 10
-                    padding: (0, 20, 0, 0)
+                    padding: (0, dp(10), 0, 0)
 
                     Button: 
                         id: saveButton
@@ -430,7 +430,7 @@
             BoxLayout:
                 id: textAreas
                 orientation: "vertical"
-                spacing: 12
+                spacing: dp(6)
                 padding: (0, 0, 0, 0)
                 size_hint: (1.5, 1.0)
 
@@ -1142,7 +1142,7 @@
 <MeasurementsPopup>:
     auto_dismiss: False
     title: "Measurements"
-    size: (dp(800), dp(540))
+    size: (dp(750), dp(540))
 
     BoxLayout:
         orientation: "vertical"
@@ -1157,13 +1157,13 @@
 
             PopupLabel:
                 text: "Balance Readings:"
-                size_hint: (0.65, None)
+                size_hint: (0.6, None)
                 height: self.texture_size[1]
                 text_size: (self.width, None)
 
             PopupLabel:
                 text: "Environmentals (" + chr(730) + "C, mmHg, %):"
-                size_hint: (0.35, None)
+                size_hint: (0.4, None)
                 height: self.texture_size[1]
                 text_size: (self.width, None)
 
@@ -1337,250 +1337,212 @@
     auto_dismiss: False
     title: "Open File"
     title_size: dp(18)
-    size_hint: (0.35, 0.32)
+    size_hint: (None, None)
+    size: (dp(520), dp(250))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 35
-        padding: 20, 0, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
+        PopupLabel:
+            id: configFileLabel
             text: "Enter Configuration File Name:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
-        
-        TextInput:
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+            color: root.title_color
+
+        OrderedText:
             id: openFileText
-            size_hint: (1, 0.44)
-            multiline: False
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            hint_text: "12345-config.txt"
-            font_size: popUpFontSize
-            background_normal: ''
+            size_hint: (1, None)
+            height: 3 * popUpFontSize
+            hint_text: "999999a-config.txt"
+            orderNum: 999
+
+        PopupLabel:
+            text: ""
+            size_hint: (1, None)
+            height: configFileLabel.height
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.92)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
-                size_hint: (1, 1)
+            WriteButton:
                 text: "Open"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.13, 0.5, 0.95, 0.94)
-                halign: 'center'
+                size: (dp(150), dp(55))
                 on_release: root.openFile(root.ids.openFileText.text.strip())
 
-            Button:
-                size_hint: (1, 1)
-                text: "[color=#FFFFFF]Cancel[/color]"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.70, 0.135, 0.05, 0.92)
-                halign: 'center'
-                markup: True
+            CancelButton:
+                size: (dp(150), dp(55))
                 on_release: root.dismiss()
 
 <OpenNewFilePopup>:
     auto_dismiss: True
     title: "Open New File"
     title_size: dp(18)
-    size_hint: (0.35, 0.28)
+    size_hint: (None, None)
+    size: (dp(520), dp(250))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 35
-        padding: 20, 0, 20, 20
+        spacing: dp(50)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
+        PopupLabel:
             id: newFileMessage
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
             text: ""
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+            color: root.title_color
+            halign: "center"
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.92)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
+            WriteButton:
                 id: openNewFileButton
-                size_hint: (1, 1)
                 text: ""
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.13, 0.5, 0.95, 0.94)
-                halign: 'center'
+                size: (dp(150), dp(55))
 
-            Button:
+            CancelButton:
                 id: cancelNewFileButton
-                size_hint: (1, 1)
-                text: "[color=#FFFFFF]Cancel[/color]"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.70, 0.135, 0.05, 0.92)
-                halign: 'center'
-                markup: True
+                size: (dp(150), dp(55))
                 on_release: root.dismiss()
 
 <ValidationPopup>:
     auto_dismiss: False
-    title: "Unit Testing"
+    title: "Internal Testing"
     title_size: dp(18)
-    size_hint: (0.45, 0.85)
+    size_hint: (None, None)
+    size: (dp(750), dp(540))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 15
-        padding: 20, -1 * self.size[1]/15, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
+        PopupLabel:
             text: "Results:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
-        
-        TextInput:
+            color: root.title_color
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
             id: validationText
-            size_hint: (1, 2.75)
+            size_hint: (1, None)
+            height: dp(330)
             multiline: True
             readonly: True
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            font_size: popUpFontSize
-            background_normal: ''
+            text_size: dp(11)
+            padding: [dp(5), dp(5), dp(5), dp(5)]
+            orderNum: 999
 
-        Label:
+        PopupLabel:
             id: testingMessage
-            size_hint: (1, 0.2)
             text: ""
-            markup: True
             color: (0.05, 0.95, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            size_hint: (1, None)
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.50)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
-                size_hint: (1, 1)
+            WriteButton:
+                id: testingCloseButton
                 text: "Close"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.13, 0.5, 0.95, 0.94)
-                halign: 'center'
-                markup: True
+                size: (dp(150), dp(55))
                 on_release: root.dismiss()
 
-            Label:
-                size_hint: (1, 0.2)
+            PopupLabel:
                 text: ""
+                size_hint: (1, None)
+                height: testingCloseButton.height
+                text_size: (self.width, None)
 
 <StartupTestsPopup>:
     auto_dismiss: False
     title: "Startup Tests"
     title_size: dp(18)
-    size_hint: (0.35, 0.28)
+    size_hint: (None, None)
+    size: (dp(520), dp(250))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 35
-        padding: 20, 0, 20, 20
+        spacing: dp(50)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
+        PopupLabel:
             id: testStatus
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
             text: "[b]Running startup tests...[/b]"
-            markup: True
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
             color: (0.05, 0.95, 0.09, 0.9)
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.92)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
+            WriteButton:
                 id: openLogButton
-                size_hint: (1, 1)
                 text: "Open Log"
-                font_size: self.width / buttonSizer
-                background_normal: ''
+                size: (dp(150), dp(55))
                 background_color: (0.62, 0.62, 0.62, 0.62)
-                halign: 'center'
 
-            Label:
-                size_hint: (1, 1)
+            PopupLabel:
                 text: ""
+                size_hint: (1, None)
+                height: openLogButton.height
+                text_size: (self.width, None)
 
 <RequestClosePopup>:
     auto_dismiss: True
     title: "Close MARS"
     title_size: dp(18)
-    size_hint: (0.35, 0.28)
+    size_hint: (None, None)
+    size: (dp(520), dp(250))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: root.height / 10
-        padding: 20, 0, 20, 20
+        spacing: dp(50)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
+        PopupLabel:
             text: "Close without saving input file?"
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+            color: root.title_color
+            halign: "center"
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.92)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
-                size_hint: (1, 1)
+            WriteButton:
                 text: "Cancel"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.13, 0.5, 0.95, 0.94)
-                halign: 'center'
+                size: (dp(150), dp(55))
                 on_release: root.dismiss()
 
-            Button:
-                size_hint: (1, 1)
-                text: "[color=#FFFFFF]Close Without\nSaving[/color]"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.70, 0.135, 0.05, 0.92)
-                halign: 'center'
-                markup: True
+            CancelButton:
+                text: "Close Without\nSaving"
+                size: (dp(150), dp(55))
                 on_release: app.closeApp()
