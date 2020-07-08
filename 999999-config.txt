@@ -10,12 +10,12 @@
 <Date> 11 29 2019
 
               <Technician-ID> 19
-          <Check-Standard-ID> 27
+         <Check-ID> 27
 
 <Balance-ID>  22
 <Direct-Readings>  1
 <Direct-Reading-SF>  1.0
-<Pounds> 0
+<Grams> 1
 
                    <Position> T300+200g           500          7.93452 0.000045
                    <Position> S500g               500          8.0363  0.000045      1.92
@@ -40,7 +40,6 @@
 
 		<Restraint> 0 1 0 1
              <Check-Standard> 0 1 0 -1 
-               <Linear-Combo> 0 0 1 1 
 
                   <Pass-Down> 1 0 0 0
 
@@ -76,16 +75,18 @@
 
                 <Env-Corrections> 0 0 0.488
 
+
+
 @SERIES
 
 	<Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
-          <Check-Standard-ID> 27
+         <Check-ID> 27
 
             <Direct-Readings> 1
           <Direct-Reading-SF> 1
-                     <Pounds> 0
+                      <Grams> 1
 
                    <Position> T300g               300          7.9336  0.000045
                    <Position> T200g               200          7.9359  0.000045     
@@ -104,7 +105,6 @@
 
                   <Restraint> 1 1 0 0
              <Check-Standard> 0 0 0 1 
-               <Linear-Combo> 0 0 1 1 
 
       <Pass-Down> 0 0 1 0
 
@@ -138,11 +138,11 @@
 			<Date> 07 20 2020
               <Technician-ID> 19
                  <Balance-ID> 22
-          <Check-Standard-ID> 27
+         <Check-ID> 27
 
             <Direct-Readings> 1
           <Direct-Reading-SF> 1
-                     <Pounds> 0
+                      <Grams> 1
 
                    <Position> P100g               100          7.9918    0.000045
                    <Position> S50g+T50g           100          7.91446    0.000045     
@@ -166,7 +166,6 @@
 
                   <Restraint> 0 0 0 1
              <Check-Standard> 1 0 0 0 
-               <Linear-Combo> 0 0 1 1 
 
      <Pass-Down> 1 0 1 0
 
@@ -208,11 +207,11 @@
 		<Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
-          <Check-Standard-ID> 27
+         <Check-ID> 27
 
             <Direct-Readings> 1
           <Direct-Reading-SF> 1
-                     <Pounds> 0
+                      <Grams> 1
 
                    <Position> T30g+T20g           50          7.94597     0.000045
                    <Position> S50g                50          7.9669    0.000045     
@@ -236,7 +235,6 @@
 
             <Restraint> 0 1  1 0
              <Check-Standard> 0 0 0 1 
-               <Linear-Combo> 0 0 1 1 
 
       <Pass-Down> 1 0 1 0
 
@@ -278,11 +276,11 @@
 <Date> 11 28 2019
               <Technician-ID> 19
                  <Balance-ID> 22
-          <Check-Standard-ID> 27
+         <Check-ID> 27
 
             <Direct-Readings> 0
           <Direct-Reading-SF> 1
-                     <Pounds> 0
+                      <Grams> 1
 
                    <Position> T50g                 50         7.8627   0.000045
                    <Position> T30g                 30         7.9399   0.000045   
@@ -307,7 +305,6 @@
 
                   <Restraint> 1 1 1 0 0 0
              <Check-Standard> 0 0 0 1 0 0 
-               <Linear-Combo> 0 0 1 1 0 0
 
       <Pass-Down> 0 0 0 0 0 0
 

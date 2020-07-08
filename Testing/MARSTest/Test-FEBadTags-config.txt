@@ -12,7 +12,7 @@
 
              <Date>  07 27 2020
     <Technician-ID>  019
-<Check-Standard-ID>  54
+         <Check-ID>  54
 
        <Balance-ID>  003
   <Direct-Readings>  1
@@ -77,7 +77,7 @@
 
              <Date>  07 30 2020
     <Technician-ID>  019
-<Check-Standard-ID>  22
+         <Check-ID>  22
 
        <Balance-ID>  99
   <Direct-Readings>  0
@@ -147,7 +147,7 @@
 
              <Date>  07 30 2020
     <Technician-ID>  019
-<Check-Standard-ID>  23
+         <Check-ID>  23
 
        <Balance-ID>  099
   <Direct-Readings>  0
@@ -210,7 +210,7 @@
 
              <Date>  07 30 2020
     <Technician-ID>  019
-<Check-Standard-ID>  24
+         <Check-ID>  24
 
        <Balance-ID>  99
   <Direct-Readings>  0

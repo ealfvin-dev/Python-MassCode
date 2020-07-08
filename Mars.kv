@@ -1142,7 +1142,7 @@
 <MeasurementsPopup>:
     auto_dismiss: False
     title: "Measurements"
-    size: (dp(800), dp(540))
+    size: (dp(750), dp(540))
 
     BoxLayout:
         orientation: "vertical"
@@ -1157,13 +1157,13 @@
 
             PopupLabel:
                 text: "Balance Readings:"
-                size_hint: (0.65, None)
+                size_hint: (0.6, None)
                 height: self.texture_size[1]
                 text_size: (self.width, None)
 
             PopupLabel:
                 text: "Environmentals (" + chr(730) + "C, mmHg, %):"
-                size_hint: (0.35, None)
+                size_hint: (0.4, None)
                 height: self.texture_size[1]
                 text_size: (self.width, None)
 
@@ -1420,65 +1420,58 @@
 
 <ValidationPopup>:
     auto_dismiss: False
-    title: "Unit Testing"
+    title: "Internal Testing"
     title_size: dp(18)
-    size_hint: (0.45, 0.85)
+    size_hint: (None, None)
+    size: (dp(750), dp(540))
 
     BoxLayout:
         orientation: "vertical"
-        spacing: 15
-        padding: 20, -1 * self.size[1]/15, 20, 20
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
 
-        Label:
-            size_hint: (1, 0.6)
-            font_size: popUpLabelSize
+        PopupLabel:
             text: "Results:"
-            markup: True
-            color: popLabelColor
-            text_size: self.size
-            halign: "left"
-            valign: "bottom"
-        
-        TextInput:
+            color: root.title_color
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
             id: validationText
-            size_hint: (1, 2.75)
+            size_hint: (1, None)
+            height: dp(330)
             multiline: True
             readonly: True
-            padding: [10, 10, 10, 10]
-            font_name: "./Menlo.ttc"
-            font_size: popUpFontSize
-            background_normal: ''
+            text_size: dp(11)
+            padding: [dp(5), dp(5), dp(5), dp(5)]
+            orderNum: 999
 
-        Label:
+        PopupLabel:
             id: testingMessage
-            size_hint: (1, 0.2)
             text: ""
-            markup: True
             color: (0.05, 0.95, 0.09, 1)
-            text_size: self.size
-            font_size: popUpLabelSize
-            halign: "left"
-            valign: "center"
+            size_hint: (1, None)
+            height: dp(20)
+            text_size: (self.width, None)
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: root.width / 3
-            padding: (0, self.height / 5)
-            size_hint: (1, 0.50)
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
 
-            Button:
-                size_hint: (1, 1)
+            WriteButton:
+                id: testingCloseButton
                 text: "Close"
-                font_size: self.width / buttonSizer
-                background_normal: ''
-                background_color: (0.13, 0.5, 0.95, 0.94)
-                halign: 'center'
-                markup: True
+                size: (dp(150), dp(55))
                 on_release: root.dismiss()
 
-            Label:
-                size_hint: (1, 0.2)
+            PopupLabel:
                 text: ""
+                size_hint: (1, None)
+                height: testingCloseButton.height
+                text_size: (self.width, None)
 
 <StartupTestsPopup>:
     auto_dismiss: False
