@@ -339,18 +339,35 @@ def checkInputValues(seriesTexts, sendError, highlightError):
                     highlightError(seriesNum, lineNum)
                     return False
 
-            #Check format of environmentals and corrections
-            if(line[0] == "<Environmentals>" or line[0] == "<Env-Corrections>"):
+            #Check format of environmentals
+            if(line[0] == "<Environmentals>"):
                 try:
                     line[3]
                 except IndexError:
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTALS AND CORRECTIONS ARE ENTERED IN THE FORM T P RH")
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
                     highlightError(seriesNum, lineNum)
                     return False
 
                 try:
                     line[4]
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTALS AND CORRECTIONS ARE ENTERED IN THE FORM T P RH")
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
+                    highlightError(seriesNum, lineNum)
+                    return False
+                except IndexError:
+                    continue
+
+            #Check format of env corrections
+            if(line[0] == "<Env-Corrections>"):
+                try:
+                    line[3]
+                except IndexError:
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTAL CORRECTIONS ARE ENTERED IN THE FORM <Env-Corrections>  T P RH")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+                try:
+                    line[4]
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTAL CORRECTIONS ARE ENTERED IN THE FORM <Env-Corrections>  T P RH")
                     highlightError(seriesNum, lineNum)
                     return False
                 except IndexError:
