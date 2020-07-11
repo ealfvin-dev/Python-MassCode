@@ -145,6 +145,7 @@ class TestSuite(TestBase.TestBase):
             self.assertTrue(InputChecks.checkTags(seriesTexts, False, self.highlightErrorMock, self.sendErrorMock), "CHECK INPUT TAGS +")
             self.assertTrue(InputChecks.checkIfAllTags(seriesTexts, self.sendErrorMock, self.goToSeriesMock), "CHECK IF ALL INPUT TAGS +")
             self.assertTrue(InputChecks.checkForRepeats(seriesTexts, self.sendErrorMock, self.highlightErrorMock), "CHECK FOR REPEATED TAGS +")
+            self.assertTrue(InputChecks.checkInputValues(seriesTexts, self.sendErrorMock, self.highlightErrorMock), "CHECK INPUT VALUES +")
             self.assertTrue(InputChecks.runRequiredChecks(seriesTexts, 4, self.sendErrorMock, self.highlightErrorMock, self.goToSeriesMock), "REQUIRED INPUT CHECKS +")
             self.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile", self.sendErrorMock, self.highlightErrorMock), "SECONDARY INPUT CHECKS +")
         except:

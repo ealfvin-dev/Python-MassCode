@@ -3,7 +3,7 @@
 
 <Restraint-ID>  24
 <Unc-Restraint>  0.022
-<Random-Error>  0
+<Random-Error> 0
 
 @SERIES
 
@@ -74,6 +74,11 @@
 
 
                 <Env-Corrections> 0 0 0.488
+
+
+
+
+
 
 
 
