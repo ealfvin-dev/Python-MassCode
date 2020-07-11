@@ -141,7 +141,7 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
                     else:
                         snText = str(seriesNumber)
 
-                    errorMessage = "UNKNOWN TAG IN SERIES " + snText + ", LINE " + str(lineNum) + ": " + line.split()[0]
+                    errorMessage = "SERIES " + snText + " LINE " + str(lineNum) + ": UNKNOWN TAG " + line.split()[0]
                     highlightError(int(snText), lineNum)
                     sendError(errorMessage)
                     return False
@@ -282,8 +282,149 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
 
     return True
 
+def checkInputValues(seriesTexts, sendError, highlightError):
+    seriesNum = 0
+    lineNum = 0
+
+    for seriesText in seriesTexts:
+        seriesNum += 1
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.split()
+
+            if(line == []):
+                continue
+
+            if(line[0][0] == "#"):
+                continue
+
+            #Check if report number is entered without spaces
+            if(line[0] == "<Report-Number>"):
+                try:
+                    line[1]
+                except IndexError:
+                    sendError("SERIES " + str(seriesNum) + ", LINE " + str(lineNum) + ": REPORT NUMBER IS NEEDED")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+                try:
+                    line[2]
+                    sendError("SERIES " + str(seriesNum) + ", LINE " + str(lineNum) + ": ENTER A REPORT NUMBER WITHOUT SPACES")
+                    highlightError(seriesNum, lineNum)
+                    return False
+                except IndexError:
+                    continue
+
+            #Check format of date
+            if(line[0] == "<Date>"):
+                if(len(line) != 4):
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": DATE IS ENTERED IN THE FORM <Date>  MM DD YYYY")
+                    highlightError(seriesNum, lineNum)
+                    return False
+                else:
+                    continue
+
+            #Check direct readings value
+            if(line[0] == "<Direct-Readings>"):
+                try:
+                    dr = line[1]
+                    if(dr == "1" or dr == "0"):
+                        continue
+                    else:
+                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ":\nUNKNOWN DIRECT READING VALUE. (1=DIRECT READINGS, 0=DOUBLE SUBSTITUTIONS)")
+                        highlightError(seriesNum, lineNum)
+                        return False
+                except IndexError:
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ":\nDIRECT READING VALUE NEEDED. (1=DIRECT READINGS, 0=DOUBLE SUBSTITUTIONS)")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            #Check format of environmentals and corrections
+            if(line[0] == "<Environmentals>" or line[0] == "<Env-Corrections>"):
+                try:
+                    line[3]
+                except IndexError:
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTALS AND CORRECTIONS ARE ENTERED IN THE FORM T P RH")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+                try:
+                    line[4]
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENVIRONMENTALS AND CORRECTIONS ARE ENTERED IN THE FORM T P RH")
+                    highlightError(seriesNum, lineNum)
+                    return False
+                except IndexError:
+                    continue
+
+            #Check format of positions
+            if(line[0] == "<Position>"):
+                try:
+                    line[4]
+                    continue
+                except IndexError:
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": POSITIONS ARE ENTERED IN THE FORM\n<Position>  ID  NOMINAL  DENSITY  CCE  (CORRECTION)")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            #Check that tags not specially checked above have Integer-type values
+            if(\
+            #line[0] == "<Restraint-ID>" or\
+            line[0] == "<Unc-Restraint>" or\
+            line[0] == "<Random-Error>" or\
+            #line[0] == "<Technician-ID>" or\
+            #line[0] == "<Check-ID>" or\
+            #line[0] == "<Balance-ID>" or\
+            line[0] == "<Direct-Reading-SF>" or\
+            #line[0] == "<Design-ID>" or\
+            line[0] == "<Design>" or\
+            line[0] == "<Grams>" or\
+            line[0] == "<Restraint>" or\
+            line[0] == "<Check-Standard>" or\
+            line[0] == "<Pass-Down>" or\
+            line[0] == "<Sigma-t>" or\
+            line[0] == "<Sigma-w>" or\
+            line[0] == "<sw-Mass>" or\
+            line[0] == "<sw-Density>" or\
+            line[0] == "<sw-CCE>" or\
+            line[0] == "<Balance-Reading>" or\
+            line[0] == "<Gravity-Grad>" or\
+            line[0] == "<Gravity-Local>" or\
+            line[0] == "<Height>"):
+                try:
+                    line[1]
+                except IndexError:
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": NO VALUE PROVIDED FOR " + line[0])
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+                try:
+                    float(line[1])
+                    continue
+                except ValueError:
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": VALUE FOR " + line[0] + " MUST BE A NUMBER")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            #Check that other tag values exist (do not need to be ints)
+            if(\
+            line[0] == "<Restraint-ID>" or\
+            line[0] == "<Technician-ID>" or\
+            line[0] == "<Check-ID>" or\
+            line[0] == "<Balance-ID>" or\
+            line[0] == "<Design-ID>"):
+                try:
+                    line[1]
+                    continue
+                except IndexError:
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": NO VALUE PROVIDED FOR " + line[0])
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+        lineNum = 0
+    return True
+
 def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
-    #Runs required checks on user input file before running and identifies errors that prevent Runfile.run
+    #Runs other required consistency checks on user input
     seriesNum = 0
     lineNum = 0
 
@@ -303,42 +444,8 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             if(len(line) == 0):
                 continue
 
-            #Check if report number is entered without spaces
-            if(line[0] == "<Report-Number>"):
-                try:
-                    error = line[2]
-                    sendError("SERIES " + str(seriesNum) + ", LINE " + str(lineNum) + ": ENTER A REPORT NUMBER WITHOUT SPACES")
-                    highlightError(seriesNum, lineNum)
-                    return False
-                except IndexError:
-                    continue
-
-            if(line[0][0] == "#" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
+            if(line[0][0] == "#"):
                 continue
-
-            #Check format of date
-            if(line[0] == "<Date>"):
-                if(len(line) != 4):
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nDATE IS ENTERED IN THE FORM <Date>  MM DD YYYY")
-                    highlightError(seriesNum, lineNum)
-                    return False
-
-            #Check direct readings value
-            if(line[0] == "<Direct-Readings>"):
-                try:
-                    dr = line[1]
-                    if(dr == "1"):
-                        continue
-                    elif(dr == "0"):
-                        continue
-                    else:
-                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nUNKNOWN DIRECT READING VALUE. (1=DIRECT READINGS, 0=DOUBLE SUBSTITUTIONS)")
-                        highlightError(seriesNum, lineNum)
-                        return False
-                except IndexError:
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nDIRECT READING VALUE NEEDED. (1=DIRECT READINGS, 0=DOUBLE SUBSTITUTIONS)")
-                    highlightError(seriesNum, lineNum)
-                    return False
 
             #Make sure all connected series have results passed down
             if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
@@ -350,6 +457,8 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                     sendError("NO RESTRAINT PASSED TO SERIES " + str(seriesNum + 1))
                     highlightError(seriesNum, lineNum)
                     return False
+                else:
+                    continue
 
             #Count number of observations, balace readings, env lines provided
             if(line[0] == "<Design>"):
@@ -366,29 +475,17 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                 if(envStartLine == 0): envStartLine = lineNum
                 continue
 
-            #Check if environmentals provided correctly
-            if(line[0] == "<Environmentals>"):
-                try:
-                    temp = float(line[1])
-                    pressure = float(line[2])
-                    humidity = float(line[3])
-                except:
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + "\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
-                    highlightError(seriesNum, lineNum)
-                    return False
-                continue
-
             #Check that pass down nominal matches next restraint
 
         #Check number of balace readings
         if(numObs != designObs):
-            sendError("SERIES " + str(seriesNum) + " NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
+            sendError("SERIES " + str(seriesNum) + ": NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
             highlightError(seriesNum, obsStartLine, obsStartLine + numObs - 1)
             return False
 
         #Check number of balace environmentals
         if(numEnvs != designObs):
-            sendError("SERIES " + str(seriesNum) + " NUMBER OF ENVIRONMENTAL OBSERVATIONS DO NOT MATCH THE DESIGN")
+            sendError("SERIES " + str(seriesNum) + ": NUMBER OF ENVIRONMENTAL OBSERVATIONS DO NOT MATCH THE DESIGN")
             highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
             return False
 
@@ -404,14 +501,15 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
 def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
     #Runs unrequired checks on user input file before running and identifies errors. Does not prevent Runfile.run
     seriesNum = 0
-    lineNum = 1
+    lineNum = 0
 
     for seriesText in seriesTexts:
         seriesNum += 1
         for line in seriesText.splitlines():
+            lineNum += 1
             line = line.split()
-            if(len(line) == 0):
-                lineNum += 1
+
+            if(line == []):
                 continue
 
             #Check if environmentals are out of specs
@@ -425,8 +523,7 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
                     highlightError(seriesNum, lineNum)
                     return False
             
-            lineNum += 1
-        lineNum = 1
+        lineNum = 0
     return True
 
 def checkResults(results):

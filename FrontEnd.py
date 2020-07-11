@@ -553,6 +553,10 @@ class MainLayout(BoxLayout):
         if(not checkRepeats):
             return
 
+        checkInputValues = InputChecks.checkInputValues(self.seriesTexts, self.sendError, self.highlightError)
+        if(not checkInputValues):
+            return
+
         requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
         if(not requiredChecks):
             return
