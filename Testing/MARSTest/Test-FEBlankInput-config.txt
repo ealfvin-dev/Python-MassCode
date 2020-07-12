@@ -219,7 +219,7 @@
     <Technician-ID>  019
          <Check-ID>  24
 
-       <Balance-ID>  99
+       <Balance-ID>  
   <Direct-Readings>  0
 <Direct-Reading-SF>  1.0
 

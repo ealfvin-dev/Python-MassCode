@@ -205,6 +205,40 @@ class TestSuite(TestBase.TestBase):
             self.failTest("TAG DETERMINATIONS -")
             self.logFailure(["Error running front end input checks"], "TAG DETERMINATIONS -")
 
+    def testMissedInput(self):
+        #Test if a missed input is caught in Input checks
+        try:
+            with open("./Testing/MARSTest/Test-FEBlankInput-config.txt") as file:
+                text = file.read()
+            
+            seriesTexts = text.split("@SERIES")
+            seriesTexts[1] = "@SERIES\n" + seriesTexts[1]
+
+            seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
+            seriesTexts.pop(0)
+
+            self.assertFalse(InputChecks.checkInputValues(seriesTexts, self.sendErrorMock, self.highlightErrorMock), "CHECK FOR MISSED INPUT -")
+        except:
+            self.failTest("CHECK FOR MISSED INPUT -")
+            self.logFailure(["Error running front end input checks"], "CHECK FOR MISSED INPUT -")
+
+    def testInputNaN(self):
+        #Test if a NaN input is caught in Input checks
+        try:
+            with open("./Testing/MARSTest/Test-FEInputNaN-config.txt") as file:
+                text = file.read()
+            
+            seriesTexts = text.split("@SERIES")
+            seriesTexts[1] = "@SERIES\n" + seriesTexts[1]
+
+            seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
+            seriesTexts.pop(0)
+
+            self.assertFalse(InputChecks.checkInputValues(seriesTexts, self.sendErrorMock, self.highlightErrorMock), "CHECK FOR NaN INPUT -")
+        except:
+            self.failTest("CHECK FOR NaN INPUT -")
+            self.logFailure(["Error running front end input checks"], "CHECK FOR NaN INPUT -")
+
     def testWriteOutFile(self):
         #Test if output file can be written out
         try:
@@ -358,6 +392,8 @@ class TestSuite(TestBase.TestBase):
         self.testFEBadReportNum()
         self.testFEBadStructure()
         self.testFEBadTags()
+        self.testMissedInput()
+        self.testInputNaN()
         self.testWriteOutFile()
         self.testOutFileData()
         self.testAirDesities()
@@ -378,6 +414,8 @@ class TestSuite(TestBase.TestBase):
         self.testFEBadReportNum()
         self.testFEBadStructure()
         self.testFEBadTags()
+        self.testMissedInput()
+        self.testInputNaN()
         self.testWriteOutFile()
         self.testOutFileData()
         self.testAirDesities()
