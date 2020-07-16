@@ -124,7 +124,7 @@ class TestSuite(TestBase.TestBase):
             self.logFailure(["Weight height of 0 did not raise MARSException"], "HEIGHT OF 0 RAISES MARSEXCEPTION")
 
     def testFEGoodFile(self):
-        #Test if a correctly-made input file passes front end input checks
+        #Test if a correctly-made input file passes all front end input checks
         try:
             with open("./Testing/MARSTest/Test-FEGoodFile-config.txt") as file:
                 text = file.read()

@@ -20,7 +20,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
+from kivy.uix.image import Image
 
 import RunFile
 import TestSuite
@@ -45,7 +45,7 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.906, 0.918, 0.926, 1)
+            Color(231/255, 234/255, 236/255, 1)
             #Color(0.936, 0.938, 0.946, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
