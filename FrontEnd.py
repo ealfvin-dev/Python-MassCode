@@ -190,8 +190,8 @@ class MainLayout(BoxLayout):
     def textAdded(self, cursor_row):
         if(self.saved):
             self.saved = False
-            self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
-            self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.runButton.colorGrey()
+            self.ids.saveButton.colorBlue()
 
         if(self.currentSeries == 1):
             self.getReportNum(self.ids.userText.text)
@@ -382,8 +382,8 @@ class MainLayout(BoxLayout):
 
         if(self.saved):
             self.saved = False
-            self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
-            self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.runButton.colorGrey()
+            self.ids.saveButton.colorBlue()
 
     def goToSeries(self, seriesNum, exists):
         if(exists):
@@ -522,9 +522,8 @@ class MainLayout(BoxLayout):
         self.sendSuccess("FILE SAVED AS " + str(self.reportNum) + "-config.txt")
 
         self.renderButtons(self.ids.userText.text)
-
-        self.ids.runButton.background_color = (0.0314, 0.62, 0.165, 0.9)
-        self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.runButton.colorBlue()
+        self.ids.saveButton.colorGrey()
 
     def run(self):
         #Perform checks to make sure the input file is in a runnable state
@@ -712,7 +711,7 @@ class InputButton(Button):
         self.bind(size=self._update_rect, pos=self._update_rect)
         self.bind(state=self._updateState)
 
-        Clock.schedule_once(self.colorBlue, 0)
+        self.initialize()
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -725,13 +724,23 @@ class InputButton(Button):
         elif(value == "normal"):
             self.canvasColor.rgba = self.currentColor
 
-    def colorGrey(self):
+    def initialize(self):
+        Clock.schedule_once(self.colorBlue, 0)
+
+    def colorGrey(self, *args):
         self.currentColor = (0.62, 0.62, 0.62, 0.62)
         self.canvasColor.rgba = self.currentColor
 
     def colorBlue(self, *args):
         self.currentColor = self.buttonColor
         self.canvasColor.rgba = self.currentColor
+
+class SaveButton(InputButton):
+    pass
+
+class RunButton(InputButton):
+    def initialize(self):
+        Clock.schedule_once(self.colorGrey, 0)
 
 class CancelButton(Button):
     def __init__(self, **kwargs):

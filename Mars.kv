@@ -409,24 +409,18 @@
                     spacing: self.width / 10
                     padding: (0, dp(10), 0, 0)
 
-                    Button: 
+                    SaveButton: 
                         id: saveButton
-                        text: "[color=#FFFFFF][b]SAVE[/b][/color]"
-                        markup: True
-                        background_normal: ''
-                        background_color: (0.0314, 0.62, 0.165, 0.9)
+                        buttonColor: (0.0314, 0.62, 0.165, 0.9)
+                        text: "[b]SAVE[/b]"
                         font_size: self.width / (buttonSizer - 1)
-                        halign: 'center'
                         on_release: root.save()
 
-                    Button:
+                    RunButton:
                         id: runButton
-                        text: "[color=#FFFFFF][b]RUN[/b][/color]"
-                        markup: True
-                        background_normal: ''
-                        background_color: (0.62, 0.62, 0.62, 0.62)
+                        buttonColor: (0.0314, 0.62, 0.165, 0.9)
+                        text: "[b]RUN[/b]"
                         font_size: self.width / (buttonSizer - 1)
-                        halign: 'center'
                         on_release: root.run()
 
                     Label:
