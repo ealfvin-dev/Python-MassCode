@@ -8,6 +8,7 @@ Config.set('graphics', 'window_state', 'maximized')
 Config.write()
 
 from kivy.graphics import Color, Rectangle, Line
+from kivy.graphics.vertex_instructions import RoundedRectangle
 from kivy.clock import Clock
 from kivy.metrics import dp
 
@@ -20,7 +21,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
+from kivy.uix.image import Image
 
 import RunFile
 import TestSuite
@@ -45,12 +46,11 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.906, 0.918, 0.926, 1)
+            Color(231/255, 234/255, 236/255, 1)
             #Color(0.936, 0.938, 0.946, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
-            self.bind(size=self._update_rect, pos=self._update_rect)
-
+        self.bind(size=self._update_rect, pos=self._update_rect)
         self.saved = False
 
         self.orderOfTags = {"#": 0, \
@@ -698,18 +698,37 @@ class TopMenuButton(Button):
 class InputButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
-
+        self.buttonColor = (0.13, 0.5, 0.95, 0.94)
         self.background_normal = ''
-        #self.background_color = (0.62, 0.62, 0.62, 0.62)
-        self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.background_color = (0, 0, 0, 0)
         self.markup = True
         self.halign = 'center'
 
-    def colorGrey(self):
-        self.background_color = ((0.62, 0.62, 0.62, 0.62))
+        with self.canvas.before:
+            self.canvasColor = Color(rgba=self.buttonColor)
+            self.backgroundRect = RoundedRectangle(size=self.size, pos=self.pos, radius=[self.width/27])
 
-    def colorBlue(self):
-        self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.bind(size=self._update_rect, pos=self._update_rect)
+        self.bind(state=self._updateState)
+
+        Clock.schedule_once(self.colorBlue, 0)
+
+    def _update_rect(self, instance, value):
+        self.backgroundRect.pos = instance.pos
+        self.backgroundRect.size = instance.size
+        self.backgroundRect.radius = [instance.width/27]
+    
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.canvasColor.rgba = (self.buttonColor[0]*0.6, self.buttonColor[1]*0.6, self.buttonColor[2]*0.6, self.buttonColor[3])
+        elif(value == "normal"):
+            self.canvasColor.rgba = self.buttonColor
+
+    def colorGrey(self):
+        self.canvasColor.rgba = (0.62, 0.62, 0.62, 0.62)
+
+    def colorBlue(self, *args):
+        self.canvasColor.rgba = self.buttonColor
 
 class CancelButton(Button):
     def __init__(self, **kwargs):

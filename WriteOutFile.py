@@ -106,7 +106,9 @@ def writeOut(seriesList):
 
             table.append(line)
 
-        f.write(tabulate(table, headers=["", "LOAD\n(g)", "DELTA(MG)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"], floatfmt=("", ".5f", ".5f", ".5f", ".5f"), tablefmt="plain", colalign=("left", "center", "center", "center", "center")) + "\n\n")
+        f.write(tabulate(table, headers=["", "LOAD\n(g)", "DELTA(MG)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"],\
+            floatfmt=("", ".5f", ".5f", ".5f", ".5f"), tablefmt="plain",\
+            colalign=("left", "center", "center", "center", "center")) + "\n\n")
 
         #Statistics
         #F-test
@@ -158,9 +160,12 @@ def writeOut(seriesList):
             line.append(series.weightDensities[i])
             line.append(series.weightCCEs[i])
             line.append(float(series.matrixBHat[i][0]))
+            line.append(float(series.matrixBHat[i][0] - series.weightNominals[0][i]))
             
             table.append(line)
 
-        f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL", "DENSITY (g/cm)", "CCE (/" + chr(730) + "C)", "TRUE MASS (g)"], floatfmt=("", "", ".5f", ".7f", ".8f"), colalign=("left", "center", "center", "center", "decimal")) + "\n\n")
+        f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL\n(g, lb)", "DENSITY\n(g/cm)", "CCE\n(/" + chr(730) + "C)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
+            floatfmt=("", "", ".5f", ".7f", ".8f", ".8f"),\
+            colalign=("left", "center", "center", "center", "decimal", "decimal")) + "\n\n")
 
     f.close()

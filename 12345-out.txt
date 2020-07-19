@@ -1,0 +1,69 @@
+# new file
+
+12345
+
+***SERIES 1***
+
+OPERATOR  1
+BALANCE_ID  1
+DATE  07 28 2020
+
+---RESTRAINT  A
+---CHECK STANDARD  C
+
+##ENVIRONMENTALS##
+        T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)
+1:     20.00  740.00  50.00  0.00116760
+2:     20.00  740.00  50.00  0.00116760
+3:     20.00  740.00  50.00  0.00116760
+4:     20.00  740.00  50.00  0.00116760
+5:     20.00  740.00  50.00  0.00116760
+6:     20.00  740.00  50.00  0.00116760
+AVE:   20.00  740.00  50.00  0.00116760
+CORR:   0.00    0.00   0.00
+
+##BALANCE OBSERVATIONS##
+1:  0
+2:  0
+3:  0
+4:  0
+5:  0
+6:  0
+
+##METRICS##
+     LOAD    DELTA(MG)    OBS SENSITIVITY    AVE SENSITIVITY
+     (g)                     (mg/DIV)           (mg/DIV)
+1:   500      0.00000         1.00000            1.00000
+2:   500      0.00000         1.00000            1.00000
+3:   500      0.00000         1.00000            1.00000
+4:   500     -0.00000         1.00000            1.00000
+5:   500     -0.00000         1.00000            1.00000
+6:   500     -0.00000         1.00000            1.00000
+
+##STATISTICS##
+#F-TEST
+ACCEPTED_SW = 1.0 MG
+OBSERVED_SW = 0.0 MG
+CRITICAL_F-VALUE = 2.61
+OBSERVED_F-VALUE = 0.0
+--------
+| PASS |
+--------
+
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 0.5 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 0.000998 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
+WEIGHT ID     NOMINAL    DENSITY      CCE        TRUE MASS    CORRECTION
+              (g, lb)    (g/cm)      (/˚C)             (g)          (mg)
+-----------  ---------  ---------  ---------  ------------  ------------
+A               500      8.00000   0.0000450  500.00100000    0.00100000
+B               500      8.00000   0.0000450  500.00099842    0.00099842
+C               500      8.00000   0.0000450  500.00099842    0.00099842
+D               500      8.00000   0.0000450  500.00099842    0.00099842
+

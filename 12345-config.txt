@@ -1,6 +1,5 @@
-#  Test if a weight height of 0 raises MARSException
-
-    <Report-Number>  Test-ZeroHeightPassed
+#  new file
+    <Report-Number>  12345
 
      <Restraint-ID>  1
     <Unc-Restraint>  1
@@ -16,10 +15,10 @@
 
      <Gravity-Grad>  0.0000031
     <Gravity-Local>  9.8
-           <Height>  1
-           <Height>  1
-           <Height>  0
            <Height>  2
+           <Height>  1
+           <Height>  1
+           <Height>  1
 
          <Check-ID>  1
             <Grams>  1
@@ -28,7 +27,7 @@
          <Position>  C	500	8	0.000045 0.5
          <Position>  D	500	8	0.000045
 
-        <Design-ID>  112
+        <Design-ID> 112
            <Design>  1 -1  0  0
            <Design>  1  0 -1  0
            <Design>  1  0  0 -1
@@ -58,3 +57,6 @@
   <Balance-Reading>  0
   <Balance-Reading>  0
   <Balance-Reading>  0
+
+
+
