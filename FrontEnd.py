@@ -46,7 +46,7 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            Color(231/255, 234/255, 236/255, 1)
+            Color(rgba=(231/255, 234/255, 236/255, 1))
             #Color(0.936, 0.938, 0.946, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
@@ -324,7 +324,7 @@ class MainLayout(BoxLayout):
         if(tags["<Height>"] and tags["<Gravity-Grad>"] and tags["<Gravity-Local>"]):
             self.ids.gravityButton.colorGrey()
         else:
-            self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
+            self.ids.gravityButton.colorBlue()
 
         #Design Button
         if(tags["<Design>"] and tags["<Design-ID>"]):
@@ -644,7 +644,7 @@ class OrderedText(TextInput):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.155, 0.217, 0.292, 0.65)
+            Color(rgba=(0.155, 0.217, 0.292, 0.65))
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
             self.bind(size=self._update_rect, pos=self._update_rect)
 
@@ -666,7 +666,7 @@ class UserInput(TextInput):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.155, 0.217, 0.292, 0.65)
+            Color(rgba=(0.155, 0.217, 0.292, 0.65))
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
             self.bind(size=self._update_rect, pos=self._update_rect)
     
@@ -699,13 +699,14 @@ class InputButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.buttonColor = (0.13, 0.5, 0.95, 0.94)
+        self.currentColor = self.buttonColor
         self.background_normal = ''
         self.background_color = (0, 0, 0, 0)
         self.markup = True
         self.halign = 'center'
 
         with self.canvas.before:
-            self.canvasColor = Color(rgba=self.buttonColor)
+            self.canvasColor = Color(rgba=self.currentColor)
             self.backgroundRect = RoundedRectangle(size=self.size, pos=self.pos, radius=[self.width/27])
 
         self.bind(size=self._update_rect, pos=self._update_rect)
@@ -720,15 +721,17 @@ class InputButton(Button):
     
     def _updateState(self, instance, value):
         if(value == "down"):
-            self.canvasColor.rgba = (self.buttonColor[0]*0.6, self.buttonColor[1]*0.6, self.buttonColor[2]*0.6, self.buttonColor[3])
+            self.canvasColor.rgba = (self.currentColor[0]*0.6, self.currentColor[1]*0.6, self.currentColor[2]*0.6, self.currentColor[3])
         elif(value == "normal"):
-            self.canvasColor.rgba = self.buttonColor
+            self.canvasColor.rgba = self.currentColor
 
     def colorGrey(self):
-        self.canvasColor.rgba = (0.62, 0.62, 0.62, 0.62)
+        self.currentColor = (0.62, 0.62, 0.62, 0.62)
+        self.canvasColor.rgba = self.currentColor
 
     def colorBlue(self, *args):
-        self.canvasColor.rgba = self.buttonColor
+        self.currentColor = self.buttonColor
+        self.canvasColor.rgba = self.currentColor
 
 class CancelButton(Button):
     def __init__(self, **kwargs):
