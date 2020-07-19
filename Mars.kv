@@ -145,7 +145,7 @@
                 Image:
                     size_hint: (None, None)
                     size: (navBar.height, navBar.height)
-                    source: 'temp-logo-out.png'
+                    source: 'Logo/MarsLogo_01-01.png'
 
                 Label:
                     id: logo
@@ -274,8 +274,7 @@
                     InputButton:
                         id: gravityButton
                         text: "Gravity\nGradient\n(Optional)"
-                        background_color: (0.368, 0.49, 0.60, 1)
-                        color: (1, 1, 1, 1)
+                        buttonColor: (0.368, 0.49, 0.60, 1)
                         font_size: self.width / buttonSizer
                         on_release: app.openGravityPop()
 
