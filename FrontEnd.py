@@ -46,7 +46,7 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            Color(231/255, 234/255, 236/255, 1)
+            Color(rgba=(231/255, 234/255, 236/255, 1))
             #Color(0.936, 0.938, 0.946, 1)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
@@ -190,8 +190,8 @@ class MainLayout(BoxLayout):
     def textAdded(self, cursor_row):
         if(self.saved):
             self.saved = False
-            self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
-            self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.runButton.colorGrey()
+            self.ids.saveButton.colorBlue()
 
         if(self.currentSeries == 1):
             self.getReportNum(self.ids.userText.text)
@@ -324,7 +324,7 @@ class MainLayout(BoxLayout):
         if(tags["<Height>"] and tags["<Gravity-Grad>"] and tags["<Gravity-Local>"]):
             self.ids.gravityButton.colorGrey()
         else:
-            self.ids.gravityButton.background_color = (0.368, 0.49, 0.60, 1)
+            self.ids.gravityButton.colorBlue()
 
         #Design Button
         if(tags["<Design>"] and tags["<Design-ID>"]):
@@ -382,8 +382,8 @@ class MainLayout(BoxLayout):
 
         if(self.saved):
             self.saved = False
-            self.ids.saveButton.background_color = (0.0314, 0.62, 0.165, 0.9)
-            self.ids.runButton.background_color = (0.62, 0.62, 0.62, 0.62)
+            self.ids.runButton.colorGrey()
+            self.ids.saveButton.colorBlue()
 
     def goToSeries(self, seriesNum, exists):
         if(exists):
@@ -522,9 +522,8 @@ class MainLayout(BoxLayout):
         self.sendSuccess("FILE SAVED AS " + str(self.reportNum) + "-config.txt")
 
         self.renderButtons(self.ids.userText.text)
-
-        self.ids.runButton.background_color = (0.0314, 0.62, 0.165, 0.9)
-        self.ids.saveButton.background_color = (0.62, 0.62, 0.62, 0.62)
+        self.ids.runButton.colorBlue()
+        self.ids.saveButton.colorGrey()
 
     def run(self):
         #Perform checks to make sure the input file is in a runnable state
@@ -644,7 +643,7 @@ class OrderedText(TextInput):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.155, 0.217, 0.292, 0.65)
+            Color(rgba=(0.155, 0.217, 0.292, 0.65))
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
             self.bind(size=self._update_rect, pos=self._update_rect)
 
@@ -666,7 +665,7 @@ class UserInput(TextInput):
         super().__init__()
 
         with self.canvas.before:
-            Color(0.155, 0.217, 0.292, 0.65)
+            Color(rgba=(0.155, 0.217, 0.292, 0.65))
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
             self.bind(size=self._update_rect, pos=self._update_rect)
     
@@ -690,28 +689,37 @@ class SeriesButton(Button):
 class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
-
         self.halign = 'center'
         self.background_normal = ''
+        self.background_down = ''
         self.background_color = (0.155, 0.217, 0.292, 0.65)
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.155*0.3, 0.217*0.3, 0.292*0.3, 0.65)
+        elif(value == "normal"):
+            self.background_color = (0.155, 0.217, 0.292, 0.65)
 
 class InputButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.buttonColor = (0.13, 0.5, 0.95, 0.94)
+        self.currentColor = self.buttonColor
         self.background_normal = ''
         self.background_color = (0, 0, 0, 0)
         self.markup = True
         self.halign = 'center'
 
         with self.canvas.before:
-            self.canvasColor = Color(rgba=self.buttonColor)
+            self.canvasColor = Color(rgba=self.currentColor)
             self.backgroundRect = RoundedRectangle(size=self.size, pos=self.pos, radius=[self.width/27])
 
         self.bind(size=self._update_rect, pos=self._update_rect)
         self.bind(state=self._updateState)
 
-        Clock.schedule_once(self.colorBlue, 0)
+        self.initialize()
 
     def _update_rect(self, instance, value):
         self.backgroundRect.pos = instance.pos
@@ -720,15 +728,27 @@ class InputButton(Button):
     
     def _updateState(self, instance, value):
         if(value == "down"):
-            self.canvasColor.rgba = (self.buttonColor[0]*0.6, self.buttonColor[1]*0.6, self.buttonColor[2]*0.6, self.buttonColor[3])
+            self.canvasColor.rgba = (self.currentColor[0]*0.6, self.currentColor[1]*0.6, self.currentColor[2]*0.6, self.currentColor[3])
         elif(value == "normal"):
-            self.canvasColor.rgba = self.buttonColor
+            self.canvasColor.rgba = self.currentColor
 
-    def colorGrey(self):
-        self.canvasColor.rgba = (0.62, 0.62, 0.62, 0.62)
+    def initialize(self):
+        Clock.schedule_once(self.colorBlue, 0)
+
+    def colorGrey(self, *args):
+        self.currentColor = (0.62, 0.62, 0.62, 0.62)
+        self.canvasColor.rgba = self.currentColor
 
     def colorBlue(self, *args):
-        self.canvasColor.rgba = self.buttonColor
+        self.currentColor = self.buttonColor
+        self.canvasColor.rgba = self.currentColor
+
+class SaveButton(InputButton):
+    pass
+
+class RunButton(InputButton):
+    def initialize(self):
+        Clock.schedule_once(self.colorGrey, 0)
 
 class CancelButton(Button):
     def __init__(self, **kwargs):
@@ -736,10 +756,19 @@ class CancelButton(Button):
         self.size_hint = (None, None)
         self.size = (dp(150), dp(45))
         self.background_normal = ''
+        self.background_down = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
         self.font_size = dp(16)
         self.text = "Cancel"
         self.halign = 'center'
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.70*0.6, 0.135*0.6, 0.05*0.6, 0.92)
+        elif(value == "normal"):
+            self.background_color = (0.70, 0.135, 0.05, 0.92)
 
 class WriteButton(Button):
     def __init__(self, **kwargs):
@@ -747,11 +776,55 @@ class WriteButton(Button):
         self.size_hint = (None, None)
         self.size = (dp(150), dp(45))
         self.background_normal = ''
+        self.background_down = ''
         self.background_color = (0.13, 0.5, 0.95, 0.94)
         self.font_size = dp(16)
         self.text = "Write"
         self.halign = 'center'
-        #self.bind(on_release=root.submit)
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.13*0.5, 0.5*0.5, 0.95*0.5, 0.94)
+        elif(value == "normal"):
+            self.background_color = (0.13, 0.5, 0.95, 0.94)
+
+class AddSeriesButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.markup = True
+        self.background_normal = ''
+        self.background_down = ''
+        self.background_color = (0.00, 0.76, 0.525, 1)
+        self.text = "[b]+[/b] Add Series"
+        self.halign = 'center'
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.00*0.68, 0.76*0.68, 0.525*0.68, 1)
+        elif(value == "normal"):
+            self.background_color = (0.00, 0.76, 0.525, 1)
+
+class RemoveSeriesButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.markup = True
+        self.background_normal = ''
+        self.background_down = ''
+        self.halign = 'center'
+        self.text = "[b]-[/b] Remove\nLast Series"
+        self.background_color = (0.70, 0.135, 0.05, 0.92)
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.70*0.6, 0.135*0.6, 0.05*0.6, 0.92)
+        elif(value == "normal"):
+            self.background_color = (0.70, 0.135, 0.05, 0.92)
 
 class PopupBase(Popup):
     def __init__(self, **kwargs):
