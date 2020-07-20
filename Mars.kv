@@ -18,14 +18,9 @@
         padding: 0, 0, 0, 0
         size_hint: (0.13, 1.0)
 
-        Button:
+        AddSeriesButton:
             id: addSeriesButton
-            text: "[b]+[/b] Add Series"
-            markup: True
-            background_normal: ''
-            background_color: (0.00, 0.76, 0.525, 1)
             font_size: self.width / buttonSizer
-            halign: 'center'
             on_press: root.addSeries()
 
         SeriesButton:
@@ -114,16 +109,11 @@
             font_size: self.width / menuButtonSizer
             on_press: root.openOutputFile(self)
 
-        Button:
-            id: removeSeries
-            text: "[color=#FFFFFF][b]-[/b] Remove\nLast Series[/color]"
-            markup: True
-            background_normal: ''
-            background_color: (0.70, 0.135, 0.05, 0.92)
-            font_size: self.width / (buttonSizer*1.1)
-            halign: 'center'
-            on_release: root.removeLastSeries()
+        RemoveSeriesButton:
             size_hint: (1, 0.85)
+            id: removeSeries
+            font_size: self.width / (buttonSizer*1.1)
+            on_release: root.removeLastSeries()
 
     BoxLayout:
         id: secondaryMainBox

@@ -689,10 +689,18 @@ class SeriesButton(Button):
 class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
-
         self.halign = 'center'
         self.background_normal = ''
+        self.background_down = ''
         self.background_color = (0.155, 0.217, 0.292, 0.65)
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.155*0.3, 0.217*0.3, 0.292*0.3, 0.65)
+        elif(value == "normal"):
+            self.background_color = (0.155, 0.217, 0.292, 0.65)
 
 class InputButton(Button):
     def __init__(self, **kwargs):
@@ -748,10 +756,19 @@ class CancelButton(Button):
         self.size_hint = (None, None)
         self.size = (dp(150), dp(45))
         self.background_normal = ''
+        self.background_down = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
         self.font_size = dp(16)
         self.text = "Cancel"
         self.halign = 'center'
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.70*0.6, 0.135*0.6, 0.05*0.6, 0.92)
+        elif(value == "normal"):
+            self.background_color = (0.70, 0.135, 0.05, 0.92)
 
 class WriteButton(Button):
     def __init__(self, **kwargs):
@@ -759,11 +776,55 @@ class WriteButton(Button):
         self.size_hint = (None, None)
         self.size = (dp(150), dp(45))
         self.background_normal = ''
+        self.background_down = ''
         self.background_color = (0.13, 0.5, 0.95, 0.94)
         self.font_size = dp(16)
         self.text = "Write"
         self.halign = 'center'
-        #self.bind(on_release=root.submit)
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.13*0.5, 0.5*0.5, 0.95*0.5, 0.94)
+        elif(value == "normal"):
+            self.background_color = (0.13, 0.5, 0.95, 0.94)
+
+class AddSeriesButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.markup = True
+        self.background_normal = ''
+        self.background_down = ''
+        self.background_color = (0.00, 0.76, 0.525, 1)
+        self.text = "[b]+[/b] Add Series"
+        self.halign = 'center'
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.00*0.68, 0.76*0.68, 0.525*0.68, 1)
+        elif(value == "normal"):
+            self.background_color = (0.00, 0.76, 0.525, 1)
+
+class RemoveSeriesButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.markup = True
+        self.background_normal = ''
+        self.background_down = ''
+        self.halign = 'center'
+        self.text = "[b]-[/b] Remove\nLast Series"
+        self.background_color = (0.70, 0.135, 0.05, 0.92)
+
+        self.bind(state=self._updateState)
+
+    def _updateState(self, instance, value):
+        if(value == "down"):
+            self.background_color = (0.70*0.6, 0.135*0.6, 0.05*0.6, 0.92)
+        elif(value == "normal"):
+            self.background_color = (0.70, 0.135, 0.05, 0.92)
 
 class PopupBase(Popup):
     def __init__(self, **kwargs):
