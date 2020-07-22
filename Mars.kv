@@ -1135,7 +1135,7 @@
 <MeasurementsPopup>:
     auto_dismiss: False
     title: "Measurements"
-    size: (dp(750), dp(540))
+    size: (dp(750), dp(580))
 
     BoxLayout:
         orientation: "vertical"
@@ -1149,22 +1149,34 @@
             height: dp(20)
 
             PopupLabel:
-                text: "Balance Readings:"
-                size_hint: (0.6, None)
+                text: "\nBalance Readings:"
+                size_hint: (0.65, None)
                 height: self.texture_size[1]
                 text_size: (self.width, None)
 
-            PopupLabel:
-                text: "Environmentals (" + chr(730) + "C, mmHg, %):"
-                size_hint: (0.4, None)
-                height: self.texture_size[1]
-                text_size: (self.width, None)
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint: (0.35, None)
+                spacing: dp(12)
+                height: dp(20)
+
+                PopupLabel:
+                    text: "Environmentals\n(" + chr(730) + "C, mmHg, %):"
+                    size_hint: (0.60, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                PopupExtraButton:
+                    text: "Auto-Fill"
+                    size_hint: (0.40, None)
+                    height: self.texture_size[1]*2 - dp(2)
+                    on_release: root.autoFill()
 
         BoxLayout:
             orientation: "horizontal"
             size_hint: (1, None)
             spacing: dp(12)
-            height: dp(240)
+            height: dp(260)
             
             OrderedText:
                 id: balanceReadingsText
@@ -1416,7 +1428,7 @@
     title: "Internal Testing"
     title_size: dp(18)
     size_hint: (None, None)
-    size: (dp(750), dp(540))
+    size: (dp(750), dp(560))
 
     BoxLayout:
         orientation: "vertical"
@@ -1433,7 +1445,7 @@
         OrderedText:
             id: validationText
             size_hint: (1, None)
-            height: dp(330)
+            height: dp(350)
             multiline: True
             readonly: True
             text_size: dp(11)

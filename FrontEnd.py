@@ -645,7 +645,8 @@ class OrderedText(TextInput):
         with self.canvas.before:
             Color(rgba=(0.155, 0.217, 0.292, 0.65))
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
-            self.bind(size=self._update_rect, pos=self._update_rect)
+        
+        self.bind(size=self._update_rect, pos=self._update_rect)
 
         self.font_name = "./Menlo.ttc"
         self.text = ""
@@ -667,7 +668,25 @@ class UserInput(TextInput):
         with self.canvas.before:
             Color(rgba=(0.155, 0.217, 0.292, 0.65))
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
-            self.bind(size=self._update_rect, pos=self._update_rect)
+        
+        self.bind(size=self._update_rect, pos=self._update_rect)
+    
+    def _update_rect(self, instance, value):
+        self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
+        self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
+
+class PopupExtraButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.background_normal = ''
+        self.color = (0, 0, 0, 1)
+        self.background_color = (0.99, 0.99, 0.99, 0.98)
+
+        with self.canvas.before:
+            Color(rgba=(0.155, 0.217, 0.292, 0.65))
+            self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
+        
+        self.bind(size=self._update_rect, pos=self._update_rect)
     
     def _update_rect(self, instance, value):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
@@ -1120,6 +1139,20 @@ class MeasurementsPopup(PopupBase):
         self.parent.children[1].ids.measurementsButton.colorGrey()
 
         self.dismiss()
+
+    def autoFill(self):
+        try:
+            envs = self.ids.envText.text.splitlines()[0]
+            linesNeeded = len(self.ids.balanceReadingsText.text.splitlines())
+            if linesNeeded == 0: return
+
+            envsArray = []
+            for i in range(linesNeeded):
+                envsArray.append(envs)
+            
+            self.ids.envText.text = "\n".join(envsArray)
+        except IndexError:
+            pass
 
 class GravityPopup(PopupBase):
     def submit(self):
