@@ -681,6 +681,7 @@ class PopupExtraButton(Button):
         self.background_normal = ''
         self.color = (0, 0, 0, 1)
         self.background_color = (0.99, 0.99, 0.99, 0.98)
+        self.font_size = dp(15)
 
         with self.canvas.before:
             Color(rgba=(0.155, 0.217, 0.292, 0.65))
