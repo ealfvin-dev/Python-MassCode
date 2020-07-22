@@ -947,22 +947,27 @@ class DesignPopup(PopupBase):
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "111"
 
-        if(design == "4-1"):
+        elif(design == "4-1"):
             self.ids.designText.text = "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "112"
 
-        if(design == "5-1"):
+        elif(design == "2 x 4-1"):
+            self.ids.designText.text = "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1\n1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
+            self.ids.designText.cursor = (0, 0)
+            self.ids.designIDText.text = "112"
+
+        elif(design == "5-1"):
             self.ids.designText.text = "1 -1  0  0  0\n1  0 -1  0  0\n1  0  0 -1  0\n1  0  0  0 -1\n0  1 -1  0  0\n0  1  0 -1  0\n0  1  0  0 -1\n0  0  1 -1  0\n0  0  1  0 -1\n0  0  0  1 -1"
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "114"
 
-        if(design == "532111"):
+        elif(design == "532111"):
             self.ids.designText.text = "1 -1 -1  1 -1  0\n1 -1 -1  0  1 -1\n1 -1 -1 -1  0  1\n1 -1 -1  0  0  0\n1  0 -1 -1 -1 -1\n0  1 -1  1 -1 -1\n0  1 -1 -1  1 -1\n0  1 -1 -1 -1  1\n0  0  1 -1 -1  0\n0  0  1 -1  0 -1\n0  0  1  0 -1 -1"
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "032"
 
-        if(design == "522111"):
+        elif(design == "522111"):
             self.ids.designText.text = "1 -1 -1 -1 -1  1\n1 -1 -1 -1  1 -1\n1 -1 -1  1 -1 -1\n1 -1  0 -1 -1 -1\n1  0 -1 -1 -1 -1\n0  1 -1  1 -1  0\n0  1 -1 -1  0  1\n0  1 -1  0  1 -1"
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "310"
