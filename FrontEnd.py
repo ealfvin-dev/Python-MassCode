@@ -387,6 +387,9 @@ class MainLayout(BoxLayout):
 
     def goToSeries(self, seriesNum, exists):
         if(exists):
+            #Check if input was saved
+            wasSaved = self.saved
+
             if(self.currentSeries != None):
                 #Write current usertext into seriesTexts
                 self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
@@ -396,14 +399,20 @@ class MainLayout(BoxLayout):
                 self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
 
             #Pull new seriesText into userText
-            self.ids.userText.readonly = False
             self.ids.userText.text = self.seriesTexts[seriesNum - 1]
+
+            if(wasSaved):
+                self.ids.runButton.colorBlue()
+                self.ids.saveButton.colorGrey()
+                self.saved = True
+
+            self.ids.userText.readonly = False
             self.ids.userText.cursor = (0, 0)
             self.ids.userText.select_text(0, 0)
 
             self.currentSeries = seriesNum
 
-            #Make all tabs black/blue:
+            #Render tabs:
             for sn in range(1, 14):
                 seriesID = "series" + str(sn)
                 self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
@@ -443,6 +452,10 @@ class MainLayout(BoxLayout):
             self.ids["series" + str(self.numberOfSeries)].exists = False
 
             self.numberOfSeries -= 1
+            if(self.saved):
+                self.saved = False
+                self.ids.runButton.colorGrey()
+                self.ids.saveButton.colorBlue()
         else:
             self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
             self.goToSeries(self.numberOfSeries, True)

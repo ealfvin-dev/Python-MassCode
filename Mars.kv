@@ -446,7 +446,7 @@
                     text: "@SERIES\n\n"
                     foreground_color: 0, 0, 0, 1
                     markup: True
-                    on_focus: self.selection_color = 0.1843, 0.6549, 0.8313, 0.27
+                    on_focus: self.selection_color = (0.1843, 0.6549, 0.8313, 0.27)
                     on_text: root.textAdded(self.cursor_row)
 
                 TextInput:
@@ -458,6 +458,7 @@
                     font_name: "./Menlo.ttc"
                     text: "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
                     foreground_color: (0.05, 0.65, 0.1, 0.98)
+                    selection_color: (0.1843, 0.6549, 0.8313, 0.27)
                     size_hint: (1.0, 0.15)
                     readonly: True
 
