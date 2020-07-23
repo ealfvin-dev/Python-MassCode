@@ -476,13 +476,12 @@ class MainLayout(BoxLayout):
         #Populate series with splitTexts
         for i in range(len(splitTexts)):
             if(i == 0):
-                self.ids.userText.text = splitTexts[0]
+                self.ids.userText.text = splitTexts[0].strip()
                 continue
 
             self.addSeries()
             self.goToSeries(i + 1, True)
-            self.ids.userText.text = splitTexts[i]
-            self.ids.userText.do_backspace()
+            self.ids.userText.text = splitTexts[i].strip()
 
         self.goToSeries(1, True)
         self.getReportNum()
@@ -511,8 +510,8 @@ class MainLayout(BoxLayout):
         
         fileText = ""
         for seriesText in self.seriesTexts:
-            fileText += seriesText
-            fileText += "\n"
+            fileText += seriesText.strip()
+            fileText += "\n\n"
 
         f = open(reportNum + "-config.txt", 'w')
         f.write(fileText)
@@ -675,7 +674,7 @@ class UserInput(TextInput):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
         self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
 
-class PopupExtraButton(Button):
+class ExtraButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.background_normal = ''
