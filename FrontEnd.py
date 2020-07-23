@@ -623,17 +623,27 @@ class MainLayout(BoxLayout):
 
     def openOutputFile(self, thisButton):
         if(thisButton.exists):
-            #Save current text and render current series button nominal if coming from a series tab
-            if(self.currentSeries != None):
-                self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+            #If already on output tab, return
+            if(self.currentSeries == None):
+                return
 
-                seriesButtonId = "series" + str(self.currentSeries)
-                self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+            wasSaved = self.saved
+
+            #Save current text and render current series button nominal
+            self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+            seriesButtonId = "series" + str(self.currentSeries)
+            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
 
             self.currentSeries = None
 
             #Pull output text into userText
             self.ids.userText.text = self.outputText
+
+            if(wasSaved):
+                self.ids.runButton.colorBlue()
+                self.ids.saveButton.colorGrey()
+                self.saved = True
+
             self.ids.userText.cursor = (0, 0)
             self.ids.userText.select_text(0, 0)
             self.ids.userText.readonly = True
