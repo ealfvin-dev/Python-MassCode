@@ -446,7 +446,7 @@
                     text: "@SERIES\n\n"
                     foreground_color: 0, 0, 0, 1
                     markup: True
-                    on_focus: self.selection_color = 0.1843, 0.6549, 0.8313, 0.27
+                    on_focus: self.selection_color = (0.1843, 0.6549, 0.8313, 0.27)
                     on_text: root.textAdded(self.cursor_row)
 
                 TextInput:
@@ -456,8 +456,9 @@
                     background_normal: ''
                     background_active: ''
                     font_name: "./Menlo.ttc"
-                    text: ""
-                    foreground_color: (0.9, 0.05, 0.05, 0.85)
+                    text: "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
+                    foreground_color: (0.05, 0.65, 0.1, 0.98)
+                    selection_color: (0.1843, 0.6549, 0.8313, 0.27)
                     size_hint: (1.0, 0.15)
                     readonly: True
 
@@ -751,7 +752,8 @@
 
             OrderedText:
                 id: designText
-                size_hint: (0.7, 1)
+                size_hint: (0.7, None)
+                height: dp(280)
                 hint_text: "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 write_tab: True
@@ -761,16 +763,16 @@
 
             BoxLayout:
                 orientation: "vertical"
-                spacing: dp(50)
-                size_hint: (0.3, 1)
+                spacing: dp(25)
+                padding: (0, 0, 0, dp(143))
+                size_hint: (0.3, None)
+                height: dp(280)
 
-                Button:
+                ExtraButton:
                     id: dropDownMain
-                    size_hint: (None, None)
-                    size: (dp(140), dp(50))
                     text: "Presets"
-                    halign: 'center'
-                    font_size: dp(15)
+                    size_hint: (1, None)
+                    size: (dp(140), dp(50))
                     on_release: dropDownn.open(self)
 
                 DropDown:
@@ -784,6 +786,12 @@
 
                     Button:
                         text: "4-1"
+                        size_hint_y: None
+                        height: dp(30)
+                        on_press: root.writeDesign(self.text)
+
+                    Button:
+                        text: "2 x 4-1"
                         size_hint_y: None
                         height: dp(30)
                         on_press: root.writeDesign(self.text)
@@ -1135,7 +1143,7 @@
 <MeasurementsPopup>:
     auto_dismiss: False
     title: "Measurements"
-    size: (dp(750), dp(540))
+    size: (dp(750), dp(580))
 
     BoxLayout:
         orientation: "vertical"
@@ -1149,22 +1157,34 @@
             height: dp(20)
 
             PopupLabel:
-                text: "Balance Readings:"
-                size_hint: (0.6, None)
+                text: "\nBalance Readings:"
+                size_hint: (0.65, None)
                 height: self.texture_size[1]
                 text_size: (self.width, None)
 
-            PopupLabel:
-                text: "Environmentals (" + chr(730) + "C, mmHg, %):"
-                size_hint: (0.4, None)
-                height: self.texture_size[1]
-                text_size: (self.width, None)
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint: (0.35, None)
+                spacing: dp(12)
+                height: dp(20)
+
+                PopupLabel:
+                    text: "Environmentals\n(" + chr(730) + "C, mmHg, %):"
+                    size_hint: (0.60, None)
+                    height: self.texture_size[1]
+                    text_size: (self.width, None)
+
+                ExtraButton:
+                    text: "Auto-Fill"
+                    size_hint: (0.40, None)
+                    height: self.texture_size[1]*2 - dp(2)
+                    on_release: root.autoFill()
 
         BoxLayout:
             orientation: "horizontal"
             size_hint: (1, None)
             spacing: dp(12)
-            height: dp(240)
+            height: dp(260)
             
             OrderedText:
                 id: balanceReadingsText
@@ -1416,7 +1436,7 @@
     title: "Internal Testing"
     title_size: dp(18)
     size_hint: (None, None)
-    size: (dp(750), dp(540))
+    size: (dp(750), dp(560))
 
     BoxLayout:
         orientation: "vertical"
@@ -1433,7 +1453,7 @@
         OrderedText:
             id: validationText
             size_hint: (1, None)
-            height: dp(330)
+            height: dp(350)
             multiline: True
             readonly: True
             text_size: dp(11)

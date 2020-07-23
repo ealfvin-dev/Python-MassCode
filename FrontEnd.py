@@ -387,6 +387,9 @@ class MainLayout(BoxLayout):
 
     def goToSeries(self, seriesNum, exists):
         if(exists):
+            #Check if input was saved
+            wasSaved = self.saved
+
             if(self.currentSeries != None):
                 #Write current usertext into seriesTexts
                 self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
@@ -396,14 +399,20 @@ class MainLayout(BoxLayout):
                 self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
 
             #Pull new seriesText into userText
-            self.ids.userText.readonly = False
             self.ids.userText.text = self.seriesTexts[seriesNum - 1]
+
+            if(wasSaved):
+                self.ids.runButton.colorBlue()
+                self.ids.saveButton.colorGrey()
+                self.saved = True
+
+            self.ids.userText.readonly = False
             self.ids.userText.cursor = (0, 0)
             self.ids.userText.select_text(0, 0)
 
             self.currentSeries = seriesNum
 
-            #Make all tabs black/blue:
+            #Render tabs:
             for sn in range(1, 14):
                 seriesID = "series" + str(sn)
                 self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
@@ -443,6 +452,10 @@ class MainLayout(BoxLayout):
             self.ids["series" + str(self.numberOfSeries)].exists = False
 
             self.numberOfSeries -= 1
+            if(self.saved):
+                self.saved = False
+                self.ids.runButton.colorGrey()
+                self.ids.saveButton.colorBlue()
         else:
             self.sendError("SERIES " + str(self.numberOfSeries) + " INPUT TEXT MUST BE EMPTY BEFORE REMOVING THE SERIES")
             self.goToSeries(self.numberOfSeries, True)
@@ -476,13 +489,12 @@ class MainLayout(BoxLayout):
         #Populate series with splitTexts
         for i in range(len(splitTexts)):
             if(i == 0):
-                self.ids.userText.text = splitTexts[0]
+                self.ids.userText.text = splitTexts[0].strip()
                 continue
 
             self.addSeries()
             self.goToSeries(i + 1, True)
-            self.ids.userText.text = splitTexts[i]
-            self.ids.userText.do_backspace()
+            self.ids.userText.text = splitTexts[i].strip()
 
         self.goToSeries(1, True)
         self.getReportNum()
@@ -511,8 +523,8 @@ class MainLayout(BoxLayout):
         
         fileText = ""
         for seriesText in self.seriesTexts:
-            fileText += seriesText
-            fileText += "\n"
+            fileText += seriesText.strip()
+            fileText += "\n\n"
 
         f = open(reportNum + "-config.txt", 'w')
         f.write(fileText)
@@ -611,17 +623,27 @@ class MainLayout(BoxLayout):
 
     def openOutputFile(self, thisButton):
         if(thisButton.exists):
-            #Save current text and render current series button nominal if coming from a series tab
-            if(self.currentSeries != None):
-                self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+            #If already on output tab, return
+            if(self.currentSeries == None):
+                return
 
-                seriesButtonId = "series" + str(self.currentSeries)
-                self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
+            wasSaved = self.saved
+
+            #Save current text and render current series button nominal
+            self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+            seriesButtonId = "series" + str(self.currentSeries)
+            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids[seriesButtonId])
 
             self.currentSeries = None
 
             #Pull output text into userText
             self.ids.userText.text = self.outputText
+
+            if(wasSaved):
+                self.ids.runButton.colorBlue()
+                self.ids.saveButton.colorGrey()
+                self.saved = True
+
             self.ids.userText.cursor = (0, 0)
             self.ids.userText.select_text(0, 0)
             self.ids.userText.readonly = True
@@ -645,7 +667,8 @@ class OrderedText(TextInput):
         with self.canvas.before:
             Color(rgba=(0.155, 0.217, 0.292, 0.65))
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
-            self.bind(size=self._update_rect, pos=self._update_rect)
+        
+        self.bind(size=self._update_rect, pos=self._update_rect)
 
         self.font_name = "./Menlo.ttc"
         self.text = ""
@@ -667,7 +690,26 @@ class UserInput(TextInput):
         with self.canvas.before:
             Color(rgba=(0.155, 0.217, 0.292, 0.65))
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
-            self.bind(size=self._update_rect, pos=self._update_rect)
+        
+        self.bind(size=self._update_rect, pos=self._update_rect)
+    
+    def _update_rect(self, instance, value):
+        self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
+        self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
+
+class ExtraButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.background_normal = ''
+        self.color = (0, 0, 0, 1)
+        self.background_color = (0.99, 0.99, 0.99, 0.98)
+        self.font_size = dp(15)
+
+        with self.canvas.before:
+            Color(rgba=(0.155, 0.217, 0.292, 0.65))
+            self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
+        
+        self.bind(size=self._update_rect, pos=self._update_rect)
     
     def _update_rect(self, instance, value):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
@@ -927,22 +969,27 @@ class DesignPopup(PopupBase):
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "111"
 
-        if(design == "4-1"):
+        elif(design == "4-1"):
             self.ids.designText.text = "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "112"
 
-        if(design == "5-1"):
+        elif(design == "2 x 4-1"):
+            self.ids.designText.text = "1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1\n1 -1  0  0\n1  0 -1  0\n1  0  0 -1\n0  1 -1  0\n0  1  0 -1\n0  0  1 -1"
+            self.ids.designText.cursor = (0, 0)
+            self.ids.designIDText.text = "112"
+
+        elif(design == "5-1"):
             self.ids.designText.text = "1 -1  0  0  0\n1  0 -1  0  0\n1  0  0 -1  0\n1  0  0  0 -1\n0  1 -1  0  0\n0  1  0 -1  0\n0  1  0  0 -1\n0  0  1 -1  0\n0  0  1  0 -1\n0  0  0  1 -1"
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "114"
 
-        if(design == "532111"):
+        elif(design == "532111"):
             self.ids.designText.text = "1 -1 -1  1 -1  0\n1 -1 -1  0  1 -1\n1 -1 -1 -1  0  1\n1 -1 -1  0  0  0\n1  0 -1 -1 -1 -1\n0  1 -1  1 -1 -1\n0  1 -1 -1  1 -1\n0  1 -1 -1 -1  1\n0  0  1 -1 -1  0\n0  0  1 -1  0 -1\n0  0  1  0 -1 -1"
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "032"
 
-        if(design == "522111"):
+        elif(design == "522111"):
             self.ids.designText.text = "1 -1 -1 -1 -1  1\n1 -1 -1 -1  1 -1\n1 -1 -1  1 -1 -1\n1 -1  0 -1 -1 -1\n1  0 -1 -1 -1 -1\n0  1 -1  1 -1  0\n0  1 -1 -1  0  1\n0  1 -1  0  1 -1"
             self.ids.designText.cursor = (0, 0)
             self.ids.designIDText.text = "310"
@@ -1120,6 +1167,20 @@ class MeasurementsPopup(PopupBase):
         self.parent.children[1].ids.measurementsButton.colorGrey()
 
         self.dismiss()
+
+    def autoFill(self):
+        try:
+            envs = self.ids.envText.text.splitlines()[0]
+            linesNeeded = len(self.ids.balanceReadingsText.text.splitlines())
+            if linesNeeded == 0: return
+
+            envsArray = []
+            for i in range(linesNeeded):
+                envsArray.append(envs)
+            
+            self.ids.envText.text = "\n".join(envsArray)
+        except IndexError:
+            pass
 
 class GravityPopup(PopupBase):
     def submit(self):
