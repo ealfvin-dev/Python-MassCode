@@ -1125,6 +1125,38 @@ class SwPopup(PopupBase):
 
         self.dismiss()
 
+    def evalSaveButtons(self, saveDisabled):
+        mass = self.ids.swMassText.text
+        density = self.ids.swDensityText.text
+        cce = self.ids.swCCEText.text
+
+        if((mass != "" and density != "" and cce != "") and saveDisabled == True):
+            self.ids.useSwButton.disabled = True
+            self.ids.useSwButton.opacity = 0
+
+            self.ids.saveSwButton.disabled = False
+            self.ids.saveSwButton.opacity = 1
+
+        elif((mass == "" or density == "" or cce == "") and saveDisabled == False):
+            self.ids.saveSwButton.disabled = True
+            self.ids.saveSwButton.opacity = 0
+
+            self.ids.useSwButton.disabled = False
+            self.ids.useSwButton.opacity = 1
+
+    def saveSw(self, mass, density, cce):
+        if(mass == "" or density == "" or cce == ""):
+            self.ids.swPopError.text = "Enter data for all fields"
+            return
+
+        print("Saved sw")
+        print("Mass " + str(mass))
+        print("Density "+ str(density))
+        print("CCE "+ str(cce))
+
+    def useSaved(self):
+        print("Using saved sw...")
+
 class MeasurementsPopup(PopupBase):
     def submit(self):
         envText = self.ids.envText.text

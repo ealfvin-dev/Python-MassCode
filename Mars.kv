@@ -1074,7 +1074,7 @@
 <SwPopup>:
     auto_dismiss: False
     title: "Sensitivity Weight"
-    size: (dp(400), dp(380))
+    size: (dp(400), dp(440))
 
     BoxLayout:
         orientation: "vertical"
@@ -1092,6 +1092,7 @@
             size_hint: (1, None)
             height: 3 * self.font_size
             hint_text: "50.1023"
+            on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 24
 
         PopupLabel:
@@ -1105,6 +1106,7 @@
             size_hint: (1, None)
             height: 3 * self.font_size
             hint_text: "7.95"
+            on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 25
 
         PopupLabel:
@@ -1118,7 +1120,33 @@
             size_hint: (1, None)
             height: 3 * self.font_size
             hint_text: "0.000045"
+            on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 26
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(0)
+            size_hint: (1, None)
+
+            ExtraButton:
+                id: saveSwButton
+                text: "Save sw"
+                disabled: True
+                opacity: 0
+                size_hint: (0.25, None)
+                height: self.texture_size[1]*2 - dp(2)
+                on_release: root.saveSw(swMassText.text, swDensityText.text, swCCEText.text)
+
+            Label:
+                text: ""
+                size_hint: (0.50, None)
+
+            ExtraButton:
+                id: useSwButton
+                text: "Use Saved"
+                size_hint: (0.25, None)
+                height: self.texture_size[1]*2 - dp(2)
+                on_release: root.useSaved()
 
         PopupLabel:
             id: swPopError
