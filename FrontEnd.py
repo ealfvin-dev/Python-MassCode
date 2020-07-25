@@ -26,13 +26,13 @@ from kivy.uix.image import Image
 import RunFile
 import TestSuite
 import InputChecks
+import API
 from MARSException import MARSException
 
 import sys
 import os
 import threading
 
-#import sqlite3
 import time
 
 class MainLayout(BoxLayout):
@@ -1169,8 +1169,13 @@ class SaveSwPopup(PopupBase):
 
     def saveSw(self):
         if(self.ids.swNameText.text.strip() != ""):
+            API.saveSw(float(self.mass), float(self.density), float(self.cce))
+
             self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
             self.ids.swNameError.text = "Saved " + self.ids.swNameText.text.strip()
+
+            time.sleep(1)
+            self.dismiss()
         else:
             self.ids.swNameError.text = "Name required to save sw"
 
