@@ -1162,22 +1162,27 @@ class SwPopup(PopupBase):
 
 class SaveSwPopup(PopupBase):
     def __init__(self, mass, density, cce, **kwargs):
+        self.swMass = mass
+        self.swDensity = density
+        self.swCCE = cce
         super().__init__()
-        self.mass = mass
-        self.density = density
-        self.cce = cce
 
     def saveSw(self):
         if(self.ids.swNameText.text.strip() != ""):
-            API.saveSw(float(self.mass), float(self.density), float(self.cce))
+            try:
+                API.saveSw(float(self.swMass), float(self.swDensity), float(self.swCCE))
 
-            self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
-            self.ids.swNameError.text = "Saved " + self.ids.swNameText.text.strip()
-
-            time.sleep(1)
-            self.dismiss()
+                threading.Thread(target=self.displaySuccess).start()
+                self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
+                self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
+            except:
+                self.ids.swNameError.text = "Error adding to database"
         else:
-            self.ids.swNameError.text = "Name required to save sw"
+            self.ids.swNameError.text = "Name required to add sw"
+
+    def displaySuccess(self):
+        time.sleep(1.25)
+        self.dismiss()
 
 class MeasurementsPopup(PopupBase):
     def submit(self):

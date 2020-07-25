@@ -1100,12 +1100,46 @@
 <SwPopup>:
     auto_dismiss: False
     title: "Sensitivity Weight"
-    size: (dp(400), dp(440))
+    size: (dp(400), dp(570))
 
     BoxLayout:
         orientation: "vertical"
         spacing: dp(8)
         padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Use a sensitivity weight from the database:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(0)
+            padding: (0, 0, 0, 0)
+            size_hint: (1, None)
+
+            Label:
+                text: ""
+                size_hint: (0.39, None)
+
+            ExtraButton:
+                id: useSwButton
+                text: "Database"
+                size_hint: (0.22, None)
+                height: self.texture_size[1]*2 - dp(2)
+                on_release: root.getSw()
+
+            Label:
+                text: ""
+                size_hint: (0.39, None)
+
+        PopupLabel:
+            text: "\n-------- Or use a new sensitivity weight --------\n"
+            size_hint: (1, None)
+            halign: "center"
+            height: self.texture_size[1]
+            text_size: (self.width, None)
 
         PopupLabel:
             text: "sw True Mass (mg):"
@@ -1149,29 +1183,13 @@
             on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 26
 
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: dp(0)
-            size_hint: (1, None)
-
-            ExtraButton:
-                id: saveSwButton
-                text: "Save sw"
-                disabled: True
-                size_hint: (0.25, None)
-                height: self.texture_size[1]*2 - dp(2)
-                on_release: root.saveSw(swMassText.text, swDensityText.text, swCCEText.text)
-
-            Label:
-                text: ""
-                size_hint: (0.50, None)
-
-            ExtraButton:
-                id: useSwButton
-                text: "Stored sw"
-                size_hint: (0.25, None)
-                height: self.texture_size[1]*2 - dp(2)
-                on_release: root.getSw()
+        ExtraButton:
+            id: saveSwButton
+            text: "Add to Database"
+            disabled: True
+            size_hint: (0.36, None)
+            height: self.texture_size[1]*2 - dp(2)
+            on_release: root.saveSw(swMassText.text, swDensityText.text, swCCEText.text)
 
         PopupLabel:
             id: swPopError
@@ -1195,8 +1213,8 @@
 
 <SaveSwPopup>:
     auto_dismiss: False
-    title: "Save Sensitivity Weight"
-    size: (dp(440), dp(240))
+    title: "Add Sensitivity Weight to Database"
+    size: (dp(440), dp(335))
 
     BoxLayout:
         orientation: "vertical"
@@ -1216,6 +1234,30 @@
             hint_text: "sw5g"
 
         PopupLabel:
+            text: ""
+            size_hint: (1, None)
+            height: dp(10)
+            text_size: (self.width, None)
+
+        PopupLabel:
+            text: "Mass: " + root.swMass + " mg"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        PopupLabel:
+            text: "Density: " + root.swDensity + " g/cm3"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        PopupLabel:
+            text: "CCE: " + root.swCCE + " /" + chr(730) + "C"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        PopupLabel:
             id: swNameError
             size_hint: (1, None)
             text: ""
@@ -1233,7 +1275,7 @@
                 on_release: root.dismiss()
 
             WriteButton:
-                text: "Save sw"
+                text: "Add"
                 on_release: root.saveSw()
 
 <MeasurementsPopup>:
