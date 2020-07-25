@@ -1084,8 +1084,8 @@ class VectorsPopup(PopupBase):
 
 class StatisticsPopup(PopupBase):
     def submit(self):
-        sigmatText = self.ids.sigmatText.text
-        sigmawText = self.ids.sigmawText.text
+        sigmatText = self.ids.sigmatText.text.strip()
+        sigmawText = self.ids.sigmawText.text.strip()
 
         sigmatOrder = self.ids.sigmatText.orderNum
         sigmawOrder = self.ids.sigmawText.orderNum
@@ -1143,9 +1143,9 @@ class SwPopup(PopupBase):
         self.dismiss()
 
     def evalSaveButtons(self, saveDisabled):
-        mass = self.ids.swMassText.text
-        density = self.ids.swDensityText.text
-        cce = self.ids.swCCEText.text
+        mass = self.ids.swMassText.text.strip()
+        density = self.ids.swDensityText.text.strip()
+        cce = self.ids.swCCEText.text.strip()
 
         if(saveDisabled == True and (mass != "" and density != "" and cce != "")):
             self.ids.saveSwButton.disabled = False
@@ -1154,13 +1154,25 @@ class SwPopup(PopupBase):
             self.ids.saveSwButton.disabled = True
 
     def saveSw(self, mass, density, cce):
-        print("Saved sw")
-        print("Mass " + str(mass))
-        print("Density "+ str(density))
-        print("CCE "+ str(cce))
+        saveSwPopup = SaveSwPopup(mass, density, cce)
+        saveSwPopup.open()
 
     def getSw(self):
         print("Using saved sw...")
+
+class SaveSwPopup(PopupBase):
+    def __init__(self, mass, density, cce, **kwargs):
+        super().__init__()
+        self.mass = mass
+        self.density = density
+        self.cce = cce
+
+    def saveSw(self):
+        if(self.ids.swNameText.text.strip() != ""):
+            self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
+            self.ids.swNameError.text = "Saved " + self.ids.swNameText.text.strip()
+        else:
+            self.ids.swNameError.text = "Name required to save sw"
 
 class MeasurementsPopup(PopupBase):
     def submit(self):

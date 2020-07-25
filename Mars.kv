@@ -1193,6 +1193,49 @@
             WriteButton:
                 on_release: root.submit()
 
+<SaveSwPopup>:
+    auto_dismiss: False
+    title: "Save Sensitivity Weight"
+    size: (dp(440), dp(240))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Enter Sensitivity Weight Name:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: swNameText
+            size_hint: (1, None)
+            height: 3 * self.font_size
+            hint_text: "sw5g"
+
+        PopupLabel:
+            id: swNameError
+            size_hint: (1, None)
+            text: ""
+            color: (0.95, 0.05, 0.09, 1)
+            height: dp(20)
+            text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
+
+            CancelButton:
+                on_release: root.dismiss()
+
+            WriteButton:
+                text: "Save sw"
+                on_release: root.saveSw()
+
 <MeasurementsPopup>:
     auto_dismiss: False
     title: "Measurements"
