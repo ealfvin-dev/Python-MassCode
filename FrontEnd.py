@@ -1102,6 +1102,23 @@ class StatisticsPopup(PopupBase):
 
         self.dismiss()
 
+    def evalSaveButtons(self, saveDisabled):
+        sigw = self.ids.sigmawText.text
+        sigt = self.ids.sigmatText.text
+
+        if(saveDisabled == True and (sigw != "" and sigt != "")):
+            self.ids.saveStatsButton.disabled = False
+
+        elif(saveDisabled == False and (sigw == "" or sigt == "")):
+            self.ids.saveStatsButton.disabled = True
+
+    def saveStats(self, sigw, sigt):
+        print("Sigw " + str(sigw))
+        print("Sigt "+ str(sigt))
+
+    def getStats(self):
+        print("Using saved sigma...")
+
 class SwPopup(PopupBase):
     def submit(self):
         swMassText = self.ids.swMassText.text
@@ -1130,31 +1147,19 @@ class SwPopup(PopupBase):
         density = self.ids.swDensityText.text
         cce = self.ids.swCCEText.text
 
-        if((mass != "" and density != "" and cce != "") and saveDisabled == True):
-            self.ids.useSwButton.disabled = True
-            self.ids.useSwButton.opacity = 0
-
+        if(saveDisabled == True and (mass != "" and density != "" and cce != "")):
             self.ids.saveSwButton.disabled = False
-            self.ids.saveSwButton.opacity = 1
 
-        elif((mass == "" or density == "" or cce == "") and saveDisabled == False):
+        elif(saveDisabled == False and (mass == "" or density == "" or cce == "")):
             self.ids.saveSwButton.disabled = True
-            self.ids.saveSwButton.opacity = 0
-
-            self.ids.useSwButton.disabled = False
-            self.ids.useSwButton.opacity = 1
 
     def saveSw(self, mass, density, cce):
-        if(mass == "" or density == "" or cce == ""):
-            self.ids.swPopError.text = "Enter data for all fields"
-            return
-
         print("Saved sw")
         print("Mass " + str(mass))
         print("Density "+ str(density))
         print("CCE "+ str(cce))
 
-    def useSaved(self):
+    def getSw(self):
         print("Using saved sw...")
 
 class MeasurementsPopup(PopupBase):

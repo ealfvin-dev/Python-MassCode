@@ -1018,7 +1018,7 @@
 <StatisticsPopup>:
     auto_dismiss: False
     title: "Statistics"
-    size: (dp(400), dp(310))
+    size: (dp(400), dp(365))
 
     BoxLayout:
         orientation: "vertical"
@@ -1036,6 +1036,7 @@
             size_hint: (1, None)
             height: 3 * self.font_size
             hint_text: "0.008"
+            on_text: root.evalSaveButtons(saveStatsButton.disabled)
             orderNum: 22
 
         PopupLabel:
@@ -1049,7 +1050,32 @@
             size_hint: (1, None)
             height: 3 * self.font_size
             hint_text: "0.012"
+            on_text: root.evalSaveButtons(saveStatsButton.disabled)
             orderNum: 23
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(0)
+            size_hint: (1, None)
+
+            ExtraButton:
+                id: saveStatsButton
+                text: "Save " + chr(963)
+                disabled: True
+                size_hint: (0.25, None)
+                height: self.texture_size[1]*2 - dp(2)
+                on_release: root.saveStats(sigmawText.text, sigmatText.text)
+
+            Label:
+                text: ""
+                size_hint: (0.50, None)
+
+            ExtraButton:
+                id: useStatsButton
+                text: "Stored " + chr(963)
+                size_hint: (0.25, None)
+                height: self.texture_size[1]*2 - dp(2)
+                on_release: root.getStats()
 
         PopupLabel:
             id: sigmaPopError
@@ -1132,7 +1158,6 @@
                 id: saveSwButton
                 text: "Save sw"
                 disabled: True
-                opacity: 0
                 size_hint: (0.25, None)
                 height: self.texture_size[1]*2 - dp(2)
                 on_release: root.saveSw(swMassText.text, swDensityText.text, swCCEText.text)
@@ -1143,10 +1168,10 @@
 
             ExtraButton:
                 id: useSwButton
-                text: "Use Saved"
+                text: "Stored sw"
                 size_hint: (0.25, None)
                 height: self.texture_size[1]*2 - dp(2)
-                on_release: root.useSaved()
+                on_release: root.getSw()
 
         PopupLabel:
             id: swPopError
@@ -1584,6 +1609,6 @@
                 on_release: root.dismiss()
 
             CancelButton:
-                text: "Close Without\nSaving"
+                text: "Exit"
                 size: (dp(150), dp(55))
                 on_release: app.closeApp()
