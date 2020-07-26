@@ -12,12 +12,15 @@ from kivy.graphics.vertex_instructions import RoundedRectangle
 from kivy.clock import Clock
 from kivy.metrics import dp
 
-from kivy.uix.popup import Popup
-from kivy.uix.dropdown import DropDown
+from kivy.app import App
 from kivy.core.window import Window
 
-from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.scrollview import ScrollView
+
+from kivy.uix.popup import Popup
+from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
@@ -1181,7 +1184,8 @@ class SwPopup(PopupBase):
         saveSwPopup.open()
 
     def getSw(self):
-        print("Using saved sw...")
+        swDbPopup = SwDbPopup()
+        swDbPopup.open()
 
 class SaveSwPopup(PopupBase):
     def __init__(self, mass, density, cce, **kwargs):
@@ -1206,6 +1210,9 @@ class SaveSwPopup(PopupBase):
     def displaySuccess(self):
         time.sleep(1.25)
         self.dismiss()
+
+class SwDbPopup(PopupBase):
+    pass
 
 class MeasurementsPopup(PopupBase):
     def submit(self):
