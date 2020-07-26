@@ -888,6 +888,28 @@ class PopupLabel(Label):
         self.color = (0.095, 0.095, 0.096, 0.9)
         self.font_size = dp(15)
 
+        self.bind(texture_size=self.updateLabel, width=self.updateLabel)
+
+    def updateLabel(self, inst, value):
+        self.height = self.texture_size[1]
+        self.text_size = (self.width, None)
+
+class PopupErrorLabel(Label):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.markup = True
+        self.halign = "left"
+        self.valign = "bottom"
+        self.color = (0.95, 0.05, 0.09, 1)
+        self.font_size = dp(15)
+        self.height = dp(20)
+        self.text = ""
+
+        self.bind(width=self.updateLabel)
+
+    def updateLabel(self, inst, value):
+        self.text_size = (self.width, None)
+
 class LabInfoPopup(PopupBase):
     def submit(self):
         #Check if all fields have been entered
@@ -1194,7 +1216,6 @@ class SwPopup(PopupBase):
         mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10), dp(10), dp(10)))
 
         titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
-        titleLabel.bind(texture_size=self.updateLabel, width=self.updateLabel)
 
         sv = ScrollView(do_scroll_x=False, do_scroll_y=True, size_hint=(1, None), height=dp(400))
 
@@ -1203,7 +1224,7 @@ class SwPopup(PopupBase):
 
         for entry in swData:
             dbEntryLayout = GridLayout(size_hint=(1, None), spacing=dp(5), rows=1)
-            dbEntryLayout.add_widget(PopupLabel(text=entry[0]))
+            dbEntryLayout.add_widget(PopupLabel(size_hint=(1, None), text=entry[0]))
             dbGrid.add_widget(dbEntryLayout)
 
         sv.add_widget(dbGrid)
@@ -1213,10 +1234,6 @@ class SwPopup(PopupBase):
         swDbPopup.add_widget(mainPopLayout)
 
         swDbPopup.open()
-
-    def updateLabel(self, inst, value):
-        inst.height = inst.texture_size[1]
-        inst.text_size = (inst.width, None)
 
     def resizeGrid(self, inst, value):
         inst.height = value
