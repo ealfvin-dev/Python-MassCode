@@ -1,6 +1,13 @@
 import sqlite3
 from datetime import datetime
 
+def getSws():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT * FROM sw_table''')
+
+    return c.fetchall()
+
 def saveSw(name, mass, density, cce):
     today = datetime.today().strftime("%Y-%m-%d")
 

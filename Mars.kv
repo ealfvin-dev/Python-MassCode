@@ -1383,60 +1383,6 @@
                 text: "Add"
                 on_release: root.saveSw()
 
-<SwDbPopup>:
-    auto_dismiss: False
-    title: "Sensitivity Weight Database"
-    size: (dp(750), dp(580))
-
-    BoxLayout:
-        orientation: "vertical"
-        spacing: dp(12)
-        padding: dp(10), dp(10), dp(10), dp(10)
-
-        PopupLabel:
-            text: "Saved Sensitivity Weights"
-            size_hint: (1, None)
-            height: self.texture_size[1]
-            text_size: (self.width, None)
-
-        ScrollView:
-            do_scroll_x: False
-            do_scroll_y: True
-            size_hint: (1, None)
-            height: dp(400)
-
-            GridLayout:
-                size_hint: (1, None)
-                spacing: dp(8)
-                height: self.minimum_height
-                cols: 1
-
-                Label:
-                    text: "test\n"*100
-                    color: (0, 0, 0, 1)
-                    height: self.texture_size[1]
-                    size_hint: (1, None)
-
-                Label:
-                    text: "test2\n"*100
-                    color: (0, 0, 0, 1)
-                    height: self.texture_size[1]
-                    size_hint: (1, None)
-
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: self.width - 2*dp(150)
-            size_hint: (1, None)
-            height: dp(50)
-
-            CancelButton:
-                text: "Back"
-                on_release: root.dismiss()
-
-            Label:
-                text: ""
-                width: dp(150)
-
 <MeasurementsPopup>:
     auto_dismiss: False
     title: "Measurements"

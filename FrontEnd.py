@@ -9,11 +9,11 @@ Config.write()
 
 from kivy.graphics import Color, Rectangle, Line
 from kivy.graphics.vertex_instructions import RoundedRectangle
-from kivy.clock import Clock
 from kivy.metrics import dp
 
 from kivy.app import App
 from kivy.core.window import Window
+from kivy.clock import Clock
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -881,7 +881,7 @@ class PopupBase(Popup):
 
 class PopupLabel(Label):
     def __init__(self, **kwargs):
-        super().__init__()
+        super().__init__(**kwargs)
         self.markup = True
         self.halign = "left"
         self.valign = "bottom"
@@ -1184,8 +1184,42 @@ class SwPopup(PopupBase):
         saveSwPopup.open()
 
     def getSw(self):
+        swData = []
+        try:
+            swData = API.getSws()
+        except:
+            swData = []
+
         swDbPopup = SwDbPopup()
+        mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10), dp(10), dp(10)))
+
+        titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
+        titleLabel.bind(texture_size=self.updateLabel, width=self.updateLabel)
+
+        sv = ScrollView(do_scroll_x=False, do_scroll_y=True, size_hint=(1, None), height=dp(400))
+
+        dbGrid = GridLayout(size_hint=(1, None), spacing=dp(4), cols=1)
+        dbGrid.bind(minimum_height=self.resizeGrid)
+
+        for entry in swData:
+            dbEntryLayout = GridLayout(size_hint=(1, None), spacing=dp(5), rows=1)
+            dbEntryLayout.add_widget(PopupLabel(text=entry[0]))
+            dbGrid.add_widget(dbEntryLayout)
+
+        sv.add_widget(dbGrid)
+
+        mainPopLayout.add_widget(titleLabel)
+        mainPopLayout.add_widget(sv)
+        swDbPopup.add_widget(mainPopLayout)
+
         swDbPopup.open()
+
+    def updateLabel(self, inst, value):
+        inst.height = inst.texture_size[1]
+        inst.text_size = (inst.width, None)
+
+    def resizeGrid(self, inst, value):
+        inst.height = value
 
 class SaveSwPopup(PopupBase):
     def __init__(self, mass, density, cce, **kwargs):
@@ -1212,7 +1246,11 @@ class SaveSwPopup(PopupBase):
         self.dismiss()
 
 class SwDbPopup(PopupBase):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.auto_dismiss = False
+        self.title = "Sensitivity Weight Database"
+        self.size = (dp(750), dp(580))
 
 class MeasurementsPopup(PopupBase):
     def submit(self):
