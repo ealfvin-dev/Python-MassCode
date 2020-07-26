@@ -75,8 +75,8 @@ class MainLayout(BoxLayout):
             "<Restraint>": 19, \
             "<Check-Standard>": 20, \
             "<Pass-Down>": 21, \
-            "<Sigma-t>": 22, \
-            "<Sigma-w>": 23, \
+            "<Sigma-w>": 22, \
+            "<Sigma-t>": 23, \
             "<sw-Mass>": 24, \
             "<sw-Density>": 25, \
             "<sw-CCE>": 26, \
@@ -277,8 +277,8 @@ class MainLayout(BoxLayout):
             "<Restraint>": False, \
             "<Check-Standard>": False, \
             "<Pass-Down>": False, \
-            "<Sigma-t>": False, \
             "<Sigma-w>": False, \
+            "<Sigma-t>": False, \
             "<sw-Mass>": False, \
             "<sw-Density>": False, \
             "<sw-CCE>": False, \
@@ -1084,18 +1084,18 @@ class VectorsPopup(PopupBase):
 
 class StatisticsPopup(PopupBase):
     def submit(self):
-        sigmatText = self.ids.sigmatText.text.strip()
         sigmawText = self.ids.sigmawText.text.strip()
+        sigmatText = self.ids.sigmatText.text.strip()
 
-        sigmatOrder = self.ids.sigmatText.orderNum
         sigmawOrder = self.ids.sigmawText.orderNum
+        sigmatOrder = self.ids.sigmatText.orderNum
 
-        if(sigmatText == "" or sigmawText == ""):
+        if(sigmawText == "" or sigmatText == ""):
             self.ids.sigmaPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(sigmatText, sigmatOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(sigmawText, sigmawOrder)
+        cursorStart1, textLength1 = self.parent.children[1].writeText(sigmawText, sigmawOrder)
+        cursorStart2, textLength2 = self.parent.children[1].writeText(sigmatText, sigmatOrder)
 
         self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
         self.parent.children[1].ids.statisticsButton.colorGrey()
@@ -1103,8 +1103,8 @@ class StatisticsPopup(PopupBase):
         self.dismiss()
 
     def evalSaveButtons(self, saveDisabled):
-        sigw = self.ids.sigmawText.text
-        sigt = self.ids.sigmatText.text
+        sigw = self.ids.sigmawText.text.strip()
+        sigt = self.ids.sigmatText.text.strip()
 
         if(saveDisabled == True and (sigw != "" and sigt != "")):
             self.ids.saveStatsButton.disabled = False
@@ -1113,11 +1113,34 @@ class StatisticsPopup(PopupBase):
             self.ids.saveStatsButton.disabled = True
 
     def saveStats(self, sigw, sigt):
-        print("Sigw " + str(sigw))
-        print("Sigt "+ str(sigt))
+        saveStatisticsPopup = SaveStatisticsPopup(sigw, sigt)
+        saveStatisticsPopup.open()
 
     def getStats(self):
         print("Using saved sigma...")
+
+class SaveStatisticsPopup(PopupBase):
+    def __init__(self, sigw, sigt, **kwargs):
+        self.sigw = sigw
+        self.sigt = sigt
+        super().__init__()
+
+    def saveStats(self):
+        if(self.ids.balanceNameText.text.strip() != "" and self.ids.nominalText.text.strip() != ""):
+            try:
+                API.saveStats(self.ids.balanceNameText.text.strip(), self.ids.nominalText.text.strip(), self.ids.descriptionText.text.strip(), float(self.sigw), float(self.sigt))
+
+                self.ids.statsError.color = (0.05, 0.65, 0.1, 0.98)
+                self.ids.statsError.text = "Added standard deviations on the " + self.ids.balanceNameText.text.strip()
+                threading.Thread(target=self.displaySuccess).start()
+            except:
+                self.ids.statsError.text = "Error adding to database"
+        else:
+            self.ids.statsError.text = "Balance & Description required to add to database"
+
+    def displaySuccess(self):
+        time.sleep(1.25)
+        self.dismiss()
 
 class SwPopup(PopupBase):
     def submit(self):
@@ -1170,11 +1193,11 @@ class SaveSwPopup(PopupBase):
     def saveSw(self):
         if(self.ids.swNameText.text.strip() != ""):
             try:
-                API.saveSw(float(self.swMass), float(self.swDensity), float(self.swCCE))
+                API.saveSw(self.ids.swNameText.text.strip(), float(self.swMass), float(self.swDensity), float(self.swCCE))
 
-                threading.Thread(target=self.displaySuccess).start()
                 self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
+                threading.Thread(target=self.displaySuccess).start()
             except:
                 self.ids.swNameError.text = "Error adding to database"
         else:

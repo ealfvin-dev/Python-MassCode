@@ -1018,7 +1018,7 @@
 <StatisticsPopup>:
     auto_dismiss: False
     title: "Statistics"
-    size: (dp(400), dp(365))
+    size: (dp(400), dp(495))
 
     BoxLayout:
         orientation: "vertical"
@@ -1026,18 +1026,38 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]t[/size] (mg):"
+            text: "Use standard deviations from the database:"
             size_hint: (1, None)
             height: self.texture_size[1]
             text_size: (self.width, None)
 
-        OrderedText:
-            id: sigmatText
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(0)
+            padding: (0, 0, 0, 0)
             size_hint: (1, None)
-            height: 3 * self.font_size
-            hint_text: "0.008"
-            on_text: root.evalSaveButtons(saveStatsButton.disabled)
-            orderNum: 22
+
+            Label:
+                text: ""
+                size_hint: (0.39, None)
+
+            ExtraButton:
+                id: useStatsButton
+                text: "Database"
+                size_hint: (0.22, None)
+                height: self.texture_size[1]*2 - dp(2)
+                on_release: root.getStats()
+
+            Label:
+                text: ""
+                size_hint: (0.39, None)
+
+        PopupLabel:
+            text: "\n-------- Or use a new standard deviations --------\n"
+            size_hint: (1, None)
+            halign: "center"
+            height: self.texture_size[1]
+            text_size: (self.width, None)
 
         PopupLabel:
             text: chr(963) + "[size=3mm]w[/size] (mg):"
@@ -1051,31 +1071,29 @@
             height: 3 * self.font_size
             hint_text: "0.012"
             on_text: root.evalSaveButtons(saveStatsButton.disabled)
+            orderNum: 22
+
+        PopupLabel:
+            text: chr(963) + "[size=3mm]t[/size] (mg):"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: sigmatText
+            size_hint: (1, None)
+            height: 3 * self.font_size
+            hint_text: "0.008"
+            on_text: root.evalSaveButtons(saveStatsButton.disabled)
             orderNum: 23
 
-        BoxLayout:
-            orientation: "horizontal"
-            spacing: dp(0)
-            size_hint: (1, None)
-
-            ExtraButton:
-                id: saveStatsButton
-                text: "Save " + chr(963)
-                disabled: True
-                size_hint: (0.25, None)
-                height: self.texture_size[1]*2 - dp(2)
-                on_release: root.saveStats(sigmawText.text, sigmatText.text)
-
-            Label:
-                text: ""
-                size_hint: (0.50, None)
-
-            ExtraButton:
-                id: useStatsButton
-                text: "Stored " + chr(963)
-                size_hint: (0.25, None)
-                height: self.texture_size[1]*2 - dp(2)
-                on_release: root.getStats()
+        ExtraButton:
+            id: saveStatsButton
+            text: "Add to Database"
+            disabled: True
+            size_hint: (0.36, None)
+            height: self.texture_size[1]*2 - dp(2)
+            on_release: root.saveStats(sigmawText.text, sigmatText.text)
 
         PopupLabel:
             id: sigmaPopError
@@ -1096,6 +1114,91 @@
 
             WriteButton:
                 on_release: root.submit()
+
+<SaveStatisticsPopup>:
+    auto_dismiss: False
+    title: "Add Standard Deviations to Database"
+    size: (dp(440), dp(455))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Balance Name:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: balanceNameText
+            size_hint: (1, None)
+            height: 3 * self.font_size
+            hint_text: "AX2005"
+
+        PopupLabel:
+            text: "Nominal:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: nominalText
+            size_hint: (1, None)
+            height: 3 * self.font_size
+            hint_text: "100 g"
+
+        PopupLabel:
+            text: "Additional Description:"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        OrderedText:
+            id: descriptionText
+            size_hint: (1, None)
+            height: 3 * self.font_size
+            hint_text: "532111 - P set"
+
+        PopupLabel:
+            text: ""
+            size_hint: (1, None)
+            height: dp(10)
+            text_size: (self.width, None)
+
+        PopupLabel:
+            text: chr(963) + "[size=3mm]w[/size]: " + root.sigw + " mg"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        PopupLabel:
+            text: chr(963) + "[size=3mm]t[/size]: " + root.sigt + " mg"
+            size_hint: (1, None)
+            height: self.texture_size[1]
+            text_size: (self.width, None)
+
+        PopupLabel:
+            id: statsError
+            size_hint: (1, None)
+            text: ""
+            color: (0.95, 0.05, 0.09, 1)
+            height: dp(20)
+            text_size: (self.width, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
+
+            CancelButton:
+                on_release: root.dismiss()
+
+            WriteButton:
+                text: "Add"
+                on_release: root.saveStats()
 
 <SwPopup>:
     auto_dismiss: False
@@ -1222,7 +1325,7 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            text: "Enter Sensitivity Weight Name:"
+            text: "Sensitivity Weight Name:"
             size_hint: (1, None)
             height: self.texture_size[1]
             text_size: (self.width, None)
