@@ -804,7 +804,7 @@ class CancelButton(Button):
         self.background_down = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
         self.font_size = dp(16)
-        self.text = "Cancel"
+        self.text = kwargs.get("text", "Cancel")
         self.halign = 'center'
 
         self.bind(state=self._updateState)
@@ -1235,59 +1235,8 @@ class SwPopup(PopupBase):
         saveSwPopup.open()
 
     def getSw(self):
-        swData = []
-        try:
-            swData = API.getSws()
-        except:
-            swData = []
-
         swDbPopup = SwDbPopup()
-        mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
-
-        titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
-
-        sv = DbScrollView(do_scroll_x=False, do_scroll_y=True, size_hint=(1, None), height=dp(400))
-
-        dbGrid = GridLayout(size_hint=(1, None), spacing=dp(5), padding=(dp(15), dp(15)), cols=1)
-        dbGrid.bind(minimum_height=resizeGrid)
-
-        #Table Header
-        dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text="[b]Name[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text="[b]Mass (mg)[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text="[b]Density[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text="[b]CCE[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text="[b]Entered On[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=""))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.07, None), text=""))
-
-        dbGrid.add_widget(dbEntryLayout)
-
-        #Table Content
-        for entry in swData:
-            dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[0]))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text=str(entry[1])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text=str(entry[2])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=str(entry[3])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[4]))
-
-            dbEntryLayout.add_widget(Button(size_hint=(0.13, None), height=dp(37), background_normal = '', background_color=(0.00, 0.76, 0.525, 1), text="Select"))
-            dbEntryLayout.add_widget(Button(size_hint=(0.07, None), height=dp(37), background_normal = '', background_color=(0.95, 0.05, 0.09, 1), text="Del"))
-
-            dbGrid.add_widget(dbEntryLayout)
-
-        sv.add_widget(dbGrid)
-
-        #buttonLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
-        cancelButton = CancelButton(text="Back")
-        cancelButton.bind(on_release=goBack)
-
-        mainPopLayout.add_widget(titleLabel)
-        mainPopLayout.add_widget(sv)
-        mainPopLayout.add_widget(cancelButton)
-        swDbPopup.add_widget(mainPopLayout)
-
+        swDbPopup.buildDbPopup()
         swDbPopup.open()
 
 class SaveSwPopup(PopupBase):
@@ -1328,7 +1277,57 @@ class SwDbPopup(PopupBase):
         self.dismiss()
 
     def buildDbPopup(self):
+        swData = []
+        try:
+            swData = API.getSws()
+        except:
+            swData = []
 
+        mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
+
+        titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
+
+        sv = DbScrollView(do_scroll_x=False, do_scroll_y=True, size_hint=(1, None), height=dp(400))
+
+        dbGrid = GridLayout(size_hint=(1, None), spacing=dp(5), padding=(dp(15), dp(15)), cols=1)
+        dbGrid.bind(minimum_height=self.resizeGrid)
+
+        #Table Header
+        dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text="[b]Name[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text="[b]Mass (mg)[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text="[b]Density[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text="[b]CCE[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text="[b]Entered On[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=""))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.07, None), text=""))
+
+        dbGrid.add_widget(dbEntryLayout)
+
+        #Table Content
+        for entry in swData:
+            dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[0]))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text=str(entry[1])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text=str(entry[2])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=str(entry[3])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[4]))
+
+            dbEntryLayout.add_widget(Button(size_hint=(0.13, None), height=dp(37), background_normal = '', background_color=(0.00, 0.76, 0.525, 1), text="Select"))
+            dbEntryLayout.add_widget(Button(size_hint=(0.07, None), height=dp(37), background_normal = '', background_color=(0.95, 0.05, 0.09, 1), text="Del"))
+
+            dbGrid.add_widget(dbEntryLayout)
+
+        sv.add_widget(dbGrid)
+
+        #buttonLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
+        cancelButton = CancelButton(text="Back")
+        cancelButton.bind(on_release=self.goBack)
+
+        mainPopLayout.add_widget(titleLabel)
+        mainPopLayout.add_widget(sv)
+        mainPopLayout.add_widget(cancelButton)
+        self.add_widget(mainPopLayout)
 
 class MeasurementsPopup(PopupBase):
     def submit(self):
