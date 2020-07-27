@@ -4,7 +4,7 @@ from datetime import datetime
 def getSws():
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
-    c.execute('''SELECT * FROM sw_table''')
+    c.execute('''SELECT * FROM sw_table ORDER BY mass''')
 
     return c.fetchall()
 

@@ -797,7 +797,7 @@ class RunButton(InputButton):
 
 class CancelButton(Button):
     def __init__(self, **kwargs):
-        super().__init__()
+        super().__init__(**kwargs)
         self.size_hint = (None, None)
         self.size = (dp(150), dp(45))
         self.background_normal = ''
@@ -896,7 +896,7 @@ class PopupLabel(Label):
 
 class PopupErrorLabel(Label):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__()
         self.markup = True
         self.halign = "left"
         self.valign = "bottom"
@@ -909,6 +909,35 @@ class PopupErrorLabel(Label):
 
     def updateLabel(self, inst, value):
         self.text_size = (self.width, None)
+
+class DbEntryLabel(Label):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.markup = True
+        self.halign = "left"
+        self.valign = "center"
+        self.color = (0.095, 0.095, 0.096, 0.9)
+        self.font_size = dp(14)
+        self.height = dp(37)
+
+        self.bind(width=self.updateLabel)
+
+    def updateLabel(self, inst, value):
+        self.text_size = (self.width, self.height)
+
+class DbScrollView(ScrollView):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        with self.canvas.before:
+            Color(rgba=(0.98, 0.98, 0.98, 1))
+            self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
+
+        self.bind(size=self._update_rect, pos=self._update_rect)
+
+    def _update_rect(self, instance, value):
+        self.backgroundRect.pos = instance.pos
+        self.backgroundRect.size = instance.size
 
 class LabInfoPopup(PopupBase):
     def submit(self):
@@ -1164,7 +1193,7 @@ class SaveStatisticsPopup(PopupBase):
             self.ids.statsError.text = "Balance & Description required to add to database"
 
     def displaySuccess(self):
-        time.sleep(1.25)
+        time.sleep(1)
         self.dismiss()
 
 class SwPopup(PopupBase):
@@ -1213,30 +1242,53 @@ class SwPopup(PopupBase):
             swData = []
 
         swDbPopup = SwDbPopup()
-        mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10), dp(10), dp(10)))
+        mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
 
         titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
 
-        sv = ScrollView(do_scroll_x=False, do_scroll_y=True, size_hint=(1, None), height=dp(400))
+        sv = DbScrollView(do_scroll_x=False, do_scroll_y=True, size_hint=(1, None), height=dp(400))
 
-        dbGrid = GridLayout(size_hint=(1, None), spacing=dp(4), cols=1)
-        dbGrid.bind(minimum_height=self.resizeGrid)
+        dbGrid = GridLayout(size_hint=(1, None), spacing=dp(5), padding=(dp(15), dp(15)), cols=1)
+        dbGrid.bind(minimum_height=resizeGrid)
 
+        #Table Header
+        dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text="[b]Name[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text="[b]Mass (mg)[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text="[b]Density[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text="[b]CCE[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text="[b]Entered On[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=""))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.07, None), text=""))
+
+        dbGrid.add_widget(dbEntryLayout)
+
+        #Table Content
         for entry in swData:
-            dbEntryLayout = GridLayout(size_hint=(1, None), spacing=dp(5), rows=1)
-            dbEntryLayout.add_widget(PopupLabel(size_hint=(1, None), text=entry[0]))
+            dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[0]))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text=str(entry[1])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text=str(entry[2])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=str(entry[3])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[4]))
+
+            dbEntryLayout.add_widget(Button(size_hint=(0.13, None), height=dp(37), background_normal = '', background_color=(0.00, 0.76, 0.525, 1), text="Select"))
+            dbEntryLayout.add_widget(Button(size_hint=(0.07, None), height=dp(37), background_normal = '', background_color=(0.95, 0.05, 0.09, 1), text="Del"))
+
             dbGrid.add_widget(dbEntryLayout)
 
         sv.add_widget(dbGrid)
 
+        #buttonLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
+        cancelButton = CancelButton(text="Back")
+        cancelButton.bind(on_release=goBack)
+
         mainPopLayout.add_widget(titleLabel)
         mainPopLayout.add_widget(sv)
+        mainPopLayout.add_widget(cancelButton)
         swDbPopup.add_widget(mainPopLayout)
 
         swDbPopup.open()
-
-    def resizeGrid(self, inst, value):
-        inst.height = value
 
 class SaveSwPopup(PopupBase):
     def __init__(self, mass, density, cce, **kwargs):
@@ -1259,7 +1311,7 @@ class SaveSwPopup(PopupBase):
             self.ids.swNameError.text = "Name required to add sw"
 
     def displaySuccess(self):
-        time.sleep(1.25)
+        time.sleep(1)
         self.dismiss()
 
 class SwDbPopup(PopupBase):
@@ -1268,6 +1320,15 @@ class SwDbPopup(PopupBase):
         self.auto_dismiss = False
         self.title = "Sensitivity Weight Database"
         self.size = (dp(750), dp(580))
+
+    def resizeGrid(self, inst, value):
+        inst.height = value
+
+    def goBack(self, inst):
+        self.dismiss()
+
+    def buildDbPopup(self):
+
 
 class MeasurementsPopup(PopupBase):
     def submit(self):
