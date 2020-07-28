@@ -925,6 +925,26 @@ class DbEntryLabel(Label):
     def updateLabel(self, inst, value):
         self.text_size = (self.width, self.height)
 
+class SelectSwButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.size_hint = (0.13, None)
+        self.height = dp(37)
+        self.background_normal = ''
+        self.background_color = (0.00, 0.76, 0.525, 1)
+        self.text = "Select"
+        self.rowId = kwargs.get("rowId", None)
+
+class DeleteSwButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.size_hint = (0.07, None)
+        self.height = dp(37)
+        self.background_normal = ''
+        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.text = "Del"
+        self.rowId = kwargs.get("rowId", None)
+
 class DbScrollView(ScrollView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1246,22 +1266,28 @@ class SaveSwPopup(PopupBase):
         self.swCCE = cce
         super().__init__()
 
-    def saveSw(self):
+        self.ids.addButton.bind(on_release=self.saveSw)
+
+    def saveSw(self, inst):
         if(self.ids.swNameText.text.strip() != ""):
+            threading.Thread(target=self.setDebounce).start()
             try:
                 API.saveSw(self.ids.swNameText.text.strip(), float(self.swMass), float(self.swDensity), float(self.swCCE))
 
                 self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
-                threading.Thread(target=self.displaySuccess).start()
+                threading.Thread(target=self.pauseSuccess).start()
             except:
                 self.ids.swNameError.text = "Error adding to database"
         else:
             self.ids.swNameError.text = "Name required to add sw"
 
-    def displaySuccess(self):
+    def pauseSuccess(self):
         time.sleep(1)
         self.dismiss()
+
+    def setDebounce(self, *args):
+        self.ids.addButton.unbind(on_release=self.saveSw)
 
 class SwDbPopup(PopupBase):
     def __init__(self):
@@ -1275,6 +1301,13 @@ class SwDbPopup(PopupBase):
 
     def goBack(self, inst):
         self.dismiss()
+
+    def selectSw(self, inst):
+        pass
+
+    def deleteSw(self, inst):
+        API.deleteSw(inst.rowId)
+        self.buildDbPopup()
 
     def buildDbPopup(self):
         swData = []
@@ -1295,8 +1328,8 @@ class SwDbPopup(PopupBase):
         #Table Header
         dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text="[b]Name[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text="[b]Mass (mg)[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text="[b]Density[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.24, None), text="[b]Mass (mg)[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.11, None), text="[b]Density[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text="[b]CCE[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text="[b]Entered On[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=""))
@@ -1307,27 +1340,32 @@ class SwDbPopup(PopupBase):
         #Table Content
         for entry in swData:
             dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[0]))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text=str(entry[1])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text=str(entry[2])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=str(entry[3])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[4]))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[1]))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.24, None), text=str(entry[2])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.11, None), text=str(entry[3])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=str(entry[4])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[5]))
 
-            dbEntryLayout.add_widget(Button(size_hint=(0.13, None), height=dp(37), background_normal = '', background_color=(0.00, 0.76, 0.525, 1), text="Select"))
-            dbEntryLayout.add_widget(Button(size_hint=(0.07, None), height=dp(37), background_normal = '', background_color=(0.95, 0.05, 0.09, 1), text="Del"))
+            selectSwButton = SelectSwButton(rowId=entry[0])
+            deleteSwButton = DeleteSwButton(rowId=entry[0])
+
+            selectSwButton.bind(on_release=self.selectSw)
+            deleteSwButton.bind(on_release=self.deleteSw)
+
+            dbEntryLayout.add_widget(selectSwButton)
+            dbEntryLayout.add_widget(deleteSwButton)
 
             dbGrid.add_widget(dbEntryLayout)
 
         sv.add_widget(dbGrid)
 
-        #buttonLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
         cancelButton = CancelButton(text="Back")
         cancelButton.bind(on_release=self.goBack)
 
         mainPopLayout.add_widget(titleLabel)
         mainPopLayout.add_widget(sv)
         mainPopLayout.add_widget(cancelButton)
-        self.add_widget(mainPopLayout)
+        self.content = mainPopLayout
 
 class MeasurementsPopup(PopupBase):
     def submit(self):
