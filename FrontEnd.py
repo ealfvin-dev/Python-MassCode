@@ -933,7 +933,7 @@ class SelectSwButton(Button):
         self.background_normal = ''
         self.background_color = (0.00, 0.76, 0.525, 1)
         self.text = "Select"
-        self.rowId = kwargs.get("rowId", None)
+        self.rowId = kwargs.get("rowId", "")
 
 class DeleteSwButton(Button):
     def __init__(self, **kwargs):
@@ -943,7 +943,9 @@ class DeleteSwButton(Button):
         self.background_normal = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
         self.text = "Del"
-        self.rowId = kwargs.get("rowId", None)
+        self.clicked = False
+        self.rowId = kwargs.get("rowId", "")
+        self.selectButtonPair = kwargs.get("selectButtonPair", None)
 
 class DbScrollView(ScrollView):
     def __init__(self, **kwargs):
@@ -1295,6 +1297,7 @@ class SwDbPopup(PopupBase):
         self.auto_dismiss = False
         self.title = "Sensitivity Weight Database"
         self.size = (dp(750), dp(580))
+        self.stagedDelete = []
 
     def resizeGrid(self, inst, value):
         inst.height = value
@@ -1305,8 +1308,37 @@ class SwDbPopup(PopupBase):
     def selectSw(self, inst):
         pass
 
-    def deleteSw(self, inst):
-        API.deleteSw(inst.rowId)
+    def stageDelete(self, inst):
+        rowId = inst.rowId
+
+        if(inst.clicked == False):
+            self.stagedDelete.append(rowId)
+            
+            inst.background_color = (0.62, 0.62, 0.62, 0.62)
+            inst.text = "Undo"
+            inst.color = (0, 0, 0, 1)
+            inst.selectButtonPair.disabled = True
+
+            inst.clicked = True
+        else:
+            #unstage rowId for delete
+            for i in range(len(self.stagedDelete)):
+                if(self.stagedDelete[i] == rowId):
+                    self.stagedDelete.pop(i)
+                    break
+
+            inst.background_color = (0.70, 0.135, 0.05, 0.92)
+            inst.text = "Del"
+            inst.color = (1, 1, 1, 1)
+            inst.selectButtonPair.disabled = False
+
+            inst.clicked = False
+
+    def commitDelete(self):
+        self.stagedDelete.sort(reverse=True)
+        for rowId in self.stagedDelete:
+            API.deleteSw(rowId)
+
         self.buildDbPopup()
 
     def buildDbPopup(self):
@@ -1347,10 +1379,10 @@ class SwDbPopup(PopupBase):
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[5]))
 
             selectSwButton = SelectSwButton(rowId=entry[0])
-            deleteSwButton = DeleteSwButton(rowId=entry[0])
+            deleteSwButton = DeleteSwButton(rowId=entry[0], selectButtonPair=selectSwButton)
 
             selectSwButton.bind(on_release=self.selectSw)
-            deleteSwButton.bind(on_release=self.deleteSw)
+            deleteSwButton.bind(on_release=self.stageDelete)
 
             dbEntryLayout.add_widget(selectSwButton)
             dbEntryLayout.add_widget(deleteSwButton)
