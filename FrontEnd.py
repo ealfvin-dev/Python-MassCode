@@ -817,14 +817,14 @@ class CancelButton(Button):
 
 class WriteButton(Button):
     def __init__(self, **kwargs):
-        super().__init__()
+        super().__init__(**kwargs)
         self.size_hint = (None, None)
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_down = ''
         self.background_color = (0.13, 0.5, 0.95, 0.94)
         self.font_size = dp(16)
-        self.text = "Write"
+        self.text = kwargs.get("text", "Write")
         self.halign = 'center'
 
         self.bind(state=self._updateState)
@@ -1298,15 +1298,29 @@ class SwDbPopup(PopupBase):
         self.title = "Sensitivity Weight Database"
         self.size = (dp(750), dp(580))
         self.stagedDelete = []
+        self.deleteButtonRef = None
 
     def resizeGrid(self, inst, value):
         inst.height = value
+
+    def resizeBottomLayout(self, inst, value):
+        inst.spacing = value - 2*dp(150)
 
     def goBack(self, inst):
         self.dismiss()
 
     def selectSw(self, inst):
         pass
+
+    def renderDeleteButton(self):
+        if(self.stagedDelete == []):
+            self.deleteButtonRef.text = ""
+            self.deleteButtonRef.disabled = True
+            self.deleteButtonRef.opacity = 0
+        else:
+            self.deleteButtonRef.text = "Delete (" + str(len(self.stagedDelete)) + ")"
+            self.deleteButtonRef.disabled = False
+            self.deleteButtonRef.opacity = 1
 
     def stageDelete(self, inst):
         rowId = inst.rowId
@@ -1334,11 +1348,14 @@ class SwDbPopup(PopupBase):
 
             inst.clicked = False
 
-    def commitDelete(self):
+        self.renderDeleteButton()
+
+    def commitDelete(self, inst):
         self.stagedDelete.sort(reverse=True)
         for rowId in self.stagedDelete:
             API.deleteSw(rowId)
 
+        self.stagedDelete = []
         self.buildDbPopup()
 
     def buildDbPopup(self):
@@ -1349,13 +1366,15 @@ class SwDbPopup(PopupBase):
             swData = []
 
         mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
-
-        titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
-
         sv = DbScrollView(do_scroll_x=False, do_scroll_y=True, size_hint=(1, None), height=dp(400))
 
         dbGrid = GridLayout(size_hint=(1, None), spacing=dp(5), padding=(dp(15), dp(15)), cols=1)
         dbGrid.bind(minimum_height=self.resizeGrid)
+
+        bottomLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
+        bottomLayout.bind(width=self.resizeBottomLayout)
+
+        titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
 
         #Table Header
         dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
@@ -1391,12 +1410,20 @@ class SwDbPopup(PopupBase):
 
         sv.add_widget(dbGrid)
 
-        cancelButton = CancelButton(text="Back")
-        cancelButton.bind(on_release=self.goBack)
+        backButton = WriteButton(text="Back")
+        backButton.bind(on_release=self.goBack)
+
+        deleteButton = CancelButton(text="", disabled=True, opacity=0)
+        deleteButton.bind(on_release=self.commitDelete)
+        self.deleteButtonRef = deleteButton
+
+        bottomLayout.add_widget(backButton)
+        bottomLayout.add_widget(deleteButton)
 
         mainPopLayout.add_widget(titleLabel)
         mainPopLayout.add_widget(sv)
-        mainPopLayout.add_widget(cancelButton)
+        mainPopLayout.add_widget(bottomLayout)
+
         self.content = mainPopLayout
 
 class MeasurementsPopup(PopupBase):
