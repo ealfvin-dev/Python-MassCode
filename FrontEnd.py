@@ -817,14 +817,14 @@ class CancelButton(Button):
 
 class WriteButton(Button):
     def __init__(self, **kwargs):
-        super().__init__()
+        super().__init__(**kwargs)
         self.size_hint = (None, None)
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_down = ''
         self.background_color = (0.13, 0.5, 0.95, 0.94)
         self.font_size = dp(16)
-        self.text = "Write"
+        self.text = kwargs.get("text", "Write")
         self.halign = 'center'
 
         self.bind(state=self._updateState)
@@ -924,6 +924,28 @@ class DbEntryLabel(Label):
 
     def updateLabel(self, inst, value):
         self.text_size = (self.width, self.height)
+
+class SelectSwButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.size_hint = (0.13, None)
+        self.height = dp(37)
+        self.background_normal = ''
+        self.background_color = (0.00, 0.76, 0.525, 1)
+        self.text = "Select"
+        self.rowId = kwargs.get("rowId", "")
+
+class DeleteSwButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.size_hint = (0.07, None)
+        self.height = dp(37)
+        self.background_normal = ''
+        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.text = "Del"
+        self.clicked = False
+        self.rowId = kwargs.get("rowId", "")
+        self.selectButtonPair = kwargs.get("selectButtonPair", None)
 
 class DbScrollView(ScrollView):
     def __init__(self, **kwargs):
@@ -1246,22 +1268,28 @@ class SaveSwPopup(PopupBase):
         self.swCCE = cce
         super().__init__()
 
-    def saveSw(self):
+        self.ids.addButton.bind(on_release=self.saveSw)
+
+    def saveSw(self, inst):
         if(self.ids.swNameText.text.strip() != ""):
+            threading.Thread(target=self.setDebounce).start()
             try:
                 API.saveSw(self.ids.swNameText.text.strip(), float(self.swMass), float(self.swDensity), float(self.swCCE))
 
                 self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
-                threading.Thread(target=self.displaySuccess).start()
+                threading.Thread(target=self.pauseSuccess).start()
             except:
                 self.ids.swNameError.text = "Error adding to database"
         else:
             self.ids.swNameError.text = "Name required to add sw"
 
-    def displaySuccess(self):
+    def pauseSuccess(self):
         time.sleep(1)
         self.dismiss()
+
+    def setDebounce(self, *args):
+        self.ids.addButton.unbind(on_release=self.saveSw)
 
 class SwDbPopup(PopupBase):
     def __init__(self):
@@ -1269,12 +1297,66 @@ class SwDbPopup(PopupBase):
         self.auto_dismiss = False
         self.title = "Sensitivity Weight Database"
         self.size = (dp(750), dp(580))
+        self.stagedDelete = []
+        self.deleteButtonRef = None
 
     def resizeGrid(self, inst, value):
         inst.height = value
 
+    def resizeBottomLayout(self, inst, value):
+        inst.spacing = value - 2*dp(150)
+
     def goBack(self, inst):
         self.dismiss()
+
+    def selectSw(self, inst):
+        pass
+
+    def renderDeleteButton(self):
+        if(self.stagedDelete == []):
+            self.deleteButtonRef.text = ""
+            self.deleteButtonRef.disabled = True
+            self.deleteButtonRef.opacity = 0
+        else:
+            self.deleteButtonRef.text = "Delete (" + str(len(self.stagedDelete)) + ")"
+            self.deleteButtonRef.disabled = False
+            self.deleteButtonRef.opacity = 1
+
+    def stageDelete(self, inst):
+        rowId = inst.rowId
+
+        if(inst.clicked == False):
+            self.stagedDelete.append(rowId)
+            
+            inst.background_color = (0.62, 0.62, 0.62, 0.62)
+            inst.text = "Undo"
+            inst.color = (0, 0, 0, 1)
+            inst.selectButtonPair.disabled = True
+
+            inst.clicked = True
+        else:
+            #unstage rowId for delete
+            for i in range(len(self.stagedDelete)):
+                if(self.stagedDelete[i] == rowId):
+                    self.stagedDelete.pop(i)
+                    break
+
+            inst.background_color = (0.70, 0.135, 0.05, 0.92)
+            inst.text = "Del"
+            inst.color = (1, 1, 1, 1)
+            inst.selectButtonPair.disabled = False
+
+            inst.clicked = False
+
+        self.renderDeleteButton()
+
+    def commitDelete(self, inst):
+        self.stagedDelete.sort(reverse=True)
+        for rowId in self.stagedDelete:
+            API.deleteSw(rowId)
+
+        self.stagedDelete = []
+        self.buildDbPopup()
 
     def buildDbPopup(self):
         swData = []
@@ -1284,19 +1366,21 @@ class SwDbPopup(PopupBase):
             swData = []
 
         mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
-
-        titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
-
         sv = DbScrollView(do_scroll_x=False, do_scroll_y=True, size_hint=(1, None), height=dp(400))
 
         dbGrid = GridLayout(size_hint=(1, None), spacing=dp(5), padding=(dp(15), dp(15)), cols=1)
         dbGrid.bind(minimum_height=self.resizeGrid)
 
+        bottomLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
+        bottomLayout.bind(width=self.resizeBottomLayout)
+
+        titleLabel = PopupLabel(text="Saved Sensitivity Weights", size_hint=(1, None))
+
         #Table Header
         dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text="[b]Name[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text="[b]Mass (mg)[/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text="[b]Density[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.24, None), text="[b]Mass (mg)[/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.11, None), text="[b]Density[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text="[b]CCE[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text="[b]Entered On[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=""))
@@ -1307,27 +1391,40 @@ class SwDbPopup(PopupBase):
         #Table Content
         for entry in swData:
             dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[0]))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.25, None), text=str(entry[1])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.10, None), text=str(entry[2])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=str(entry[3])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[4]))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[1]))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.24, None), text=str(entry[2])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.11, None), text=str(entry[3])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=str(entry[4])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[5]))
 
-            dbEntryLayout.add_widget(Button(size_hint=(0.13, None), height=dp(37), background_normal = '', background_color=(0.00, 0.76, 0.525, 1), text="Select"))
-            dbEntryLayout.add_widget(Button(size_hint=(0.07, None), height=dp(37), background_normal = '', background_color=(0.95, 0.05, 0.09, 1), text="Del"))
+            selectSwButton = SelectSwButton(rowId=entry[0])
+            deleteSwButton = DeleteSwButton(rowId=entry[0], selectButtonPair=selectSwButton)
+
+            selectSwButton.bind(on_release=self.selectSw)
+            deleteSwButton.bind(on_release=self.stageDelete)
+
+            dbEntryLayout.add_widget(selectSwButton)
+            dbEntryLayout.add_widget(deleteSwButton)
 
             dbGrid.add_widget(dbEntryLayout)
 
         sv.add_widget(dbGrid)
 
-        #buttonLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
-        cancelButton = CancelButton(text="Back")
-        cancelButton.bind(on_release=self.goBack)
+        backButton = WriteButton(text="Back")
+        backButton.bind(on_release=self.goBack)
+
+        deleteButton = CancelButton(text="", disabled=True, opacity=0)
+        deleteButton.bind(on_release=self.commitDelete)
+        self.deleteButtonRef = deleteButton
+
+        bottomLayout.add_widget(backButton)
+        bottomLayout.add_widget(deleteButton)
 
         mainPopLayout.add_widget(titleLabel)
         mainPopLayout.add_widget(sv)
-        mainPopLayout.add_widget(cancelButton)
-        self.add_widget(mainPopLayout)
+        mainPopLayout.add_widget(bottomLayout)
+
+        self.content = mainPopLayout
 
 class MeasurementsPopup(PopupBase):
     def submit(self):

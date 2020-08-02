@@ -4,9 +4,13 @@ from datetime import datetime
 def getSws():
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
-    c.execute('''SELECT * FROM sw_table ORDER BY mass''')
+    c.execute('''SELECT rowid, name, mass, density, cce, date FROM sw_table ORDER BY mass''')
 
-    return c.fetchall()
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data
 
 def saveSw(name, mass, density, cce):
     today = datetime.today().strftime("%Y-%m-%d")
@@ -14,14 +18,22 @@ def saveSw(name, mass, density, cce):
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS sw_table (
-        name TEXT NOT NULL,
+        name TEXT NOT NULL UNIQUE,
         mass REAL NOT NULL,
         density REAL NOT NULL,
         cce REAL NOT NULL,
         date TEXT NOT NULL
         )''')
 
-    c.execute('''INSERT INTO sw_table VALUES (?, ?, ?, ?, ?)''', [name, mass, density, cce, today])
+    c.execute('''REPLACE INTO sw_table VALUES (?, ?, ?, ?, ?)''', [name, mass, density, cce, today])
+    conn.commit()
+    conn.close()
+
+def deleteSw(rowId):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''DELETE FROM sw_table WHERE rowid = ?''', [rowId])
+
     conn.commit()
     conn.close()
 
@@ -39,6 +51,6 @@ def saveStats(balance, nominal, description, sigw, sigt):
         date TEXT NOT NULL
         )''')
 
-    c.execute('''INSERT INTO stats_table VALUES (?, ?, ?, ?, ?, ?)''', [balance, nominal, description, sigw, sigt, today])
+    c.execute('''REPLACE INTO stats_table VALUES (?, ?, ?, ?, ?, ?)''', [balance, nominal, description, sigw, sigt, today])
     conn.commit()
     conn.close()
