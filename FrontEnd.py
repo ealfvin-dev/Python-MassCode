@@ -933,7 +933,11 @@ class SelectSwButton(Button):
         self.background_normal = ''
         self.background_color = (0.00, 0.76, 0.525, 1)
         self.text = "Select"
+
         self.rowId = kwargs.get("rowId", "")
+        self.swMass = kwargs.get("swMass", 0)
+        self.swDensity = kwargs.get("swDensity", 0)
+        self.swCCE = kwargs.get("swCCE", 0)
 
 class DeleteSwButton(Button):
     def __init__(self, **kwargs):
@@ -943,6 +947,7 @@ class DeleteSwButton(Button):
         self.background_normal = ''
         self.background_color = (0.70, 0.135, 0.05, 0.92)
         self.text = "Del"
+
         self.clicked = False
         self.rowId = kwargs.get("rowId", "")
         self.selectButtonPair = kwargs.get("selectButtonPair", None)
@@ -1257,7 +1262,7 @@ class SwPopup(PopupBase):
         saveSwPopup.open()
 
     def getSw(self):
-        swDbPopup = SwDbPopup()
+        swDbPopup = SwDbPopup(self)
         swDbPopup.buildDbPopup()
         swDbPopup.open()
 
@@ -1292,13 +1297,15 @@ class SaveSwPopup(PopupBase):
         self.ids.addButton.unbind(on_release=self.saveSw)
 
 class SwDbPopup(PopupBase):
-    def __init__(self):
+    def __init__(self, rootPop):
         super().__init__()
         self.auto_dismiss = False
         self.title = "Sensitivity Weight Database"
         self.size = (dp(750), dp(580))
         self.stagedDelete = []
         self.deleteButtonRef = None
+
+        self.rootPop = rootPop
 
     def resizeGrid(self, inst, value):
         inst.height = value
@@ -1310,7 +1317,11 @@ class SwDbPopup(PopupBase):
         self.dismiss()
 
     def selectSw(self, inst):
-        pass
+        self.rootPop.ids.swMassText.text = inst.swMass
+        self.rootPop.ids.swDensityText.text = inst.swDensity
+        self.rootPop.ids.swCCEText.text = inst.swCCE
+
+        self.dismiss()
 
     def renderDeleteButton(self):
         if(self.stagedDelete == []):
@@ -1394,10 +1405,10 @@ class SwDbPopup(PopupBase):
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[1]))
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.24, None), text=str(entry[2])))
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.11, None), text=str(entry[3])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=str(entry[4])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text='{:f}'.format(entry[4])))
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[5]))
 
-            selectSwButton = SelectSwButton(rowId=entry[0])
+            selectSwButton = SelectSwButton(rowId=entry[0], swMass=str(entry[2]), swDensity=str(entry[3]), swCCE='{:f}'.format(entry[4]))
             deleteSwButton = DeleteSwButton(rowId=entry[0], selectButtonPair=selectSwButton)
 
             selectSwButton.bind(on_release=self.selectSw)
