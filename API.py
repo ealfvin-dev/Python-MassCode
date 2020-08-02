@@ -4,7 +4,7 @@ from datetime import datetime
 def getSws():
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
-    c.execute('''SELECT rowid, name, mass, density, cce, date FROM sw_table ORDER BY mass''')
+    c.execute('''SELECT rowid, name, mass, density, cce, date FROM sw_table ORDER BY massNumerical''')
 
     data = c.fetchall()
 
@@ -19,13 +19,14 @@ def saveSw(name, mass, density, cce):
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS sw_table (
         name TEXT NOT NULL UNIQUE,
-        mass REAL NOT NULL,
-        density REAL NOT NULL,
-        cce REAL NOT NULL,
+        massNumerical REAL NOT NULL,
+        mass TEXT NOT NULL,
+        density TEXT NOT NULL,
+        cce TEXT NOT NULL,
         date TEXT NOT NULL
         )''')
 
-    c.execute('''REPLACE INTO sw_table VALUES (?, ?, ?, ?, ?)''', [name, mass, density, cce, today])
+    c.execute('''REPLACE INTO sw_table VALUES (?, ?, ?, ?, ?, ?)''', [name, float(mass), mass, density, cce, today])
     conn.commit()
     conn.close()
 
@@ -46,8 +47,8 @@ def saveStats(balance, nominal, description, sigw, sigt):
         balance TEXT NOT NULL,
         nominal TEXT NOT NULL,
         description TEXT DEFAULT '',
-        sigw REAL NOT NULL,
-        sigt REAL NOT NULL,
+        sigw TEXT NOT NULL,
+        sigt TEXT NOT NULL,
         date TEXT NOT NULL
         )''')
 

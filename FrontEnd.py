@@ -935,6 +935,7 @@ class SelectSwButton(Button):
         self.text = "Select"
 
         self.rowId = kwargs.get("rowId", "")
+        self.swName = kwargs.get("swName", "")
         self.swMass = kwargs.get("swMass", 0)
         self.swDensity = kwargs.get("swDensity", 0)
         self.swCCE = kwargs.get("swCCE", 0)
@@ -1234,6 +1235,7 @@ class SwPopup(PopupBase):
         swCCEOrder = self.ids.swCCEText.orderNum
 
         if(swMassText == "" or swDensityText == "" or swCCEText == ""):
+            self.ids.swPopError.color = (0.95, 0.05, 0.09, 1)
             self.ids.swPopError.text = "Enter data for all fields"
             return
 
@@ -1279,7 +1281,7 @@ class SaveSwPopup(PopupBase):
         if(self.ids.swNameText.text.strip() != ""):
             threading.Thread(target=self.setDebounce).start()
             try:
-                API.saveSw(self.ids.swNameText.text.strip(), float(self.swMass), float(self.swDensity), float(self.swCCE))
+                API.saveSw(self.ids.swNameText.text.strip(), self.swMass, self.swDensity, self.swCCE)
 
                 self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
@@ -1320,6 +1322,9 @@ class SwDbPopup(PopupBase):
         self.rootPop.ids.swMassText.text = inst.swMass
         self.rootPop.ids.swDensityText.text = inst.swDensity
         self.rootPop.ids.swCCEText.text = inst.swCCE
+
+        self.rootPop.ids.swPopError.color = (0.05, 0.65, 0.1, 0.98)
+        self.rootPop.ids.swPopError.text = "Using " + inst.swName
 
         self.dismiss()
 
@@ -1403,12 +1408,12 @@ class SwDbPopup(PopupBase):
         for entry in swData:
             dbEntryLayout = GridLayout(size_hint=(1, None), height=dp(37), spacing=dp(5), rows=1)
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.17, None), text=entry[1]))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.24, None), text=str(entry[2])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.11, None), text=str(entry[3])))
-            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text='{:f}'.format(entry[4])))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.24, None), text=entry[2]))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.11, None), text=entry[3]))
+            dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=entry[4]))
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[5]))
 
-            selectSwButton = SelectSwButton(rowId=entry[0], swMass=str(entry[2]), swDensity=str(entry[3]), swCCE='{:f}'.format(entry[4]))
+            selectSwButton = SelectSwButton(rowId=entry[0], swName=entry[1], swMass=str(entry[2]), swDensity=entry[3], swCCE=entry[4])
             deleteSwButton = DeleteSwButton(rowId=entry[0], selectButtonPair=selectSwButton)
 
             selectSwButton.bind(on_release=self.selectSw)
