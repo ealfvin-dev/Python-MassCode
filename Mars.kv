@@ -128,6 +128,8 @@
 
             BoxLayout:
                 id: logoBox
+                size_hint: (None, 1)
+                width: dp(200)
                 orientation: 'horizontal'
                 spacing: dp(10)
                 padding: (0, 0, 0, 0)
@@ -141,10 +143,10 @@
                     id: logo
                     size_hint: (None, None)
                     size: self.texture_size[0], navBar.height
-                    text: "[b]M A R S[/b]"
+                    text: "[b]M A R S[size=10dp]\nMass Reduction Software[/size][/b]"
                     markup: True
                     color: labelColor
-                    font_size: logoBox.width / 10
+                    font_size: dp(22)
 
             TopMenuButton:
                 id: openFile
@@ -168,6 +170,10 @@
             TopMenuButton:
                 id: tutorial
                 text: "Tutorial"
+
+            TopMenuButton:
+                id: about
+                text: "About MARS"
 
         BoxLayout:
             id: content
@@ -463,8 +469,8 @@
                     readonly: True
 
         Label:
-            font_size: dp(9)
-            text: "[color=#000000]Copywrite Erik Alfvin, 2020[/color]"
+            font_size: dp(10)
+            text: "[color=#000000]Copyright Erik Alfvin, 2020[/color]"
             markup: True
             text_size: root.width, None
             size: self.texture_size
@@ -473,7 +479,7 @@
 
 <LabInfoPopup>:
     auto_dismiss: False
-    title: "Header"
+    title: "Series 1 Header"
     size: (dp(600), dp(475))
 
     BoxLayout:
@@ -988,7 +994,7 @@
             halign: "center"
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]w[/size] (mg):"
+            text: chr(963) + "[size=8dp]w[/size] (mg):"
             size_hint: (1, None)
 
         OrderedText:
@@ -1000,7 +1006,7 @@
             orderNum: 22
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]t[/size] (mg):"
+            text: chr(963) + "[size=8dp]t[/size] (mg):"
             size_hint: (1, None)
 
         OrderedText:
@@ -1080,11 +1086,11 @@
             height: dp(10)
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]w[/size]: " + root.sigw + " mg"
+            text: chr(963) + "[size=8dp]w[/size]: " + root.sigw + " mg"
             size_hint: (1, None)
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]t[/size]: " + root.sigt + " mg"
+            text: chr(963) + "[size=8dp]t[/size]: " + root.sigt + " mg"
             size_hint: (1, None)
 
         PopupErrorLabel:
