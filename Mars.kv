@@ -123,7 +123,8 @@
         BoxLayout:
             id: navBar
             orientation: 'horizontal'
-            size_hint: (1.0, 0.05)
+            size_hint: (1.0, None)
+            height: dp(50)
             padding: (0, 0, 0, 0)
 
             BoxLayout:
@@ -214,7 +215,7 @@
 
                     InputButton:
                         id: restraintButton
-                        text: "Series 1\nRestraint"
+                        text: "Restraint"
                         font_size: self.width / buttonSizer
                         on_release: app.openRestraintPop()
 
@@ -1072,7 +1073,7 @@
             hint_text: "100 g"
 
         PopupLabel:
-            text: "Description:"
+            text: "Description: (optional)"
             size_hint: (1, None)
 
         OrderedText:

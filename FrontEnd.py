@@ -1,19 +1,14 @@
 import kivy
 
-from kivy.config import Config
-
-Config.set('input', 'mouse', 'mouse,disable_multitouch')
-Config.set('graphics', 'fullscreen', 0)
-Config.set('graphics', 'window_state', 'maximized')
-Config.write()
-
 from kivy.graphics import Color, Rectangle, Line
 from kivy.graphics.vertex_instructions import RoundedRectangle
 from kivy.metrics import dp
 
 from kivy.app import App
-from kivy.core.window import Window
+from kivy.core.window import Window, WindowBase
 from kivy.clock import Clock
+
+from kivy.config import Config
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -935,10 +930,6 @@ class SelectSwButton(Button):
         self.text = "Select"
 
         self.rowId = kwargs.get("rowId", "")
-        self.swName = kwargs.get("swName", "")
-        self.swMass = kwargs.get("swMass", 0)
-        self.swDensity = kwargs.get("swDensity", 0)
-        self.swCCE = kwargs.get("swCCE", 0)
 
 class DeleteSwButton(Button):
     def __init__(self, **kwargs):
@@ -1213,12 +1204,12 @@ class SaveStatisticsPopup(PopupBase):
                 API.saveStats(self.ids.balanceNameText.text.strip(), self.ids.nominalText.text.strip(), self.ids.descriptionText.text.strip(), float(self.sigw), float(self.sigt))
 
                 self.ids.statsError.color = (0.05, 0.65, 0.1, 0.98)
-                self.ids.statsError.text = "Added standard deviations on the " + self.ids.balanceNameText.text.strip()
+                self.ids.statsError.text = "Added " + self.ids.descriptionText.text.strip() + " stats"
                 threading.Thread(target=self.displaySuccess).start()
             except:
                 self.ids.statsError.text = "Error adding to database"
         else:
-            self.ids.statsError.text = "Balance & Description required to add to database"
+            self.ids.statsError.text = "Enter all required fields"
 
     def displaySuccess(self):
         time.sleep(1)
@@ -1319,12 +1310,18 @@ class SwDbPopup(PopupBase):
         self.dismiss()
 
     def selectSw(self, inst):
-        self.rootPop.ids.swMassText.text = inst.swMass
-        self.rootPop.ids.swDensityText.text = inst.swDensity
-        self.rootPop.ids.swCCEText.text = inst.swCCE
+        try:
+            swData = API.getSw(inst.rowId)[0]
+        except:
+            self.rootPop.ids.swPopError.text = "Error getting sw from database"
+            return
+
+        self.rootPop.ids.swMassText.text = swData[1]
+        self.rootPop.ids.swDensityText.text = swData[2]
+        self.rootPop.ids.swCCEText.text = swData[3]
 
         self.rootPop.ids.swPopError.color = (0.05, 0.65, 0.1, 0.98)
-        self.rootPop.ids.swPopError.text = "Using " + inst.swName
+        self.rootPop.ids.swPopError.text = "Loaded " + swData[0]
 
         self.dismiss()
 
@@ -1375,7 +1372,6 @@ class SwDbPopup(PopupBase):
         self.buildDbPopup()
 
     def buildDbPopup(self):
-        swData = []
         try:
             swData = API.getSws()
         except:
@@ -1413,7 +1409,7 @@ class SwDbPopup(PopupBase):
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=entry[4]))
             dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text=entry[5]))
 
-            selectSwButton = SelectSwButton(rowId=entry[0], swName=entry[1], swMass=str(entry[2]), swDensity=entry[3], swCCE=entry[4])
+            selectSwButton = SelectSwButton(rowId=entry[0])
             deleteSwButton = DeleteSwButton(rowId=entry[0], selectButtonPair=selectSwButton)
 
             selectSwButton.bind(on_release=self.selectSw)
@@ -1636,6 +1632,13 @@ class RequestClosePopUp(Popup):
 
 class Mars(App):
     def build(self):
+        Config.set('input', 'mouse', 'mouse,disable_multitouch')
+        Config.set('graphics', 'fullscreen', 0)
+        Config.set('graphics', 'window_state', 'maximized')
+        #Config.set('graphics', 'minimum_width', 0)
+        #Config.set('graphics', 'minimum_height', 0)
+        Config.write()
+
         Window.bind(on_request_close=self.on_request_close)
         return MainLayout()
 

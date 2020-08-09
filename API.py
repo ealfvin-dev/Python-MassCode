@@ -12,6 +12,17 @@ def getSws():
     conn.close()
     return data
 
+def getSw(rowId):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT name, mass, density, cce FROM sw_table WHERE rowid = ?''', [rowId])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data
+
 def saveSw(name, mass, density, cce):
     today = datetime.today().strftime("%Y-%m-%d")
 
@@ -38,6 +49,28 @@ def deleteSw(rowId):
     conn.commit()
     conn.close()
 
+def getStats():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT rowid, balance, nominal, description, sigw, sigt, date FROM stats_table ORDER BY balance''')
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data
+
+def getStat(rowId):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT description, sigw, sigt FROM stats_table WHERE rowid = ?''', [rowId])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data
+
 def saveStats(balance, nominal, description, sigw, sigt):
     today = datetime.today().strftime("%Y-%m-%d")
 
@@ -53,5 +86,13 @@ def saveStats(balance, nominal, description, sigw, sigt):
         )''')
 
     c.execute('''REPLACE INTO stats_table VALUES (?, ?, ?, ?, ?, ?)''', [balance, nominal, description, sigw, sigt, today])
+    conn.commit()
+    conn.close()
+
+def deleteStats(rowId):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''DELETE FROM stats_table WHERE rowid = ?''', [rowId])
+
     conn.commit()
     conn.close()
