@@ -123,11 +123,14 @@
         BoxLayout:
             id: navBar
             orientation: 'horizontal'
-            size_hint: (1.0, 0.05)
+            size_hint: (1.0, None)
+            height: dp(50)
             padding: (0, 0, 0, 0)
 
             BoxLayout:
                 id: logoBox
+                size_hint: (None, 1)
+                width: dp(200)
                 orientation: 'horizontal'
                 spacing: dp(10)
                 padding: (0, 0, 0, 0)
@@ -141,10 +144,10 @@
                     id: logo
                     size_hint: (None, None)
                     size: self.texture_size[0], navBar.height
-                    text: "[b]M A R S[/b]"
+                    text: "[b]M A R S[size=10dp]\nMass Reduction Software[/size][/b]"
                     markup: True
                     color: labelColor
-                    font_size: logoBox.width / 10
+                    font_size: dp(22)
 
             TopMenuButton:
                 id: openFile
@@ -168,6 +171,10 @@
             TopMenuButton:
                 id: tutorial
                 text: "Tutorial"
+
+            TopMenuButton:
+                id: about
+                text: "About MARS"
 
         BoxLayout:
             id: content
@@ -208,7 +215,7 @@
 
                     InputButton:
                         id: restraintButton
-                        text: "Series 1\nRestraint"
+                        text: "Restraint"
                         font_size: self.width / buttonSizer
                         on_release: app.openRestraintPop()
 
@@ -463,8 +470,8 @@
                     readonly: True
 
         Label:
-            font_size: dp(9)
-            text: "[color=#000000]Copywrite Erik Alfvin, 2020[/color]"
+            font_size: dp(10)
+            text: "[color=#000000]Copyright Erik Alfvin, 2020[/color]"
             markup: True
             text_size: root.width, None
             size: self.texture_size
@@ -473,7 +480,7 @@
 
 <LabInfoPopup>:
     auto_dismiss: False
-    title: "Header"
+    title: "Series 1 Header"
     size: (dp(600), dp(475))
 
     BoxLayout:
@@ -988,7 +995,7 @@
             halign: "center"
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]w[/size] (mg):"
+            text: chr(963) + "[size=8dp]w[/size] (mg):"
             size_hint: (1, None)
 
         OrderedText:
@@ -1000,7 +1007,7 @@
             orderNum: 22
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]t[/size] (mg):"
+            text: chr(963) + "[size=8dp]t[/size] (mg):"
             size_hint: (1, None)
 
         OrderedText:
@@ -1038,7 +1045,7 @@
 <SaveStatisticsPopup>:
     auto_dismiss: False
     title: "Add Standard Deviations to Database"
-    size: (dp(440), dp(455))
+    size: (dp(440), dp(380))
 
     BoxLayout:
         orientation: "vertical"
@@ -1046,45 +1053,35 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            text: "Balance Name:"
-            size_hint: (1, None)
-
-        OrderedText:
-            id: balanceNameText
-            size_hint: (1, None)
-            height: 3 * self.font_size
-            hint_text: "AX2005"
-
-        PopupLabel:
-            text: "Nominal:"
+            text: "Nominal: (Available units = g, mg, kg, lb)"
             size_hint: (1, None)
 
         OrderedText:
             id: nominalText
             size_hint: (1, None)
             height: 3 * self.font_size
-            hint_text: "100 g"
+            hint_text: "100 mg"
 
         PopupLabel:
-            text: "Additional Description:"
+            text: "Description:"
             size_hint: (1, None)
 
         OrderedText:
             id: descriptionText
             size_hint: (1, None)
             height: 3 * self.font_size
-            hint_text: "532111 - P set"
+            hint_text: "AT1006 4-1"
 
         PopupErrorLabel:
             size_hint: (1, None)
             height: dp(10)
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]w[/size]: " + root.sigw + " mg"
+            text: chr(963) + "[size=8dp]w[/size]: " + root.sigw + " mg"
             size_hint: (1, None)
 
         PopupLabel:
-            text: chr(963) + "[size=3mm]t[/size]: " + root.sigt + " mg"
+            text: chr(963) + "[size=8dp]t[/size]: " + root.sigt + " mg"
             size_hint: (1, None)
 
         PopupErrorLabel:
