@@ -1045,7 +1045,7 @@
 <SaveStatisticsPopup>:
     auto_dismiss: False
     title: "Add Standard Deviations to Database"
-    size: (dp(440), dp(455))
+    size: (dp(440), dp(380))
 
     BoxLayout:
         orientation: "vertical"
@@ -1053,34 +1053,24 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            text: "Balance Name:"
-            size_hint: (1, None)
-
-        OrderedText:
-            id: balanceNameText
-            size_hint: (1, None)
-            height: 3 * self.font_size
-            hint_text: "AX2005"
-
-        PopupLabel:
-            text: "Nominal:"
+            text: "Nominal: (Available units = g, mg, kg, lb)"
             size_hint: (1, None)
 
         OrderedText:
             id: nominalText
             size_hint: (1, None)
             height: 3 * self.font_size
-            hint_text: "100 g"
+            hint_text: "100 mg"
 
         PopupLabel:
-            text: "Description: (optional)"
+            text: "Description:"
             size_hint: (1, None)
 
         OrderedText:
             id: descriptionText
             size_hint: (1, None)
             height: 3 * self.font_size
-            hint_text: "P1kg.-P1kg.. (5-1)"
+            hint_text: "AT1006 4-1"
 
         PopupErrorLabel:
             size_hint: (1, None)

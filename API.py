@@ -4,7 +4,7 @@ from datetime import datetime
 def getSws():
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
-    c.execute('''SELECT rowid, name, mass, density, cce, date FROM sw_table ORDER BY massNumerical''')
+    c.execute('''SELECT rowid, name, mass, density, cce, date FROM sw_table ORDER BY massNumerical DESC''')
 
     data = c.fetchall()
 
@@ -52,7 +52,7 @@ def deleteSw(rowId):
 def getStats():
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
-    c.execute('''SELECT rowid, balance, nominal, description, sigw, sigt, date FROM stats_table ORDER BY balance''')
+    c.execute('''SELECT rowid, nominal, description, sigw, sigt, date FROM stats_table ORDER BY numericalOrder DESC''')
 
     data = c.fetchall()
 
@@ -71,25 +71,38 @@ def getStat(rowId):
     conn.close()
     return data
 
-def saveStats(balance, nominal, description, sigw, sigt):
+def saveStats(nominal, description, sigw, sigt):
     today = datetime.today().strftime("%Y-%m-%d")
+
+    if("lb" in nominal):
+        numericalOrder = nominal.strip(' lb')
+        numericalOrder = float(numericalOrder) + 1000000000
+    elif("kg" in nominal):
+        numericalOrder = nominal.strip(' kg')
+        numericalOrder = float(numericalOrder) * 1000
+    elif("mg" in nominal):
+        numericalOrder = nominal.strip(' mg')
+        numericalOrder = float(numericalOrder) / 1000
+    else:
+        numericalOrder = nominal.strip(' g')
+        numericalOrder = float(numericalOrder)
 
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS stats_table (
-        balance TEXT NOT NULL,
         nominal TEXT NOT NULL,
+        numericalOrder REAL NOT NULL,
         description TEXT DEFAULT '',
         sigw TEXT NOT NULL,
         sigt TEXT NOT NULL,
         date TEXT NOT NULL
         )''')
 
-    c.execute('''REPLACE INTO stats_table VALUES (?, ?, ?, ?, ?, ?)''', [balance, nominal, description, sigw, sigt, today])
+    c.execute('''INSERT INTO stats_table VALUES (?, ?, ?, ?, ?, ?)''', [nominal, numericalOrder, description, sigw, sigt, today])
     conn.commit()
     conn.close()
 
-def deleteStats(rowId):
+def deleteStat(rowId):
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
     c.execute('''DELETE FROM stats_table WHERE rowid = ?''', [rowId])
