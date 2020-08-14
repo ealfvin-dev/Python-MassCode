@@ -713,19 +713,6 @@ class ExtraButton(Button):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
         self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
 
-class SeriesButton(Button):
-    def __init__(self, **kwargs):
-        super().__init__()
-
-        self.seriesNum = 0
-        self.exists = False
-        self.text = ''
-        self.markup = True
-        self.halign = 'center'
-        self.background_normal = ''
-        self.background_color = (0.155, 0.217, 0.292, 0.65)
-        self.background_down =  ''
-
 class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
@@ -839,6 +826,7 @@ class AddSeriesButton(Button):
         self.background_color = (0.00, 0.76, 0.525, 1)
         self.text = "[b]+[/b] Add Series"
         self.halign = 'center'
+        self.font_size = dp(18)
 
         self.bind(state=self._updateState)
 
@@ -848,6 +836,20 @@ class AddSeriesButton(Button):
         elif(value == "normal"):
             self.background_color = (0.00, 0.76, 0.525, 1)
 
+class SeriesButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.seriesNum = 0
+        self.exists = False
+        self.text = ''
+        self.markup = True
+        self.halign = 'center'
+        self.font_size = dp(17)
+        self.background_normal = ''
+        self.background_color = (0.155, 0.217, 0.292, 0.65)
+        self.background_down =  ''
+
 class RemoveSeriesButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
@@ -856,6 +858,7 @@ class RemoveSeriesButton(Button):
         self.background_down = ''
         self.halign = 'center'
         self.text = "[b]-[/b] Remove\nLast Series"
+        self.font_size = dp(16)
         self.background_color = (0.70, 0.135, 0.05, 0.92)
 
         self.bind(state=self._updateState)
@@ -1248,7 +1251,7 @@ class StatsDbPopup(PopupBase):
         self.rootPop.ids.sigmatText.text = statData[2]
 
         self.rootPop.ids.sigmaPopError.color = (0.05, 0.65, 0.1, 0.98)
-        self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[0]
+        self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[1] + " " + statData[0]
 
         self.dismiss()
 

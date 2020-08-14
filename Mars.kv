@@ -16,18 +16,17 @@
         orientation: "vertical"
         spacing: 0
         padding: 0, 0, 0, 0
-        size_hint: (0.13, 1.0)
+        size_hint: (None, 1.0)
+        width: dp(190)
 
         AddSeriesButton:
             id: addSeriesButton
-            font_size: self.width / buttonSizer
             on_press: root.addSeries()
 
         SeriesButton:
             id: series1
             seriesNum: 1
             text: "[color=#000000]Series 1[/color]"
-            font_size: self.width / menuButtonSizer
             background_color: (0.906, 0.918, 0.926, 1)
             exists: True
             on_press: root.goToSeries(self.seriesNum, self.exists)
@@ -35,84 +34,70 @@
         SeriesButton:
             id: series2
             seriesNum: 2
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series3
             seriesNum: 3
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series4
             seriesNum: 4
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series5
             seriesNum: 5
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series6
             seriesNum: 6
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series7
             seriesNum: 7
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series8
             seriesNum: 8
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series9
             seriesNum: 9
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series10
             seriesNum: 10
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series11
             seriesNum: 11
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series12
             seriesNum: 12
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series13
             seriesNum: 13
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: outputFileTab
-            font_size: self.width / menuButtonSizer
             on_press: root.openOutputFile(self)
 
         RemoveSeriesButton:
             size_hint: (1, 0.85)
             id: removeSeries
-            font_size: self.width / (buttonSizer*1.1)
             on_release: root.removeLastSeries()
 
     BoxLayout:
@@ -431,7 +416,7 @@
                 orientation: "vertical"
                 spacing: dp(6)
                 padding: (0, 0, 0, 0)
-                size_hint: (1.5, 1.0)
+                size_hint: (1.6, 1.0)
 
                 Label:
                     id: configFileName
