@@ -35,7 +35,7 @@ import threading
 import time
 
 class MainLayout(BoxLayout):
-    baseFilePath = "."
+    baseFilePath = os.path.abspath(".")
     configFilePath = ""
     reportNum = ""
     numberOfSeries = 1
@@ -1738,12 +1738,12 @@ class OpenNewFilePopup(Popup):
     def openNewFile(self, e):
         self.parent.children[1].save()
         self.parent.children[1].splitSeries("@SERIES\n\n")
-        self.parent.children[1].baseFilePath = "."
+        self.parent.children[1].baseFilePath = os.path.abspath(".")
         self.dismiss()
 
     def openNewFileNoSave(self, e):
         self.parent.children[1].splitSeries("@SERIES\n\n")
-        self.parent.children[1].baseFilePath = "."
+        self.parent.children[1].baseFilePath = os.path.abspath(".")
         self.dismiss()
 
 class ValidationPopup(Popup):
