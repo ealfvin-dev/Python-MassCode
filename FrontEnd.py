@@ -35,6 +35,8 @@ import threading
 import time
 
 class MainLayout(BoxLayout):
+    baseFilePath = "."
+    configFilePath = ""
     reportNum = ""
     numberOfSeries = 1
     currentSeries = 1
@@ -202,7 +204,9 @@ class MainLayout(BoxLayout):
             if(line.split()[0] == "<Report-Number>"):
                 try:
                     self.reportNum = line.split()[1]
+                    self.configFilePath = os.path.join(self.baseFilePath, line.split()[1] + "-config.txt")
                     self.ids.configFileName.text = line.split()[1] + "-config.txt"
+                    self.grabOutputFile()
                     return line.split()[1]
                 except IndexError:
                     self.reportNum = ""
@@ -523,12 +527,12 @@ class MainLayout(BoxLayout):
             fileText += seriesText.strip()
             fileText += "\n\n"
 
-        f = open(reportNum + "-config.txt", 'w')
+        f = open(self.configFilePath, 'w')
         f.write(fileText)
         f.close()
 
         self.saved = True
-        self.sendSuccess("FILE SAVED AS " + str(self.reportNum) + "-config.txt")
+        self.sendSuccess("FILE SAVED AS " + reportNum + "-config.txt")
 
         self.renderButtons(self.ids.userText.text)
         self.ids.runButton.colorBlue()
@@ -571,8 +575,12 @@ class MainLayout(BoxLayout):
         #######################
         self.clearErrors()
 
+        if(os.path.exists(self.configFilePath) == False):
+            self.sendError(self.configFilePath + " NOT FOUND")
+            return
+
         try:
-            results = RunFile.run(self.reportNum + "-config.txt")
+            results = RunFile.run(self.configFilePath, basePath=self.baseFilePath)
             self.grabOutputFile()
             self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
 
@@ -603,12 +611,15 @@ class MainLayout(BoxLayout):
 
     def grabOutputFile(self):
         outFile = self.reportNum + "-out.txt"
+        outFileLocation = os.path.join(self.baseFilePath, outFile)
 
-        if(os.path.exists(outFile)):
+        if(os.path.exists(outFileLocation)):
             self.outputText = ""
-            f = open(outFile, 'r')
+
+            f = open(outFileLocation, 'r')
             for line in f:
                 self.outputText += line
+            f.close()
             
             #Render output button/tab
             self.ids.outputFileTab.text = "[color=#FFFFFF][b]Output[/b][/color]"
@@ -1672,16 +1683,18 @@ class GravityPopup(PopupBase):
         self.dismiss()
 
 class OpenFilePopup(Popup):
-    def openFile(self, fileName):
+    def openFile(self, rootPath, selection):
         try:
-            with open(fileName) as configFile:
+            with open(selection) as configFile:
                 fileText = configFile.read()
         except(FileNotFoundError):
-            self.parent.children[1].sendError(fileName + " NOT FOUND IN CURRENT DIRECTORY")
+            self.parent.children[1].sendError(fileName + " ERROR OPENING SELECTED FILE")
             self.dismiss()
             return
 
         self.parent.children[1].splitSeries(fileText)
+        self.parent.children[1].baseFilePath = rootPath
+        self.parent.children[1].configFilePath = selection
         self.dismiss()
 
 class OpenNewFilePopup(Popup):
@@ -1724,10 +1737,12 @@ class OpenNewFilePopup(Popup):
     def openNewFile(self, e):
         self.parent.children[1].save()
         self.parent.children[1].splitSeries("@SERIES\n\n")
+        self.parent.children[1].baseFilePath = "."
         self.dismiss()
 
     def openNewFileNoSave(self, e):
         self.parent.children[1].splitSeries("@SERIES\n\n")
+        self.parent.children[1].baseFilePath = "."
         self.dismiss()
 
 class ValidationPopup(Popup):

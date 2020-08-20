@@ -1442,6 +1442,8 @@
             color: root.title_color
 
         FileChooserListView:
+            #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
+            #Line 339 -> height: '24dp' before it was dependent on screen resolution
             id: filechooser
             path: "."
             filters: ["*-config.txt"]
@@ -1455,7 +1457,7 @@
             WriteButton:
                 text: "Open"
                 size: (dp(150), dp(55))
-                on_release: root.openFile(filechooser.path, filechooser.selection)
+                on_release: root.openFile(filechooser.path, filechooser.selection[0])
 
             CancelButton:
                 size: (dp(150), dp(55))
