@@ -13,6 +13,7 @@ from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.filechooser import FileChooserListView
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -428,6 +429,7 @@ class MainLayout(BoxLayout):
 
     def removeLastSeries(self):
         if(self.numberOfSeries == 1):
+            self.sendError("CANNOT REMOVE SERIES 1")
             return
 
         lastSeriesText = self.seriesTexts[len(self.seriesTexts) - 1].strip()
@@ -714,6 +716,7 @@ class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.halign = 'center'
+        self.font_size = dp(14)
         self.background_normal = ''
         self.background_down = ''
         self.background_color = (0.155, 0.217, 0.292, 0.65)

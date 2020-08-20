@@ -140,10 +140,6 @@
                 on_release: app.openFilePop()
 
             TopMenuButton:
-                id: searchDB
-                text: "Search DB"
-
-            TopMenuButton:
                 id: newFile
                 text: "New File"
                 on_release: app.openNewFilePop()
@@ -1432,7 +1428,7 @@
     title: "Open File"
     title_size: dp(18)
     size_hint: (None, None)
-    size: (dp(520), dp(250))
+    size: (dp(750), dp(580))
 
     BoxLayout:
         orientation: "vertical"
@@ -1441,20 +1437,14 @@
 
         PopupLabel:
             id: configFileLabel
-            text: "Enter Configuration File Name:"
+            text: "Select Configuration File:"
             size_hint: (1, None)
             color: root.title_color
 
-        OrderedText:
-            id: openFileText
-            size_hint: (1, None)
-            height: 3 * self.font_size
-            hint_text: "999999a-config.txt"
-            orderNum: 999
-
-        PopupErrorLabel:
-            size_hint: (1, None)
-            height: configFileLabel.height
+        FileChooserListView:
+            id: filechooser
+            path: "."
+            filters: ["*-config.txt"]
 
         BoxLayout:
             orientation: "horizontal"
@@ -1465,7 +1455,7 @@
             WriteButton:
                 text: "Open"
                 size: (dp(150), dp(55))
-                on_release: root.openFile(root.ids.openFileText.text.strip())
+                on_release: root.openFile(filechooser.path, filechooser.selection)
 
             CancelButton:
                 size: (dp(150), dp(55))
