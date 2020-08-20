@@ -204,10 +204,11 @@ class MainLayout(BoxLayout):
             if(line.split()[0] == "<Report-Number>"):
                 try:
                     self.reportNum = line.split()[1]
-                    self.configFilePath = os.path.join(self.baseFilePath, line.split()[1] + "-config.txt")
-                    self.ids.configFileName.text = line.split()[1] + "-config.txt"
+                    self.configFilePath = os.path.join(self.baseFilePath, self.reportNum + "-config.txt")
+                    baseDir = os.path.split(os.path.split(self.configFilePath)[0])[1]
+                    self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
                     self.grabOutputFile()
-                    return line.split()[1]
+                    return self.reportNum
                 except IndexError:
                     self.reportNum = ""
                     self.ids.configFileName.text = ""
@@ -1692,8 +1693,8 @@ class OpenFilePopup(Popup):
             self.dismiss()
             return
 
-        self.parent.children[1].splitSeries(fileText)
         self.parent.children[1].baseFilePath = rootPath
+        self.parent.children[1].splitSeries(fileText)
         self.parent.children[1].configFilePath = selection
         self.dismiss()
 
