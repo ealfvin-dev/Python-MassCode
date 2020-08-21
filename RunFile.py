@@ -250,14 +250,14 @@ def parse(fileName):
 
     return seriesObjects
 
-def run(inputFile, writeOutFile=True):
+def run(inputFile, basePath=".", writeOutFile=True):
     data = parse(inputFile)
     
     for series in data:
         series.solution(data)
 
     if(writeOutFile):
-        writeOut(data)
+        writeOut(data, basePath)
 
     return data
 

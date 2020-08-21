@@ -1,8 +1,11 @@
 from statistics import mean, stdev
 from tabulate import tabulate
+import os
 
-def writeOut(seriesList):
-    f = open(seriesList[0].reportNumber + "-out.txt", 'w')
+def writeOut(seriesList, basePath):
+    outFileName = seriesList[0].reportNumber + "-out.txt"
+    outFileLocation = os.path.join(basePath, outFileName)
+    f = open(outFileLocation, 'w')
 
     for series in seriesList:
         if(series.seriesNumber == 0):

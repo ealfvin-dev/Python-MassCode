@@ -16,18 +16,17 @@
         orientation: "vertical"
         spacing: 0
         padding: 0, 0, 0, 0
-        size_hint: (0.13, 1.0)
+        size_hint: (None, 1.0)
+        width: dp(190)
 
         AddSeriesButton:
             id: addSeriesButton
-            font_size: self.width / buttonSizer
             on_press: root.addSeries()
 
         SeriesButton:
             id: series1
             seriesNum: 1
             text: "[color=#000000]Series 1[/color]"
-            font_size: self.width / menuButtonSizer
             background_color: (0.906, 0.918, 0.926, 1)
             exists: True
             on_press: root.goToSeries(self.seriesNum, self.exists)
@@ -35,84 +34,70 @@
         SeriesButton:
             id: series2
             seriesNum: 2
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series3
             seriesNum: 3
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series4
             seriesNum: 4
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series5
             seriesNum: 5
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series6
             seriesNum: 6
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series7
             seriesNum: 7
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series8
             seriesNum: 8
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series9
             seriesNum: 9
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series10
             seriesNum: 10
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series11
             seriesNum: 11
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series12
             seriesNum: 12
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: series13
             seriesNum: 13
-            font_size: self.width / menuButtonSizer
             on_press: root.goToSeries(self.seriesNum, self.exists)
 
         SeriesButton:
             id: outputFileTab
-            font_size: self.width / menuButtonSizer
             on_press: root.openOutputFile(self)
 
         RemoveSeriesButton:
             size_hint: (1, 0.85)
             id: removeSeries
-            font_size: self.width / (buttonSizer*1.1)
             on_release: root.removeLastSeries()
 
     BoxLayout:
@@ -153,10 +138,6 @@
                 id: openFile
                 text: "Open File"
                 on_release: app.openFilePop()
-
-            TopMenuButton:
-                id: searchDB
-                text: "Search DB"
 
             TopMenuButton:
                 id: newFile
@@ -431,7 +412,7 @@
                 orientation: "vertical"
                 spacing: dp(6)
                 padding: (0, 0, 0, 0)
-                size_hint: (1.5, 1.0)
+                size_hint: (1.6, 1.0)
 
                 Label:
                     id: configFileName
@@ -970,9 +951,10 @@
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: dp(0)
+            spacing: 0
             padding: (0, 0, 0, 0)
             size_hint: (1, None)
+            height: dp(50)
 
             Label:
                 text: ""
@@ -1118,9 +1100,10 @@
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: dp(0)
+            spacing: 0
             padding: (0, 0, 0, 0)
             size_hint: (1, None)
+            height: dp(50)
 
             Label:
                 text: ""
@@ -1447,7 +1430,7 @@
     title: "Open File"
     title_size: dp(18)
     size_hint: (None, None)
-    size: (dp(520), dp(250))
+    size: (dp(750), dp(580))
 
     BoxLayout:
         orientation: "vertical"
@@ -1455,21 +1438,17 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            id: configFileLabel
-            text: "Enter Configuration File Name:"
+            text: "Select Configuration File:"
             size_hint: (1, None)
             color: root.title_color
 
-        OrderedText:
-            id: openFileText
-            size_hint: (1, None)
-            height: 3 * self.font_size
-            hint_text: "999999a-config.txt"
-            orderNum: 999
-
-        PopupErrorLabel:
-            size_hint: (1, None)
-            height: configFileLabel.height
+        FileChooserListView:
+            #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
+            #Line 339 -> height: '24dp' before it was dependent on screen resolution
+            id: filechooser
+            dirselect: True
+            path: "."
+            filters: ["*-config.txt"]
 
         BoxLayout:
             orientation: "horizontal"
@@ -1480,7 +1459,7 @@
             WriteButton:
                 text: "Open"
                 size: (dp(150), dp(55))
-                on_release: root.openFile(root.ids.openFileText.text.strip())
+                on_release: root.openFile(filechooser.path, filechooser.selection)
 
             CancelButton:
                 size: (dp(150), dp(55))
@@ -1520,6 +1499,42 @@
                 id: cancelNewFileButton
                 size: (dp(150), dp(55))
                 on_release: root.dismiss()
+
+<NewFileSaveLocPopup>:
+    auto_dismiss: False
+    title: "File Save Location"
+    title_size: dp(18)
+    size_hint: (None, None)
+    size: (dp(750), dp(580))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Where do you want to save this file?"
+            size_hint: (1, None)
+            color: root.title_color
+
+        FileChooserListView:
+            #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
+            #Line 339 -> height: '24dp' before it was dependent on screen resolution
+            id: filechooserSaveLoc
+            path: "."
+            filters: ["*-config.txt"]
+            dirselect: True
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
+
+            WriteButton:
+                text: "Save"
+                size: (dp(150), dp(55))
+                on_release: root.setSaveLoc(filechooserSaveLoc.path)
 
 <ValidationPopup>:
     auto_dismiss: False

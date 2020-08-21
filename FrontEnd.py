@@ -13,6 +13,8 @@ from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.filechooser import FileSystemLocal
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -34,6 +36,8 @@ import threading
 import time
 
 class MainLayout(BoxLayout):
+    baseFilePath = os.path.abspath(".")
+    configFilePath = ""
     reportNum = ""
     numberOfSeries = 1
     currentSeries = 1
@@ -88,74 +92,71 @@ class MainLayout(BoxLayout):
 
     def writeText(self, text, orderNum):
         textInput = self.ids.userText
-
-        row = -1
+        rowStart = 0
+        rowEnd = 0
         textInput.cursor = (0, 0)
-        cursorStart = 0
 
         #Move cursor to the appropriate position
         for line in textInput.text.splitlines():
-            row += 1
-
-            if(line.strip() == ""):
-                textInput.cursor = (len(line), row)
-                cursorStart += len(line)
-                cursorStart += 1
-            elif(line == "\n"):
-                textInput.cursor = (0, row)
-                cursorStart += 1
-            elif(line.strip()[0] == "#"):
-                textInput.cursor = (len(line), row)
-                cursorStart += len(line)
-                cursorStart += 1
-            elif(orderNum < self.orderOfTags[line.strip().split()[0]]):
-                break
+            rowStart += 1
+            if(line.strip() == "" or line.strip()[0] == "#" or orderNum >= self.orderOfTags[line.strip().split()[0]]):
+                textInput.cursor = (len(line), rowStart - 1)
             else:
-                textInput.cursor = (len(line), row)
+                break
 
-                cursorStart += len(line)
-                cursorStart += 1
-
-        #Insert text and record length for highlighting
-        textBlockLength = 0
-
+        #Insert text
         if(textInput.cursor == (0, 0)):
             textInput.insert_text("\n")
             textInput.cursor = (0, 0)
         else:
             textInput.insert_text("\n")
 
+        rowStart = textInput.cursor[1] + 1
+
         for line in text.splitlines():
             if(line == "" or line == "\n"):
                 textInput.insert_text("\n")
-                textBlockLength += 1
             else:
-                if(orderNum != 0 and orderNum != 5):
+                if(orderNum != self.orderOfTags["#"] and orderNum != self.orderOfTags["@SERIES"]):
                     newLine = " " * (19 - len(self.getTag(orderNum)))
                 else:
                     newLine = ""
 
                 newLine += self.getTag(orderNum) + "  " + line
                 textInput.insert_text(newLine)
-                textBlockLength += len(newLine)
+                rowEnd = textInput.cursor[1] + 1
 
                 if(len(text.splitlines()) > 1):
                     textInput.insert_text("\n")
-                    textBlockLength += 1
 
                 if(orderNum == 1 or orderNum == 4 or orderNum == 10 or orderNum == 21 or orderNum == 23 or orderNum == 26 or orderNum == 28):
                     textInput.insert_text("\n")
 
-        return cursorStart, textBlockLength
+        return rowStart, rowEnd
 
     def getTag(self, orderNum):
         for tag, order in self.orderOfTags.items():
             if(order == orderNum):
                 return tag
 
-    def highlight(self, startPos, textLength):
-        self.ids.userText.select_text(startPos, startPos + textLength)
+    def highlight(self, startLine, endLine):
+        startPosition = 0
+        endPosition = 0
+        lineNum = 1
+        userTextArray = self.ids.userText.text.splitlines()
+
+        while lineNum <= endLine:
+            if(lineNum < startLine):
+                startPosition += len(userTextArray[lineNum - 1]) + 1
+                endPosition += len(userTextArray[lineNum - 1]) + 1
+            else:
+                endPosition += len(userTextArray[lineNum - 1]) + 1
+
+            lineNum += 1
+
+        endPosition -= 1
         self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
+        self.ids.userText.select_text(startPosition, endPosition)
 
     def highlightError(self, series, startLine, endLine=None):
         self.goToSeries(series, True)
@@ -204,8 +205,11 @@ class MainLayout(BoxLayout):
             if(line.split()[0] == "<Report-Number>"):
                 try:
                     self.reportNum = line.split()[1]
-                    self.ids.configFileName.text = line.split()[1] + "-config.txt"
-                    return line.split()[1]
+                    self.configFilePath = os.path.join(self.baseFilePath, self.reportNum + "-config.txt")
+                    baseDir = os.path.split(os.path.split(self.configFilePath)[0])[1]
+                    self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
+                    self.grabOutputFile()
+                    return self.reportNum
                 except IndexError:
                     self.reportNum = ""
                     self.ids.configFileName.text = ""
@@ -431,6 +435,7 @@ class MainLayout(BoxLayout):
 
     def removeLastSeries(self):
         if(self.numberOfSeries == 1):
+            self.sendError("CANNOT REMOVE SERIES 1")
             return
 
         lastSeriesText = self.seriesTexts[len(self.seriesTexts) - 1].strip()
@@ -524,12 +529,12 @@ class MainLayout(BoxLayout):
             fileText += seriesText.strip()
             fileText += "\n\n"
 
-        f = open(reportNum + "-config.txt", 'w')
+        f = open(self.configFilePath, 'w')
         f.write(fileText)
         f.close()
 
         self.saved = True
-        self.sendSuccess("FILE SAVED AS " + str(self.reportNum) + "-config.txt")
+        self.sendSuccess("FILE SAVED AS " + reportNum + "-config.txt")
 
         self.renderButtons(self.ids.userText.text)
         self.ids.runButton.colorBlue()
@@ -572,8 +577,12 @@ class MainLayout(BoxLayout):
         #######################
         self.clearErrors()
 
+        if(os.path.exists(self.configFilePath) == False):
+            self.sendError(self.configFilePath + " NOT FOUND")
+            return
+
         try:
-            results = RunFile.run(self.reportNum + "-config.txt")
+            results = RunFile.run(self.configFilePath, basePath=self.baseFilePath)
             self.grabOutputFile()
             self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
 
@@ -604,12 +613,15 @@ class MainLayout(BoxLayout):
 
     def grabOutputFile(self):
         outFile = self.reportNum + "-out.txt"
+        outFileLocation = os.path.join(self.baseFilePath, outFile)
 
-        if(os.path.exists(outFile)):
+        if(os.path.exists(outFileLocation)):
             self.outputText = ""
-            f = open(outFile, 'r')
+
+            f = open(outFileLocation, 'r')
             for line in f:
                 self.outputText += line
+            f.close()
             
             #Render output button/tab
             self.ids.outputFileTab.text = "[color=#FFFFFF][b]Output[/b][/color]"
@@ -713,23 +725,11 @@ class ExtraButton(Button):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
         self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
 
-class SeriesButton(Button):
-    def __init__(self, **kwargs):
-        super().__init__()
-
-        self.seriesNum = 0
-        self.exists = False
-        self.text = ''
-        self.markup = True
-        self.halign = 'center'
-        self.background_normal = ''
-        self.background_color = (0.155, 0.217, 0.292, 0.65)
-        self.background_down =  ''
-
 class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.halign = 'center'
+        self.font_size = dp(14)
         self.background_normal = ''
         self.background_down = ''
         self.background_color = (0.155, 0.217, 0.292, 0.65)
@@ -839,6 +839,7 @@ class AddSeriesButton(Button):
         self.background_color = (0.00, 0.76, 0.525, 1)
         self.text = "[b]+[/b] Add Series"
         self.halign = 'center'
+        self.font_size = dp(18)
 
         self.bind(state=self._updateState)
 
@@ -848,6 +849,20 @@ class AddSeriesButton(Button):
         elif(value == "normal"):
             self.background_color = (0.00, 0.76, 0.525, 1)
 
+class SeriesButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        self.seriesNum = 0
+        self.exists = False
+        self.text = ''
+        self.markup = True
+        self.halign = 'center'
+        self.font_size = dp(17)
+        self.background_normal = ''
+        self.background_color = (0.155, 0.217, 0.292, 0.65)
+        self.background_down =  ''
+
 class RemoveSeriesButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
@@ -856,6 +871,7 @@ class RemoveSeriesButton(Button):
         self.background_down = ''
         self.halign = 'center'
         self.text = "[b]-[/b] Remove\nLast Series"
+        self.font_size = dp(16)
         self.background_color = (0.70, 0.135, 0.05, 0.92)
 
         self.bind(state=self._updateState)
@@ -972,11 +988,11 @@ class LabInfoPopup(PopupBase):
             return
 
         #Call the writeText function in the MainLayout to write text into input file
-        cursorStart1, textLength1 = self.parent.children[1].writeText(labInfoText, labInfoOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(reportNumText, reportNumOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(labInfoText, labInfoOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(reportNumText, reportNumOrder)
 
-        #Highlight the block added across total textLength. Add 1 because there is one extra line break character between sections
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+        #Highlight the text block added
+        self.parent.children[1].highlight(rowStart1, rowEnd2)
 
         self.parent.children[1].ids.labInfoButton.colorGrey()
         self.parent.children[1].getReportNum(text=self.parent.children[1].ids.userText.text)
@@ -997,11 +1013,11 @@ class RestraintPopup(PopupBase):
             self.ids.restraintPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(restraintUncertaintyText, restraintUncertaintyOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(restraintUncertaintyText, restraintUncertaintyOrder)
+        rowStart3, rowEnd3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+        self.parent.children[1].highlight(rowStart1, rowEnd3)
         self.parent.children[1].ids.restraintButton.colorGrey()
 
         self.dismiss()
@@ -1024,13 +1040,13 @@ class DatePopup(PopupBase):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(dateText, dateOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(techIDText, techIDOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(balanceIDText, balanceOrder)
-        cursorStart4, textLength4 = self.parent.children[1].writeText(directReadingsText, directReadingsOrder)
-        cursorStart5, textLength5 = self.parent.children[1].writeText(directReadingsSFText, directReadingsSFOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(dateText, dateOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(techIDText, techIDOrder)
+        rowStart3, rowEnd3 = self.parent.children[1].writeText(balanceIDText, balanceOrder)
+        rowStart4, rowEnd4 = self.parent.children[1].writeText(directReadingsText, directReadingsOrder)
+        rowStart5, rowEnd5 = self.parent.children[1].writeText(directReadingsSFText, directReadingsSFOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + textLength4 + textLength5 + 4)
+        self.parent.children[1].highlight(rowStart1, rowEnd5)
         self.parent.children[1].ids.dateButton.colorGrey()
 
         self.dismiss()
@@ -1097,10 +1113,10 @@ class DesignPopup(PopupBase):
             self.ids.designPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(designIDText, designIDOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(designText, designOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(designIDText, designIDOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(designText, designOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+        self.parent.children[1].highlight(rowStart1, rowEnd2)
         self.parent.children[1].ids.designButton.colorGrey()
 
         self.dismiss()
@@ -1119,11 +1135,11 @@ class WeightsPopup(PopupBase):
             self.ids.weightsPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(weightsText, weightsOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
+        rowStart3, rowEnd3 = self.parent.children[1].writeText(weightsText, weightsOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+        self.parent.children[1].highlight(rowStart1, rowEnd3)
         self.parent.children[1].ids.weightsButton.colorGrey()
 
         #Render series nominal
@@ -1146,11 +1162,11 @@ class VectorsPopup(PopupBase):
             self.ids.vectorsPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(restraintText, restraintOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(checkText, checkOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(restraintText, restraintOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(checkText, checkOrder)
+        rowStart3, rowEnd3 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+        self.parent.children[1].highlight(rowStart1, rowEnd3)
         self.parent.children[1].ids.positionVectorsButton.colorGrey()
 
         self.dismiss()
@@ -1167,10 +1183,10 @@ class StatisticsPopup(PopupBase):
             self.ids.sigmaPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(sigmawText, sigmawOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(sigmatText, sigmatOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(sigmawText, sigmawOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(sigmatText, sigmatOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + 1)
+        self.parent.children[1].highlight(rowStart1, rowEnd2)
         self.parent.children[1].ids.statisticsButton.colorGrey()
 
         self.dismiss()
@@ -1248,7 +1264,7 @@ class StatsDbPopup(PopupBase):
         self.rootPop.ids.sigmatText.text = statData[2]
 
         self.rootPop.ids.sigmaPopError.color = (0.05, 0.65, 0.1, 0.98)
-        self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[0]
+        self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[1] + " " + statData[0]
 
         self.dismiss()
 
@@ -1380,11 +1396,11 @@ class SwPopup(PopupBase):
             self.ids.swPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(swMassText, swMassOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(swDensityText, swDensityOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(swCCEText, swCCEOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(swMassText, swMassOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(swDensityText, swDensityOrder)
+        rowStart3, rowEnd3 = self.parent.children[1].writeText(swCCEText, swCCEOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+        self.parent.children[1].highlight(rowStart1, rowEnd3)
         self.parent.children[1].ids.swButton.colorGrey()
 
         self.dismiss()
@@ -1622,11 +1638,11 @@ class MeasurementsPopup(PopupBase):
             self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required, " + str(numEnvReadings) + " provided"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(envText, envOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(envText, envOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
+        rowStart3, rowEnd3 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+        self.parent.children[1].highlight(rowStart1, rowEnd3)
         self.parent.children[1].ids.measurementsButton.colorGrey()
 
         self.dismiss()
@@ -1659,26 +1675,40 @@ class GravityPopup(PopupBase):
             self.ids.gravityPopError.text = "Enter data for all fields"
             return
 
-        cursorStart1, textLength1 = self.parent.children[1].writeText(gradientText, gradientOrder)
-        cursorStart2, textLength2 = self.parent.children[1].writeText(localGravText, localGravOrder)
-        cursorStart3, textLength3 = self.parent.children[1].writeText(heightText, heightOrder)
+        rowStart1, rowEnd1 = self.parent.children[1].writeText(gradientText, gradientOrder)
+        rowStart2, rowEnd2 = self.parent.children[1].writeText(localGravText, localGravOrder)
+        rowStart3, rowEnd3 = self.parent.children[1].writeText(heightText, heightOrder)
 
-        self.parent.children[1].highlight(cursorStart1, textLength1 + textLength2 + textLength3 + 2)
+        self.parent.children[1].highlight(rowStart1, rowEnd3)
         self.parent.children[1].ids.gravityButton.colorGrey()
 
         self.dismiss()
 
 class OpenFilePopup(Popup):
-    def openFile(self, fileName):
+    def openFile(self, rootPath, selection):
         try:
-            with open(fileName) as configFile:
-                fileText = configFile.read()
-        except(FileNotFoundError):
-            self.parent.children[1].sendError(fileName + " NOT FOUND IN CURRENT DIRECTORY")
+            selection[0]
+            fileName = os.path.split(selection[0])[1]
+            if(not "-config.txt" in fileName):
+                self.parent.children[1].sendError("NO FILE SELECTED")
+                self.dismiss()
+                return
+        except IndexError:
+            self.parent.children[1].sendError("NO FILE SELECTED")
             self.dismiss()
             return
 
+        try:
+            with open(selection[0]) as configFile:
+                fileText = configFile.read()
+        except:
+            self.parent.children[1].sendError("ERROR OPENING SELECTED FILE " + selection[0])
+            self.dismiss()
+            return
+
+        self.parent.children[1].baseFilePath = rootPath
         self.parent.children[1].splitSeries(fileText)
+        self.parent.children[1].configFilePath = selection
         self.dismiss()
 
 class OpenNewFilePopup(Popup):
@@ -1721,10 +1751,23 @@ class OpenNewFilePopup(Popup):
     def openNewFile(self, e):
         self.parent.children[1].save()
         self.parent.children[1].splitSeries("@SERIES\n\n")
+        self.parent.children[1].baseFilePath = os.path.abspath(".")
+
+        fileSavePop = NewFileSaveLocPopup()
         self.dismiss()
+        fileSavePop.open()
 
     def openNewFileNoSave(self, e):
         self.parent.children[1].splitSeries("@SERIES\n\n")
+        self.parent.children[1].baseFilePath = os.path.abspath(".")
+
+        fileSavePop = NewFileSaveLocPopup()
+        self.dismiss()
+        fileSavePop.open()
+
+class NewFileSaveLocPopup(Popup):
+    def setSaveLoc(self, path):
+        self.parent.children[1].baseFilePath = path
         self.dismiss()
 
 class ValidationPopup(Popup):
@@ -1925,21 +1968,26 @@ class Mars(App):
     def openFilePop(self):
         freshOpen = self.root.numberOfSeries == 1 and self.root.ids.userText.text.strip() == "@SERIES"
         if(self.root.saved == False and freshOpen == False):
+            self.root.clearErrors()
             pop = OpenNewFilePopup()
             pop.open()
             pop.setMessage(False)
         else:
+            self.root.clearErrors()
             pop = OpenFilePopup()
             pop.open()
 
     def openNewFilePop(self):
         freshOpen = self.root.numberOfSeries == 1 and self.root.ids.userText.text.strip() == "@SERIES"
         if(self.root.saved == False and freshOpen == False):
+            self.root.clearErrors()
             pop = OpenNewFilePopup()
             pop.open()
             pop.setMessage(True)
         else:
-            self.root.splitSeries("@SERIES\n\n")
+            self.root.clearErrors()
+            saveLocPop = NewFileSaveLocPopup()
+            saveLocPop.open()
 
     def openValidationPop(self):
         pop = ValidationPopup()
