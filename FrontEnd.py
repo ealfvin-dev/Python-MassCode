@@ -14,6 +14,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.filechooser import FileSystemLocal
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -1686,10 +1687,22 @@ class GravityPopup(PopupBase):
 class OpenFilePopup(Popup):
     def openFile(self, rootPath, selection):
         try:
-            with open(selection) as configFile:
+            selection[0]
+            fileName = os.path.split(selection[0])[1]
+            if(not "-config.txt" in fileName):
+                self.parent.children[1].sendError("NO FILE SELECTED")
+                self.dismiss()
+                return
+        except IndexError:
+            self.parent.children[1].sendError("NO FILE SELECTED")
+            self.dismiss()
+            return
+
+        try:
+            with open(selection[0]) as configFile:
                 fileText = configFile.read()
-        except(FileNotFoundError):
-            self.parent.children[1].sendError(fileName + " ERROR OPENING SELECTED FILE")
+        except:
+            self.parent.children[1].sendError("ERROR OPENING SELECTED FILE " + selection[0])
             self.dismiss()
             return
 
@@ -1739,12 +1752,27 @@ class OpenNewFilePopup(Popup):
         self.parent.children[1].save()
         self.parent.children[1].splitSeries("@SERIES\n\n")
         self.parent.children[1].baseFilePath = os.path.abspath(".")
+
+        fileSavePop = NewFileSaveLocPopup()
         self.dismiss()
+        fileSavePop.open()
 
     def openNewFileNoSave(self, e):
         self.parent.children[1].splitSeries("@SERIES\n\n")
         self.parent.children[1].baseFilePath = os.path.abspath(".")
+
+        fileSavePop = NewFileSaveLocPopup()
         self.dismiss()
+        fileSavePop.open()
+
+class NewFileSaveLocPopup(Popup):
+    def setSaveLoc(self, selection):
+        try:
+            selection[0]
+        except IndexError:
+            self.parent.children[1].sendError("NO FOLDER SELECTED")
+            self.dismiss()
+            return
 
 class ValidationPopup(Popup):
     def __init__(self, **kwargs):
@@ -1958,7 +1986,8 @@ class Mars(App):
             pop.open()
             pop.setMessage(True)
         else:
-            self.root.splitSeries("@SERIES\n\n")
+            saveLocPop = NewFileSaveLocPopup()
+            saveLocPop.open()
 
     def openValidationPop(self):
         pop = ValidationPopup()

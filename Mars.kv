@@ -951,9 +951,10 @@
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: dp(0)
+            spacing: 0
             padding: (0, 0, 0, 0)
             size_hint: (1, None)
+            height: dp(50)
 
             Label:
                 text: ""
@@ -1099,9 +1100,10 @@
 
         BoxLayout:
             orientation: "horizontal"
-            spacing: dp(0)
+            spacing: 0
             padding: (0, 0, 0, 0)
             size_hint: (1, None)
+            height: dp(50)
 
             Label:
                 text: ""
@@ -1436,7 +1438,6 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            id: configFileLabel
             text: "Select Configuration File:"
             size_hint: (1, None)
             color: root.title_color
@@ -1445,6 +1446,7 @@
             #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
             #Line 339 -> height: '24dp' before it was dependent on screen resolution
             id: filechooser
+            dirselect: True
             path: "."
             filters: ["*-config.txt"]
 
@@ -1457,7 +1459,7 @@
             WriteButton:
                 text: "Open"
                 size: (dp(150), dp(55))
-                on_release: root.openFile(filechooser.path, filechooser.selection[0])
+                on_release: root.openFile(filechooser.path, filechooser.selection)
 
             CancelButton:
                 size: (dp(150), dp(55))
@@ -1497,6 +1499,42 @@
                 id: cancelNewFileButton
                 size: (dp(150), dp(55))
                 on_release: root.dismiss()
+
+<NewFileSaveLocPopup>:
+    auto_dismiss: False
+    title: "File Save Location"
+    title_size: dp(18)
+    size_hint: (None, None)
+    size: (dp(750), dp(580))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Where do you want to save this file?"
+            size_hint: (1, None)
+            color: root.title_color
+
+        FileChooserListView:
+            #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
+            #Line 339 -> height: '24dp' before it was dependent on screen resolution
+            id: filechooserSaveLoc
+            path: "."
+            filters: ["*-config.txt"]
+            dirselect: True
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
+
+            WriteButton:
+                text: "Select"
+                size: (dp(150), dp(55))
+                on_release: root.setSaveLoc(filechooserSaveLoc.selection)
 
 <ValidationPopup>:
     auto_dismiss: False
