@@ -1766,13 +1766,9 @@ class OpenNewFilePopup(Popup):
         fileSavePop.open()
 
 class NewFileSaveLocPopup(Popup):
-    def setSaveLoc(self, selection):
-        try:
-            selection[0]
-        except IndexError:
-            self.parent.children[1].sendError("NO FOLDER SELECTED")
-            self.dismiss()
-            return
+    def setSaveLoc(self, path):
+        self.parent.children[1].baseFilePath = path
+        self.dismiss()
 
 class ValidationPopup(Popup):
     def __init__(self, **kwargs):
@@ -1972,20 +1968,24 @@ class Mars(App):
     def openFilePop(self):
         freshOpen = self.root.numberOfSeries == 1 and self.root.ids.userText.text.strip() == "@SERIES"
         if(self.root.saved == False and freshOpen == False):
+            self.root.clearErrors()
             pop = OpenNewFilePopup()
             pop.open()
             pop.setMessage(False)
         else:
+            self.root.clearErrors()
             pop = OpenFilePopup()
             pop.open()
 
     def openNewFilePop(self):
         freshOpen = self.root.numberOfSeries == 1 and self.root.ids.userText.text.strip() == "@SERIES"
         if(self.root.saved == False and freshOpen == False):
+            self.root.clearErrors()
             pop = OpenNewFilePopup()
             pop.open()
             pop.setMessage(True)
         else:
+            self.root.clearErrors()
             saveLocPop = NewFileSaveLocPopup()
             saveLocPop.open()
 
