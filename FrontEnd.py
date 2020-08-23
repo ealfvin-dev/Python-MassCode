@@ -206,7 +206,7 @@ class MainLayout(BoxLayout):
                 try:
                     self.reportNum = line.split()[1]
                     self.configFilePath = os.path.join(self.baseFilePath, self.reportNum + "-config.txt")
-                    baseDir = os.path.split(os.path.split(self.configFilePath)[0])[1]
+                    baseDir = os.path.split(self.baseFilePath)[1]
                     self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
                     self.grabOutputFile()
                     return self.reportNum
@@ -729,7 +729,7 @@ class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.halign = 'center'
-        self.font_size = dp(14)
+        self.font_size = dp(15)
         self.background_normal = ''
         self.background_down = ''
         self.background_color = (0.155, 0.217, 0.292, 0.65)
@@ -1264,7 +1264,7 @@ class StatsDbPopup(PopupBase):
         self.rootPop.ids.sigmatText.text = statData[2]
 
         self.rootPop.ids.sigmaPopError.color = (0.05, 0.65, 0.1, 0.98)
-        self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[1] + " " + statData[0]
+        self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[0] + " statistics"
 
         self.dismiss()
 
