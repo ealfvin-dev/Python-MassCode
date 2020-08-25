@@ -38,9 +38,12 @@ import time
 class MainLayout(BoxLayout):
     baseFilePath = os.path.abspath(".")
     configFilePath = ""
-    reportNum = ""
+
     numberOfSeries = 1
     currentSeries = 1
+    maxSeries = 20
+
+    reportNum = ""
     seriesTexts = ["@SERIES\n\n"]
     outputText = ""
 
@@ -371,7 +374,7 @@ class MainLayout(BoxLayout):
         self.ids.measurementsButton.colorGrey()
 
     def addSeries(self):
-        if(self.numberOfSeries == 20):
+        if(self.numberOfSeries == self.maxSeries):
             return
 
         self.numberOfSeries += 1
@@ -417,12 +420,13 @@ class MainLayout(BoxLayout):
             self.currentSeries = seriesNum
 
             #Render tabs:
-            for sn in range(1, 21):
+            for sn in range(1, self.numberOfSeries + 1):
                 seriesID = "series" + str(sn)
-                self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
+                seriesButton = self.ids[seriesID]
 
-                if(self.ids[seriesID].exists):
-                    self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+                if(seriesButton.exists):
+                    seriesButton.background_color = (0.155, 0.217, 0.292, 0.65)
+                    seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
             self.ids.outputFileTab.background_color = (0.155, 0.217, 0.292, 0.65)
             if(self.ids.outputFileTab.exists):
@@ -665,12 +669,12 @@ class MainLayout(BoxLayout):
             self.ids.userText.select_text(0, 0)
             self.ids.userText.readonly = True
 
-            for sn in range(1, 21):
+            for sn in range(1, self.numberOfSeries + 1):
                 seriesID = "series" + str(sn)
                 seriesButton = self.ids[seriesID]
 
-                seriesButton.background_color = (0.155, 0.217, 0.292, 0.65)
                 if(seriesButton.exists):
+                    seriesButton.background_color = (0.155, 0.217, 0.292, 0.65)
                     seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
             outputButton.background_color = (0.906, 0.918, 0.926, 1)
