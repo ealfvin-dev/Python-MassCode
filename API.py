@@ -63,7 +63,7 @@ def getStats():
 def getStat(rowId):
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
-    c.execute('''SELECT description, sigw, sigt FROM stats_table WHERE rowid = ?''', [rowId])
+    c.execute('''SELECT nominal, sigw, sigt FROM stats_table WHERE rowid = ?''', [rowId])
 
     data = c.fetchall()
 

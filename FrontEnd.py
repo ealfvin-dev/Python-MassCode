@@ -38,9 +38,12 @@ import time
 class MainLayout(BoxLayout):
     baseFilePath = os.path.abspath(".")
     configFilePath = ""
-    reportNum = ""
+
     numberOfSeries = 1
     currentSeries = 1
+    maxSeries = 20
+
+    reportNum = ""
     seriesTexts = ["@SERIES\n\n"]
     outputText = ""
 
@@ -206,7 +209,7 @@ class MainLayout(BoxLayout):
                 try:
                     self.reportNum = line.split()[1]
                     self.configFilePath = os.path.join(self.baseFilePath, self.reportNum + "-config.txt")
-                    baseDir = os.path.split(os.path.split(self.configFilePath)[0])[1]
+                    baseDir = os.path.split(self.baseFilePath)[1]
                     self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
                     self.grabOutputFile()
                     return self.reportNum
@@ -371,7 +374,7 @@ class MainLayout(BoxLayout):
         self.ids.measurementsButton.colorGrey()
 
     def addSeries(self):
-        if(self.numberOfSeries == 13):
+        if(self.numberOfSeries == self.maxSeries):
             return
 
         self.numberOfSeries += 1
@@ -381,6 +384,8 @@ class MainLayout(BoxLayout):
         self.ids[newSeriesId].exists = True
 
         self.seriesTexts.append("@SERIES\n\n")
+
+        self.ids.seriesSelectionMenu.height = dp(55) * self.numberOfSeries
 
         if(self.saved):
             self.saved = False
@@ -415,12 +420,13 @@ class MainLayout(BoxLayout):
             self.currentSeries = seriesNum
 
             #Render tabs:
-            for sn in range(1, 14):
+            for sn in range(1, self.numberOfSeries + 1):
                 seriesID = "series" + str(sn)
-                self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
+                seriesButton = self.ids[seriesID]
 
-                if(self.ids[seriesID].exists):
-                    self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+                if(seriesButton.exists):
+                    seriesButton.background_color = (0.155, 0.217, 0.292, 0.65)
+                    seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
             self.ids.outputFileTab.background_color = (0.155, 0.217, 0.292, 0.65)
             if(self.ids.outputFileTab.exists):
@@ -455,6 +461,8 @@ class MainLayout(BoxLayout):
             self.ids["series" + str(self.numberOfSeries)].exists = False
 
             self.numberOfSeries -= 1
+            self.ids.seriesSelectionMenu.height = dp(55) * self.numberOfSeries
+
             if(self.saved):
                 self.saved = False
                 self.ids.runButton.colorGrey()
@@ -588,7 +596,9 @@ class MainLayout(BoxLayout):
 
             secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
             if(secondaryChecks):
-                InputChecks.checkResults(results)
+                resultsCheck = InputChecks.checkResults(results)
+                if(resultsCheck):
+                    self.openOutputFile()
 
         except MARSException as ex:
             self.sendError("RUNTIME ERROR: " + str(ex))
@@ -631,8 +641,9 @@ class MainLayout(BoxLayout):
             self.ids.outputFileTab.exists = False
             self.outputText = ""
 
-    def openOutputFile(self, thisButton):
-        if(thisButton.exists):
+    def openOutputFile(self):
+        outputButton = self.ids.outputFileTab
+        if(outputButton.exists):
             #If already on output tab, return
             if(self.currentSeries == None):
                 return
@@ -658,15 +669,16 @@ class MainLayout(BoxLayout):
             self.ids.userText.select_text(0, 0)
             self.ids.userText.readonly = True
 
-            for sn in range(1, 14):
+            for sn in range(1, self.numberOfSeries + 1):
                 seriesID = "series" + str(sn)
-                self.ids[seriesID].background_color = (0.155, 0.217, 0.292, 0.65)
+                seriesButton = self.ids[seriesID]
 
-                if(self.ids[seriesID].exists):
-                    self.ids[seriesID].text = "[color=#FFFFFF]" + self.ids[seriesID].text[15:]
+                if(seriesButton.exists):
+                    seriesButton.background_color = (0.155, 0.217, 0.292, 0.65)
+                    seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
-            thisButton.background_color = (0.906, 0.918, 0.926, 1)
-            thisButton.text = "[color=#000000]" + thisButton.text[15:]
+            outputButton.background_color = (0.906, 0.918, 0.926, 1)
+            outputButton.text = "[color=#000000]" + outputButton.text[15:]
 
             self.greyOutButtons()
 
@@ -729,7 +741,7 @@ class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
         self.halign = 'center'
-        self.font_size = dp(14)
+        self.font_size = dp(15)
         self.background_normal = ''
         self.background_down = ''
         self.background_color = (0.155, 0.217, 0.292, 0.65)
@@ -738,7 +750,7 @@ class TopMenuButton(Button):
 
     def _updateState(self, instance, value):
         if(value == "down"):
-            self.background_color = (0.155*0.3, 0.217*0.3, 0.292*0.3, 0.65)
+            self.background_color = (0.155*0.25, 0.217*0.25, 0.292*0.25, 0.65)
         elif(value == "normal"):
             self.background_color = (0.155, 0.217, 0.292, 0.65)
 
@@ -830,9 +842,18 @@ class WriteButton(Button):
         elif(value == "normal"):
             self.background_color = (0.13, 0.5, 0.95, 0.94)
 
+class SeriesSelectionMenu(GridLayout):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.size_hint = (1, None)
+        self.height = dp(55)
+        self.cols = 1
+
 class AddSeriesButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint = (1, None)
+        self.height = dp(60)
         self.markup = True
         self.background_normal = ''
         self.background_down = ''
@@ -852,7 +873,8 @@ class AddSeriesButton(Button):
 class SeriesButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
-
+        self.size_hint = (1, None)
+        self.height = dp(55)
         self.seriesNum = 0
         self.exists = False
         self.text = ''
@@ -866,6 +888,8 @@ class SeriesButton(Button):
 class RemoveSeriesButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint = (1, None)
+        self.height = dp(50)
         self.markup = True
         self.background_normal = ''
         self.background_down = ''
@@ -1264,7 +1288,7 @@ class StatsDbPopup(PopupBase):
         self.rootPop.ids.sigmatText.text = statData[2]
 
         self.rootPop.ids.sigmaPopError.color = (0.05, 0.65, 0.1, 0.98)
-        self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[1] + " " + statData[0]
+        self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[0] + " statistics"
 
         self.dismiss()
 
@@ -1750,17 +1774,12 @@ class OpenNewFilePopup(Popup):
 
     def openNewFile(self, e):
         self.parent.children[1].save()
-        self.parent.children[1].splitSeries("@SERIES\n\n")
-        self.parent.children[1].baseFilePath = os.path.abspath(".")
 
         fileSavePop = NewFileSaveLocPopup()
         self.dismiss()
         fileSavePop.open()
 
     def openNewFileNoSave(self, e):
-        self.parent.children[1].splitSeries("@SERIES\n\n")
-        self.parent.children[1].baseFilePath = os.path.abspath(".")
-
         fileSavePop = NewFileSaveLocPopup()
         self.dismiss()
         fileSavePop.open()
@@ -1768,6 +1787,7 @@ class OpenNewFilePopup(Popup):
 class NewFileSaveLocPopup(Popup):
     def setSaveLoc(self, path):
         self.parent.children[1].baseFilePath = path
+        self.parent.children[1].splitSeries("@SERIES\n\n")
         self.dismiss()
 
 class ValidationPopup(Popup):

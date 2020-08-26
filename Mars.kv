@@ -3,7 +3,6 @@
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
 
 #:set buttonSizer 10
-#:set menuButtonSizer 11
 #:set labelSizer 1.23
 
 <MainLayout>:
@@ -12,91 +11,136 @@
     padding: 0, 0, 0, 0
 
     BoxLayout:
-        id: menuCol1
         orientation: "vertical"
-        spacing: 0
-        padding: 0, 0, 0, 0
-        size_hint: (None, 1.0)
+        size_hint: (None, 1)
         width: dp(190)
 
         AddSeriesButton:
             id: addSeriesButton
             on_press: root.addSeries()
 
-        SeriesButton:
-            id: series1
-            seriesNum: 1
-            text: "[color=#000000]Series 1[/color]"
-            background_color: (0.906, 0.918, 0.926, 1)
-            exists: True
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+        ScrollView:
+            id: seriesSelectionSv
+            size_hint: (1, 1)
+            do_scroll_x: False
+            do_scroll_y: True
+            bar_width: 0
 
-        SeriesButton:
-            id: series2
-            seriesNum: 2
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+            SeriesSelectionMenu:
+                id: seriesSelectionMenu
 
-        SeriesButton:
-            id: series3
-            seriesNum: 3
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series1
+                    seriesNum: 1
+                    text: "[color=#000000]Series 1[/color]"
+                    background_color: (0.906, 0.918, 0.926, 1)
+                    exists: True
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series4
-            seriesNum: 4
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series2
+                    seriesNum: 2
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series5
-            seriesNum: 5
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series3
+                    seriesNum: 3
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series6
-            seriesNum: 6
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series4
+                    seriesNum: 4
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series7
-            seriesNum: 7
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series5
+                    seriesNum: 5
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series8
-            seriesNum: 8
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series6
+                    seriesNum: 6
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series9
-            seriesNum: 9
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series7
+                    seriesNum: 7
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series10
-            seriesNum: 10
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series8
+                    seriesNum: 8
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series11
-            seriesNum: 11
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series9
+                    seriesNum: 9
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series12
-            seriesNum: 12
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series10
+                    seriesNum: 10
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
 
-        SeriesButton:
-            id: series13
-            seriesNum: 13
-            on_press: root.goToSeries(self.seriesNum, self.exists)
+                SeriesButton:
+                    id: series11
+                    seriesNum: 11
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series12
+                    seriesNum: 12
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series13
+                    seriesNum: 13
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series14
+                    seriesNum: 14
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series15
+                    seriesNum: 15
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series16
+                    seriesNum: 16
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series17
+                    seriesNum: 17
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series18
+                    seriesNum: 18
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series19
+                    seriesNum: 19
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    id: series20
+                    seriesNum: 20
+                    on_press: root.goToSeries(self.seriesNum, self.exists)
+
+                SeriesButton:
+                    seriesNum: -1
+                    height: seriesSelectionSv.height - dp(20*55) if seriesSelectionSv.height - dp(20*55) > dp(55) else dp(55)
 
         SeriesButton:
             id: outputFileTab
-            on_press: root.openOutputFile(self)
+            on_press: root.openOutputFile()
 
         RemoveSeriesButton:
-            size_hint: (1, 0.85)
             id: removeSeries
             on_release: root.removeLastSeries()
 
@@ -1535,6 +1579,11 @@
                 text: "Save"
                 size: (dp(150), dp(55))
                 on_release: root.setSaveLoc(filechooserSaveLoc.path)
+
+            CancelButton:
+                id: cancelNewFileButton
+                size: (dp(150), dp(55))
+                on_release: root.dismiss()
 
 <ValidationPopup>:
     auto_dismiss: False
