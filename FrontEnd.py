@@ -28,6 +28,7 @@ import TestSuite
 import InputChecks
 import API
 from MARSException import MARSException
+from Configs import Configs
 
 import sys
 import os
@@ -51,8 +52,8 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            Color(rgba=(231/255, 234/255, 236/255, 1))
-            #Color(0.936, 0.938, 0.946, 1)
+            #Color(rgba=(231/255, 234/255, 236/255, 1))
+            Color(rgba=Configs.backgroundColor)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
         self.bind(size=self._update_rect, pos=self._update_rect)
@@ -132,7 +133,7 @@ class MainLayout(BoxLayout):
                 if(len(text.splitlines()) > 1):
                     textInput.insert_text("\n")
 
-                if(orderNum == 1 or orderNum == 4 or orderNum == 10 or orderNum == 21 or orderNum == 23 or orderNum == 26 or orderNum == 28):
+                if(orderNum == 1 or orderNum == 3 or orderNum == 10 or orderNum == 15 or orderNum == 21 or orderNum == 23 or orderNum == 26 or orderNum == 28):
                     textInput.insert_text("\n")
 
         return rowStart, rowEnd
@@ -425,10 +426,10 @@ class MainLayout(BoxLayout):
                 seriesButton = self.ids[seriesID]
 
                 if(seriesButton.exists):
-                    seriesButton.background_color = (0.155, 0.217, 0.292, 0.65)
+                    seriesButton.background_color = Configs.menuColor
                     seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
-            self.ids.outputFileTab.background_color = (0.155, 0.217, 0.292, 0.65)
+            self.ids.outputFileTab.background_color = Configs.menuColor
             if(self.ids.outputFileTab.exists):
                 self.ids.outputFileTab.text = "[color=#FFFFFF]" + self.ids.outputFileTab.text[15:]
 
@@ -674,7 +675,7 @@ class MainLayout(BoxLayout):
                 seriesButton = self.ids[seriesID]
 
                 if(seriesButton.exists):
-                    seriesButton.background_color = (0.155, 0.217, 0.292, 0.65)
+                    seriesButton.background_color = Configs.menuColor
                     seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
             outputButton.background_color = (0.906, 0.918, 0.926, 1)
@@ -687,7 +688,7 @@ class OrderedText(TextInput):
         super().__init__()
 
         with self.canvas.before:
-            Color(rgba=(0.155, 0.217, 0.292, 0.65))
+            Color(rgba=Configs.menuColor)
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
         
         self.bind(size=self._update_rect, pos=self._update_rect)
@@ -710,7 +711,7 @@ class UserInput(TextInput):
         super().__init__()
 
         with self.canvas.before:
-            Color(rgba=(0.155, 0.217, 0.292, 0.65))
+            Color(rgba=Configs.menuColor)
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
         
         self.bind(size=self._update_rect, pos=self._update_rect)
@@ -728,7 +729,7 @@ class ExtraButton(Button):
         self.font_size = dp(15)
 
         with self.canvas.before:
-            Color(rgba=(0.155, 0.217, 0.292, 0.65))
+            Color(rgba=Configs.menuColor)
             self.borderRect = Rectangle(size=(self.size[0] + dp(2), self.size[1] + dp(2)), pos=(self.pos[0] - dp(1), self.pos[1] - dp(1)))
         
         self.bind(size=self._update_rect, pos=self._update_rect)
@@ -744,7 +745,7 @@ class TopMenuButton(Button):
         self.font_size = dp(15)
         self.background_normal = ''
         self.background_down = ''
-        self.background_color = (0.155, 0.217, 0.292, 0.65)
+        self.background_color = Configs.menuColor
 
         self.bind(state=self._updateState)
 
@@ -752,12 +753,12 @@ class TopMenuButton(Button):
         if(value == "down"):
             self.background_color = (0.155*0.25, 0.217*0.25, 0.292*0.25, 0.65)
         elif(value == "normal"):
-            self.background_color = (0.155, 0.217, 0.292, 0.65)
+            self.background_color = Configs.menuColor
 
 class InputButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
-        self.buttonColor = (0.13, 0.5, 0.95, 0.94)
+        self.buttonColor = Configs.inputButtonColor
         self.currentColor = self.buttonColor
         self.background_normal = ''
         self.background_color = (0, 0, 0, 0)
@@ -829,7 +830,7 @@ class WriteButton(Button):
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_down = ''
-        self.background_color = (0.13, 0.5, 0.95, 0.94)
+        self.background_color = Configs.inputButtonColor
         self.font_size = dp(16)
         self.text = kwargs.get("text", "Write")
         self.halign = 'center'
@@ -840,7 +841,7 @@ class WriteButton(Button):
         if(value == "down"):
             self.background_color = (0.13*0.5, 0.5*0.5, 0.95*0.5, 0.94)
         elif(value == "normal"):
-            self.background_color = (0.13, 0.5, 0.95, 0.94)
+            self.background_color = Configs.inputButtonColor
 
 class SeriesSelectionMenu(GridLayout):
     def __init__(self, **kwargs):
@@ -882,7 +883,7 @@ class SeriesButton(Button):
         self.halign = 'center'
         self.font_size = dp(17)
         self.background_normal = ''
-        self.background_color = (0.155, 0.217, 0.292, 0.65)
+        self.background_color = Configs.menuColor
         self.background_down =  ''
 
 class RemoveSeriesButton(Button):
@@ -1831,7 +1832,7 @@ class StartupTestsPopup(Popup):
             self.ids.testStatus.color = (0.9, 0.05, 0.05, 0.85)
             self.ids.testStatus.text = "[b]" + str(testSuite.failed) + " INTERNAL TESTING FAILURE/S. OPEN LOGS TO SEE DETAILS[/b]"
             self.ids.openLogButton.bind(on_release=self.openTestLog)
-            self.ids.openLogButton.background_color = (0.13, 0.5, 0.95, 0.94)
+            self.ids.openLogButton.background_color = Configs.inputButtonColor
 
         return
 
