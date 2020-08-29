@@ -62,7 +62,7 @@ class MainLayout(BoxLayout):
             "<Report-Number>": 1, \
             "<Restraint-ID>": 2, \
             "<Unc-Restraint>": 3, \
-            "<Random-Error>": 4, \
+            #"<Random-Error>": 4, \
             "@SERIES": 5, \
             "<Date>": 6, \
             "<Technician-ID>": 7, \
@@ -264,7 +264,7 @@ class MainLayout(BoxLayout):
             "<Report-Number>": False, \
             "<Restraint-ID>": False, \
             "<Unc-Restraint>": False, \
-            "<Random-Error>": False, \
+            #"<Random-Error>": False, \
             "@SERIES": False, \
             "<Date>": False, \
             "<Technician-ID>": False, \
@@ -308,7 +308,7 @@ class MainLayout(BoxLayout):
             self.ids.labInfoButton.colorGrey()
 
         #Restraint Button
-        if(self.currentSeries == 1 and (tags["<Restraint-ID>"] == False or tags["<Unc-Restraint>"] == False or tags["<Random-Error>"] == False)):
+        if(self.currentSeries == 1 and (tags["<Restraint-ID>"] == False or tags["<Unc-Restraint>"] == False)):
             self.ids.restraintButton.colorBlue()
         else:
             self.ids.restraintButton.colorGrey()
@@ -1027,21 +1027,21 @@ class RestraintPopup(PopupBase):
     def submit(self):
         restraintIDText = self.ids.restraintIDText.text
         restraintUncertaintyText = self.ids.restraintUncertaintyText.text
-        randomErrorText = self.ids.randomErrorText.text
+        #randomErrorText = self.ids.randomErrorText.text
 
         restraintIDOrder = self.ids.restraintIDText.orderNum
         restraintUncertaintyOrder = self.ids.restraintUncertaintyText.orderNum
-        randomErrorOrder = self.ids.randomErrorText.orderNum
+        #randomErrorOrder = self.ids.randomErrorText.orderNum
 
-        if(restraintIDText == "" or restraintUncertaintyText == "" or randomErrorText == ""):
+        if(restraintIDText == "" or restraintUncertaintyText == ""):
             self.ids.restraintPopError.text = "Enter data for all fields"
             return
 
         rowStart1, rowEnd1 = self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
         rowStart2, rowEnd2 = self.parent.children[1].writeText(restraintUncertaintyText, restraintUncertaintyOrder)
-        rowStart3, rowEnd3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
+        #rowStart3, rowEnd3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd3)
+        self.parent.children[1].highlight(rowStart1, rowEnd2)
         self.parent.children[1].ids.restraintButton.colorGrey()
 
         self.dismiss()

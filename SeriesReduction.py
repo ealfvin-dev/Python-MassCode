@@ -32,7 +32,7 @@ class MatrixSolution:
 
         self.restraintID = "0"
         self.uncRestraint = 0
-        self.randomError = 0
+        #self.randomError = 0
         self.referenceTemperature = 20
 
         self.seriesNumber = 0

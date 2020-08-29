@@ -234,7 +234,7 @@
 
                     InputButton:
                         id: labInfoButton
-                        text: "Report No.\nNotes"
+                        text: "Report No. &\nNotes"
                         font_size: self.width / buttonSizer
                         on_release: app.openLabInfoPop()
 
@@ -557,7 +557,7 @@
 <RestraintPopup>:
     auto_dismiss: False
     title: "Series 1 Restraint Data"
-    size: (dp(400), dp(380))
+    size: (dp(400), dp(330))
 
     BoxLayout:
         orientation: "vertical"
@@ -589,14 +589,6 @@
         PopupLabel:
             text: "Random Error (mg):"
             size_hint: (1, None)
-
-        OrderedText:
-            id: randomErrorText
-            size_hint: (1, None)
-            height: 3 * self.font_size
-            text: "0"
-            hint_text: "0"
-            orderNum: 4
 
         PopupErrorLabel:
             id: restraintPopError

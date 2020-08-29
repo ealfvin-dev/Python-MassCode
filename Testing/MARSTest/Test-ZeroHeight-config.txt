@@ -4,7 +4,6 @@
 
      <Restraint-ID>  1
     <Unc-Restraint>  1
-     <Random-Error>  0
 
 @SERIES
 

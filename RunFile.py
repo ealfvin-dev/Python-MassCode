@@ -87,9 +87,9 @@ def parse(fileName):
                 header["<Unc-Restraint>"] = splitLine[1]
                 continue
 
-            if splitLine[0] == "<Random-Error>":
-                header["<Random-Error>"] = splitLine[1]
-                continue
+            # if splitLine[0] == "<Random-Error>":
+            #     header["<Random-Error>"] = splitLine[1]
+            #     continue
 
             if splitLine[0] == "<Date>":
                 seriesObjects[seriesNumber].date.append(str(splitLine[1]))
