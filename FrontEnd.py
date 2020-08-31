@@ -434,7 +434,7 @@ class MainLayout(BoxLayout):
                 self.ids.outputFileTab.text = "[color=#FFFFFF]" + self.ids.outputFileTab.text[15:]
 
             targetButton = self.ids["series" + str(seriesNum)]
-            targetButton.background_color = (0.906, 0.918, 0.926, 1)
+            targetButton.background_color = Configs.backgroundColor
             targetButton.text = "[color=#000000]" + targetButton.text[15:]
 
             self.getReportNum()
@@ -678,7 +678,7 @@ class MainLayout(BoxLayout):
                     seriesButton.background_color = Configs.menuColor
                     seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
-            outputButton.background_color = (0.906, 0.918, 0.926, 1)
+            outputButton.background_color = Configs.backgroundColor
             outputButton.text = "[color=#000000]" + outputButton.text[15:]
 
             self.greyOutButtons()
@@ -797,9 +797,15 @@ class InputButton(Button):
         self.canvasColor.rgba = self.currentColor
 
 class SaveButton(InputButton):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.buttonColor = Configs.greenButtonColor
 
 class RunButton(InputButton):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.buttonColor = Configs.greenButtonColor
+
     def initialize(self):
         Clock.schedule_once(self.colorGrey, 0)
 
@@ -858,7 +864,7 @@ class AddSeriesButton(Button):
         self.markup = True
         self.background_normal = ''
         self.background_down = ''
-        self.background_color = (0.00, 0.76, 0.525, 1)
+        self.background_color = Configs.addSeriesColor
         self.text = "[b]+[/b] Add Series"
         self.halign = 'center'
         self.font_size = dp(18)
@@ -867,9 +873,9 @@ class AddSeriesButton(Button):
 
     def _updateState(self, instance, value):
         if(value == "down"):
-            self.background_color = (0.00*0.68, 0.76*0.68, 0.525*0.68, 1)
+            self.background_color = (self.background_color[0]*0.68, self.background_color[1]*0.68, self.background_color[2]*0.68, self.background_color[3])
         elif(value == "normal"):
-            self.background_color = (0.00, 0.76, 0.525, 1)
+            self.background_color = Configs.addSeriesColor
 
 class SeriesButton(Button):
     def __init__(self, **kwargs):
