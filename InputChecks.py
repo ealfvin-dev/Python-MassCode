@@ -61,7 +61,7 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
 
             if(len(line) == 0):
                 continue
-            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>" or line[0] == "<Random-Error>"):
+            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>"):
                 continue
 
             if(line[0] == "@SERIES"):
@@ -92,7 +92,7 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
                     "<Report-Number>": False, \
                     "<Restraint-ID>": False, \
                     "<Unc-Restraint>": False, \
-                    "<Random-Error>": False, \
+                    #"<Random-Error>": False, \
                     "<Date>": False, \
                     "<Technician-ID>": False, \
                     "<Check-ID>": False, \
@@ -156,7 +156,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
             tagSet = {"<Report-Number>": False, \
                         "<Restraint-ID>": False, \
                         "<Unc-Restraint>": False, \
-                        "<Random-Error>": False, \
+                        #"<Random-Error>": False, \
                         "<Date>": False, \
                         "<Technician-ID>": False, \
                         "<Check-ID>": False, \
@@ -179,7 +179,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
             tagSet = {"<Report-Number>": False, \
                         "<Restraint-ID>": False, \
                         "<Unc-Restraint>": False, \
-                        "<Random-Error>": False, \
+                        #"<Random-Error>": False, \
                         "<Date>": False, \
                         "<Technician-ID>": False, \
                         "<Check-ID>": False, \
@@ -218,7 +218,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
             if(value == True):
                 continue
 
-            if((tag == "<Report-Number>" or tag == "<Restraint-ID>" or tag == "<Unc-Restraint>" or tag == "<Random-Error>") and seriesNum != 1):
+            if((tag == "<Report-Number>" or tag == "<Restraint-ID>" or tag == "<Unc-Restraint>") and seriesNum != 1):
                 continue
 
             sendError(tag + " DOES NOT EXIST IN SERIES " + str(seriesNum))
@@ -236,7 +236,7 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
     singleTags = {"<Report-Number>": 0,\
         "<Restraint-ID>": 0,\
         "<Unc-Restraint>": 0,\
-        "<Random-Error>": 0,\
+        #"<Random-Error>": 0,\
         "<Date>": 0,\
         "<Technician-ID>": 0,\
         "<Check-ID>": 0,\
@@ -387,7 +387,7 @@ def checkInputValues(seriesTexts, sendError, highlightError):
             if(\
             #line[0] == "<Restraint-ID>" or\
             line[0] == "<Unc-Restraint>" or\
-            line[0] == "<Random-Error>" or\
+            #line[0] == "<Random-Error>" or\
             #line[0] == "<Technician-ID>" or\
             #line[0] == "<Check-ID>" or\
             #line[0] == "<Balance-ID>" or\

@@ -6,7 +6,6 @@
 
 <Restraint-ID>  001
 <Unc-Restraint>  2200
-<Random-Error>  0
 
 @SERIES
 
