@@ -196,6 +196,9 @@ class MainLayout(BoxLayout):
             self.ids.runButton.colorGrey()
             self.ids.saveButton.colorBlue()
 
+            if(self.ids.errors.text != "" and self.ids.errors.text.split()[1] == "SAVED"):
+                self.clearErrors()
+            
         if(self.currentSeries == 1):
             self.getReportNum(self.ids.userText.text)
 
@@ -393,6 +396,9 @@ class MainLayout(BoxLayout):
             self.ids.runButton.colorGrey()
             self.ids.saveButton.colorBlue()
 
+            if(self.ids.errors.text != "" and self.ids.errors.text.split()[1] == "SAVED"):
+                self.clearErrors()
+
     def goToSeries(self, seriesNum, exists):
         if(exists):
             #Check if input was saved
@@ -430,6 +436,7 @@ class MainLayout(BoxLayout):
                     seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
             self.ids.outputFileTab.background_color = Configs.menuColor
+
             if(self.ids.outputFileTab.exists):
                 self.ids.outputFileTab.text = "[color=#FFFFFF]" + self.ids.outputFileTab.text[15:]
 

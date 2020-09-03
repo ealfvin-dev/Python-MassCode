@@ -14,13 +14,14 @@ def writeOut(seriesList, basePath):
 
             f.write("\n")
 
-            f.write(str(series.reportNumber) + "\n\n")
+            f.write("REPORT_NUMBER  " + series.reportNumber + "\n\n")
 
         f.write("***SERIES " + str(series.seriesNumber + 1) + "***\n\n")
 
+        f.write("DATE  " + " ".join(series.date) + "\n\n")
         f.write("OPERATOR  " + str(series.technicianId) + "\n")
         f.write("BALANCE_ID  " + str(series.balanceId) + "\n")
-        f.write("DATE  " + " ".join(series.date) + "\n\n")
+        f.write("DESIGN_ID  " + series.designId + "\n\n")
 
         restraint = []
         for i in range(len(series.restraintPos[0])):
@@ -36,12 +37,19 @@ def writeOut(seriesList, basePath):
             if(series.checkStandardPos[0][i] == -1):
                 check += "-" + series.weightIds[i]
 
-        f.write("---RESTRAINT  " + "+".join(restraint) + "\n")
-        f.write("---CHECK STANDARD  " + check + "\n\n")
+        f.write("RESTRAINT_ID  " + series.restraintID + "\n")
+        f.write("RESTRAINT  " + "+".join(restraint) + "\n\n")
+        f.write("CHECK_STANDARD_ID  " + series.checkStandardId + "\n")
+        f.write("CHECK_STANDARD  " + check + "\n\n")
+
+        #Sensitivity Weight
+        f.write("SENSITIVITY_WEIGHT_MASS  " + str(series.swMass) + "\n")
+        f.write("SENSITIVITY_WEIGHT_DENSITY  " + str(series.swDensity) + "\n")
+        f.write("SENSITIVITY_WEIGHT_CCE  " + str(series.swCCE) + "\n\n")
 
         #Air Densities
-        f.write("##ENVIRONMENTALS##\n")
-        f.write("        T(" + chr(730) + "C) P(mmHg) RH(%)  AIR DENSITY(g/cm) (CORRECTED ENVIRONMENTALS)\n")
+        f.write("##ENVIRONMENTALS (CORRECTED)##\n")
+        f.write("        T(" + chr(730) + "C) P(mmHg) RH(%)  AIR DENSITY(g/cm)\n")
         table = []
         for i in range(len(series.environmentals)):
             line = []
@@ -95,6 +103,7 @@ def writeOut(seriesList, basePath):
             else:
                 line.append(float(load))
 
+            line.append(series.matrixY[i][0])
             line.append(series.deltas[i])
 
             if(series.directReadings == 0):
@@ -109,9 +118,9 @@ def writeOut(seriesList, basePath):
 
             table.append(line)
 
-        f.write(tabulate(table, headers=["", "LOAD\n(g)", "DELTA(MG)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"],\
-            floatfmt=("", ".5f", ".5f", ".5f", ".5f"), tablefmt="plain",\
-            colalign=("left", "center", "center", "center", "center")) + "\n\n")
+        f.write(tabulate(table, headers=["", "LOAD\n(g)", "A(I)\n(mg)", "DELTA(MG)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"],\
+            floatfmt=("", ".5f", ".5f", ".5f", ".5f", ".5f"), tablefmt="plain",\
+            colalign=("left", "center", "decimal", "decimal", "decimal", "decimal")) + "\n\n")
 
         #Statistics
         #F-test
@@ -131,7 +140,7 @@ def writeOut(seriesList, basePath):
             f.write("--------\n| FAIL |\n--------\n\n")
 
         if(series.fValue > series.fCritical):
-            f.write("################################################################\n")
+            f.write("################################################################\n\n")
 
         #T-test
         if(series.tValue > series.tCritical):

@@ -1385,7 +1385,7 @@
 <GravityPopup>:
     auto_dismiss: False
     title: "Local Gravity Corrections"
-    size: (dp(500), dp(560))
+    size: (dp(400), dp(560))
 
     BoxLayout:
         orientation: "vertical"
@@ -1393,7 +1393,7 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            text: "Weight Heights (cm)"
+            text: "Weight Heights (cm):"
             size_hint: (1, None)
 
         BoxLayout:
@@ -1414,7 +1414,7 @@
                 size_hint: (0.3, None)
                 height: heightText.height
                 text_size: (self.width, self.height)
-                text: "P1\nP1\nP3\nP1\nP1\nP6"
+                text: "P500lb\nP500lb.\nC500lb\n500lb-stack"
                 color: labelColor
                 font_size: dp(13)
                 padding: (dp(5), dp(5) + 0.5 * (heightText.height - 2*dp(5)) % heightText.line_height)
