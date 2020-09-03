@@ -172,7 +172,7 @@ def writeOut(seriesList, basePath):
             line.append(series.weightDensities[i])
             line.append(series.weightCCEs[i])
             line.append(float(series.matrixBHat[i][0]))
-            line.append(float(series.matrixBHat[i][0] - series.weightNominals[0][i]))
+            line.append(float(series.matrixBHat[i][0] - series.weightNominals[0][i]) * 1000)
             
             table.append(line)
 

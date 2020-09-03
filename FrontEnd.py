@@ -215,7 +215,9 @@ class MainLayout(BoxLayout):
                     self.configFilePath = os.path.join(self.baseFilePath, self.reportNum + "-config.txt")
                     baseDir = os.path.split(self.baseFilePath)[1]
                     self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
-                    self.grabOutputFile()
+                    if(self.currentSeries != None):
+                        self.grabOutputFile()
+                        
                     return self.reportNum
                 except IndexError:
                     self.reportNum = ""
@@ -1723,7 +1725,7 @@ class GravityPopup(PopupBase):
         self.dismiss()
 
 class OpenFilePopup(Popup):
-    def openFile(self, rootPath, selection):
+    def openFile(self, selection):
         try:
             selection[0]
             fileName = os.path.split(selection[0])[1]
@@ -1744,18 +1746,19 @@ class OpenFilePopup(Popup):
             self.dismiss()
             return
 
-        self.parent.children[1].baseFilePath = rootPath
+        self.parent.children[1].baseFilePath = os.path.split(selection[0])[0]
         self.parent.children[1].splitSeries(fileText)
         self.parent.children[1].configFilePath = selection
         self.dismiss()
 
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
-        #Save current working series Text into self.seriesTexts array
         seriesNum = self.parent.children[1].currentSeries
-        self.parent.children[1].seriesTexts[seriesNum - 1] = self.parent.children[1].ids.userText.text
-
         rep = self.parent.children[1].getReportNum()
+
+        if(seriesNum != None):
+            self.parent.children[1].seriesTexts[seriesNum - 1] = self.parent.children[1].ids.userText.text
+
         if(rep == False):
             self.ids.newFileMessage.text = "No report number provided in Series 1,\nfile cannot be saved. Open new file anyway?"
             self.ids.openNewFileButton.text = "Don't Save &\nOpen"
