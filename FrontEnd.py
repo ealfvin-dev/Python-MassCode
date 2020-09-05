@@ -196,6 +196,9 @@ class MainLayout(BoxLayout):
             self.ids.runButton.colorGrey()
             self.ids.saveButton.colorBlue()
 
+            if(self.ids.errors.text != "" and self.ids.errors.text.split()[1] == "SAVED"):
+                self.clearErrors()
+            
         if(self.currentSeries == 1):
             self.getReportNum(self.ids.userText.text)
 
@@ -212,7 +215,9 @@ class MainLayout(BoxLayout):
                     self.configFilePath = os.path.join(self.baseFilePath, self.reportNum + "-config.txt")
                     baseDir = os.path.split(self.baseFilePath)[1]
                     self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
-                    self.grabOutputFile()
+                    if(self.currentSeries != None):
+                        self.grabOutputFile()
+
                     return self.reportNum
                 except IndexError:
                     self.reportNum = ""
@@ -393,6 +398,9 @@ class MainLayout(BoxLayout):
             self.ids.runButton.colorGrey()
             self.ids.saveButton.colorBlue()
 
+            if(self.ids.errors.text != "" and self.ids.errors.text.split()[1] == "SAVED"):
+                self.clearErrors()
+
     def goToSeries(self, seriesNum, exists):
         if(exists):
             #Check if input was saved
@@ -430,6 +438,7 @@ class MainLayout(BoxLayout):
                     seriesButton.text = "[color=#FFFFFF]" + seriesButton.text[15:]
 
             self.ids.outputFileTab.background_color = Configs.menuColor
+
             if(self.ids.outputFileTab.exists):
                 self.ids.outputFileTab.text = "[color=#FFFFFF]" + self.ids.outputFileTab.text[15:]
 
@@ -1256,7 +1265,7 @@ class SaveStatisticsPopup(PopupBase):
                 self.ids.statsError.text = "Added " + self.ids.descriptionText.text.strip() + " stats"
                 threading.Thread(target=self.displaySuccess).start()
             except:
-                self.ids.statsError.text = "Error adding to database"
+                self.ids.statsError.text = "Error adding stats to database"
         else:
             self.ids.statsError.text = "Enter all fields"
 
@@ -1475,7 +1484,7 @@ class SaveSwPopup(PopupBase):
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
                 threading.Thread(target=self.pauseSuccess).start()
             except:
-                self.ids.swNameError.text = "Error adding to database"
+                self.ids.swNameError.text = "Error adding sw to database"
         else:
             self.ids.swNameError.text = "Name required to add sw"
 
@@ -1716,7 +1725,7 @@ class GravityPopup(PopupBase):
         self.dismiss()
 
 class OpenFilePopup(Popup):
-    def openFile(self, rootPath, selection):
+    def openFile(self, selection):
         try:
             selection[0]
             fileName = os.path.split(selection[0])[1]
@@ -1737,18 +1746,19 @@ class OpenFilePopup(Popup):
             self.dismiss()
             return
 
-        self.parent.children[1].baseFilePath = rootPath
+        self.parent.children[1].baseFilePath = os.path.split(selection[0])[0]
         self.parent.children[1].splitSeries(fileText)
         self.parent.children[1].configFilePath = selection
         self.dismiss()
 
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
-        #Save current working series Text into self.seriesTexts array
         seriesNum = self.parent.children[1].currentSeries
-        self.parent.children[1].seriesTexts[seriesNum - 1] = self.parent.children[1].ids.userText.text
-
         rep = self.parent.children[1].getReportNum()
+
+        if(seriesNum != None):
+            self.parent.children[1].seriesTexts[seriesNum - 1] = self.parent.children[1].ids.userText.text
+
         if(rep == False):
             self.ids.newFileMessage.text = "No report number provided in Series 1,\nfile cannot be saved. Open new file anyway?"
             self.ids.openNewFileButton.text = "Don't Save &\nOpen"

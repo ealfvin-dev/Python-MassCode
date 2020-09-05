@@ -38,8 +38,12 @@ def saveSw(name, mass, density, cce):
         )''')
 
     c.execute('''REPLACE INTO sw_table VALUES (?, ?, ?, ?, ?, ?)''', [name, float(mass), mass, density, cce, today])
+    insertId = c.lastrowid
+
     conn.commit()
     conn.close()
+
+    return insertId
 
 def deleteSw(rowId):
     conn = sqlite3.connect('mars.db')
@@ -99,8 +103,12 @@ def saveStats(nominal, description, sigw, sigt):
         )''')
 
     c.execute('''INSERT INTO stats_table VALUES (?, ?, ?, ?, ?, ?)''', [nominal, numericalOrder, description, sigw, sigt, today])
+    insertId = c.lastrowid
+
     conn.commit()
     conn.close()
+
+    return insertId
 
 def deleteStat(rowId):
     conn = sqlite3.connect('mars.db')
