@@ -1821,7 +1821,7 @@ class ValidationPopup(Popup):
 
         #Run tests from RunTest.TestSuite class
         testSuite = TestSuite.TestSuite()
-        results = testSuite.runFromFE()
+        results = testSuite.runAll()
 
         self.ids.validationText.text = results
         self.ids.testingMessage.text = ""
@@ -1838,7 +1838,7 @@ class StartupTestsPopup(Popup):
     def runStartupTests(self):
         start = time.time()
         testSuite = TestSuite.TestSuite()
-        testSuite.runFromFE()
+        testSuite.runAll()
         end = time.time()
         print(str((end - start)*1000) + " ms")
 
