@@ -20,7 +20,7 @@ def test1AirDesities(suite):
             0.0010969698894584734]
 
         for i in range(len(expectedDensities)):
-            suite.assertClose(expectedDensities[i], calculatedDesities[i], 1e-8, "AIR DENSITY CALC " + str(i + 1))
+            suite.assertClose(expectedDensities[i], calculatedDesities[i], 1e-7, "AIR DENSITY CALC " + str(i + 1))
 
     except:
         suite.failTest("CALCULATE AIR DENSITIES")
