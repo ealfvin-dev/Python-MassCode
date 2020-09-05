@@ -88,11 +88,7 @@ def test5MissedInput(suite):
         with open("./Testing/MARSTest/Test-FEBlankInput-config.txt") as file:
             text = file.read()
         
-        seriesTexts = text.split("@SERIES")
-        seriesTexts[1] = "@SERIES\n" + seriesTexts[1]
-
-        seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
-        seriesTexts.pop(0)
+        seriesTexts = [text]
 
         suite.assertFalse(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK FOR MISSED INPUT -")
     except:
@@ -105,13 +101,22 @@ def test6InputNaN(suite):
         with open("./Testing/MARSTest/Test-FEInputNaN-config.txt") as file:
             text = file.read()
         
-        seriesTexts = text.split("@SERIES")
-        seriesTexts[1] = "@SERIES\n" + seriesTexts[1]
-
-        seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
-        seriesTexts.pop(0)
+        seriesTexts = [text]
 
         suite.assertFalse(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK FOR NaN INPUT -")
     except:
         suite.failTest("CHECK FOR NaN INPUT -")
         suite.logFailure(["Error running front end input checks"], "CHECK FOR NaN INPUT -")
+
+def test7CheckEqualsRestraint(suite):
+    #Test if input file with check position = restraint position is caught by input checks
+    try:
+        with open("./Testing/MARSTest/Test-FECheckEqualRes-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = [text]
+
+        suite.assertFalse(InputChecks.runRequiredChecks(seriesTexts, 1, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK STANDARD EQUALS RESTRAINT -")
+    except:
+        suite.failTest("CHECK STANDARD EQUALS RESTRAINT -")
+        suite.logFailure(["Error running front end input checks"], "CHECK STANDARD EQUALS RESTRAINT -")
