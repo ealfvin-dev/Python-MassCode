@@ -103,7 +103,7 @@ def writeOut(seriesList, basePath):
             else:
                 line.append(float(load))
 
-            line.append(series.matrixY[i][0])
+            line.append(series.matrixY[i][0] * 1000)
             line.append(series.deltas[i])
 
             if(series.directReadings == 0):

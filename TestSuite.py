@@ -2,6 +2,8 @@ import TestBase
 import RunFile
 import InputChecks
 from MARSException import MARSException
+import API
+
 import sys
 import os
 
@@ -349,6 +351,47 @@ class TestSuite(TestBase.TestBase):
         if(os.path.exists("Test-Writeout-out.txt")):
             os.remove("Test-Writeout-out.txt")
 
+    def testCrudSwDb(self):
+        name = "testCrudSwDb"
+        mass = "100.01"
+        density = "7.95"
+        cce = "0.000045"
+
+        try:
+            insertId = API.saveSw(name, mass, density, cce)
+            self.passTest("SAVE SW TO DATABASE")
+        except:
+            self.failTest("SAVE SW TO DATABASE")
+            self.logFailure(["Error saving sesitivity weight", "to the database"], "SAVE SW TO DATABASE")
+            return
+
+        try:
+            swsData = API.getSws()
+            self.passTest("GET ALL SW FROM DATABASE")
+        except:
+            self.failTest("GET ALL SW FROM DATABASE")
+            self.logFailure(["Error getting all sensitivity weights", "from the database"], "GET ALL SW FROM DATABASE")
+
+        try:
+            swData = API.getSw(insertId)
+            self.assertEqual(name, swData[0][0], "ACCURATE STORAGE & RETRIEVAL OF SW FROM DATABASE: NAME")
+            self.assertEqual(mass, swData[0][1], "ACCURATE STORAGE & RETRIEVAL OF SW FROM DATABASE: MASS")
+            self.assertEqual(density, swData[0][2], "ACCURATE STORAGE & RETRIEVAL OF SW FROM DATABASE: DENSITY")
+            self.assertEqual(cce, swData[0][3], "ACCURATE STORAGE & RETRIEVAL OF SW FROM DATABASE: CCE")
+        except:
+            self.failTest("GET SELECTED SW FROM DATABASE")
+            self.logFailure(["Error getting selected sensitivity weight", "from the database"], "GET SELECTED SW FROM DATABASE")
+
+        try:
+            API.deleteSw(insertId)
+            self.passTest("DELETE SW FROM DATABASE")
+        except:
+            self.failTest("DELETE SW FROM DATABASE")
+            self.logFailure(["Error deleting sensitivity weight", "from the database"], "DELETE SW FROM DATABASE")
+
+    def testCrudStatsDb(self):
+        pass
+
     def testAirDesities(self):
         #Test if calculated air densities match expected
         try:
@@ -375,18 +418,16 @@ class TestSuite(TestBase.TestBase):
             self.failTest("CALCULATE AIR DENSITIES")
             self.logFailure(["Air densities were not calculated"], "CALCULATE AIR DENSITIES")
 
-    #Test other data entry errors throw errors (from fe and be?)
-
     def runAll(self):
         self.testPythonVersion()
-        #self.testNumpy()
-        #self.testSciPy()
+        self.testNumpy()
+        self.testSciPy()
         self.testKivy()
         self.testRunFile()
         self.testNonInvertible()
-        self.testUnequalBalanceObs()
-        self.testUnequalEnvObs()
-        self.testNoRestraintPassed()
+        #self.testUnequalBalanceObs()
+        #self.testUnequalEnvObs()
+        #self.testNoRestraintPassed()
         self.testZeroHeight()
         self.testFEGoodFile()
         self.testFEBadReportNum()
@@ -396,19 +437,20 @@ class TestSuite(TestBase.TestBase):
         self.testInputNaN()
         self.testWriteOutFile()
         self.testOutFileData()
+        self.testCrudSwDb()
         self.testAirDesities()
         self.printSummary()
 
     def runFromFE(self):
         self.testPythonVersion()
-        #self.testNumpy()
-        #self.testSciPy()
+        self.testNumpy()
+        self.testSciPy()
         self.passTest("IMPORT KIVY")
         self.testRunFile()
         self.testNonInvertible()
-        self.testUnequalBalanceObs()
-        self.testUnequalEnvObs()
-        self.testNoRestraintPassed()
+        #self.testUnequalBalanceObs()
+        #self.testUnequalEnvObs()
+        #self.testNoRestraintPassed()
         self.testZeroHeight()
         self.testFEGoodFile()
         self.testFEBadReportNum()
@@ -418,6 +460,7 @@ class TestSuite(TestBase.TestBase):
         self.testInputNaN()
         self.testWriteOutFile()
         self.testOutFileData()
+        self.testCrudSwDb()
         self.testAirDesities()
         return self.returnSummary()
 

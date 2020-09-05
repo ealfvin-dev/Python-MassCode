@@ -217,7 +217,7 @@ class MainLayout(BoxLayout):
                     self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
                     if(self.currentSeries != None):
                         self.grabOutputFile()
-                        
+
                     return self.reportNum
                 except IndexError:
                     self.reportNum = ""
@@ -1265,7 +1265,7 @@ class SaveStatisticsPopup(PopupBase):
                 self.ids.statsError.text = "Added " + self.ids.descriptionText.text.strip() + " stats"
                 threading.Thread(target=self.displaySuccess).start()
             except:
-                self.ids.statsError.text = "Error adding to database"
+                self.ids.statsError.text = "Error adding stats to database"
         else:
             self.ids.statsError.text = "Enter all fields"
 
@@ -1484,7 +1484,7 @@ class SaveSwPopup(PopupBase):
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
                 threading.Thread(target=self.pauseSuccess).start()
             except:
-                self.ids.swNameError.text = "Error adding to database"
+                self.ids.swNameError.text = "Error adding sw to database"
         else:
             self.ids.swNameError.text = "Name required to add sw"
 
