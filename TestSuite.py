@@ -390,7 +390,41 @@ class TestSuite(TestBase.TestBase):
             self.logFailure(["Error deleting sensitivity weight", "from the database"], "DELETE SW FROM DATABASE")
 
     def testCrudStatsDb(self):
-        pass
+        nominal = "1 kg"
+        description = "testCrudStatsDb"
+        sigw = "0.0062"
+        sigt = "0.0081"
+
+        try:
+            insertId = API.saveStats(nominal, description, sigw, sigt)
+            self.passTest("SAVE STATISTICS TO DATABASE")
+        except:
+            self.failTest("SAVE STATISTICS TO DATABASE")
+            self.logFailure(["Error saving statistics", "to the database"], "SAVE STATISTICS TO DATABASE")
+            return
+
+        try:
+            statsData = API.getStats()
+            self.passTest("GET ALL STATISTICS FROM DATABASE")
+        except:
+            self.failTest("GET ALL STATISTICS FROM DATABASE")
+            self.logFailure(["Error getting all statistics", "from the database"], "GET ALL STATISTICS FROM DATABASE")
+
+        try:
+            statData = API.getStat(insertId)
+            self.assertEqual(nominal, statData[0][0], "ACCURATE STORAGE & RETRIEVAL OF STATISTICS FROM DATABASE: NOMINAL")
+            self.assertEqual(sigw, statData[0][1], "ACCURATE STORAGE & RETRIEVAL OF STATISTICS FROM DATABASE: SIGMA-W")
+            self.assertEqual(sigt, statData[0][2], "ACCURATE STORAGE & RETRIEVAL OF STATISTICS FROM DATABASE: SIGMA-T")
+        except:
+            self.failTest("GET SELECTED STATISTICS FROM DATABASE")
+            self.logFailure(["Error getting selected statistics", "from the database"], "GET SELECTED STATISTICS FROM DATABASE")
+
+        try:
+            API.deleteStat(insertId)
+            self.passTest("DELETE STATISTICS FROM DATABASE")
+        except:
+            self.failTest("DELETE STATISTICS FROM DATABASE")
+            self.logFailure(["Error deleting statistics", "from the database"], "DELETE STATISTICS FROM DATABASE")
 
     def testAirDesities(self):
         #Test if calculated air densities match expected
@@ -438,6 +472,7 @@ class TestSuite(TestBase.TestBase):
         self.testWriteOutFile()
         self.testOutFileData()
         self.testCrudSwDb()
+        self.testCrudStatsDb()
         self.testAirDesities()
         self.printSummary()
 
@@ -461,6 +496,7 @@ class TestSuite(TestBase.TestBase):
         self.testWriteOutFile()
         self.testOutFileData()
         self.testCrudSwDb()
+        self.testCrudStatsDb()
         self.testAirDesities()
         return self.returnSummary()
 

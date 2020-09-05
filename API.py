@@ -103,7 +103,7 @@ def saveStats(nominal, description, sigw, sigt):
         )''')
 
     c.execute('''INSERT INTO stats_table VALUES (?, ?, ?, ?, ?, ?)''', [nominal, numericalOrder, description, sigw, sigt, today])
-    insertId = c.lastrowid()
+    insertId = c.lastrowid
 
     conn.commit()
     conn.close()
