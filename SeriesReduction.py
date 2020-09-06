@@ -382,6 +382,6 @@ class MatrixSolution:
         self.calculatedCheckCorrection = (np.matmul(self.checkStandardPos, np.matrix.transpose(self.calculatedMasses))[0][0] \
                                             - np.matmul(self.checkStandardPos, np.matrix.transpose(self.weightNominals))[0][0]) * 1000
 
-        typeAUnc = self.sigmaT #Will need to be changed
+        typeAUnc = self.sigmaT #May be changed
         self.tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
         self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeAUnc

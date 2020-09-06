@@ -37,7 +37,7 @@ def writeHeader(series, f):
 
 def writeSeriesMetaData(series, f):
     f.write("DATE  " + " ".join(series.date) + "\n\n")
-    f.write("OPERATOR  " + str(series.technicianId) + "\n")
+    f.write("OPERATOR_ID  " + str(series.technicianId) + "\n")
     f.write("BALANCE_ID  " + str(series.balanceId) + "\n")
     f.write("DESIGN_ID  " + series.designId + "\n\n")
 
@@ -148,10 +148,10 @@ def writeFTest(series, f):
         f.write("################################################################\n")
 
     f.write("#F-TEST\n")
-    f.write("ACCEPTED_SW = " + str(round(series.sigmaW, 6)) + " MG\n")
-    f.write("OBSERVED_SW = " + str(round(series.swObs, 6)) + " MG\n")
-    f.write("CRITICAL_F-VALUE = " + str(round(series.fCritical, 2)) + "\n")
-    f.write("OBSERVED_F-VALUE = " + str(round(series.fValue, 2)) + "\n")
+    f.write("ACCEPTED_SW  " + str(round(series.sigmaW, 6)) + " MG\n")
+    f.write("OBSERVED_SW  " + str(round(series.swObs, 6)) + " MG\n")
+    f.write("CRITICAL_F-VALUE  " + str(round(series.fCritical, 2)) + "\n")
+    f.write("OBSERVED_F-VALUE  " + str(round(series.fValue, 2)) + "\n")
 
     if(series.fValue <= series.fCritical):
         f.write("--------\n| PASS |\n--------\n\n")
@@ -166,10 +166,11 @@ def writeTTest(series, f):
         f.write("################################################################\n")
 
     f.write("#T-TEST\n")
-    f.write("ACCEPTED_CHECK_STANDARD_CORRECTION = " + str(series.acceptedCheckCorrection) + " MG\n")
-    f.write("OBSERVED_CHECK_STANDARD_CORRECTION = " + str(round(series.calculatedCheckCorrection, 6)) + " MG\n")
-    f.write("CRITICAL_T-VALUE = " + str(round(series.tCritical, 2)) + "\n")
-    f.write("OBSERVED_T-VALUE = " + str(round(series.tValue, 2)) + "\n")
+    f.write("ACCEPTED_CHECK_STANDARD_CORRECTION  " + str(series.acceptedCheckCorrection) + " MG\n")
+    f.write("OBSERVED_CHECK_STANDARD_CORRECTION  " + str(round(series.calculatedCheckCorrection, 6)) + " MG\n")
+    f.write("ACCEPTED_ST  " + str(round(series.sigmaT, 6)) + " MG\n")
+    f.write("CRITICAL_T-VALUE  " + str(round(series.tCritical, 2)) + "\n")
+    f.write("OBSERVED_T-VALUE  " + str(round(series.tValue, 2)) + "\n")
 
     if(abs(series.tValue) <= series.tCritical):
         f.write("--------\n| PASS |\n--------\n\n")
