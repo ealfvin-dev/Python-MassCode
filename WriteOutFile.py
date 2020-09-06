@@ -171,7 +171,7 @@ def writeTTest(series, f):
     f.write("CRITICAL_T-VALUE = " + str(round(series.tCritical, 2)) + "\n")
     f.write("OBSERVED_T-VALUE = " + str(round(series.tValue, 2)) + "\n")
 
-    if(series.tValue <= series.tCritical):
+    if(abs(series.tValue) <= series.tCritical):
         f.write("--------\n| PASS |\n--------\n\n")
     else:
         f.write("--------\n| FAIL |\n--------\n")
