@@ -1,0 +1,70 @@
+#  4-1 Validation at 1 kg
+    <Report-Number>  Validation-4-1
+
+     <Restraint-ID>  061
+    <Unc-Restraint>  0.28
+
+@SERIES
+             <Date>  09 05 2020
+    <Technician-ID>  019
+       <Balance-ID>  004
+  <Direct-Readings>  1
+<Direct-Reading-SF>  1.0
+
+         <Check-ID>  003
+            <Grams>  1
+
+         <Position>  P1kg      1000  8.0000   0.000045  10.274
+         <Position>  R1kg      1000  7.9748   0.000045
+         <Position>  X1kg      1000  8.0000   0.000045
+         <Position>  M1kgSum   1000  8.01242  0.000045 -0.1059
+
+        <Design-ID>  112
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+
+        <Restraint>  0 0 0 1
+   <Check-Standard>  1 0 0 0
+        <Pass-Down>  0 0 0 0
+
+          <Sigma-w>  0.0013
+          <Sigma-t>  0.01304
+
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+   <Environmentals>  19.522 728.237 47.104
+
+  <Env-Corrections>  0 -0.025 0.488
+
+  <Balance-Reading>  7.9434
+  <Balance-Reading>  0.0735
+  <Balance-Reading>  10.1625
+  <Balance-Reading>  -7.8708
+  <Balance-Reading>  2.2187
+  <Balance-Reading>  10.0898
+  <Balance-Reading>  7.9453
+  <Balance-Reading>  0.0732
+  <Balance-Reading>  10.1635
+  <Balance-Reading>  -7.8720
+  <Balance-Reading>  2.2185
+  <Balance-Reading>  10.0897
+

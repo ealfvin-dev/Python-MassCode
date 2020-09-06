@@ -198,5 +198,5 @@ def writeMasses(series, f):
         table.append(line)
 
     f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL\n(g, lb)", "DENSITY\n(g/cm)", "CCE\n(/" + chr(730) + "C)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
-        floatfmt=("", "", ".5f", ".7f", ".8f", ".8f"),\
+        floatfmt=("", "", ".5f", ".7f", ".8f", ".5f"),\
         colalign=("left", "center", "center", "center", "decimal", "decimal")) + "\n\n")
