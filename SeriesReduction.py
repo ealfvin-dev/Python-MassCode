@@ -107,7 +107,7 @@ class MatrixSolution:
 
         tKelvin = t + 273.15
         humidity = rh / 100.0
-        pressurePa = p * 133.322368421053
+        pressurePa = p * (101325 / 760)
 
         a = 1.2378847*10**-5
         b = -1.9121316*10**-2
@@ -118,7 +118,7 @@ class MatrixSolution:
         beta = 3.14*10**-8
         gamma = 5.6*10**-7
 
-        r = 8.314472
+        r = 8.31446261815324
         ma = 28.96546*10**-3
         mv = 18.01528*10**-3
 
