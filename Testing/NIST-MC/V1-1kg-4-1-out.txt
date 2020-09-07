@@ -1,0 +1,254 @@
+ NIST MC input                                                    PAGE  2
+ MARS Validation input file 4-1 at 1 kg                           SERIES 1
+                                                                   9/ 5/20
+ TEST NUMBER  validation1       
+
+
+ BALANCE     4
+ OPERATOR   19
+ ACCEPTED WITHIN STANDARD DEVIATION OF THE PROCESS        0.00130 MG
+ ACCEPTED BETWEEN STANDARD DEVIATION OF THE PROCESS       0.00920 MG
+
+
+ CALIBRATION DESIGN  112
+ RESTRAINT VECTOR     0    0    0    1
+ MASS CORRECTION OF RESTRAINT                                      -0.10590 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  19.52              124.80354 CM3
+ TYPE B UNCERTAINTY IN THE RESTRAINT                                0.28000 MG
+ TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00000 MG
+
+
+ CHECK STANDARD USED     3
+ CHECK STANDARD VECTOR     1    0    0    0
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD      10.27400 MG
+ REPORT VECTOR     1    1    1    1
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.52        19.52        19.52
+ ** CORRECTED PRESSURE IN PASCALS        97094.       97094.       97094.
+ CORRECTED HUMIDITY IN PERCENT              46.62        46.62        46.62
+ COMPUTED AIR DENSITY IN MG/CM3              1.1514       1.1514       1.1514
+ TEMPERATURE CORRECTION                      0.00         0.00
+ ** PRESSURE CORRECTION IN PASCALS           3.           3.
+ HUMIDITY CORRECTION                        -0.49        -0.49
+ OBSERVED TEMPERATURE IN DEGREES C          19.52        19.52
+ ** OBSERVED PRESSURE IN PASCALS         97090.       97090.
+ OBSERVED HUMIDITY IN PERCENT               47.10        47.10
+
+
+    WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
+        TESTED       VALUE G    G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
+
+ P1kg                  1000.0000    8.0000      .000045        10.27400
+ R1kg                  1000.0000    7.9748      .000045
+ X1kg                  1000.0000    8.0000      .000045
+ MS1kgSum              1000.0000    8.0124      .000045        -0.10590
+
+
+ ** 101325 PASCALS = 760 TORR
+ NIST MC input                                                    PAGE  3
+ MARS Validation input file 4-1 at 1 kg                           SERIES 1
+                                                                   9/ 5/20
+ TEST NUMBER  validation1       
+
+
+ BALANCE     4
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN  112
+       GRAMS
+        1000  1000  1000  1000
+ A  1      +     -             
+ A  2      +           -       
+ A  3      +                 - 
+ A  4            +     -       
+ A  5            +           - 
+ A  6                  +     - 
+ A  7      +     -             
+ A  8      +           -       
+ A  9      +                 - 
+ A 10            +     -       
+ A 11            +           - 
+ A 12                  +     - 
+ R                           + 
+
+
+ OBSERVATIONS IN DIVISIONS
+ DIRECT READING
+
+ A  1        7.9434     129.4340
+ A  2        0.0735
+ A  3       10.1625
+ A  4       -7.8708
+ A  5        2.2187
+ A  6       10.0898
+ A  7        7.9453
+ A  8        0.0732
+ A  9       10.1635
+ A 10       -7.8720
+ A 11        2.2185
+ A 12       10.0897     150.8970
+ NIST MC input                                                    PAGE  4
+ MARS Validation input file 4-1 at 1 kg                           SERIES 1
+                                                                   9/ 5/20
+ TEST NUMBER  validation1       
+
+
+ BALANCE     4
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN  112
+
+ SENSITIVITY WEIGHT
+ MASS       50.00000 MG
+ VOLUME        0.00000 CM3 AT 20 C
+ COEFFICIENT OF EXPANSION  0.000000
+     S*=S-PV(S)=      50.00000 MG
+ ACCEPTED SENSITIVITY =      1.00000 MG/DIV
+ OBSERVED SENSITIVITY =      0.38125 MG/DIV
+ T-TEST =      475.965
+
+
+                                       OBSERVED
+              A(I)      DELTA(I)      SENSITIVITY
+              (MG)        (MG)        (MG/DIV)
+
+ A  1        7.94340     -0.00106      0.41155
+ A  2        0.07350      0.00027
+ A  3       10.16250     -0.00051
+ A  4       -7.87080      0.00044
+ A  5        2.21870      0.00015
+ A  6       10.08980      0.00001
+ A  7        7.94530      0.00084
+ A  8        0.07320     -0.00003
+ A  9       10.16350      0.00049
+ A 10       -7.87200     -0.00076
+ A 11        2.21850     -0.00005
+ A 12       10.08970     -0.00009      0.35510
+
+
+                               VOLUME       TYPE B     TYPE A   EXPANDED
+     ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
+      (G)            (MG)       (CM3)         (MG)       (MG)       (MG)
+
+    1000.0000     10.28169    124.99860    0.28000    0.01303    0.56061
+    1000.0000      2.79093    125.39265    0.28000    0.01303    0.56061
+    1000.0000     10.20846    124.99859    0.28000    0.01303    0.56061
+    1000.0000     -0.10590    124.80354    0.28000    0.00000    0.56000
+
+ TEMPERATURE T= 19.52  C
+
+ NIST MC input                                                    PAGE  5
+ MARS Validation input file 4-1 at 1 kg                           SERIES 1
+                                                                   9/ 5/20
+ TEST NUMBER  validation1       
+
+
+ BALANCE     4
+ OPERATOR   19
+ MAXIMUM LOAD      1000.0000 G
+ STARTING RESTRAINT NUMBER   61
+
+
+ CALIBRATION DESIGN  112
+
+
+ PRECISION CONTROL
+
+
+ OBSERVED STANDARD DEVIATION OF THE PROCESS     0.00060  MG
+ ACCEPTED STANDARD DEVIATION OF THE PROCESS     0.00130  MG
+ DEGREES OF FREEDOM    9
+ F RATIO       0.211
+
+ F RATIO IS LESS THAN  1.88 (CRITICAL VALUE FOR PROBABILITY = .05).
+ THEREFORE THE STANDARD DEVIATION IS IN CONTROL.
+
+
+
+
+ CHECK STANDARD VECTOR     1    0    0    0
+ CHECK STANDARD USED     3
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD      10.27400 MG
+ OBSERVED CORRECTION OF CHECK STANDARD           10.28169 MG
+ STANDARD DEVIATION OF THE OBSERVED CORRECTION    0.01303 MG
+ T VALUE    0.59
+
+
+
+ ABSOLUTE VALUE OF T IS LESS THAN     1.96
+ THEREFORE CHECK STANDARD IS IN CONTROL.
+
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.52        19.52        19.52
+ ** CORRECTED PRESSURE IN PASCALS        97094.       97094.       97094.
+ CORRECTED HUMIDITY IN PERCENT              46.62        46.62        46.62
+ COMPUTED AIR DENSITY IN MG/CM3              1.1514       1.1514       1.1514
+ TEMPERATURE CORRECTION                      0.00         0.00
+ ** PRESSURE CORRECTION IN PASCALS           3.           3.
+ HUMIDITY CORRECTION                        -0.49        -0.49
+ OBSERVED TEMPERATURE IN DEGREES C          19.52        19.52
+ ** OBSERVED PRESSURE IN PASCALS         97090.       97090.
+ OBSERVED HUMIDITY IN PERCENT               47.10        47.10
+
+
+
+
+ ** 101325 PASCALS = 760 TORR
+ NIST MC input                                                    PAGE  6
+ MARS Validation input file 4-1 at 1 kg                            9/ 5/20
+                                                                  
+ TEST NUMBER  validation1       
+
+
+
+
+                              TABLE I
+
+                                     EXPANDED*
+                        MASS        UNCERTAINTY  VOL AT 20  COEF OF EXP
+       ITEM              (G)             (G)      (CM3)
+
+  P1kg              1000.01028169    0.00056061  125.00129 0.000045
+  X1kg              1000.01020846    0.00056061  125.00128 0.000045
+  R1kg              1000.00279093    0.00056061  125.39534 0.000045
+  MS1kgSum           999.99989410    0.00056000  124.80623 0.000045
+
+ SOFTWARE VERSION 08/15/2013
+
+
+* THE UNCERTAINTIES ARE CALCULATED ACCORDING TO NIST TECHNICAL
+NOTE 1297 IMPLEMENTED JANUARY 1, 1994,  SEE REFERENCE NO. 14.
+THE EXPANDED UNCERTAINTY IS 2 TIMES THE ROOT SUM SQUARE OF
+THE TYPE A AND TYPE B UNCERTAINTIES.
+ NIST MC input                                                    PAGE  7
+ MARS Validation input file 4-1 at 1 kg                            9/ 5/20
+                                                                  
+ TEST NUMBER  validation1       
+
+
+
+
+                    TABLE II
+
+
+  ITEM                      COR.A (MG)           COR.B (MG)
+
+  P1kg                         3.29205             10.28169
+  X1kg                         3.21882             10.20846
+  R1kg                        -4.67272              2.31687
+  MS1kgSum                    -6.86292               .12665
+
+ SOFTWARE VERSION 08/15/2013
+
+ Security Code    0.00000
+
+
+
+                        End of Report
+

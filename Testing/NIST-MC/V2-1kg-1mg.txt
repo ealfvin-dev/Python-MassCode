@@ -1,8 +1,8 @@
-Test file #4 - 1 kg to 1 mg: 5-1, 532111, 522111
-MassCode 4 Input
-Erik Alfvin
+NIST MC input
+MARS Validation input file dissemination 1kg - 1mg
 
-Validation
+
+1kg - 1mg Validation
 April 5, 2020
 Test4-1kg-1mg
 0 0.061 20 042

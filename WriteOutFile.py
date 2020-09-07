@@ -166,7 +166,7 @@ def writeTTest(series, f):
         f.write("################################################################\n")
 
     f.write("#T-TEST\n")
-    f.write("ACCEPTED_CHECK_STANDARD_CORRECTION  " + str(series.acceptedCheckCorrection) + " MG\n")
+    f.write("ACCEPTED_CHECK_STANDARD_CORRECTION  " + str(round(series.acceptedCheckCorrection, 6)) + " MG\n")
     f.write("OBSERVED_CHECK_STANDARD_CORRECTION  " + str(round(series.calculatedCheckCorrection, 6)) + " MG\n")
     f.write("ACCEPTED_ST  " + str(round(series.sigmaT, 6)) + " MG\n")
     f.write("CRITICAL_T-VALUE  " + str(round(series.tCritical, 2)) + "\n")
