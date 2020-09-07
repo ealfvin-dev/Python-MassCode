@@ -59,9 +59,7 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
             lineNum += 1
             line = line.split()
 
-            if(len(line) == 0):
-                continue
-            if(line[0][0] == "#" or line[0] == "<Report-Number>" or line[0] == "<Restraint-ID>" or line[0] == "<Unc-Restraint>"):
+            if(line == []):
                 continue
 
             if(line[0] == "@SERIES"):
@@ -73,13 +71,11 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
                     highlightError(seriesNum, lineNum)
                     return False
 
-                continue
-
-            #Check that @SERIES marks the start of the series
-            if(numSeries == 0):
-                sendError("SERIES " + str(seriesNum) + ": THERE MUST BE AN @SERIES ANNOTATION BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
-                goToSeries(seriesNum, True)
-                return False
+        #Check that @SERIES marks the start of the series
+        if(numSeries == 0):
+            sendError("SERIES " + str(seriesNum) + ": THERE MUST BE AN @SERIES ANNOTATION BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
+            goToSeries(seriesNum, True)
+            return False
 
         numSeries = 0
         lineNum = 0
@@ -452,6 +448,9 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
     obsStartLine = 0
     envStartLine = 0
 
+    restraintPos = ""
+    checkPos = ""
+
     for seriesText in seriesTexts:
         seriesNum += 1
         for line in seriesText.splitlines():
@@ -492,6 +491,23 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                 if(envStartLine == 0): envStartLine = lineNum
                 continue
 
+            #Check restraint and check positions
+            if(line[0] == "<Check-Standard>"):
+                checkPos = "".join(line[1:])
+
+                if(checkPos == restraintPos):
+                    sendError("SERIES " + str(seriesNum) + ": CHECK STANDARD AND RESTRAINT ARE IN THE SAME POSITION")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            if(line[0] == "<Restraint>"):
+                restraintPos = "".join(line[1:])
+
+                if(checkPos == restraintPos):
+                    sendError("SERIES " + str(seriesNum) + ": CHECK STANDARD AND RESTRAINT ARE IN THE SAME POSITION")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
             #Check that pass down nominal matches next restraint
 
         #Check number of balace readings
@@ -512,6 +528,9 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
         numEnvs = 0
         obsStartLine = 0
         envStartLine = 0
+
+        checkPos = ""
+        restraintPos = ""
 
     return True
 

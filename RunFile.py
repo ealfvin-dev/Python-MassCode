@@ -6,14 +6,14 @@ from MARSException import MARSException
 assert sys.version_info >= (3, 5)
 
 def parse(fileName):
-    header = {}
     notes = []
+    header = {"reportNumber": "", "restraintID": "", "uncRestraint": 0}
     seriesObjects = []
 
     lines = 0
     seriesNumber = -1
 
-    #Determine number of positions and observations in each series
+    #Determine number of positions and observations in each series, get header information
     posObs = []
     with open(fileName, 'r') as configFile:
         for line in configFile:
@@ -39,6 +39,22 @@ def parse(fileName):
                 posObs[seriesNumber][1] += 1
                 continue
 
+            if splitLine[0] == "<Report-Number>" and header["reportNumber"] == "":
+                header["reportNumber"] = splitLine[1]
+                continue
+
+            if splitLine[0] == "<Restraint-ID>" and header["restraintID"] == "":
+                header["restraintID"] = splitLine[1]
+                continue
+
+            if splitLine[0] == "<Unc-Restraint>" and header["uncRestraint"] == 0:
+                header["uncRestraint"] = splitLine[1]
+                continue
+
+            # if splitLine[0] == "<Random-Error>":
+            #     seriesObjects[seriesNumber].randomError = splitLine[1]
+            #     continue
+
     seriesNumber = -1
     lines = 0
 
@@ -49,7 +65,10 @@ def parse(fileName):
             lines += 1
             splitLine = line.split()
 
-            if (splitLine == []):
+            if splitLine == []:
+                continue
+
+            if splitLine[0] == "<Report-Number>" or splitLine[0] == "<Restraint-ID>" or splitLine[0] == "<Unc-Restraint>":
                 continue
 
             if splitLine[0] == "@SERIES":
@@ -60,36 +79,21 @@ def parse(fileName):
                 toGrams = 1
 
                 seriesObjects.append(MatrixSolution())
+
+                seriesObjects[seriesNumber].notes = notes
                 seriesObjects[seriesNumber].seriesNumber = seriesNumber
-                seriesObjects[seriesNumber].reportNumber = header["<Report-Number>"]
-
-                if(seriesNumber == 0):
-                    seriesObjects[0].notes = notes
-
                 seriesObjects[seriesNumber].positions = posObs[seriesNumber][0]
                 seriesObjects[seriesNumber].observations = posObs[seriesNumber][1]
+                seriesObjects[seriesNumber].reportNumber = header["reportNumber"]
+                seriesObjects[seriesNumber].restraintID = header["restraintID"]
+                seriesObjects[seriesNumber].uncRestraint = header["uncRestraint"]
+
                 continue
 
-            if(splitLine[0][0] == "#"):
+            if splitLine[0][0] == "#":
                 note = " ".join(splitLine)
                 notes.append(note)
                 continue
-
-            if splitLine[0] == "<Report-Number>":
-                header["<Report-Number>"] = splitLine[1]
-                continue
-
-            if splitLine[0] == "<Restraint-ID>":
-                header["<Restraint-ID>"] = splitLine[1]
-                continue
-
-            if splitLine[0] == "<Unc-Restraint>":
-                header["<Unc-Restraint>"] = splitLine[1]
-                continue
-
-            # if splitLine[0] == "<Random-Error>":
-            #     header["<Random-Error>"] = splitLine[1]
-            #     continue
 
             if splitLine[0] == "<Date>":
                 seriesObjects[seriesNumber].date.append(str(splitLine[1]))

@@ -379,11 +379,9 @@ class MatrixSolution:
 
     def tTest(self, alpha):
         self.acceptedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.referenceValues))[0][0]
-        self.calculatedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.calculatedMasses))[0][0] \
-                                            - np.matmul(self.checkStandardPos, np.matrix.transpose(self.weightNominals))[0][0]
+        self.calculatedCheckCorrection = (np.matmul(self.checkStandardPos, np.matrix.transpose(self.calculatedMasses))[0][0] \
+                                            - np.matmul(self.checkStandardPos, np.matrix.transpose(self.weightNominals))[0][0]) * 1000
 
-        tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
-        t = 0
-
-        self.tCritical = tCritical
-        self.tValue = t
+        typeAUnc = self.sigmaT #May be changed
+        self.tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
+        self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeAUnc

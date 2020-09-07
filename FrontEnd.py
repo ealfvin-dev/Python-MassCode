@@ -136,6 +136,8 @@ class MainLayout(BoxLayout):
                 if(orderNum == 1 or orderNum == 3 or orderNum == 10 or orderNum == 15 or orderNum == 21 or orderNum == 23 or orderNum == 26 or orderNum == 28):
                     textInput.insert_text("\n")
 
+        self.renderButtons(self.ids.userText.text)
+
         return rowStart, rowEnd
 
     def getTag(self, orderNum):
@@ -1034,7 +1036,6 @@ class LabInfoPopup(PopupBase):
         #Highlight the text block added
         self.parent.children[1].highlight(rowStart1, rowEnd2)
 
-        self.parent.children[1].ids.labInfoButton.colorGrey()
         self.parent.children[1].getReportNum(text=self.parent.children[1].ids.userText.text)
 
         self.dismiss()
@@ -1058,7 +1059,6 @@ class RestraintPopup(PopupBase):
         #rowStart3, rowEnd3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd2)
-        self.parent.children[1].ids.restraintButton.colorGrey()
 
         self.dismiss()
 
@@ -1087,7 +1087,6 @@ class DatePopup(PopupBase):
         rowStart5, rowEnd5 = self.parent.children[1].writeText(directReadingsSFText, directReadingsSFOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd5)
-        self.parent.children[1].ids.dateButton.colorGrey()
 
         self.dismiss()
 
@@ -1157,7 +1156,6 @@ class DesignPopup(PopupBase):
         rowStart2, rowEnd2 = self.parent.children[1].writeText(designText, designOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd2)
-        self.parent.children[1].ids.designButton.colorGrey()
 
         self.dismiss()
 
@@ -1180,7 +1178,6 @@ class WeightsPopup(PopupBase):
         rowStart3, rowEnd3 = self.parent.children[1].writeText(weightsText, weightsOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd3)
-        self.parent.children[1].ids.weightsButton.colorGrey()
 
         #Render series nominal
         seriesButtonId = "series" + str(self.parent.children[1].currentSeries)
@@ -1207,7 +1204,6 @@ class VectorsPopup(PopupBase):
         rowStart3, rowEnd3 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd3)
-        self.parent.children[1].ids.positionVectorsButton.colorGrey()
 
         self.dismiss()
 
@@ -1227,7 +1223,6 @@ class StatisticsPopup(PopupBase):
         rowStart2, rowEnd2 = self.parent.children[1].writeText(sigmatText, sigmatOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd2)
-        self.parent.children[1].ids.statisticsButton.colorGrey()
 
         self.dismiss()
 
@@ -1441,7 +1436,6 @@ class SwPopup(PopupBase):
         rowStart3, rowEnd3 = self.parent.children[1].writeText(swCCEText, swCCEOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd3)
-        self.parent.children[1].ids.swButton.colorGrey()
 
         self.dismiss()
 
@@ -1683,7 +1677,6 @@ class MeasurementsPopup(PopupBase):
         rowStart3, rowEnd3 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd3)
-        self.parent.children[1].ids.measurementsButton.colorGrey()
 
         self.dismiss()
 
@@ -1720,7 +1713,6 @@ class GravityPopup(PopupBase):
         rowStart3, rowEnd3 = self.parent.children[1].writeText(heightText, heightOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd3)
-        self.parent.children[1].ids.gravityButton.colorGrey()
 
         self.dismiss()
 
@@ -1821,7 +1813,7 @@ class ValidationPopup(Popup):
 
         #Run tests from RunTest.TestSuite class
         testSuite = TestSuite.TestSuite()
-        results = testSuite.runFromFE()
+        results = testSuite.runAll()
 
         self.ids.validationText.text = results
         self.ids.testingMessage.text = ""
@@ -1838,7 +1830,7 @@ class StartupTestsPopup(Popup):
     def runStartupTests(self):
         start = time.time()
         testSuite = TestSuite.TestSuite()
-        testSuite.runFromFE()
+        testSuite.runAll()
         end = time.time()
         print(str((end - start)*1000) + " ms")
 
