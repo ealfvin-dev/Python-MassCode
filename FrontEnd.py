@@ -738,6 +738,7 @@ class ExtraButton(Button):
         self.color = (0, 0, 0, 1)
         self.background_color = (0.99, 0.99, 0.99, 0.98)
         self.font_size = dp(15)
+        self.markup = True
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -769,6 +770,7 @@ class TopMenuButton(Button):
 class InputButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint = (None, None)
         self.buttonColor = Configs.inputButtonColor
         self.currentColor = self.buttonColor
         self.background_normal = ''
@@ -776,6 +778,7 @@ class InputButton(Button):
         self.markup = True
         self.font_size = dp(13)
         self.halign = 'center'
+        self.size = (dp(128), dp(68))
 
         with self.canvas.before:
             self.canvasColor = Color(rgba=self.currentColor)
@@ -811,12 +814,16 @@ class InputButton(Button):
 class SaveButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint: (None, None)
+        self.size = (dp(82), dp(60))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
 
 class RunButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint: (None, None)
+        self.size = (dp(82), dp(60))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
 

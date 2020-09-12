@@ -208,6 +208,8 @@
 
             BoxLayout:
                 id: menu
+                size_hint: (None, 1)
+                width: dp(500)
                 orientation: 'vertical'
                 spacing: dp(10)
                 padding: (dp(10), dp(13), 0, 0)
@@ -406,7 +408,7 @@
                 BoxLayout:
                     id: menuRow6-blank
                     orientation: 'horizontal'
-                    size_hint: (1, 0.25)
+                    size_hint: (1, 0.15)
 
                     Label:
                         text: ""
@@ -421,9 +423,13 @@
                     padding: (0, dp(10), 0, 0)
 
                     ExtraButton:
+                        size_hint: (None, None)
+                        size: (dp(82), dp(60))
                         text: "De-bug"
 
                     ExtraButton:
+                        size_hint: (None, None)
+                        size: (dp(82), dp(60))
                         text: "Split"
 
                     SaveButton: 
