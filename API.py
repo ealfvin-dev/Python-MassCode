@@ -42,7 +42,6 @@ def saveSw(name, mass, density, cce):
 
     conn.commit()
     conn.close()
-
     return insertId
 
 def deleteSw(rowId):
@@ -107,7 +106,6 @@ def saveStats(nominal, description, sigw, sigt):
 
     conn.commit()
     conn.close()
-
     return insertId
 
 def deleteStat(rowId):
@@ -117,3 +115,29 @@ def deleteStat(rowId):
 
     conn.commit()
     conn.close()
+
+def saveNotes(notes, reportNum):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS notes_table (
+        notes TEXT NOT NULL,
+        reportNum TEXT NOT NULL
+        )''')
+
+    c.execute('''INSERT INTO notes_table VALUES (?, ?)''', [notes, reportNum])
+    insertId = c.lastrowid
+
+    conn.commit()
+    conn.close()
+    return insertId
+
+def getNotes(reportNum):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT notes FROM notes_table WHERE reportNum = ?''', [reportNum])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data
