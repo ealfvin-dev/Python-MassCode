@@ -774,6 +774,7 @@ class InputButton(Button):
         self.background_normal = ''
         self.background_color = (0, 0, 0, 0)
         self.markup = True
+        self.font_size = dp(13)
         self.halign = 'center'
 
         with self.canvas.before:
@@ -811,11 +812,13 @@ class SaveButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.buttonColor = Configs.greenButtonColor
+        self.font_size = dp(14)
 
 class RunButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.buttonColor = Configs.greenButtonColor
+        self.font_size = dp(14)
 
     def initialize(self):
         Clock.schedule_once(self.colorGrey, 0)

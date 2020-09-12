@@ -2,7 +2,6 @@
 
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
 
-#:set buttonSizer 10
 #:set labelSizer 1.23
 
 <MainLayout>:
@@ -204,13 +203,13 @@
         BoxLayout:
             id: content
             orientation: 'horizontal'
-            spacing: self.width / 15
+            spacing: dp(75)
             padding: (0, dp(5), dp(15), dp(15))
 
             BoxLayout:
                 id: menu
                 orientation: 'vertical'
-                spacing: self.width / 50
+                spacing: dp(10)
                 padding: (dp(10), dp(13), 0, 0)
 
                 BoxLayout:
@@ -235,13 +234,11 @@
                     InputButton:
                         id: labInfoButton
                         text: "Report No. &\nNotes"
-                        font_size: self.width / buttonSizer
                         on_release: app.openLabInfoPop()
 
                     InputButton:
                         id: restraintButton
                         text: "Restraint"
-                        font_size: self.width / buttonSizer
                         on_release: app.openRestraintPop()
 
                     Label:
@@ -284,20 +281,17 @@
                     InputButton:
                         id: dateButton
                         text: "Balance &\nDate"
-                        font_size: self.width / buttonSizer
                         on_release: app.openDatePop()
 
                     InputButton:
                         id: weightsButton
                         text: "Weights"
-                        font_size: self.width / buttonSizer
                         on_release: app.openWeightsPop()
 
                     InputButton:
                         id: gravityButton
                         text: "Gravity\nGradient\n(Optional)"
                         buttonColor: (0.368, 0.49, 0.60, 1)
-                        font_size: self.width / buttonSizer
                         on_release: app.openGravityPop()
 
                 BoxLayout:
@@ -322,13 +316,11 @@
                     InputButton:
                         id: designButton
                         text: "Design"
-                        font_size: self.width / buttonSizer
                         on_release: app.openDesignPop()
 
                     InputButton:
                         id: positionVectorsButton
                         text: "Position\nVectors"
-                        font_size: self.width / buttonSizer
                         on_release: app.openVectorsPop()
 
                     Label:
@@ -360,7 +352,6 @@
                     InputButton:
                         id: statisticsButton
                         text: "Statistics"
-                        font_size: self.width / buttonSizer
                         on_release: app.openStatisticsPop()
 
                     Label:
@@ -399,13 +390,11 @@
                     InputButton:
                         id: swButton
                         text: "Sensitivity\nWeight"
-                        font_size: self.width / buttonSizer
                         on_release: app.openSwPop()
 
                     InputButton:
                         id: measurementsButton
                         text: "Measurements"
-                        font_size: self.width / buttonSizer
                         on_release: app.openMeasurementsPop()
 
                     Label:
@@ -417,7 +406,7 @@
                 BoxLayout:
                     id: menuRow6-blank
                     orientation: 'horizontal'
-                    size_hint: (1, 0.45)
+                    size_hint: (1, 0.25)
 
                     Label:
                         text: ""
@@ -428,26 +417,24 @@
                 BoxLayout:
                     id: menuCol7
                     orientation: 'horizontal'
-                    spacing: self.width / 10
+                    spacing: dp(30)
                     padding: (0, dp(10), 0, 0)
+
+                    ExtraButton:
+                        text: "De-bug"
+
+                    ExtraButton:
+                        text: "Split"
 
                     SaveButton: 
                         id: saveButton
                         text: "[b]SAVE[/b]"
-                        font_size: self.width / (buttonSizer - 1)
                         on_release: root.save()
 
                     RunButton:
                         id: runButton
                         text: "[b]RUN[/b]"
-                        font_size: self.width / (buttonSizer - 1)
                         on_release: root.run()
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        halign: 'center'
 
                 BoxLayout:
                     id: headerSeparater-blank
