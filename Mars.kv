@@ -408,7 +408,8 @@
                 BoxLayout:
                     id: menuRow6-blank
                     orientation: 'horizontal'
-                    size_hint: (1, 0.15)
+                    size_hint: (1, None)
+                    height: dp(1)
 
                     Label:
                         text: ""
@@ -424,13 +425,15 @@
 
                     ExtraButton:
                         size_hint: (None, None)
-                        size: (dp(82), dp(60))
+                        size: (dp(82), dp(56))
                         text: "De-bug"
+                        on_release: root.debug()
 
                     ExtraButton:
                         size_hint: (None, None)
-                        size: (dp(82), dp(60))
+                        size: (dp(82), dp(56))
                         text: "Split"
+                        on_release: root.reSplit()
 
                     SaveButton: 
                         id: saveButton

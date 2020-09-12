@@ -523,8 +523,62 @@ class MainLayout(BoxLayout):
         self.getReportNum()
         self.grabOutputFile()
 
-    def save(self):
+    def reSplit(self):
         #If in the output tab, return
+        if(self.currentSeries == None):
+            return
+
+        #Save current working series Text into self.seriesTexts array
+        self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
+        fileText = "".join(self.seriesTexts)
+        self.splitSeries(fileText)
+
+    def debug(self):
+        #If in the output tab, return
+        if(self.currentSeries == None):
+            return
+
+        #Save current working series Text into self.seriesTexts array
+        self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
+        reportNum = self.getReportNum()
+        if(reportNum == False):
+            self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1")
+            self.goToSeries(1, True)
+            return
+
+        checkReportNum = InputChecks.checkReportNumber(self.seriesTexts[0], self.sendError, self.highlightError)
+        if(checkReportNum == False):
+            return
+
+        checkStructure = InputChecks.checkStructure(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkStructure):
+            return
+            
+        checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.sendError, self.goToSeries)
+        if(not checkAllExist):
+            return
+
+        checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.highlightError, self.sendError)
+        if(not checkWrittenTags):
+            return
+
+        checkRepeats = InputChecks.checkForRepeats(self.seriesTexts, self.sendError, self.highlightError)
+        if(not checkRepeats):
+            return
+
+        checkInputValues = InputChecks.checkInputValues(self.seriesTexts, self.sendError, self.highlightError)
+        if(not checkInputValues):
+            return
+
+        requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
+        if(not requiredChecks):
+            return
+
+        self.sendSuccess("INPUT FILE CHECKS PASSED")
+
+    def save(self):
         if(self.currentSeries == None):
             return
 
@@ -815,7 +869,7 @@ class SaveButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint: (None, None)
-        self.size = (dp(82), dp(60))
+        self.size = (dp(82), dp(56))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
 
@@ -823,7 +877,7 @@ class RunButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint: (None, None)
-        self.size = (dp(82), dp(60))
+        self.size = (dp(82), dp(56))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
 
