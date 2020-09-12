@@ -254,7 +254,7 @@
                 BoxLayout:
                     id: headerSeparater-blank
                     orientation: 'horizontal'
-                    size_hint: (1, 0.4)
+                    size_hint: (1, 0.2)
 
                     Label:
                         text: ""
@@ -417,7 +417,7 @@
                 BoxLayout:
                     id: menuRow6-blank
                     orientation: 'horizontal'
-                    size_hint: (1, 0.75)
+                    size_hint: (1, 0.45)
 
                     Label:
                         text: ""
@@ -449,6 +449,37 @@
                         font_size: self.height / labelSizer
                         halign: 'center'
 
+                BoxLayout:
+                    id: headerSeparater-blank
+                    orientation: 'horizontal'
+                    size_hint: (1, 0.2)
+
+                    Label:
+                        text: ""
+                        color: labelColor
+                        font_size: self.height / labelSizer
+                        halign: 'left'
+
+                Label:
+                    size_hint: (1, None)
+                    height: dp(9)
+                    text: "Additional Notes:"
+                    color: labelColor
+                    text_size: notesText.width, None
+                    font_size: dp(13)
+                    halign: 'left'
+
+                UserInput:
+                    id: notesText
+                    font_size: '12sp'
+                    padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
+                    background_normal: ''
+                    background_color: (1, 1, 1, 1)
+                    font_name: "./Menlo.ttc"
+                    foreground_color: 0, 0, 0, 1
+                    markup: True
+                    selection_color: (0.1843, 0.6549, 0.8313, 0.27)
+
             BoxLayout:
                 id: textAreas
                 orientation: "vertical"
@@ -458,13 +489,13 @@
 
                 Label:
                     id: configFileName
+                    size_hint: (1, None)
+                    height: dp(9)
                     font_size: dp(13)
                     text: ""
                     color: labelColor
                     text_size: userText.width, None
-                    size: userText.width, self.texture_size[1]
                     halign: 'left'
-                    size_hint: (1, 0.01)
 
                 UserInput:
                     id: userText
