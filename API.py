@@ -42,7 +42,6 @@ def saveSw(name, mass, density, cce):
 
     conn.commit()
     conn.close()
-
     return insertId
 
 def deleteSw(rowId):
@@ -107,7 +106,6 @@ def saveStats(nominal, description, sigw, sigt):
 
     conn.commit()
     conn.close()
-
     return insertId
 
 def deleteStat(rowId):

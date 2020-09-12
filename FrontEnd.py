@@ -204,6 +204,15 @@ class MainLayout(BoxLayout):
         if(self.currentSeries == 1):
             self.getReportNum(self.ids.userText.text)
 
+    def noteTextAdded(self):
+        if(self.saved):
+            self.saved = False
+            self.ids.runButton.colorGrey()
+            self.ids.saveButton.colorBlue()
+
+            if(self.ids.errors.text != "" and self.ids.errors.text.split()[1] == "SAVED"):
+                self.clearErrors()
+
     def getReportNum(self, text=None):
         if(text == None): text = self.seriesTexts[0]
 
@@ -522,9 +531,81 @@ class MainLayout(BoxLayout):
         self.goToSeries(1, True)
         self.getReportNum()
         self.grabOutputFile()
+        self.grabNotes()
+
+    def reSplit(self):
+        #If in the output tab, return
+        if(self.currentSeries == None):
+            return
+
+        #Save current working series Text into self.seriesTexts array
+        self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
+        fileText = "".join(self.seriesTexts)
+        self.splitSeries(fileText)
+
+    def debug(self):
+        #If in the output tab, return
+        if(self.currentSeries == None):
+            return
+
+        #Save current working series Text into self.seriesTexts array
+        self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+
+        reportNum = self.getReportNum()
+        if(reportNum == False):
+            self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1")
+            self.goToSeries(1, True)
+            return
+
+        checkReportNum = InputChecks.checkReportNumber(self.seriesTexts[0], self.sendError, self.highlightError)
+        if(checkReportNum == False):
+            return
+
+        checkStructure = InputChecks.checkStructure(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkStructure):
+            return
+            
+        checkAllExist = InputChecks.checkIfAllTags(self.seriesTexts, self.sendError, self.goToSeries)
+        if(not checkAllExist):
+            return
+
+        checkWrittenTags = InputChecks.checkTags(self.seriesTexts, False, self.highlightError, self.sendError)
+        if(not checkWrittenTags):
+            return
+
+        checkRepeats = InputChecks.checkForRepeats(self.seriesTexts, self.sendError, self.highlightError)
+        if(not checkRepeats):
+            return
+
+        checkInputValues = InputChecks.checkInputValues(self.seriesTexts, self.sendError, self.highlightError)
+        if(not checkInputValues):
+            return
+
+        requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
+        if(not requiredChecks):
+            return
+
+        self.sendSuccess("INPUT FILE CHECKS PASSED")
+
+    def saveNotes(self):
+        if(self.reportNum == ""):
+            return
+
+        notes = self.ids.notesText.text.strip()
+        fileName = self.reportNum + "-notes.txt"
+        fileLoc = os.path.join(self.baseFilePath, fileName)
+
+        if(notes == ""):
+            if(os.path.exists(fileLoc)):
+                os.remove(fileLoc)
+
+        else:
+            f = open(fileLoc, 'w')
+            f.write(notes)
+            f.close()
 
     def save(self):
-        #If in the output tab, return
         if(self.currentSeries == None):
             return
 
@@ -552,6 +633,8 @@ class MainLayout(BoxLayout):
         f = open(self.configFilePath, 'w')
         f.write(fileText)
         f.close()
+
+        self.saveNotes()
 
         self.saved = True
         self.sendSuccess("FILE SAVED AS " + reportNum + "-config.txt")
@@ -633,17 +716,29 @@ class MainLayout(BoxLayout):
     def clearErrors(self):
         self.ids.errors.text = ""
 
+    def grabNotes(self):
+        notesFile = self.reportNum + "-notes.txt"
+        notesFileLocation = os.path.join(self.baseFilePath, notesFile)
+
+        if(os.path.exists(notesFileLocation)):
+            f = open(notesFileLocation, 'r')
+            fileText = f.read()
+            f.close()
+
+            self.ids.notesText.text = fileText
+        else:
+            self.ids.notesText.text = ""
+
     def grabOutputFile(self):
         outFile = self.reportNum + "-out.txt"
         outFileLocation = os.path.join(self.baseFilePath, outFile)
 
         if(os.path.exists(outFileLocation)):
-            self.outputText = ""
-
             f = open(outFileLocation, 'r')
-            for line in f:
-                self.outputText += line
+            fileText = f.read()
             f.close()
+
+            self.outputText = fileText
             
             #Render output button/tab
             self.ids.outputFileTab.text = "[color=#FFFFFF][b]Output[/b][/color]"
@@ -738,6 +833,7 @@ class ExtraButton(Button):
         self.color = (0, 0, 0, 1)
         self.background_color = (0.99, 0.99, 0.99, 0.98)
         self.font_size = dp(15)
+        self.markup = True
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -769,12 +865,15 @@ class TopMenuButton(Button):
 class InputButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint = (None, None)
         self.buttonColor = Configs.inputButtonColor
         self.currentColor = self.buttonColor
         self.background_normal = ''
         self.background_color = (0, 0, 0, 0)
         self.markup = True
+        self.font_size = dp(13)
         self.halign = 'center'
+        self.size = (dp(128), dp(68))
 
         with self.canvas.before:
             self.canvasColor = Color(rgba=self.currentColor)
@@ -807,15 +906,21 @@ class InputButton(Button):
         self.currentColor = self.buttonColor
         self.canvasColor.rgba = self.currentColor
 
-class SaveButton(InputButton):
+class BottomButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint: (None, None)
+        self.size = (dp(82), dp(56))
         self.buttonColor = Configs.greenButtonColor
+        self.font_size = dp(14)
 
 class RunButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint: (None, None)
+        self.size = (dp(82), dp(56))
         self.buttonColor = Configs.greenButtonColor
+        self.font_size = dp(14)
 
     def initialize(self):
         Clock.schedule_once(self.colorGrey, 0)

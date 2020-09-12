@@ -2,7 +2,6 @@
 
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
 
-#:set buttonSizer 10
 #:set labelSizer 1.23
 
 <MainLayout>:
@@ -204,13 +203,15 @@
         BoxLayout:
             id: content
             orientation: 'horizontal'
-            spacing: self.width / 15
+            spacing: dp(75)
             padding: (0, dp(5), dp(15), dp(15))
 
             BoxLayout:
                 id: menu
+                size_hint: (None, 1)
+                width: dp(500)
                 orientation: 'vertical'
-                spacing: self.width / 50
+                spacing: dp(10)
                 padding: (dp(10), dp(13), 0, 0)
 
                 BoxLayout:
@@ -235,13 +236,11 @@
                     InputButton:
                         id: labInfoButton
                         text: "Report No. &\nNotes"
-                        font_size: self.width / buttonSizer
                         on_release: app.openLabInfoPop()
 
                     InputButton:
                         id: restraintButton
                         text: "Restraint"
-                        font_size: self.width / buttonSizer
                         on_release: app.openRestraintPop()
 
                     Label:
@@ -254,7 +253,7 @@
                 BoxLayout:
                     id: headerSeparater-blank
                     orientation: 'horizontal'
-                    size_hint: (1, 0.4)
+                    size_hint: (1, 0.2)
 
                     Label:
                         text: ""
@@ -284,20 +283,17 @@
                     InputButton:
                         id: dateButton
                         text: "Balance &\nDate"
-                        font_size: self.width / buttonSizer
                         on_release: app.openDatePop()
 
                     InputButton:
                         id: weightsButton
                         text: "Weights"
-                        font_size: self.width / buttonSizer
                         on_release: app.openWeightsPop()
 
                     InputButton:
                         id: gravityButton
                         text: "Gravity\nGradient\n(Optional)"
                         buttonColor: (0.368, 0.49, 0.60, 1)
-                        font_size: self.width / buttonSizer
                         on_release: app.openGravityPop()
 
                 BoxLayout:
@@ -322,13 +318,11 @@
                     InputButton:
                         id: designButton
                         text: "Design"
-                        font_size: self.width / buttonSizer
                         on_release: app.openDesignPop()
 
                     InputButton:
                         id: positionVectorsButton
                         text: "Position\nVectors"
-                        font_size: self.width / buttonSizer
                         on_release: app.openVectorsPop()
 
                     Label:
@@ -360,7 +354,6 @@
                     InputButton:
                         id: statisticsButton
                         text: "Statistics"
-                        font_size: self.width / buttonSizer
                         on_release: app.openStatisticsPop()
 
                     Label:
@@ -399,13 +392,11 @@
                     InputButton:
                         id: swButton
                         text: "Sensitivity\nWeight"
-                        font_size: self.width / buttonSizer
                         on_release: app.openSwPop()
 
                     InputButton:
                         id: measurementsButton
                         text: "Measurements"
-                        font_size: self.width / buttonSizer
                         on_release: app.openMeasurementsPop()
 
                     Label:
@@ -417,7 +408,8 @@
                 BoxLayout:
                     id: menuRow6-blank
                     orientation: 'horizontal'
-                    size_hint: (1, 0.75)
+                    size_hint: (1, None)
+                    height: dp(1)
 
                     Label:
                         text: ""
@@ -428,26 +420,60 @@
                 BoxLayout:
                     id: menuCol7
                     orientation: 'horizontal'
-                    spacing: self.width / 10
+                    spacing: dp(30)
                     padding: (0, dp(10), 0, 0)
 
-                    SaveButton: 
+                    BottomButton:
+                        text: "[b]Debug[/b]"
+                        buttonColor: (0.96, 0.64, 0.00784314, 1)
+                        on_release: root.debug()
+
+                    BottomButton:
+                        text: "[b]Split[/b]"
+                        buttonColor: (0.96, 0.64, 0.00784314, 1)
+                        on_release: root.reSplit()
+
+                    BottomButton:
                         id: saveButton
                         text: "[b]SAVE[/b]"
-                        font_size: self.width / (buttonSizer - 1)
                         on_release: root.save()
 
                     RunButton:
                         id: runButton
                         text: "[b]RUN[/b]"
-                        font_size: self.width / (buttonSizer - 1)
                         on_release: root.run()
+
+                BoxLayout:
+                    id: headerSeparater-blank
+                    orientation: 'horizontal'
+                    size_hint: (1, 0.2)
 
                     Label:
                         text: ""
                         color: labelColor
                         font_size: self.height / labelSizer
-                        halign: 'center'
+                        halign: 'left'
+
+                Label:
+                    size_hint: (1, None)
+                    height: dp(9)
+                    text: "Additional Notes:"
+                    color: labelColor
+                    text_size: notesText.width, None
+                    font_size: dp(13)
+                    halign: 'left'
+
+                UserInput:
+                    id: notesText
+                    font_size: '12sp'
+                    padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
+                    background_normal: ''
+                    background_color: (1, 1, 1, 1)
+                    font_name: "./Menlo.ttc"
+                    foreground_color: 0, 0, 0, 1
+                    markup: True
+                    selection_color: (0.1843, 0.6549, 0.8313, 0.27)
+                    on_text: root.noteTextAdded()
 
             BoxLayout:
                 id: textAreas
@@ -458,13 +484,13 @@
 
                 Label:
                     id: configFileName
+                    size_hint: (1, None)
+                    height: dp(9)
                     font_size: dp(13)
                     text: ""
                     color: labelColor
                     text_size: userText.width, None
-                    size: userText.width, self.texture_size[1]
                     halign: 'left'
-                    size_hint: (1, 0.01)
 
                 UserInput:
                     id: userText

@@ -50,7 +50,7 @@ def test2FourInOne(suite):
 
 def test3Dissem(suite):
     #Test if full dissemination results from 1 kg - 1 mg (5-1, 532111, 522111) match NIST Masscode
-    #try:
+    try:
         data = RunFile.run("./Testing/MARSTest/Validation-1kg-1mg-config.txt", writeOutFile=False)
 
         NIST_MC_MASSES = [\
@@ -73,6 +73,6 @@ def test3Dissem(suite):
             suite.assertClose(NIST_MC_FVALUE[seriesNum], data[seriesNum].fValue, 0.02, "SERIES " + str(seriesNum + 1) + " F-VALUE CALCULATION")
             suite.assertClose(NIST_MC_TVALUE[seriesNum], data[seriesNum].tValue, 0.02, "SERIES " + str(seriesNum + 1) + " T-VALUE CALCULATION")
 
-    # except:
-    #     suite.failTest("VALIDATE 1KG - 1MG DISSEMINATION")
-    #     suite.logFailure(["Error running 1kg - 1mg dissemination input file"], "VALIDATE 1KG - 1MG DISSEMINATION")
+    except:
+        suite.failTest("VALIDATE 1KG - 1MG DISSEMINATION")
+        suite.logFailure(["Error running 1kg - 1mg dissemination input file"], "VALIDATE 1KG - 1MG DISSEMINATION")

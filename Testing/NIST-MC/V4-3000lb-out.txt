@@ -1,7 +1,7 @@
 Test file #1 - 3000 lb 3-1                                       PAGE  2
  MassCode 4 Input                                                 SERIES 1
  Erik Alfvin                                                       3/16/20
- TEST NUMBER  Test1-3000lb      
+ TEST NUMBER  V4-3-1-3000lb     
 
 
  BALANCE    11
@@ -46,7 +46,7 @@
 Test file #1 - 3000 lb 3-1                                       PAGE  3
  MassCode 4 Input                                                 SERIES 1
  Erik Alfvin                                                       3/16/20
- TEST NUMBER  Test1-3000lb      
+ TEST NUMBER  V4-3-1-3000lb     
 
 
  BALANCE    11
@@ -65,13 +65,13 @@
  OBSERVATIONS IN DIVISIONS
  DOUBLE SUBSTITUTION ONE PAN BALANCE
 
- A  1      0.5000    11.0000   514.5000   509.0000
- A  2     13.0000    -1.5000   500.5000   505.5000
- A  3      1.0000   -38.0000   468.5000   498.0000
+ A  1      0.5000    11.0000   511.4000   500.6000
+ A  2     13.0000    -1.5000   498.8000   513.2000
+ A  3      1.0000   -38.0000   462.1000   500.8000
 Test file #1 - 3000 lb 3-1                                       PAGE  4
  MassCode 4 Input                                                 SERIES 1
  Erik Alfvin                                                       3/16/20
- TEST NUMBER  Test1-3000lb      
+ TEST NUMBER  V4-3-1-3000lb     
 
 
  BALANCE    11
@@ -90,9 +90,9 @@
              A(I)     DELTA(I)     SENSITIVITY  DRIFT(I)  SENSITIVITY
              (MG)       (MG)        (MG/DIV)      (MG)      (MG/DIV)
 
- A  1   -7898.85400  5430.45900   987.35670  2468.39200   997.86750
- A  2    9626.72800 -5430.46000   987.35670 -4689.94430   986.54492
- A  3   33816.96400  5430.46500   987.35670 -4689.94430   977.86140
+ A  1  -10640.40000  4579.18300   999.09730  -149.85850   998.76464
+ A  2   14436.95300 -4579.20310   999.09730   -49.97316   999.16381
+ A  3   38814.94000  4579.20310   999.09730  -149.85850   999.36360
 
 
                                VOLUME       TYPE B     TYPE A   EXPANDED
@@ -100,15 +100,15 @@
      (LB)            (MG)       (CM3)         (MG)       (MG)       (MG)
 
       3000.00   9121.99724 188165.40000  2200.00000     0.00000  4400.00000
-      3000.00  26474.46599 191665.90000  2200.00000  7116.17910 14896.98000
-      3000.00  -1916.62908 191661.90000  2200.00000  7116.17910 14896.98000
+      3000.00  28365.03760 191666.20000  2200.00000  7116.17910 14896.98000
+      3000.00  -5876.23869 191661.34000  2200.00000  7116.17910 14896.98000
 
  TEMPERATURE T= 20.51  C
 
 Test file #1 - 3000 lb 3-1                                       PAGE  5
  MassCode 4 Input                                                 SERIES 1
  Erik Alfvin                                                       3/16/20
- TEST NUMBER  Test1-3000lb      
+ TEST NUMBER  V4-3-1-3000lb     
 
 
  BALANCE    11
@@ -123,10 +123,10 @@
  PRECISION CONTROL
 
 
- OBSERVED STANDARD DEVIATION OF THE PROCESS  9405.83500  MG
+ OBSERVED STANDARD DEVIATION OF THE PROCESS  7931.40030  MG
  ACCEPTED STANDARD DEVIATION OF THE PROCESS  3900.00000  MG
  DEGREES OF FREEDOM    1
- F RATIO       5.817
+ F RATIO       4.136
  *******************************************************************************
  F RATIO IS GREATER THAN  3.84 (CRITICAL VALUE FOR PROBABILITY = .05).
  THEREFORE THE STANDARD DEVIATION IS NOT IN CONTROL.
@@ -137,9 +137,9 @@
  CHECK STANDARD VECTOR     0    1    0
  CHECK STANDARD USED   101
  ACCEPTED MASS CORRECTION OF CHECK STANDARD   25036.00000 MG
- OBSERVED CORRECTION OF CHECK STANDARD        26474.47000 MG
+ OBSERVED CORRECTION OF CHECK STANDARD        28365.04000 MG
  STANDARD DEVIATION OF THE OBSERVED CORRECTION 7116.17900 MG
- T VALUE    0.20
+ T VALUE    0.47
 
 
 
@@ -167,7 +167,7 @@
 Test file #1 - 3000 lb 3-1                                       PAGE  6
  MassCode 4 Input                                                  3/16/20
  Erik Alfvin                                                      
- TEST NUMBER  Test1-3000lb      
+ TEST NUMBER  V4-3-1-3000lb     
 
 
 
@@ -178,9 +178,9 @@
                            MASS          UNCERTAINTY   VOL AT 20  COEF OF EXP
      ITEM                  (LB)              (LB)        (IN3)
 
-  B3000lb             3000.05836620663 0.03284222200  11695.960000 0.000035
+  B3000lb             3000.06253420357 0.03284222200  11695.980000 0.000035
   A3000lb             3000.02011056146 0.00970033920  11482.340000 0.000037
-  C3000lb             2999.99577455617 0.03284222200  11695.720000 0.000035
+  C3000lb             2999.98704511125 0.03284222200  11695.682000 0.000035
 
  SOFTWARE VERSION 08/15/2013
 
@@ -192,7 +192,7 @@ THE TYPE A AND TYPE B UNCERTAINTIES.
 Test file #1 - 3000 lb 3-1                                       PAGE  7
  MassCode 4 Input                                                  3/16/20
  Erik Alfvin                                                      
- TEST NUMBER  Test1-3000lb      
+ TEST NUMBER  V4-3-1-3000lb     
 
 
 
@@ -201,9 +201,9 @@ THE TYPE A AND TYPE B UNCERTAINTIES.
 
        ITEM                 COR.A                COR.B
                           (MICRO-LB)           (MICRO-LB)
-  B3000lb                 -19654.44437           1314.27810
+  B3000lb                 -15486.55582           5482.19578
   A3000lb                 -48653.06774         -27684.54796
-  C3000lb                 -82244.46705         -61276.18206
+  C3000lb                 -90973.68495         -70005.46097
 
  SOFTWARE VERSION 08/15/2013
 
