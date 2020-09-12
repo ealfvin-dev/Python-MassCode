@@ -423,19 +423,17 @@
                     spacing: dp(30)
                     padding: (0, dp(10), 0, 0)
 
-                    ExtraButton:
-                        size_hint: (None, None)
-                        size: (dp(82), dp(56))
-                        text: "De-bug"
+                    BottomButton:
+                        text: "[b]Debug[/b]"
+                        buttonColor: (0.96, 0.64, 0.00784314, 1)
                         on_release: root.debug()
 
-                    ExtraButton:
-                        size_hint: (None, None)
-                        size: (dp(82), dp(56))
-                        text: "Split"
+                    BottomButton:
+                        text: "[b]Split[/b]"
+                        buttonColor: (0.96, 0.64, 0.00784314, 1)
                         on_release: root.reSplit()
 
-                    SaveButton: 
+                    BottomButton:
                         id: saveButton
                         text: "[b]SAVE[/b]"
                         on_release: root.save()
@@ -475,6 +473,7 @@
                     foreground_color: 0, 0, 0, 1
                     markup: True
                     selection_color: (0.1843, 0.6549, 0.8313, 0.27)
+                    on_text: root.noteTextAdded()
 
             BoxLayout:
                 id: textAreas
