@@ -983,7 +983,7 @@ class AddSeriesButton(Button):
         self.background_color = Configs.addSeriesColor
         self.text = "[b]+[/b] Add Series"
         self.halign = 'center'
-        self.font_size = dp(18)
+        self.font_size = dp(17)
 
         self.bind(state=self._updateState)
 
@@ -1017,7 +1017,7 @@ class RemoveSeriesButton(Button):
         self.background_normal = ''
         self.background_down = ''
         self.halign = 'center'
-        self.text = "[b]-[/b] Remove\nLast Series"
+        self.text = "[b]-[/b] Remove Last\nSeries"
         self.font_size = dp(16)
         self.background_color = (0.70, 0.135, 0.05, 0.92)
 
