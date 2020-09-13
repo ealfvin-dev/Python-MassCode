@@ -3,8 +3,8 @@
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
 
 #:set labelSizer 1.23
-#:set buttonSpacing dp(35)
-#:set buttonHeight dp(64)
+#:set buttonSpacing dp(33)
+#:set buttonHeight dp(60)
 
 <MainLayout>:
     orientation: 'horizontal'
@@ -216,7 +216,7 @@
                 width: dp(510)
                 orientation: 'vertical'
                 spacing: dp(15)
-                padding: (0, dp(13), 0, 0)
+                padding: (0, dp(5), 0, 0)
 
                 ScrollView:
                     id: menuSv
@@ -231,7 +231,7 @@
                         size_hint: (1, None)
                         height: self.minimum_height
                         cols: 1
-                        spacing: dp(13)
+                        spacing: dp(11)
 
                         Label:
                             size_hint: (1, None)
@@ -240,7 +240,7 @@
                             text: "[b]\nSeries 1 Header[/b]"
                             markup: True
                             color: labelColor
-                            font_size: dp(15)
+                            font_size: dp(14)
                             halign: 'left'
 
                         BoxLayout:
@@ -278,7 +278,7 @@
                             text: "[b]\nSeries Setup[/b]"
                             markup: True
                             color: labelColor
-                            font_size: dp(15)
+                            font_size: dp(14)
                             halign: 'left'
 
                         BoxLayout:
@@ -311,7 +311,7 @@
                             text: "[b]\nDesign[/b]"
                             markup: True
                             color: labelColor
-                            font_size: dp(15)
+                            font_size: dp(14)
                             halign: 'left'
 
                         BoxLayout:
@@ -338,7 +338,7 @@
                             text: "[b]\nStatistics[/b]"
                             markup: True
                             color: labelColor
-                            font_size: dp(15)
+                            font_size: dp(14)
                             halign: 'left'
 
                         BoxLayout:
@@ -360,7 +360,7 @@
                             text: "[b]\nMeasurement Data[/b]"
                             markup: True
                             color: labelColor
-                            font_size: dp(15)
+                            font_size: dp(14)
                             halign: 'left'
 
                         BoxLayout:

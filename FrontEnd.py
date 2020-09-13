@@ -873,7 +873,7 @@ class InputButton(Button):
         self.markup = True
         self.font_size = dp(13)
         self.halign = 'center'
-        self.size = (dp(115), dp(64))
+        self.size = (dp(110), dp(60))
 
         with self.canvas.before:
             self.canvasColor = Color(rgba=self.currentColor)
