@@ -22,6 +22,7 @@
 
         ScrollView:
             id: seriesSelectionSv
+            scroll_timeout: 0
             size_hint: (1, 1)
             do_scroll_x: False
             do_scroll_y: True
@@ -220,6 +221,7 @@
                 ScrollView:
                     id: menuSv
                     size_hint_max_y: inputButtonGrid.height
+                    scroll_timeout: 0
                     do_scroll_x: False
                     do_scroll_y: True
                     bar_width: 0

@@ -1110,6 +1110,7 @@ class DBDeleteButton(Button):
 class DbScrollView(ScrollView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.scroll_timeout = 0
 
         with self.canvas.before:
             Color(rgba=(0.98, 0.98, 0.98, 1))
