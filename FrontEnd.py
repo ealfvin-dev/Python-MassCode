@@ -873,7 +873,7 @@ class InputButton(Button):
         self.markup = True
         self.font_size = dp(13)
         self.halign = 'center'
-        self.size = (dp(128), dp(68))
+        self.size = (dp(115), dp(64))
 
         with self.canvas.before:
             self.canvasColor = Color(rgba=self.currentColor)
@@ -910,7 +910,7 @@ class BottomButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint: (None, None)
-        self.size = (dp(82), dp(56))
+        self.size = (dp(82), dp(50))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
 
@@ -918,7 +918,7 @@ class RunButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint: (None, None)
-        self.size = (dp(82), dp(56))
+        self.size = (dp(82), dp(50))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
 
