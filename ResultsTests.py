@@ -48,7 +48,7 @@ def test2FourInOne(suite):
         suite.failTest("VALIDATE 4-1")
         suite.logFailure(["Error running 4-1 input file"], "VALIDATE 4-1")
 
-def test3Dissem(suite):
+def test3MetricDissem(suite):
     #Test if full dissemination results from 1 kg - 1 mg (5-1, 532111, 522111) match NIST Masscode
     try:
         data = RunFile.run("./Testing/MARSTest/Validation-1kg-1mg-config.txt", writeOutFile=False)
@@ -76,3 +76,24 @@ def test3Dissem(suite):
     except:
         suite.failTest("VALIDATE 1KG - 1MG DISSEMINATION")
         suite.logFailure(["Error running 1kg - 1mg dissemination input file"], "VALIDATE 1KG - 1MG DISSEMINATION")
+
+def test4LargeLb(suite):
+    #Test it 3-1 results at 3000 lb match NIST Mass Code
+    try:
+        data = RunFile.run("./Testing/MARSTest/Validation-3000lb-3-1-config.txt", writeOutFile=False)
+        calculatedMasses = data[0].calculatedMasses[0]
+
+        NIST_MC_MASS_CORRECTIONS = [9.12199724, 28.36503760, -5.87623869]
+
+        NIST_MC_FVALUE = 4.136
+        NIST_MC_TVALUE = 0.47
+
+        for i in range(len(NIST_MC_MASS_CORRECTIONS)):
+            suite.assertClose(NIST_MC_MASS_CORRECTIONS[i], calculatedMasses[i] - data[0].weightNominals[0][i], 1e-4, "3-1 at 3000 LB MASS CALCULATION " + str(i + 1))
+
+        suite.assertClose(NIST_MC_FVALUE, data[0].fValue, 0.02, "3-1 at 3000 LB F-VALUE CALCULATION")
+        suite.assertClose(NIST_MC_TVALUE, data[0].tValue, 0.02, "3-1 at 3000 LB T-VALUE CALCULATION")
+
+    except:
+        suite.failTest("VALIDATE 3-1 at 3000 LB")
+        suite.logFailure(["Error running 3000 lb 3-1 input file"], "VALIDATE 3-1 at 3000 LB")

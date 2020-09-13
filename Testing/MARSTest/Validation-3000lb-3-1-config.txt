@@ -1,0 +1,46 @@
+#  Validation testing
+    <Report-Number>  Validation-3000lb-3-1
+
+     <Restraint-ID>  461
+    <Unc-Restraint>  2220
+
+@SERIES
+             <Date>  09 02 2020
+    <Technician-ID>  019
+       <Balance-ID>  14
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+
+         <Check-ID>  457
+            <Grams>  0
+
+         <Position>  A3000lb        3000 7.2320 0.000037 9122
+         <Position>  B3000lb        3000 7.1000 0.000035 25036
+         <Position>  C3000lb        3000 7.1000 0.000035
+
+        <Design-ID>  111
+           <Design>  1 -1  0
+           <Design>  1  0 -1
+           <Design>  0  1 -1
+
+        <Restraint>  1 0 0
+   <Check-Standard>  0 1 0
+        <Pass-Down>  0 0 0
+
+          <Sigma-w>  3900
+          <Sigma-t>  7116.2
+
+          <sw-Mass>  500004.958
+       <sw-Density>  7.84
+           <sw-CCE>  0.000045
+
+   <Environmentals>  20.55 729.6 46.5
+   <Environmentals>  20.55 729.6 46.5
+   <Environmentals>  20.55 729.6 46.5
+
+  <Env-Corrections>  0.04 0 -0.25
+
+  <Balance-Reading>  0.5  11.0  511.4 500.6
+  <Balance-Reading>  13   -1.5  498.8 513.2
+  <Balance-Reading>  1   -38.0  462.1 500.8
+
