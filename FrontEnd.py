@@ -873,7 +873,7 @@ class InputButton(Button):
         self.markup = True
         self.font_size = dp(13)
         self.halign = 'center'
-        self.size = (dp(128), dp(68))
+        self.size = (dp(115), dp(64))
 
         with self.canvas.before:
             self.canvasColor = Color(rgba=self.currentColor)
@@ -910,7 +910,7 @@ class BottomButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint: (None, None)
-        self.size = (dp(82), dp(56))
+        self.size = (dp(82), dp(50))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
 
@@ -918,7 +918,7 @@ class RunButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint: (None, None)
-        self.size = (dp(82), dp(56))
+        self.size = (dp(82), dp(50))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
 
@@ -983,7 +983,7 @@ class AddSeriesButton(Button):
         self.background_color = Configs.addSeriesColor
         self.text = "[b]+[/b] Add Series"
         self.halign = 'center'
-        self.font_size = dp(18)
+        self.font_size = dp(17)
 
         self.bind(state=self._updateState)
 
@@ -1017,7 +1017,7 @@ class RemoveSeriesButton(Button):
         self.background_normal = ''
         self.background_down = ''
         self.halign = 'center'
-        self.text = "[b]-[/b] Remove\nLast Series"
+        self.text = "[b]-[/b] Remove Last\nSeries"
         self.font_size = dp(16)
         self.background_color = (0.70, 0.135, 0.05, 0.92)
 

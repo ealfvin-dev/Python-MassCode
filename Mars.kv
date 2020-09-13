@@ -3,6 +3,8 @@
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
 
 #:set labelSizer 1.23
+#:set buttonSpacing dp(35)
+#:set buttonHeight dp(64)
 
 <MainLayout>:
     orientation: 'horizontal'
@@ -202,257 +204,228 @@
 
         BoxLayout:
             id: content
+            size_hint: (1, 1)
             orientation: 'horizontal'
-            spacing: dp(75)
-            padding: (0, dp(5), dp(15), dp(15))
+            spacing: dp(35)
+            padding: (dp(10), dp(5), dp(15), dp(15))
 
             BoxLayout:
                 id: menu
                 size_hint: (None, 1)
-                width: dp(500)
+                width: dp(510)
                 orientation: 'vertical'
-                spacing: dp(10)
-                padding: (dp(10), dp(13), 0, 0)
+                spacing: dp(15)
+                padding: (0, dp(13), 0, 0)
 
-                BoxLayout:
-                    id: menuLabel1
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
+                ScrollView:
+                    id: menuSv
+                    size_hint_max_y: inputButtonGrid.height
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    bar_width: 0
 
-                    Label:
-                        text: "[b]\nSeries 1 Header[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                    GridLayout:
+                        id: inputButtonGrid
+                        size_hint: (1, None)
+                        height: self.minimum_height
+                        cols: 1
+                        spacing: dp(13)
 
-                BoxLayout:
-                    id: menuRow1
-                    orientation: 'horizontal'
-                    spacing: self.width / 10
-                    padding: (0, 0, 0, dp(10))
+                        Label:
+                            size_hint: (1, None)
+                            text_size: (menu.width, None)
+                            height: dp(20)
+                            text: "[b]\nSeries 1 Header[/b]"
+                            markup: True
+                            color: labelColor
+                            font_size: dp(15)
+                            halign: 'left'
 
-                    InputButton:
-                        id: labInfoButton
-                        text: "Report No. &\nNotes"
-                        on_release: app.openLabInfoPop()
+                        BoxLayout:
+                            id: menuRow1
+                            size_hint: (1, None)
+                            height: buttonHeight
+                            orientation: 'horizontal'
+                            spacing: buttonSpacing
 
-                    InputButton:
-                        id: restraintButton
-                        text: "Restraint"
-                        on_release: app.openRestraintPop()
+                            InputButton:
+                                id: labInfoButton
+                                text: "Report No. &\nNotes"
+                                on_release: app.openLabInfoPop()
 
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                            InputButton:
+                                id: restraintButton
+                                text: "Restraint"
+                                on_release: app.openRestraintPop()
 
-                BoxLayout:
-                    id: headerSeparater-blank
-                    orientation: 'horizontal'
-                    size_hint: (1, 0.2)
+                        BoxLayout:
+                            id: headerSeparater-blank
+                            size_hint: (1, None)
+                            height: dp(5)
+                            orientation: 'horizontal'
+                            size_hint: (1, None)
 
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        halign: 'left'
+                            Label:
+                                text: ""
+                                font_size: dp(12)
 
-                BoxLayout:
-                    id: menuLabel2
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
+                        Label:
+                            size_hint: (1, None)
+                            text_size: (menu.width, None)
+                            height: dp(20)
+                            text: "[b]\nSeries Setup[/b]"
+                            markup: True
+                            color: labelColor
+                            font_size: dp(15)
+                            halign: 'left'
 
-                    Label:
-                        text: "[b]\nSeries Setup[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                        BoxLayout:
+                            id: menuRow2
+                            size_hint: (1, None)
+                            height: buttonHeight
+                            orientation: 'horizontal'
+                            spacing: buttonSpacing
 
-                BoxLayout:
-                    id: menuRow2
-                    orientation: 'horizontal'
-                    spacing: self.width / 10
-                    padding: (0, 0, 0, dp(10))
+                            InputButton:
+                                id: dateButton
+                                text: "Balance &\nDate"
+                                on_release: app.openDatePop()
 
-                    InputButton:
-                        id: dateButton
-                        text: "Balance &\nDate"
-                        on_release: app.openDatePop()
+                            InputButton:
+                                id: weightsButton
+                                text: "Weights"
+                                on_release: app.openWeightsPop()
 
-                    InputButton:
-                        id: weightsButton
-                        text: "Weights"
-                        on_release: app.openWeightsPop()
+                            InputButton:
+                                id: gravityButton
+                                text: "Gravity\n(Optional)"
+                                buttonColor: (0.368, 0.49, 0.60, 1)
+                                on_release: app.openGravityPop()
 
-                    InputButton:
-                        id: gravityButton
-                        text: "Gravity\nGradient\n(Optional)"
-                        buttonColor: (0.368, 0.49, 0.60, 1)
-                        on_release: app.openGravityPop()
+                        Label:
+                            size_hint: (1, None)
+                            text_size: (menu.width, None)
+                            height: dp(20)
+                            text: "[b]\nDesign[/b]"
+                            markup: True
+                            color: labelColor
+                            font_size: dp(15)
+                            halign: 'left'
 
-                BoxLayout:
-                    id: menuLabel3
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
+                        BoxLayout:
+                            id: menuRow3
+                            size_hint: (1, None)
+                            height: buttonHeight
+                            orientation: 'horizontal'
+                            spacing: buttonSpacing
 
-                    Label:
-                        text: "[b]\nDesign[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                            InputButton:
+                                id: designButton
+                                text: "Design"
+                                on_release: app.openDesignPop()
 
-                BoxLayout:
-                    id: menuRow3
-                    orientation: 'horizontal'
-                    spacing: self.width / 10
-                    padding: (0, 0, 0, dp(10))
+                            InputButton:
+                                id: positionVectorsButton
+                                text: "Position\nVectors"
+                                on_release: app.openVectorsPop()
 
-                    InputButton:
-                        id: designButton
-                        text: "Design"
-                        on_release: app.openDesignPop()
+                        Label:
+                            size_hint: (1, None)
+                            text_size: (menu.width, None)
+                            height: dp(20)
+                            text: "[b]\nStatistics[/b]"
+                            markup: True
+                            color: labelColor
+                            font_size: dp(15)
+                            halign: 'left'
 
-                    InputButton:
-                        id: positionVectorsButton
-                        text: "Position\nVectors"
-                        on_release: app.openVectorsPop()
+                        BoxLayout:
+                            id: menuRow4
+                            size_hint: (1, None)
+                            height: buttonHeight
+                            orientation: 'horizontal'
+                            spacing: buttonSpacing
 
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                            InputButton:
+                                id: statisticsButton
+                                text: "Statistics"
+                                on_release: app.openStatisticsPop()
 
-                BoxLayout:
-                    id: menuLabel4
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
+                        Label:
+                            size_hint: (1, None)
+                            text_size: (menu.width, None)
+                            height: dp(20)
+                            text: "[b]\nMeasurement Data[/b]"
+                            markup: True
+                            color: labelColor
+                            font_size: dp(15)
+                            halign: 'left'
 
-                    Label:
-                        text: "[b]\nStatistics[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                        BoxLayout:
+                            id: menuRow5
+                            size_hint: (1, None)
+                            height: buttonHeight
+                            orientation: 'horizontal'
+                            spacing: buttonSpacing
 
-                BoxLayout:
-                    id: menuRow4
-                    orientation: 'horizontal'
-                    spacing: self.width / 10
-                    padding: (0, 0, 0, dp(10))
+                            InputButton:
+                                id: swButton
+                                text: "Sensitivity\nWeight"
+                                on_release: app.openSwPop()
 
-                    InputButton:
-                        id: statisticsButton
-                        text: "Statistics"
-                        on_release: app.openStatisticsPop()
+                            InputButton:
+                                id: measurementsButton
+                                text: "Data"
+                                on_release: app.openMeasurementsPop()
 
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                        BoxLayout:
+                            id: menuRow6-blank
+                            size_hint: (1, None)
+                            height: dp(8)
+                            orientation: 'horizontal'
+                            size_hint: (1, None)
 
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                            Label:
+                                text: ""
+                                font_size: dp(12)
 
-                BoxLayout:
-                    id: menuLabel5
-                    orientation: 'horizontal'
-                    size_hint: (1.0, 0.25)
+                        BoxLayout:
+                            id: menuCol7
+                            size_hint: (1, None)
+                            height: dp(56)
+                            orientation: 'horizontal'
+                            spacing: dp(30)
 
-                    Label:
-                        text: "[b]\nMeasurement Data[/b]"
-                        markup: True
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        text_size: self.size
-                        halign: 'left'
+                            BottomButton:
+                                text: "[b]Debug[/b]"
+                                #buttonColor: (0.96, 0.64, 0.00784314, 1)
+                                on_release: root.debug()
 
-                BoxLayout:
-                    id: menuRow5
-                    orientation: 'horizontal'
-                    spacing: self.width / 10
-                    padding: (0, 0, 0, dp(10))
+                            BottomButton:
+                                text: "[b]Split[/b]"
+                                #buttonColor: (0.96, 0.64, 0.00784314, 1)
+                                on_release: root.reSplit()
 
-                    InputButton:
-                        id: swButton
-                        text: "Sensitivity\nWeight"
-                        on_release: app.openSwPop()
+                            BottomButton:
+                                id: saveButton
+                                text: "[b]SAVE[/b]"
+                                on_release: root.save()
 
-                    InputButton:
-                        id: measurementsButton
-                        text: "Measurements"
-                        on_release: app.openMeasurementsPop()
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        halign: 'left'
+                            RunButton:
+                                id: runButton
+                                text: "[b]RUN[/b]"
+                                on_release: root.run()
 
                 BoxLayout:
                     id: menuRow6-blank
-                    orientation: 'horizontal'
                     size_hint: (1, None)
                     height: dp(1)
+                    orientation: 'horizontal'
+                    size_hint: (1, None)
 
                     Label:
                         text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        halign: 'left'
-
-                BoxLayout:
-                    id: menuCol7
-                    orientation: 'horizontal'
-                    spacing: dp(30)
-                    padding: (0, dp(10), 0, 0)
-
-                    BottomButton:
-                        text: "[b]Debug[/b]"
-                        buttonColor: (0.96, 0.64, 0.00784314, 1)
-                        on_release: root.debug()
-
-                    BottomButton:
-                        text: "[b]Split[/b]"
-                        buttonColor: (0.96, 0.64, 0.00784314, 1)
-                        on_release: root.reSplit()
-
-                    BottomButton:
-                        id: saveButton
-                        text: "[b]SAVE[/b]"
-                        on_release: root.save()
-
-                    RunButton:
-                        id: runButton
-                        text: "[b]RUN[/b]"
-                        on_release: root.run()
-
-                BoxLayout:
-                    id: headerSeparater-blank
-                    orientation: 'horizontal'
-                    size_hint: (1, 0.2)
-
-                    Label:
-                        text: ""
-                        color: labelColor
-                        font_size: self.height / labelSizer
-                        halign: 'left'
+                        font_size: dp(12)
 
                 Label:
                     size_hint: (1, None)
@@ -465,6 +438,8 @@
 
                 UserInput:
                     id: notesText
+                    size_hint: (1, 0.1)
+                    size_hint_min_y: dp(70)
                     font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
@@ -480,7 +455,7 @@
                 orientation: "vertical"
                 spacing: dp(6)
                 padding: (0, 0, 0, 0)
-                size_hint: (1.6, 1.0)
+                size_hint: (1, 1)
 
                 Label:
                     id: configFileName
@@ -494,6 +469,7 @@
 
                 UserInput:
                     id: userText
+                    size_hint: (1, 0.87)
                     font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
@@ -507,6 +483,7 @@
 
                 TextInput:
                     id: errors
+                    size_hint: (1, 0.13)
                     font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
@@ -515,7 +492,6 @@
                     text: "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
                     foreground_color: (0.05, 0.65, 0.1, 0.98)
                     selection_color: (0.1843, 0.6549, 0.8313, 0.27)
-                    size_hint: (1.0, 0.15)
                     readonly: True
 
         Label:
