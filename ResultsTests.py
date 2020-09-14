@@ -97,3 +97,50 @@ def test4LargeLb(suite):
     except:
         suite.failTest("VALIDATE 3-1 at 3000 LB")
         suite.logFailure(["Error running 3000 lb 3-1 input file"], "VALIDATE 3-1 at 3000 LB")
+
+def test5LbDissem(suite):
+    #Test if pound dissemination from 1 lb to 0.001 lb results match NIST Mass Code
+    try:
+        data = RunFile.run("./Testing/MARSTest/Validation-1lb-0.001lb-config.txt", writeOutFile=False)
+
+        NIST_MC_MASS_CORRECTIONS = [\
+            [0.00034930, 0.00856124, 0.00274900, 0.00634527],\
+            [0.00348751, 0.00193592, 0.00092183, 0.00003094, 0.00088465, 0.00055799],\
+            [0.00031019, 0.00023586, 0.00001194, 0.00004015, 0.00009632, 0.00026042],\
+            [0.00015035, 0.00002761, 0.00008247, 0.00002241, 0.00005837, 0.00007353]]
+
+        NIST_MC_FVALUE = [1.032, 0.266, 1.628, 0.036]
+        NIST_MC_TVALUE = [-1.88, 1.30, 0.01, 0.70]
+
+        for seriesNum in range(len(NIST_MC_MASS_CORRECTIONS)):
+            for i in range(len(NIST_MC_MASS_CORRECTIONS[seriesNum])):
+                suite.assertClose(NIST_MC_MASS_CORRECTIONS[seriesNum][i], data[seriesNum].calculatedMasses[0][i] - data[seriesNum].weightNominals[0][i], 1e-7, \
+                "1LB - 0.001LB DISSEMINATION MASS CALC SERIES " + str(seriesNum + 1) + " MASS " + str(i + 1))
+
+            suite.assertClose(NIST_MC_FVALUE[seriesNum], data[seriesNum].fValue, 0.02, "SERIES " + str(seriesNum + 1) + " F-VALUE CALCULATION")
+            suite.assertClose(NIST_MC_TVALUE[seriesNum], data[seriesNum].tValue, 0.02, "SERIES " + str(seriesNum + 1) + " T-VALUE CALCULATION")
+
+    except:
+        suite.failTest("VALIDATE 1LB - 0.001LB DISSEMINATION")
+        suite.logFailure(["Error running 1lb - 0.001lb dissemination input file"], "VALIDATE 1LB - 0.001LB DISSEMINATION")
+
+def test6OnekgSF(suite):
+    #Test if calculated 4-1 masses at 1 kg with a sensitivity factor != 1 match NIST MassCode
+    try:
+        data = RunFile.run("./Testing/MARSTest/Validation-1kg-SF-config.txt", writeOutFile=False)
+        calculatedMasses = data[0].calculatedMasses[0]
+
+        NIST_MC_MASSES = [999.99806383, 1000.00395936, 999.99806408, 1000.00635463]
+        
+        NIST_MC_FVALUE = 0.298
+        NIST_MC_TVALUE = 1.13
+
+        for i in range(len(NIST_MC_MASSES)):
+            suite.assertClose(NIST_MC_MASSES[i], calculatedMasses[i], 1e-7, "AUTOMATED 4-1 SF MASS CALCULATION " + str(i + 1))
+
+        suite.assertClose(NIST_MC_FVALUE, data[0].fValue, 0.02, "AUTOMATED 4-1 SF F-VALUE CALCULATION")
+        suite.assertClose(NIST_MC_TVALUE, data[0].tValue, 0.02, "AUTOMATED 4-1 SF T-VALUE CALCULATION")
+
+    except:
+        suite.failTest("VALIDATE 4-1 WITH SF")
+        suite.logFailure(["Error running 4-1 SF input file"], "VALIDATE 4-1 WITH SF")

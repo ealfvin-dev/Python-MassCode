@@ -1,0 +1,261 @@
+#  Validation #5
+#  Test results for 1 lb - 0.001 lb
+
+    <Report-Number>  Validation-1lb-0.001lb
+
+     <Restraint-ID>  343
+    <Unc-Restraint>  0.064
+
+@SERIES
+             <Date>  09 13 2020
+    <Technician-ID>  019
+       <Balance-ID>  020
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+         <Check-ID>  344
+            <Grams>  0
+
+         <Position>  W1lb           1 7.95 0.000045
+         <Position>  P1.lb          1 8.00 0.000045 8.57785
+         <Position>  P1..lb         1 8.00 0.000045 2.73239
+         <Position>  PSum           1 8.00 0.000045
+
+        <Design-ID>  112
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+
+        <Restraint>  0 1 1 0
+   <Check-Standard>  0 1 -1 0
+        <Pass-Down>  0 0 0 1
+
+          <Sigma-w>  0.025
+          <Sigma-t>  0.01767
+
+          <sw-Mass>  49.9872
+       <sw-Density>  7.95
+           <sw-CCE>  0.000045
+
+   <Environmentals>  19.60 733.5 50.05
+   <Environmentals>  19.60 733.5 50.05
+   <Environmentals>  19.60 733.5 50.05
+   <Environmentals>  19.60 733.5 50.05
+   <Environmentals>  19.60 733.5 50.05
+   <Environmentals>  19.60 733.5 50.05
+
+  <Env-Corrections>  0 0 0.15
+
+  <Balance-Reading>  0     8.60 58.61 50.00
+  <Balance-Reading>  0.04  2.88 52.90 50.09
+  <Balance-Reading>  0.14  6.56 56.58 50.14
+  <Balance-Reading>  8.86  3.05 53.07 58.89
+  <Balance-Reading>  8.92  6.65 56.67 58.89
+  <Balance-Reading>  3.09  6.69 56.70 53.08
+
+@SERIES
+
+             <Date>  09 13 2020
+    <Technician-ID>  019
+       <Balance-ID>  020
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+
+         <Check-ID>  314
+            <Grams>  0
+
+         <Position>  P0.5lb         0.5 8.00 0.000045
+         <Position>  P0.3lb         0.3 8.00 0.000045
+         <Position>  P0.2lb         0.2 8.00 0.000045
+         <Position>  W0.1lb         0.1 7.95 0.000045
+         <Position>  P0.1lb         0.1 8.00 0.000045 0.8754
+         <Position>  PSum           0.1 8.00 0.000045
+
+        <Design-ID>  032
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1 -1  0  1
+           <Design>  1 -1 -1  0  0  0
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1 -1
+           <Design>  0  1 -1 -1  1 -1
+           <Design>  0  1 -1 -1 -1  1
+           <Design>  0  0  1 -1 -1  0
+           <Design>  0  0  1 -1  0 -1
+           <Design>  0  0  1  0 -1 -1
+
+        <Restraint>  1 1 1 0 0 0
+   <Check-Standard>  0 0 0 0 1 0
+        <Pass-Down>  0 0 0 0 0 1
+
+          <Sigma-w>  0.0195
+          <Sigma-t>  0.006924
+
+          <sw-Mass>  49.9872
+       <sw-Density>  7.95
+           <sw-CCE>  0.000045
+
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+   <Environmentals>  19.67 733.8 49.95
+
+  <Env-Corrections>  0 0 0.15
+
+  <Balance-Reading>  0     0.24 50.26 49.96
+  <Balance-Reading>  0.91 -0.05 49.96 50.93
+  <Balance-Reading>  0.64 -0.55 49.48 50.66
+  <Balance-Reading>  0    -0.64 49.38 50.02
+  <Balance-Reading>  0.05 -1.09 48.91 50.04
+  <Balance-Reading>  0     0.46 50.48 50.05
+  <Balance-Reading>  0.97 -0.39 49.61 50.94
+  <Balance-Reading>  0.65 -0.08 49.93 50.62
+  <Balance-Reading>  0    -0.05 49.95 49.99
+  <Balance-Reading>  0.01 -0.36 49.63 50.01
+  <Balance-Reading>  0.02  0.54 50.54 50.02
+
+@SERIES
+
+             <Date>  09 13 2020
+    <Technician-ID>  019
+       <Balance-ID>  007
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+
+         <Check-ID>  318
+            <Grams>  0
+
+         <Position>  P0.05lb        0.05 8.00 0.000045
+         <Position>  P0.03lb        0.03 8.00 0.000045
+         <Position>  P0.02lb        0.02 8.00 0.000045
+         <Position>  W0.01lb        0.01 7.95 0.000045
+         <Position>  P0.01lb        0.01 8.00 0.000045 0.0963
+         <Position>  PSum           0.01 8.00 0.000045
+
+        <Design-ID>  032
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1 -1  0  1
+           <Design>  1 -1 -1  0  0  0
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1 -1
+           <Design>  0  1 -1 -1  1 -1
+           <Design>  0  1 -1 -1 -1  1
+           <Design>  0  0  1 -1 -1  0
+           <Design>  0  0  1 -1  0 -1
+           <Design>  0  0  1  0 -1 -1
+
+        <Restraint>  1 1 1 0 0 0
+   <Check-Standard>  0 0 0 0 1 0
+        <Pass-Down>  0 0 0 0 0 1
+
+          <Sigma-w>  0.0021
+          <Sigma-t>  0.001203
+
+          <sw-Mass>  19.99899
+       <sw-Density>  7.95
+           <sw-CCE>  0.000045
+
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+   <Environmentals>  19.775 738.65 49.75
+
+  <Env-Corrections>  0 0 0.15
+
+  <Balance-Reading>  0      0.000 19.994 20.000
+  <Balance-Reading>  0.064  0.170 20.163 20.063
+  <Balance-Reading>  0.235 -0.057 19.940 20.228
+  <Balance-Reading>  0     -0.056 19.943 20.003
+  <Balance-Reading>  0.001  0.100 20.094 20.007
+  <Balance-Reading>  0      0.097 20.092 19.997
+  <Balance-Reading>  0.062  0.042 20.037 20.065
+  <Balance-Reading>  0.227 -0.123 19.871 20.220
+  <Balance-Reading>  0      0.122 20.119 19.998
+  <Balance-Reading>  0.000  0.287 20.285 20.004
+  <Balance-Reading>  0.001  0.348 20.347 20.003
+
+@SERIES
+
+             <Date>  09 13 2020
+    <Technician-ID>  019
+       <Balance-ID>  005
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+
+         <Check-ID>  322
+            <Grams>  0
+
+         <Position>  P0.005lb       0.005 8.00 0.000045
+         <Position>  P0.003lb       0.003 8.00 0.000045
+         <Position>  P0.002lb       0.002 8.00 0.000045
+         <Position>  W0.001lb       0.001 7.95 0.000045
+         <Position>  P0.001lb       0.001 8.00 0.000045 0.05785
+         <Position>  PSum           0.001 8.00 0.000045
+
+        <Design-ID>  032
+           <Design>  1 -1 -1  1 -1  0
+           <Design>  1 -1 -1  0  1 -1
+           <Design>  1 -1 -1 -1  0  1
+           <Design>  1 -1 -1  0  0  0
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1 -1
+           <Design>  0  1 -1 -1  1 -1
+           <Design>  0  1 -1 -1 -1  1
+           <Design>  0  0  1 -1 -1  0
+           <Design>  0  0  1 -1  0 -1
+           <Design>  0  0  1  0 -1 -1
+
+        <Restraint>  1 1 1 0 0 0
+   <Check-Standard>  0 0 0 0 1 0
+        <Pass-Down>  0 0 0 0 0 0
+
+          <Sigma-w>  0.00082
+          <Sigma-t>  0.0007304
+
+          <sw-Mass>  10.08052
+       <sw-Density>  7.95
+           <sw-CCE>  0.000045
+
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+   <Environmentals>  19.405 735.9 49.6
+
+  <Env-Corrections>  0.02 0 0.15
+
+  <Balance-Reading>  0      -0.0031 10.0774 10.0819
+  <Balance-Reading>  0.0379  0.0131 10.0930 10.1186
+  <Balance-Reading>  0.0530 -0.0382 10.0420 10.1344
+  <Balance-Reading>  0      -0.0400 10.0408 10.0814
+  <Balance-Reading>  0.0001  0.0869 10.1675 10.0822
+  <Balance-Reading>  0       0.1651 10.2455 10.0812
+  <Balance-Reading>  0.0374  0.1299 10.2101 10.1182
+  <Balance-Reading>  0.0530  0.1144 10.1955 10.1338
+  <Balance-Reading>  0      -0.0019 10.0789 10.0809
+  <Balance-Reading>  0.0000  0.0129 10.0935 10.0807
+  <Balance-Reading>  0.0000  0.0498 10.1301 10.0810
+

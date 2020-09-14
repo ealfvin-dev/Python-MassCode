@@ -1,0 +1,870 @@
+MARS Validation                                                  PAGE  2
+ 1 lb to 0.001 lb manual dissemination                            SERIES 1
+                                                                   6/ 6/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE    20
+ OPERATOR   19
+ ACCEPTED WITHIN STANDARD DEVIATION OF THE PROCESS        0.02500 MG
+ ACCEPTED BETWEEN STANDARD DEVIATION OF THE PROCESS       0.00000 MG
+
+
+ CALIBRATION DESIGN  112
+ RESTRAINT VECTOR     0    1    1    0
+ MASS CORRECTION OF RESTRAINT                                      11.31024 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  19.60              113.39750 CM3
+ TYPE B UNCERTAINTY IN THE RESTRAINT                                0.06400 MG
+ TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00000 MG
+
+
+ CHECK STANDARD USED   344
+ CHECK STANDARD VECTOR     0    1   -1    0
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       5.84546 MG
+ REPORT VECTOR     1    1    1    1
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.60        19.60        19.60
+ ** CORRECTED PRESSURE IN PASCALS        97819.       97765.       97792.
+ CORRECTED HUMIDITY IN PERCENT              49.95        49.85        49.90
+ COMPUTED AIR DENSITY IN MG/CM3              1.1593       1.1587       1.1590
+ TEMPERATURE CORRECTION                      0.00         0.00
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                        -0.15        -0.15
+ OBSERVED TEMPERATURE IN DEGREES C          19.60        19.60
+ ** OBSERVED PRESSURE IN PASCALS         97819.       97765.
+ OBSERVED HUMIDITY IN PERCENT               50.10        50.00
+
+
+    WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
+        TESTED       VALUE LB   G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
+
+ W1lb                       1.00    7.9500      .000045
+ P1.lb                      1.00    8.0000      .000045         8.57785
+ P1..lb                     1.00    8.0000      .000045         2.73239
+ PSum                       1.00    8.0000      .000045
+MARS Validation                                                  PAGE  3
+ 1 lb to 0.001 lb manual dissemination                            SERIES 1
+                                                                   6/ 6/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE    20
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN  112
+       LB
+           1     1     1     1
+ A  1      +     -             
+ A  2      +           -       
+ A  3      +                 - 
+ A  4            +     -       
+ A  5            +           - 
+ A  6                  +     - 
+ R               +     +       
+
+
+ OBSERVATIONS IN DIVISIONS
+ DOUBLE SUBSTITUTION ONE PAN BALANCE
+
+ A  1      0.0000     8.6000    58.6100    50.0000
+ A  2      0.0400     2.8800    52.9000    50.0900
+ A  3      0.1400     6.5600    56.5800    50.1400
+ A  4      8.8600     3.0500    53.0700    58.8900
+ A  5      8.9200     6.6500    56.6700    58.8900
+ A  6      3.0900     6.6900    56.7000    53.0800
+MARS Validation                                                  PAGE  4
+ 1 lb to 0.001 lb manual dissemination                            SERIES 1
+                                                                   6/ 6/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE    20
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN  112
+
+ SENSITIVITY WEIGHT
+ MASS       49.98720 MG
+ VOLUME        0.00629 CM3 AT 20 C
+ COEFFICIENT OF EXPANSION  0.000045
+     S*=S-PV(S)=      49.97991 MG
+
+                                     AVERAGE                OBSERVED
+             A(I)     DELTA(I)     SENSITIVITY  DRIFT(I)  SENSITIVITY
+             (MG)       (MG)        (MG/DIV)      (MG)      (MG/DIV)
+
+ A  1      -8.59782     0.02624     0.99917    -0.00499     0.99930
+ A  2      -2.82264    -0.00998     0.99917     0.01499     0.99950
+ A  3      -6.42463    -0.01623     0.99917    -0.00999     0.99900
+ A  4       5.81014    -0.00125     0.99917     0.00500     0.99930
+ A  5       2.24313     0.02747     0.99917    -0.02498     0.99870
+ A  6      -3.60699    -0.01124     0.99917    -0.00999     0.99920
+
+
+                               VOLUME       TYPE B     TYPE A   EXPANDED
+     ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
+     (LB)            (MG)       (CM3)         (MG)       (MG)       (MG)
+
+         1.00      0.34930     57.05466     0.03200     0.01531     0.07095
+         1.00      8.56124     56.69910     0.03200     0.00884     0.06640
+         1.00      2.74900     56.69837     0.03200     0.00884     0.06640
+         1.00      6.34527     56.69882     0.03200     0.01531     0.07095
+
+ TEMPERATURE T= 19.60  C
+
+ RESTRAINT FOR FOLLOWING SERIES
+ RESTRAINT VECTOR     0    0    0    1
+ MASS CORRECTION                       6.34527 MG
+ VOLUME AT 20 C                       56.69984 CM3
+ TYPE B UNCERTAINTY                    0.03200 MG
+ TYPE A UNCERTAINTY                    0.01531 MG
+MARS Validation                                                  PAGE  5
+ 1 lb to 0.001 lb manual dissemination                            SERIES 1
+                                                                   6/ 6/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE    20
+ OPERATOR   19
+ MAXIMUM LOAD       453.5924 G
+ STARTING RESTRAINT NUMBER  343
+
+
+ CALIBRATION DESIGN  112
+
+
+ PRECISION CONTROL
+
+
+ OBSERVED STANDARD DEVIATION OF THE PROCESS     0.02539  MG
+ ACCEPTED STANDARD DEVIATION OF THE PROCESS     0.02500  MG
+ DEGREES OF FREEDOM    3
+ F RATIO       1.032
+
+ F RATIO IS LESS THAN  2.61 (CRITICAL VALUE FOR PROBABILITY = .05).
+ THEREFORE THE STANDARD DEVIATION IS IN CONTROL.
+
+
+
+
+ CHECK STANDARD VECTOR     0    1   -1    0
+ CHECK STANDARD USED   344
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       5.84546 MG
+ OBSERVED CORRECTION OF CHECK STANDARD            5.81224 MG
+ STANDARD DEVIATION OF THE OBSERVED CORRECTION    0.01768 MG
+ T VALUE   -1.88
+
+
+
+ ABSOLUTE VALUE OF T IS LESS THAN     1.96
+ THEREFORE CHECK STANDARD IS IN CONTROL.
+
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.60        19.60        19.60
+ ** CORRECTED PRESSURE IN PASCALS        97819.       97765.       97792.
+ CORRECTED HUMIDITY IN PERCENT              49.95        49.85        49.90
+ COMPUTED AIR DENSITY IN MG/CM3              1.1593       1.1587       1.1590
+ TEMPERATURE CORRECTION                      0.00         0.00
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                        -0.15        -0.15
+ OBSERVED TEMPERATURE IN DEGREES C          19.60        19.60
+ ** OBSERVED PRESSURE IN PASCALS         97819.       97765.
+ OBSERVED HUMIDITY IN PERCENT               50.10        50.00
+
+
+
+
+ ** 101325 PASCALS = 760 TORR
+MARS Validation                                                  PAGE  6
+ 1 lb to 0.001 lb manual dissemination                            SERIES 2
+                                                                   6/ 6/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE    20
+ OPERATOR   19
+ ACCEPTED WITHIN STANDARD DEVIATION OF THE PROCESS        0.01950 MG
+ ACCEPTED BETWEEN STANDARD DEVIATION OF THE PROCESS       0.00000 MG
+
+
+ CALIBRATION DESIGN   32
+ RESTRAINT VECTOR     1    1    1    0    0    0
+ MASS CORRECTION OF RESTRAINT                                       6.34527 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  19.67               56.69900 CM3
+ TYPE B UNCERTAINTY IN THE RESTRAINT                                0.03200 MG
+ TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.01531 MG
+
+
+ CHECK STANDARD USED   314
+ CHECK STANDARD VECTOR     0    0    0    0    1    0
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       0.87540 MG
+ REPORT VECTOR     1    1    1    1    1    1
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.67        19.67        19.67
+ ** CORRECTED PRESSURE IN PASCALS        97819.       97845.       97832.
+ CORRECTED HUMIDITY IN PERCENT              49.65        49.95        49.80
+ COMPUTED AIR DENSITY IN MG/CM3              1.1591       1.1594       1.1592
+ TEMPERATURE CORRECTION                      0.00         0.00
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                        -0.15        -0.15
+ OBSERVED TEMPERATURE IN DEGREES C          19.67        19.67
+ ** OBSERVED PRESSURE IN PASCALS         97819.       97845.
+ OBSERVED HUMIDITY IN PERCENT               49.80        50.10
+
+
+    WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
+        TESTED       VALUE LB   G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
+
+ P0.5lb                     0.50    8.0000      .000045
+ P0.3lb                     0.30    8.0000      .000045
+ P0.2lb                     0.20    8.0000      .000045
+ W0.1lb                     0.10    7.9500      .000045
+ P0.1lb                     0.10    8.0000      .000045         0.87540
+ PSum                       0.10    8.0000      .000045
+MARS Validation                                                  PAGE  7
+ 1 lb to 0.001 lb manual dissemination                            SERIES 2
+                                                                   6/ 6/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE    20
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN   32
+       MILLI-LB
+         500   300   200   100   100   100
+ A  1      +     -     -     +     -       
+ A  2      +     -     -           +     - 
+ A  3      +     -     -     -           + 
+ A  4      +     -     -                   
+ A  5      +           -     -     -     - 
+ A  6            +     -     +     -     - 
+ A  7            +     -     -     +     - 
+ A  8            +     -     -     -     + 
+ A  9                  +     -     -       
+ A 10                  +     -           - 
+ A 11                  +           -     - 
+ R         +     +     +                   
+
+
+ OBSERVATIONS IN DIVISIONS
+ DOUBLE SUBSTITUTION ONE PAN BALANCE
+
+ A  1      0.0000     0.2400    50.2600    49.9600
+ A  2      0.9100    -0.0500    49.9600    50.9300
+ A  3      0.6400    -0.5500    49.4800    50.6600
+ A  4      0.0000    -0.6400    49.3800    50.0200
+ A  5      0.0500    -1.0900    48.9100    50.0400
+ A  6      0.0000     0.4600    50.4800    50.0500
+ A  7      0.9700    -0.3900    49.6100    50.9400
+ A  8      0.6500    -0.0800    49.9300    50.6200
+ A  9      0.0000    -0.0500    49.9500    49.9900
+ A 10      0.0100    -0.3600    49.6300    50.0100
+ A 11      0.0200     0.5400    50.5400    50.0200
+MARS Validation                                                  PAGE  8
+ 1 lb to 0.001 lb manual dissemination                            SERIES 2
+                                                                   6/ 6/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE    20
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN   32
+
+ SENSITIVITY WEIGHT
+ MASS       49.98720 MG
+ VOLUME        0.00629 CM3 AT 20 C
+ COEFFICIENT OF EXPANSION  0.000045
+     S*=S-PV(S)=      49.97991 MG
+
+                                     AVERAGE                OBSERVED
+             A(I)     DELTA(I)     SENSITIVITY  DRIFT(I)  SENSITIVITY
+             (MG)       (MG)        (MG/DIV)      (MG)      (MG/DIV)
+
+ A  1      -0.26973    -0.00448     0.99900    -0.02997     0.99860
+ A  2       0.96403     0.00774     0.99900     0.00500     0.99950
+ A  3       1.18381    -0.01416     0.99900    -0.00499     0.99890
+ A  4       0.63958     0.00991     0.99935     0.00000     0.99920
+ A  5       1.13426     0.00099     0.99935    -0.00500     0.99950
+ A  6      -0.44467    -0.00578     0.99927     0.01499     0.99950
+ A  7       1.34401    -0.00695     0.99927    -0.01499     0.99930
+ A  8       0.70948     0.01176     0.99927    -0.01999     0.99900
+ A  9       0.04498    -0.00258     0.99966    -0.00500     0.99950
+ A 10       0.37487     0.00069     0.99966     0.00500     0.99990
+ A 11      -0.51982     0.00091     0.99966     0.00000     0.99960
+
+
+                               VOLUME       TYPE B     TYPE A   EXPANDED
+     ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
+     (LB)            (MG)       (CM3)         (MG)       (MG)       (MG)
+
+         0.50      3.48751     28.34954     0.01600     0.00890     0.03662
+         0.30      1.93592     17.00970     0.00960     0.00742     0.02426
+         0.20      0.92183     11.33976     0.00640     0.00599     0.01753
+         0.10      0.03094      5.70548     0.00320     0.00709     0.01556
+         0.10      0.88465      5.66993     0.00320     0.00709     0.01556
+         0.10      0.55799      5.66989     0.00320     0.00709     0.01556
+
+ TEMPERATURE T= 19.67  C
+
+ RESTRAINT FOR FOLLOWING SERIES
+ RESTRAINT VECTOR     0    0    0    0    0    1
+ MASS CORRECTION                       0.55799 MG
+ VOLUME AT 20 C                        5.66997 CM3
+ TYPE B UNCERTAINTY                    0.00320 MG
+ TYPE A UNCERTAINTY                    0.00709 MG
+MARS Validation                                                  PAGE  9
+ 1 lb to 0.001 lb manual dissemination                            SERIES 2
+                                                                   6/ 6/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE    20
+ OPERATOR   19
+ MAXIMUM LOAD       272.1554 G
+ STARTING RESTRAINT NUMBER  343
+
+
+ CALIBRATION DESIGN   32
+
+
+ PRECISION CONTROL
+
+
+ OBSERVED STANDARD DEVIATION OF THE PROCESS     0.01006  MG
+ ACCEPTED STANDARD DEVIATION OF THE PROCESS     0.01950  MG
+ DEGREES OF FREEDOM    6
+ F RATIO       0.266
+
+ F RATIO IS LESS THAN  2.10 (CRITICAL VALUE FOR PROBABILITY = .05).
+ THEREFORE THE STANDARD DEVIATION IS IN CONTROL.
+
+
+
+
+ CHECK STANDARD VECTOR     0    0    0    0    1    0
+ CHECK STANDARD USED   314
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       0.87540 MG
+ OBSERVED CORRECTION OF CHECK STANDARD            0.88465 MG
+ STANDARD DEVIATION OF THE OBSERVED CORRECTION    0.00709 MG
+ T VALUE    1.30
+
+
+
+ ABSOLUTE VALUE OF T IS LESS THAN     1.96
+ THEREFORE CHECK STANDARD IS IN CONTROL.
+
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.67        19.67        19.67
+ ** CORRECTED PRESSURE IN PASCALS        97819.       97845.       97832.
+ CORRECTED HUMIDITY IN PERCENT              49.65        49.95        49.80
+ COMPUTED AIR DENSITY IN MG/CM3              1.1591       1.1594       1.1592
+ TEMPERATURE CORRECTION                      0.00         0.00
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                        -0.15        -0.15
+ OBSERVED TEMPERATURE IN DEGREES C          19.67        19.67
+ ** OBSERVED PRESSURE IN PASCALS         97819.       97845.
+ OBSERVED HUMIDITY IN PERCENT               49.80        50.10
+
+
+
+
+ ** 101325 PASCALS = 760 TORR
+MARS Validation                                                  PAGE 10
+ 1 lb to 0.001 lb manual dissemination                            SERIES 3
+                                                                   7/23/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE     7
+ OPERATOR   19
+ ACCEPTED WITHIN STANDARD DEVIATION OF THE PROCESS        0.00210 MG
+ ACCEPTED BETWEEN STANDARD DEVIATION OF THE PROCESS       0.00093 MG
+
+
+ CALIBRATION DESIGN   32
+ RESTRAINT VECTOR     1    1    1    0    0    0
+ MASS CORRECTION OF RESTRAINT                                       0.55799 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  19.77                5.66992 CM3
+ TYPE B UNCERTAINTY IN THE RESTRAINT                                0.00320 MG
+ TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00709 MG
+
+
+ CHECK STANDARD USED   318
+ CHECK STANDARD VECTOR     0    0    0    0    1    0
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       0.09630 MG
+ REPORT VECTOR     1    1    1    1    1    1
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.77        19.78        19.77
+ ** CORRECTED PRESSURE IN PASCALS        98485.       98472.       98479.
+ CORRECTED HUMIDITY IN PERCENT              49.65        49.55        49.60
+ COMPUTED AIR DENSITY IN MG/CM3              1.1666       1.1664       1.1665
+ TEMPERATURE CORRECTION                      0.00         0.00
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                        -0.15        -0.15
+ OBSERVED TEMPERATURE IN DEGREES C          19.77        19.78
+ ** OBSERVED PRESSURE IN PASCALS         98485.       98472.
+ OBSERVED HUMIDITY IN PERCENT               49.80        49.70
+
+
+    WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
+        TESTED       VALUE LB   G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
+
+ P0.05lb                    0.05    8.0000      .000045
+ P0.03lb                    0.03    8.0000      .000045
+ P0.02lb                    0.02    8.0000      .000045
+ W0.01lb                    0.01    7.9500      .000045
+ P0.01lb                    0.01    8.0000      .000045         0.09630
+ PSum                       0.01    8.0000      .000045
+MARS Validation                                                  PAGE 11
+ 1 lb to 0.001 lb manual dissemination                            SERIES 3
+                                                                   7/23/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE     7
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN   32
+       MILLI-LB
+          50    30    20    10    10    10
+ A  1      +     -     -     +     -       
+ A  2      +     -     -           +     - 
+ A  3      +     -     -     -           + 
+ A  4      +     -     -                   
+ A  5      +           -     -     -     - 
+ A  6            +     -     +     -     - 
+ A  7            +     -     -     +     - 
+ A  8            +     -     -     -     + 
+ A  9                  +     -     -       
+ A 10                  +     -           - 
+ A 11                  +           -     - 
+ R         +     +     +                   
+
+
+ OBSERVATIONS IN DIVISIONS
+ DOUBLE SUBSTITUTION ONE PAN BALANCE
+
+ A  1      0.0000     0.0000    19.9940    20.0000
+ A  2      0.0640     0.1700    20.1630    20.0630
+ A  3      0.2350    -0.0570    19.9400    20.2280
+ A  4      0.0000    -0.0560    19.9430    20.0030
+ A  5      0.0010     0.1000    20.0940    20.0070
+ A  6      0.0000     0.0970    20.0920    19.9970
+ A  7      0.0620     0.0420    20.0370    20.0650
+ A  8      0.2270    -0.1230    19.8710    20.2200
+ A  9      0.0000     0.1220    20.1190    19.9980
+ A 10      0.0000     0.2870    20.2850    20.0040
+ A 11      0.0010     0.3480    20.3470    20.0030
+MARS Validation                                                  PAGE 12
+ 1 lb to 0.001 lb manual dissemination                            SERIES 3
+                                                                   7/23/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE     7
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN   32
+
+ SENSITIVITY WEIGHT
+ MASS       19.99899 MG
+ VOLUME        0.00252 CM3 AT 20 C
+ COEFFICIENT OF EXPANSION  0.000045
+     S*=S-PV(S)=      19.99606 MG
+
+                                     AVERAGE                OBSERVED
+             A(I)     DELTA(I)     SENSITIVITY  DRIFT(I)  SENSITIVITY
+             (MG)       (MG)        (MG/DIV)      (MG)      (MG/DIV)
+
+ A  1       0.00300     0.00095     1.00014     0.00300     1.00025
+ A  2      -0.10301    -0.00130     1.00014     0.00300     1.00030
+ A  3       0.29004     0.00326     1.00014    -0.00200     0.99985
+ A  4       0.05801    -0.00436     1.00018     0.00200     0.99995
+ A  5      -0.09302     0.00146     1.00018     0.00600     1.00040
+ A  6      -0.09601     0.00080     1.00014     0.00100     1.00010
+ A  7       0.02400     0.00018     1.00014     0.00400     1.00025
+ A  8       0.34955    -0.00244     1.00014    -0.00050     1.00008
+ A  9      -0.12150    -0.00115     0.99999     0.00050     0.99998
+ A 10      -0.28400     0.00044     0.99999     0.00300     1.00005
+ A 11      -0.34550    -0.00074     0.99999     0.00150     0.99993
+
+
+                               VOLUME       TYPE B     TYPE A   EXPANDED
+     ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
+     (LB)            (MG)       (CM3)         (MG)       (MG)       (MG)
+
+         0.05      0.31019      2.83496     0.00160     0.00367     0.00801
+         0.03      0.23586      1.70098     0.00096     0.00234     0.00507
+         0.02      0.01194      1.13397     0.00064     0.00171     0.00366
+         0.01      0.04015      0.57056     0.00032     0.00140     0.00287
+         0.01      0.09632      0.56700     0.00032     0.00140     0.00287
+         0.01      0.26042      0.56702     0.00032     0.00140     0.00287
+
+ TEMPERATURE T= 19.77  C
+
+ RESTRAINT FOR FOLLOWING SERIES
+ RESTRAINT VECTOR     0    0    0    0    0    1
+ MASS CORRECTION                       0.26042 MG
+ VOLUME AT 20 C                        0.56702 CM3
+ TYPE B UNCERTAINTY                    0.00032 MG
+ TYPE A UNCERTAINTY                    0.00140 MG
+MARS Validation                                                  PAGE 13
+ 1 lb to 0.001 lb manual dissemination                            SERIES 3
+                                                                   7/23/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE     7
+ OPERATOR   19
+ MAXIMUM LOAD        27.2155 G
+ STARTING RESTRAINT NUMBER  343
+
+
+ CALIBRATION DESIGN   32
+
+
+ PRECISION CONTROL
+
+
+ OBSERVED STANDARD DEVIATION OF THE PROCESS     0.00268  MG
+ ACCEPTED STANDARD DEVIATION OF THE PROCESS     0.00210  MG
+ DEGREES OF FREEDOM    6
+ F RATIO       1.628
+
+ F RATIO IS LESS THAN  2.10 (CRITICAL VALUE FOR PROBABILITY = .05).
+ THEREFORE THE STANDARD DEVIATION IS IN CONTROL.
+
+
+
+
+ CHECK STANDARD VECTOR     0    0    0    0    1    0
+ CHECK STANDARD USED   318
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       0.09630 MG
+ OBSERVED CORRECTION OF CHECK STANDARD            0.09632 MG
+ STANDARD DEVIATION OF THE OBSERVED CORRECTION    0.00140 MG
+ T VALUE    0.01
+
+
+
+ ABSOLUTE VALUE OF T IS LESS THAN     1.96
+ THEREFORE CHECK STANDARD IS IN CONTROL.
+
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.77        19.78        19.77
+ ** CORRECTED PRESSURE IN PASCALS        98485.       98472.       98479.
+ CORRECTED HUMIDITY IN PERCENT              49.65        49.55        49.60
+ COMPUTED AIR DENSITY IN MG/CM3              1.1666       1.1664       1.1665
+ TEMPERATURE CORRECTION                      0.00         0.00
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                        -0.15        -0.15
+ OBSERVED TEMPERATURE IN DEGREES C          19.77        19.78
+ ** OBSERVED PRESSURE IN PASCALS         98485.       98472.
+ OBSERVED HUMIDITY IN PERCENT               49.80        49.70
+
+
+
+
+ ** 101325 PASCALS = 760 TORR
+MARS Validation                                                  PAGE 14
+ 1 lb to 0.001 lb manual dissemination                            SERIES 4
+                                                                   7/25/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE     5
+ OPERATOR   19
+ ACCEPTED WITHIN STANDARD DEVIATION OF THE PROCESS        0.00082 MG
+ ACCEPTED BETWEEN STANDARD DEVIATION OF THE PROCESS       0.00066 MG
+
+
+ CALIBRATION DESIGN   32
+ RESTRAINT VECTOR     1    1    1    0    0    0
+ MASS CORRECTION OF RESTRAINT                                       0.26042 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  19.38                0.56701 CM3
+ TYPE B UNCERTAINTY IN THE RESTRAINT                                0.00032 MG
+ TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00140 MG
+
+
+ CHECK STANDARD USED   322
+ CHECK STANDARD VECTOR     0    0    0    0    1    0
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       0.05785 MG
+ REPORT VECTOR     1    1    1    1    1    1
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.38        19.39        19.38
+ ** CORRECTED PRESSURE IN PASCALS        98152.       98072.       98112.
+ CORRECTED HUMIDITY IN PERCENT              49.45        49.45        49.45
+ COMPUTED AIR DENSITY IN MG/CM3              1.1643       1.1633       1.1638
+ TEMPERATURE CORRECTION                     -0.02        -0.02
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                        -0.15        -0.15
+ OBSERVED TEMPERATURE IN DEGREES C          19.40        19.41
+ ** OBSERVED PRESSURE IN PASCALS         98152.       98072.
+ OBSERVED HUMIDITY IN PERCENT               49.60        49.60
+
+
+    WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
+        TESTED       VALUE LB   G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
+
+ P0.005lb                   0.01    8.0000      .000045
+ P0.003lb                   0.00    8.0000      .000045
+ P0.002lb                   0.00    8.0000      .000045
+ W0.001lb                   0.00    7.9500      .000045
+ P0.001lb                   0.00    8.0000      .000045         0.05785
+ PSum                       0.00    8.0000      .000045
+MARS Validation                                                  PAGE 15
+ 1 lb to 0.001 lb manual dissemination                            SERIES 4
+                                                                   7/25/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE     5
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN   32
+       MILLI-LB
+           5     3     2     1     1     1
+ A  1      +     -     -     +     -       
+ A  2      +     -     -           +     - 
+ A  3      +     -     -     -           + 
+ A  4      +     -     -                   
+ A  5      +           -     -     -     - 
+ A  6            +     -     +     -     - 
+ A  7            +     -     -     +     - 
+ A  8            +     -     -     -     + 
+ A  9                  +     -     -       
+ A 10                  +     -           - 
+ A 11                  +           -     - 
+ R         +     +     +                   
+
+
+ OBSERVATIONS IN DIVISIONS
+ DOUBLE SUBSTITUTION ONE PAN BALANCE
+
+ A  1      0.0000    -0.0031    10.0774    10.0819
+ A  2      0.0379     0.0131    10.0930    10.1186
+ A  3      0.0530    -0.0382    10.0420    10.1344
+ A  4      0.0000    -0.0400    10.0408    10.0814
+ A  5      0.0001     0.0869    10.1675    10.0822
+ A  6      0.0000     0.1651    10.2455    10.0812
+ A  7      0.0374     0.1299    10.2101    10.1182
+ A  8      0.0530     0.1144    10.1955    10.1338
+ A  9      0.0000    -0.0019    10.0789    10.0809
+ A 10      0.0000     0.0129    10.0935    10.0807
+ A 11      0.0000     0.0498    10.1301    10.0810
+MARS Validation                                                  PAGE 16
+ 1 lb to 0.001 lb manual dissemination                            SERIES 4
+                                                                   7/25/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE     5
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN   32
+
+ SENSITIVITY WEIGHT
+ MASS       10.08052 MG
+ VOLUME        0.00127 CM3 AT 20 C
+ COEFFICIENT OF EXPANSION  0.000045
+     S*=S-PV(S)=      10.07904 MG
+
+                                     AVERAGE                OBSERVED
+             A(I)     DELTA(I)     SENSITIVITY  DRIFT(I)  SENSITIVITY
+             (MG)       (MG)        (MG/DIV)      (MG)      (MG/DIV)
+
+ A  1       0.00380    -0.00009     0.99992     0.00070     0.99992
+ A  2       0.02520     0.00010     0.99992     0.00040     0.99995
+ A  3       0.09179     0.00000     0.99992     0.00060     0.99994
+ A  4       0.04030     0.00003     0.99992     0.00030     0.99986
+ A  5      -0.08604    -0.00003     0.99992     0.00075     0.99992
+ A  6      -0.16468     0.00007     0.99987     0.00040     0.99991
+ A  7      -0.09219    -0.00018     0.99987     0.00030     0.99992
+ A  8      -0.06154     0.00014     0.99987    -0.00015     0.99978
+ A  9       0.00195    -0.00016     0.99986     0.00005     0.99983
+ A 10      -0.01285     0.00021     0.99986     0.00005     0.99985
+ A 11      -0.04944    -0.00002     0.99986     0.00035     0.99991
+
+
+                               VOLUME       TYPE B     TYPE A   EXPANDED
+     ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
+     (LB)            (MG)       (CM3)         (MG)       (MG)       (MG)
+
+         0.01      0.15035      0.28351     0.00016     0.00092     0.00187
+         0.00      0.02761      0.17010     0.00010     0.00073     0.00146
+         0.00      0.08247      0.11341     0.00006     0.00066     0.00133
+         0.00      0.02241      0.05706     0.00003     0.00074     0.00149
+         0.00      0.05837      0.05670     0.00003     0.00074     0.00149
+         0.00      0.07353      0.05671     0.00003     0.00074     0.00149
+
+ TEMPERATURE T= 19.38  C
+
+MARS Validation                                                  PAGE 17
+ 1 lb to 0.001 lb manual dissemination                            SERIES 4
+                                                                   7/25/18
+ TEST NUMBER  V5-1lb-Down       
+
+
+ BALANCE     5
+ OPERATOR   19
+ MAXIMUM LOAD         2.7216 G
+ STARTING RESTRAINT NUMBER  343
+
+
+ CALIBRATION DESIGN   32
+
+
+ PRECISION CONTROL
+
+
+ OBSERVED STANDARD DEVIATION OF THE PROCESS     0.00016  MG
+ ACCEPTED STANDARD DEVIATION OF THE PROCESS     0.00082  MG
+ DEGREES OF FREEDOM    6
+ F RATIO       0.036
+
+ F RATIO IS LESS THAN  2.10 (CRITICAL VALUE FOR PROBABILITY = .05).
+ THEREFORE THE STANDARD DEVIATION IS IN CONTROL.
+
+
+
+
+ CHECK STANDARD VECTOR     0    0    0    0    1    0
+ CHECK STANDARD USED   322
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       0.05785 MG
+ OBSERVED CORRECTION OF CHECK STANDARD            0.05837 MG
+ STANDARD DEVIATION OF THE OBSERVED CORRECTION    0.00074 MG
+ T VALUE    0.70
+
+
+
+ ABSOLUTE VALUE OF T IS LESS THAN     1.96
+ THEREFORE CHECK STANDARD IS IN CONTROL.
+
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         19.38        19.39        19.38
+ ** CORRECTED PRESSURE IN PASCALS        98152.       98072.       98112.
+ CORRECTED HUMIDITY IN PERCENT              49.45        49.45        49.45
+ COMPUTED AIR DENSITY IN MG/CM3              1.1643       1.1633       1.1638
+ TEMPERATURE CORRECTION                     -0.02        -0.02
+ ** PRESSURE CORRECTION IN PASCALS           0.           0.
+ HUMIDITY CORRECTION                        -0.15        -0.15
+ OBSERVED TEMPERATURE IN DEGREES C          19.40        19.41
+ ** OBSERVED PRESSURE IN PASCALS         98152.       98072.
+ OBSERVED HUMIDITY IN PERCENT               49.60        49.60
+
+
+
+
+ ** 101325 PASCALS = 760 TORR
+MARS Validation                                                  PAGE 18
+ 1 lb to 0.001 lb manual dissemination                             7/25/18
+                                                                  
+ TEST NUMBER  V5-1lb-Down       
+
+
+
+
+                              TABLE I
+
+                                     EXPANDED*
+                           MASS          UNCERTAINTY   VOL AT 20  COEF OF EXP
+     ITEM                  (LB)              (LB)        (IN3)
+
+  P1.lb                  1.00001887431 0.00000014638      3.460053 0.000045
+  PSum                   1.00001398893 0.00000015641      3.460036 0.000045
+  P1..lb                 1.00000606052 0.00000014638      3.460009 0.000045
+  W1lb                   1.00000077007 0.00000015641      3.481751 0.000045
+  P0.5lb                  .50000768865 0.00000008073      1.730021 0.000045
+  P0.3lb                  .30000427989 0.00000005349      1.038011 0.000045
+  P0.2lb                  .20000203527 0.00000003864      0.692005 0.000045
+  P0.1lb                  .10000195182 0.00000003430      0.346006 0.000045
+  PSum                    .10000123164 0.00000003430      0.346003 0.000045
+  W0.1lb                  .10000006971 0.00000003430      0.348175 0.000045
+  P0.05lb                 .05000068086 0.00000001765      0.173002 0.000045
+  P0.03lb                 .03000051932 0.00000001117      0.103801 0.000045
+  P0.02lb                 .02000002588 0.00000000807      0.069200 0.000045
+  PSum                    .01000057391 0.00000000632      0.034602 0.000045
+  P0.01lb                 .01000021212 0.00000000632      0.034601 0.000045
+  W0.01lb                 .01000008829 0.00000000632      0.034818 0.000045
+  P0.005lb                .00500033181 0.00000000413      0.017301 0.000045
+  P0.003lb                .00300006089 0.00000000323      0.010380 0.000045
+  P0.002lb                .00200018191 0.00000000293      0.006921 0.000045
+  PSum                    .00100016216 0.00000000328      0.003461 0.000045
+  P0.001lb                .00100012873 0.00000000328      0.003460 0.000045
+  W0.001lb                .00100004945 0.00000000328      0.003482 0.000045
+
+ SOFTWARE VERSION 08/15/2013
+
+
+* THE UNCERTAINTIES ARE CALCULATED ACCORDING TO NIST TECHNICAL
+NOTE 1297 IMPLEMENTED JANUARY 1, 1994,  SEE REFERENCE NO. 14.
+THE EXPANDED UNCERTAINTY IS 2 TIMES THE ROOT SUM SQUARE OF
+THE TYPE A AND TYPE B UNCERTAINTIES.
+MARS Validation                                                  PAGE 19
+ 1 lb to 0.001 lb manual dissemination                             7/25/18
+                                                                  
+ TEST NUMBER  V5-1lb-Down       
+
+
+
+
+                    TABLE II
+
+       ITEM                 COR.A                COR.B
+                          (MICRO-LB)           (MICRO-LB)
+  P1.lb                       11.88461             18.87431
+  PSum                         6.99926             13.98893
+  P1..lb                       -.92910              6.06052
+  W1lb                        -7.16304              -.17347
+  P0.5lb                       4.19381              7.68865
+  P0.3lb                       2.17107              4.26797
+  P0.2lb                        .63436              2.03229
+  P0.1lb                       1.25136              1.95033
+  PSum                          .53119              1.23015
+  W0.1lb                       -.72509              -.02613
+  P0.05lb                       .33436               .68384
+  P0.03lb                       .31030               .51999
+  P0.02lb                      -.11347               .02632
+  PSum                          .50424               .57414
+  P0.01lb                       .14245               .21235
+  W0.01lb                       .00918               .07908
+  P0.005lb                      .29651               .33146
+  P0.003lb                      .03989               .06086
+  P0.002lb                      .16784               .18182
+  PSum                          .15512               .16211
+  P0.001lb                      .12169               .12868
+  W0.001lb                      .04147               .04846
+
+ SOFTWARE VERSION 08/15/2013
+
+ Security Code    0.00000
+
+
+
+                        End of Report
+
