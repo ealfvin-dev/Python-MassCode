@@ -1,0 +1,254 @@
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  2
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       4/ 3/20
+ TEST NUMBER  V6-1kg-SF         
+
+
+ BALANCE     3
+ OPERATOR   19
+ ACCEPTED WITHIN STANDARD DEVIATION OF THE PROCESS        0.00130 MG
+ ACCEPTED BETWEEN STANDARD DEVIATION OF THE PROCESS       0.00200 MG
+
+
+ CALIBRATION DESIGN  112
+ RESTRAINT VECTOR     0    1    0    1
+ MASS CORRECTION OF RESTRAINT                                      10.31400 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  23.10              250.26763 CM3
+ TYPE B UNCERTAINTY IN THE RESTRAINT                                0.03400 MG
+ TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00000 MG
+
+
+ CHECK STANDARD USED    54
+ CHECK STANDARD VECTOR     0   -1    0    1
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       2.39200 MG
+ REPORT VECTOR     1    1    1    1
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         24.10        22.10        23.10
+ ** CORRECTED PRESSURE IN PASCALS        94254.      100920.       97587.
+ CORRECTED HUMIDITY IN PERCENT              60.26        58.26        59.26
+ COMPUTED AIR DENSITY IN MG/CM3              1.0970       1.1843       1.1405
+ TEMPERATURE CORRECTION                      0.30         0.30
+ ** PRESSURE CORRECTION IN PASCALS        -120.        -120.
+ HUMIDITY CORRECTION                        -0.70        -0.70
+ OBSERVED TEMPERATURE IN DEGREES C          23.80        21.80
+ ** OBSERVED PRESSURE IN PASCALS         94374.      101040.
+ OBSERVED HUMIDITY IN PERCENT               60.96        58.96
+
+
+    WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
+        TESTED       VALUE G    G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
+
+ A1kg                  1000.0000    7.9436      .000045
+ B1kg                  1000.0000    7.9926      .000045         3.96100
+ C1kg                  1000.0000    7.9435      .000045
+ D1kg                  1000.0000    7.9926      .000045         6.35300
+
+
+ ** 101325 PASCALS = 760 TORR
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  3
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       4/ 3/20
+ TEST NUMBER  V6-1kg-SF         
+
+
+ BALANCE     3
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN  112
+       GRAMS
+        1000  1000  1000  1000
+ A  1      +     -             
+ A  2      +           -       
+ A  3      +                 - 
+ A  4            +     -       
+ A  5            +           - 
+ A  6                  +     - 
+ A  7      +     -             
+ A  8      +           -       
+ A  9      +                 - 
+ A 10            +     -       
+ A 11            +           - 
+ A 12                  +     - 
+ R               +           + 
+
+
+ OBSERVATIONS IN DIVISIONS
+ DIRECT READING
+
+ A  1       -6.7570      43.2430
+ A  2        0.0018
+ A  3       -9.1448
+ A  4        6.7572
+ A  5       -2.3888
+ A  6       -9.1465
+ A  7       -6.7574
+ A  8        0.0010
+ A  9       -9.1446
+ A 10        6.7592
+ A 11       -2.3887
+ A 12       -9.1477      40.8523
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  4
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       4/ 3/20
+ TEST NUMBER  V6-1kg-SF         
+
+
+ BALANCE     3
+ OPERATOR   19
+
+
+ CALIBRATION DESIGN  112
+
+ SENSITIVITY WEIGHT
+ MASS       50.00000 MG
+ VOLUME        0.00000 CM3 AT 20 C
+ COEFFICIENT OF EXPANSION  0.000000
+     S*=S-PV(S)=      50.00000 MG
+ ACCEPTED SENSITIVITY =      1.00270 MG/DIV
+ OBSERVED SENSITIVITY =      1.00000 MG/DIV
+ T-TEST =        2.077
+
+
+                                       OBSERVED
+              A(I)      DELTA(I)      SENSITIVITY
+              (MG)        (MG)        (MG/DIV)
+
+ A  1       -6.77524     -0.00022      1.00000
+ A  2        0.00180      0.00025
+ A  3       -9.16949      0.00046
+ A  4        6.77544     -0.00114
+ A  5       -2.39525     -0.00032
+ A  6       -9.17120      0.00031
+ A  7       -6.77564     -0.00062
+ A  8        0.00100     -0.00055
+ A  9       -9.16929      0.00066
+ A 10        6.77745      0.00087
+ A 11       -2.39515     -0.00022
+ A 12       -9.17240     -0.00089      1.00000
+
+
+                               VOLUME       TYPE B     TYPE A   EXPANDED
+     ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
+      (G)            (MG)       (CM3)         (MG)       (MG)       (MG)
+
+    1000.0000     -1.93617    125.90482    0.01700    0.00251    0.03437
+    1000.0000      3.95936    125.13370    0.01700    0.00145    0.03412
+    1000.0000     -1.93592    125.90641    0.01700    0.00251    0.03437
+    1000.0000      6.35463    125.13400    0.01700    0.00145    0.03412
+
+ TEMPERATURE T= 23.10  C
+
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  5
+ MassCode 4 Input                                                 SERIES 1
+ Erik Alfvin                                                       4/ 3/20
+ TEST NUMBER  V6-1kg-SF         
+
+
+ BALANCE     3
+ OPERATOR   19
+ MAXIMUM LOAD      1000.0000 G
+ STARTING RESTRAINT NUMBER   55
+
+
+ CALIBRATION DESIGN  112
+
+
+ PRECISION CONTROL
+
+
+ OBSERVED STANDARD DEVIATION OF THE PROCESS     0.00071  MG
+ ACCEPTED STANDARD DEVIATION OF THE PROCESS     0.00130  MG
+ DEGREES OF FREEDOM    9
+ F RATIO       0.298
+
+ F RATIO IS LESS THAN  1.88 (CRITICAL VALUE FOR PROBABILITY = .05).
+ THEREFORE THE STANDARD DEVIATION IS IN CONTROL.
+
+
+
+
+ CHECK STANDARD VECTOR     0   -1    0    1
+ CHECK STANDARD USED    54
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       2.39200 MG
+ OBSERVED CORRECTION OF CHECK STANDARD            2.39527 MG
+ STANDARD DEVIATION OF THE OBSERVED CORRECTION    0.00290 MG
+ T VALUE    1.13
+
+
+
+ ABSOLUTE VALUE OF T IS LESS THAN     1.96
+ THEREFORE CHECK STANDARD IS IN CONTROL.
+
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         24.10        22.10        23.10
+ ** CORRECTED PRESSURE IN PASCALS        94254.      100920.       97587.
+ CORRECTED HUMIDITY IN PERCENT              60.26        58.26        59.26
+ COMPUTED AIR DENSITY IN MG/CM3              1.0970       1.1843       1.1405
+ TEMPERATURE CORRECTION                      0.30         0.30
+ ** PRESSURE CORRECTION IN PASCALS        -120.        -120.
+ HUMIDITY CORRECTION                        -0.70        -0.70
+ OBSERVED TEMPERATURE IN DEGREES C          23.80        21.80
+ ** OBSERVED PRESSURE IN PASCALS         94374.      101040.
+ OBSERVED HUMIDITY IN PERCENT               60.96        58.96
+
+
+
+
+ ** 101325 PASCALS = 760 TORR
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  6
+ MassCode 4 Input                                                  4/ 3/20
+ Erik Alfvin                                                      
+ TEST NUMBER  V6-1kg-SF         
+
+
+
+
+                              TABLE I
+
+                                     EXPANDED*
+                        MASS        UNCERTAINTY  VOL AT 20  COEF OF EXP
+       ITEM              (G)             (G)      (CM3)
+
+  D1kg              1000.00635463    0.00003412  125.11653 0.000045
+  B1kg              1000.00395936    0.00003412  125.11622 0.000045
+  C1kg               999.99806408    0.00003437  125.88890 0.000045
+  A1kg               999.99806383    0.00003437  125.88730 0.000045
+
+ SOFTWARE VERSION 08/15/2013
+
+
+* THE UNCERTAINTIES ARE CALCULATED ACCORDING TO NIST TECHNICAL
+NOTE 1297 IMPLEMENTED JANUARY 1, 1994,  SEE REFERENCE NO. 14.
+THE EXPANDED UNCERTAINTY IS 2 TIMES THE ROOT SUM SQUARE OF
+THE TYPE A AND TYPE B UNCERTAINTIES.
+Test file #3 - 1 kg 4-1 direct readings                          PAGE  7
+ MassCode 4 Input                                                  4/ 3/20
+ Erik Alfvin                                                      
+ TEST NUMBER  V6-1kg-SF         
+
+
+
+
+                    TABLE II
+
+
+  ITEM                      COR.A (MG)           COR.B (MG)
+
+  D1kg                         -.77388              6.21573
+  B1kg                        -3.16914              3.82046
+  C1kg                        -9.99254             -3.00299
+  A1kg                        -9.99089             -3.00134
+
+ SOFTWARE VERSION 08/15/2013
+
+ Security Code    0.00000
+
+
+
+                        End of Report
+

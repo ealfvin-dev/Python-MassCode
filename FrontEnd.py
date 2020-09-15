@@ -873,7 +873,7 @@ class InputButton(Button):
         self.markup = True
         self.font_size = dp(13)
         self.halign = 'center'
-        self.size = (dp(115), dp(64))
+        self.size = (dp(110), dp(60))
 
         with self.canvas.before:
             self.canvasColor = Color(rgba=self.currentColor)
@@ -1110,6 +1110,7 @@ class DBDeleteButton(Button):
 class DbScrollView(ScrollView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.scroll_timeout = 0
 
         with self.canvas.before:
             Color(rgba=(0.98, 0.98, 0.98, 1))
