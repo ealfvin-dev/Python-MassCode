@@ -144,3 +144,24 @@ def test6OnekgSF(suite):
     except:
         suite.failTest("VALIDATE 4-1 WITH SF")
         suite.logFailure(["Error running 4-1 SF input file"], "VALIDATE 4-1 WITH SF")
+
+def test7Ascending52211(suite):
+    #Test if ascending 52211 masses match NIST MassCode
+    try:
+        data = RunFile.run("./Testing/MARSTest/Validation-52211-config.txt", writeOutFile=False)
+        calculatedMasses = data[0].calculatedMasses[0]
+
+        NIST_MC_MASSES = [4999.99155112, 1999.99996593, 2000.00061562, 1000.00158552, 1000.00134116]
+        
+        NIST_MC_FVALUE = 0.065
+        NIST_MC_TVALUE = 1.21
+
+        for i in range(len(NIST_MC_MASSES)):
+            suite.assertClose(NIST_MC_MASSES[i], calculatedMasses[i], 1e-7, "ASCENDING 52211 MASS CALCULATION " + str(i + 1))
+
+        suite.assertClose(NIST_MC_FVALUE, data[0].fValue, 0.02, "ASCENDING 52211 F-VALUE CALCULATION")
+        suite.assertClose(NIST_MC_TVALUE, data[0].tValue, 0.02, "AASCENDING 52211 T-VALUE CALCULATION")
+
+    except:
+        suite.failTest("ASCENDING 52211 MASS CALCULATION")
+        suite.logFailure(["Error running ascending 52211 input file"], "ASCENDING 52211 MASS CALCULATION")

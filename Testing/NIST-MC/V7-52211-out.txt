@@ -1,0 +1,239 @@
+Validation #7                                                    PAGE  2
+ 52211 ascending series                                           SERIES 1
+                                                                   8/29/17
+ TEST NUMBER  V7-52211          
+
+
+ BALANCE     1
+ OPERATOR   21
+ ACCEPTED WITHIN STANDARD DEVIATION OF THE PROCESS        0.22610 MG
+ ACCEPTED BETWEEN STANDARD DEVIATION OF THE PROCESS       0.13502 MG
+
+
+ CALIBRATION DESIGN   38
+ RESTRAINT VECTOR     0    0    0    0    1
+ MASS CORRECTION OF RESTRAINT                                       1.34116 MG
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  20.91              124.90694 CM3
+ TYPE B UNCERTAINTY IN THE RESTRAINT                                0.02526 MG
+ TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00000 MG
+
+
+ CHECK STANDARD USED    22
+ CHECK STANDARD VECTOR     0    0    0    1    0
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       1.30520 MG
+ REPORT VECTOR     1    1    1    1    1
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         20.92        20.91        20.91
+ ** CORRECTED PRESSURE IN PASCALS       100234.      100188.      100211.
+ CORRECTED HUMIDITY IN PERCENT              56.02        56.12        56.07
+ COMPUTED AIR DENSITY IN MG/CM3              1.1817       1.1811       1.1814
+ TEMPERATURE CORRECTION                     -0.02        -0.02
+ ** PRESSURE CORRECTION IN PASCALS         -11.         -11.
+ HUMIDITY CORRECTION                        -0.18        -0.18
+ OBSERVED TEMPERATURE IN DEGREES C          20.94        20.93
+ ** OBSERVED PRESSURE IN PASCALS        100245.      100198.
+ OBSERVED HUMIDITY IN PERCENT               56.20        56.30
+
+
+    WEIGHTS BEING     NOMINAL      DENSITY     COEFFICIENT   ACCEPTED
+        TESTED       VALUE G    G/CM3 AT 20C  OF EXPANSION  CORRECTION MG
+
+ 5kg                   5000.0000    8.0000      .000045
+ 2kg                   2000.0000    8.0000      .000045
+ 2.kg                  2000.0000    8.0000      .000045
+ MetA_1kg              1000.0000    8.0066      .000045         1.30520
+ MetE_1kg              1000.0000    8.0063      .000045         1.34116
+
+
+ ** 101325 PASCALS = 760 TORR
+Validation #7                                                    PAGE  3
+ 52211 ascending series                                           SERIES 1
+                                                                   8/29/17
+ TEST NUMBER  V7-52211          
+
+
+ BALANCE     1
+ OPERATOR   21
+
+
+ CALIBRATION DESIGN   38
+       GRAMS
+        5000  2000  2000  1000  1000
+ A  1      +     -     -     -       
+ A  2            +     -     +     - 
+ A  3            +     -     -     + 
+ A  4            +     -             
+ A  5            +           -     - 
+ A  6                  +     -     - 
+ A  7                        +     - 
+ R                                 + 
+
+
+ OBSERVATIONS IN DIVISIONS
+ DOUBLE SUBSTITUTION ONE PAN BALANCE
+
+ A  1     -0.2000     9.9000  1010.4000   999.0000
+ A  2      0.0000     0.1000  1000.1000   999.5000
+ A  3     -0.6000     0.0000  1000.4000   999.2000
+ A  4      0.0000     0.6000  1000.9000  1000.2000
+ A  5     -0.5000     2.8000  1003.2000  1000.0000
+ A  6     -0.1000     2.2000  1002.5000   999.8000
+ A  7      0.0000    -0.2000  1000.2000  1000.4000
+Validation #7                                                    PAGE  4
+ 52211 ascending series                                           SERIES 1
+                                                                   8/29/17
+ TEST NUMBER  V7-52211          
+
+
+ BALANCE     1
+ OPERATOR   21
+
+
+ CALIBRATION DESIGN   38
+
+ SENSITIVITY WEIGHT
+ MASS     1000.00600 MG
+ VOLUME        0.12500 CM3 AT 20 C
+ COEFFICIENT OF EXPANSION  0.000045
+     S*=S-PV(S)=     999.85830 MG
+
+                                     AVERAGE                OBSERVED
+             A(I)     DELTA(I)     SENSITIVITY  DRIFT(I)  SENSITIVITY
+             (MG)       (MG)        (MG/DIV)      (MG)      (MG/DIV)
+
+ A  1     -10.73613    -0.00001     0.99871    -0.64919     0.99871
+ A  2      -0.34979     0.04996     0.99938    -0.24988     0.99961
+ A  3      -0.89944     0.00001     0.99938    -0.29983     0.99916
+ A  4      -0.64964    -0.00004     0.99946    -0.04999     0.99951
+ A  5      -3.24824    -0.05000     0.99946     0.04996     0.99951
+ A  6      -2.49865     0.05000     0.99946    -0.19990     0.99936
+ A  7       0.19990    -0.04994     0.99946     0.00000     0.99946
+
+
+                               VOLUME       TYPE B     TYPE A   EXPANDED
+     ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
+      (G)            (MG)       (CM3)         (MG)       (MG)       (MG)
+
+    5000.0000     -8.44888    625.02470    0.12630    0.88357    1.78510
+    2000.0000     -0.03407    250.01030    0.05052    0.37068    0.74821
+    2000.0000      0.61562    250.01040    0.05052    0.37068    0.74821
+    1000.0000      1.58552    124.90230    0.02526    0.23130    0.46535
+    1000.0000      1.34116    124.90694    0.02526    0.00000    0.05052
+
+ TEMPERATURE T= 20.91  C
+
+Validation #7                                                    PAGE  5
+ 52211 ascending series                                           SERIES 1
+                                                                   8/29/17
+ TEST NUMBER  V7-52211          
+
+
+ BALANCE     1
+ OPERATOR   21
+ MAXIMUM LOAD      5000.0000 G
+ STARTING RESTRAINT NUMBER   21
+
+
+ CALIBRATION DESIGN   38
+
+
+ PRECISION CONTROL
+
+
+ OBSERVED STANDARD DEVIATION OF THE PROCESS     0.05771  MG
+ ACCEPTED STANDARD DEVIATION OF THE PROCESS     0.22610  MG
+ DEGREES OF FREEDOM    3
+ F RATIO       0.065
+
+ F RATIO IS LESS THAN  2.61 (CRITICAL VALUE FOR PROBABILITY = .05).
+ THEREFORE THE STANDARD DEVIATION IS IN CONTROL.
+
+
+
+
+ CHECK STANDARD VECTOR     0    0    0    1    0
+ CHECK STANDARD USED    22
+ ACCEPTED MASS CORRECTION OF CHECK STANDARD       1.30520 MG
+ OBSERVED CORRECTION OF CHECK STANDARD            1.58552 MG
+ STANDARD DEVIATION OF THE OBSERVED CORRECTION    0.23130 MG
+ T VALUE    1.21
+
+
+
+ ABSOLUTE VALUE OF T IS LESS THAN     1.96
+ THEREFORE CHECK STANDARD IS IN CONTROL.
+
+
+
+ TEST CONDITIONS                             BEFORE       AFTER       AVERAGE
+ CORRECTED TEMPERATURE IN DEGREES C         20.92        20.91        20.91
+ ** CORRECTED PRESSURE IN PASCALS       100234.      100188.      100211.
+ CORRECTED HUMIDITY IN PERCENT              56.02        56.12        56.07
+ COMPUTED AIR DENSITY IN MG/CM3              1.1817       1.1811       1.1814
+ TEMPERATURE CORRECTION                     -0.02        -0.02
+ ** PRESSURE CORRECTION IN PASCALS         -11.         -11.
+ HUMIDITY CORRECTION                        -0.18        -0.18
+ OBSERVED TEMPERATURE IN DEGREES C          20.94        20.93
+ ** OBSERVED PRESSURE IN PASCALS        100245.      100198.
+ OBSERVED HUMIDITY IN PERCENT               56.20        56.30
+
+
+
+
+ ** 101325 PASCALS = 760 TORR
+Validation #7                                                    PAGE  6
+ 52211 ascending series                                            8/29/17
+                                                                  
+ TEST NUMBER  V7-52211          
+
+
+
+
+                              TABLE I
+
+                                     EXPANDED*
+                        MASS        UNCERTAINTY  VOL AT 20  COEF OF EXP
+       ITEM              (G)             (G)      (CM3)
+
+  5kg               4999.99155112    0.00178510  624.99900 0.000045
+  2.kg              2000.00061562    0.00074821  250.00010 0.000045
+  2kg               1999.99996593    0.00074821  250.00000 0.000045
+  MetA_1kg          1000.00158552    0.00046535  124.89720 0.000045
+  MetE_1kg          1000.00134116    0.00005052  124.90180 0.000045
+
+ SOFTWARE VERSION 08/15/2013
+
+
+* THE UNCERTAINTIES ARE CALCULATED ACCORDING TO NIST TECHNICAL
+NOTE 1297 IMPLEMENTED JANUARY 1, 1994,  SEE REFERENCE NO. 14.
+THE EXPANDED UNCERTAINTY IS 2 TIMES THE ROOT SUM SQUARE OF
+THE TYPE A AND TYPE B UNCERTAINTIES.
+Validation #7                                                    PAGE  7
+ 52211 ascending series                                            8/29/17
+                                                                  
+ TEST NUMBER  V7-52211          
+
+
+
+
+                    TABLE II
+
+
+  ITEM                      COR.A (MG)           COR.B (MG)
+
+  5kg                        -43.39668             -8.44888
+  2.kg                       -13.36352               .61562
+  2kg                        -14.01321              -.03407
+  MetA_1kg                    -5.28041              1.70918
+  MetE_1kg                    -5.53038              1.45921
+
+ SOFTWARE VERSION 08/15/2013
+
+ Security Code    0.00000
+
+
+
+                        End of Report
+
