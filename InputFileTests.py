@@ -15,21 +15,42 @@ def test1FEGoodFile(suite):
         seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
         seriesTexts.pop(0)
         
-        suite.assertTrue(InputChecks.determineIfDirectReadings(seriesTexts[0]), "DIRECT READING DETERMINATION +")
-        suite.assertFalse(InputChecks.determineIfDirectReadings(seriesTexts[1]), "DIRECT READING DETERMINATION -")
-        suite.assertTrue(InputChecks.checkReportNumber(seriesTexts[0], suite.sendErrorMock, suite.highlightErrorMock), "REPORT NUMBER FORMAT DETERMINATION +")
-        suite.assertTrue(InputChecks.checkStructure(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "FILE STRUCTURE DETERMINATION +")
-        suite.assertTrue(InputChecks.checkTags(seriesTexts, False, suite.highlightErrorMock, suite.sendErrorMock), "CHECK INPUT TAGS +")
-        suite.assertTrue(InputChecks.checkIfAllTags(seriesTexts, suite.sendErrorMock, suite.goToSeriesMock), "CHECK IF ALL INPUT TAGS +")
-        suite.assertTrue(InputChecks.checkForRepeats(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK FOR REPEATED TAGS +")
-        suite.assertTrue(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK INPUT VALUES +")
-        suite.assertTrue(InputChecks.runRequiredChecks(seriesTexts, 4, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "REQUIRED INPUT CHECKS +")
-        suite.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile", suite.sendErrorMock, suite.highlightErrorMock), "SECONDARY INPUT CHECKS +")
+        suite.assertTrue(InputChecks.determineIfDirectReadings(seriesTexts[0]), "DIRECT READING DETERMINATION MULTIPLE SERIES INPUT +")
+        suite.assertFalse(InputChecks.determineIfDirectReadings(seriesTexts[1]), "DIRECT READING DETERMINATION MULTIPLE SERIES INPUT -")
+        suite.assertTrue(InputChecks.checkReportNumber(seriesTexts[0], suite.sendErrorMock, suite.highlightErrorMock), "REPORT NUMBER FORMAT DETERMINATION MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkStructure(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "FILE STRUCTURE DETERMINATION MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkTags(seriesTexts, False, suite.highlightErrorMock, suite.sendErrorMock), "CHECK INPUT TAGS MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkIfAllTags(seriesTexts, suite.sendErrorMock, suite.goToSeriesMock), "CHECK IF ALL INPUT TAGS MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkForRepeats(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK FOR REPEATED TAGS MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK INPUT VALUES MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.runRequiredChecks(seriesTexts, 4, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "REQUIRED INPUT CHECKS MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile", suite.sendErrorMock, suite.highlightErrorMock), "SECONDARY INPUT CHECKS MULTIPLE SERIES INPUT +")
     except:
-        suite.failTest("GOOD FILE PASSES FE INPUT CHECKS")
-        suite.logFailure(["Error running front end input checks"], "GOOD FILE PASSES FE INPUT CHECKS")
+        suite.failTest("MULTIPLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
+        suite.logFailure(["Error running front end input checks on multiple series input"], "MULTIPLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
 
-def test2FEBadReportNum(suite):
+def test2FEGoodSingleSeries(suite):
+    #Test if a correctly-made input file with a single series passes all front end input checks
+    try:
+        with open("./Testing/MARSTest/Test-FEGoodFile-SingleSeries-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = [text]
+        
+        suite.assertTrue(InputChecks.determineIfDirectReadings(seriesTexts[0]), "DIRECT READING DETERMINATION SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkReportNumber(seriesTexts[0], suite.sendErrorMock, suite.highlightErrorMock), "REPORT NUMBER FORMAT DETERMINATION SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkStructure(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "FILE STRUCTURE DETERMINATION SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkTags(seriesTexts, False, suite.highlightErrorMock, suite.sendErrorMock), "CHECK INPUT TAGS SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkIfAllTags(seriesTexts, suite.sendErrorMock, suite.goToSeriesMock), "CHECK IF ALL INPUT TAGS SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkForRepeats(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK FOR REPEATED TAGS SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK INPUT VALUES SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.runRequiredChecks(seriesTexts, 1, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "REQUIRED INPUT CHECKS SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile-SingleSeries", suite.sendErrorMock, suite.highlightErrorMock), "SECONDARY INPUT CHECKS SINGLE SERIES INPUT +")
+    except:
+        suite.failTest("SINGLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
+        suite.logFailure(["Error running front end input checks on single series input"], "SINGLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
+
+def test3FEBadReportNum(suite):
     #Test if a report number with a space is caught in Input checks
     try:
         with open("./Testing/MARSTest/Test-FEBadReportNum-config.txt") as file:
@@ -40,7 +61,7 @@ def test2FEBadReportNum(suite):
         suite.failTest("REPORT NUMBER FORMAT DETERMINATION -")
         suite.logFailure(["Error running front end input checks"], "REPORT NUMBER FORMAT DETERMINATION -")
 
-def test3FEBadStructure(suite):
+def test4FEBadStructure(suite):
     #Test if an input file missing a @SERIES is caught in Input checks
     try:
         with open("./Testing/MARSTest/Test-FEGoodFile-config.txt") as file:
@@ -60,7 +81,7 @@ def test3FEBadStructure(suite):
         suite.failTest("INPUT STRUCTURE DETERMINATION -")
         suite.logFailure(["Error running front end input checks"], "INPUT STRUCTURE DETERMINATION -")
 
-def test4FEBadTags(suite):
+def test5FEBadTags(suite):
     #Test if unrecognized, duplicate, missing tags are found by Input checks
     try:
         with open("./Testing/MARSTest/Test-FEBadTags-config.txt") as file:
@@ -82,7 +103,7 @@ def test4FEBadTags(suite):
         suite.failTest("TAG DETERMINATIONS -")
         suite.logFailure(["Error running front end input checks"], "TAG DETERMINATIONS -")
 
-def test5MissedInput(suite):
+def test6MissedInput(suite):
     #Test if a missed input is caught in Input checks
     try:
         with open("./Testing/MARSTest/Test-FEBlankInput-config.txt") as file:
@@ -95,7 +116,7 @@ def test5MissedInput(suite):
         suite.failTest("CHECK FOR MISSED INPUT -")
         suite.logFailure(["Error running front end input checks"], "CHECK FOR MISSED INPUT -")
 
-def test6InputNaN(suite):
+def test7InputNaN(suite):
     #Test if a NaN input is caught in Input checks
     try:
         with open("./Testing/MARSTest/Test-FEInputNaN-config.txt") as file:
@@ -108,7 +129,7 @@ def test6InputNaN(suite):
         suite.failTest("CHECK FOR NaN INPUT -")
         suite.logFailure(["Error running front end input checks"], "CHECK FOR NaN INPUT -")
 
-def test7CheckEqualsRestraint(suite):
+def test8CheckEqualsRestraint(suite):
     #Test if input file with check position = restraint position is caught by input checks
     try:
         with open("./Testing/MARSTest/Test-FECheckEqualRes-config.txt") as file:
@@ -121,7 +142,7 @@ def test7CheckEqualsRestraint(suite):
         suite.failTest("CHECK STANDARD EQUALS RESTRAINT -")
         suite.logFailure(["Error running front end input checks"], "CHECK STANDARD EQUALS RESTRAINT -")
 
-def test8UnequalRestraintPassed(suite):
+def test9UnequalRestraintPassed(suite):
     #Test if input file with a passed-down restraint that does not match the nominal of the next restraint is caught by input checks
     try:
         with open("./Testing/MARSTest/Test-BadRestraintPassed-config.txt") as file:
@@ -138,7 +159,7 @@ def test8UnequalRestraintPassed(suite):
         suite.failTest("CHECK FOR UNEQUAL RESTRAINTS -")
         suite.logFailure(["Error running front end input checks"], "CHECK FOR UNEQUAL RESTRAINTS -")
 
-def test9ErrorInPosition(suite):
+def test10ErrorInPosition(suite):
     #Test if input file with space in weight_id is caught by input checks
     try:
         with open("./Testing/MARSTest/Test-BadPosition-config.txt") as file:

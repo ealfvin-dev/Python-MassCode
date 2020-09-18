@@ -586,6 +586,10 @@ class MainLayout(BoxLayout):
         if(not requiredChecks):
             return
 
+        secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError, debugMode=True)
+        if(not secondaryChecks):
+            return
+
         self.sendSuccess("INPUT FILE CHECKS PASSED")
 
     def saveNotes(self):

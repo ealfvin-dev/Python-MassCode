@@ -554,16 +554,16 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
         #Check restraint nominal vs restrint passed down
         nominalsArr = np.asarray(nominals)
         restraintPosArr = np.asarray(restraintPos)
-        passDownPosArr = np.asarray(passDownPos)
 
         if(seriesNum > 1):
             d = np.matmul(restraintPosArr, np.matrix.transpose(nominalsArr)) - previousPassDownNominal
             if(abs(d) > 1e-6):
-                sendError("SERIES " + str(seriesNum) + ": RESTRINT NOMINAL DOES NOT MATCH RESTRAINT PASSED DOWN FROM SERIES " + str(seriesNum - 1))
+                sendError("SERIES " + str(seriesNum) + ": RESTRAINT NOMINAL DOES NOT MATCH RESTRAINT PASSED DOWN FROM SERIES " + str(seriesNum - 1))
                 highlightError(seriesNum, restraintLine)
                 return False
 
         if(seriesNum < numberOfSeries):
+            passDownPosArr = np.asarray(passDownPos)
             previousPassDownNominal = np.matmul(passDownPosArr, np.matrix.transpose(nominalsArr))
 
         lineNum = 0
@@ -580,10 +580,14 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
 
     return True
 
-def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
+def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError, debugMode=False):
     #Runs unrequired checks on user input file before running and identifies errors. Does not prevent Runfile.run
     seriesNum = 0
     lineNum = 0
+
+    runMessage = "FILE WAS RUN AND SAVED AS " + str(reportNum) + "-out.txt\n" + "HOWEVER, "
+    if(debugMode):
+        runMessage = ""
 
     for seriesText in seriesTexts:
         seriesNum += 1
@@ -601,7 +605,7 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
                 humidity = float(line[3])
 
                 if(temp < 18 or temp > 23 or humidity < 40 or humidity > 60):
-                    sendError("FILE WAS RUN AND SAVED AS " + str(reportNum) + "-out.txt\n" + "HOWEVER, ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS\n\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
+                    sendError(runMessage + "ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS\n\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
                     highlightError(seriesNum, lineNum)
                     return False
             
