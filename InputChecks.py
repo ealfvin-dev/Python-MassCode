@@ -1,5 +1,7 @@
 #Module to hold functions that perform checks on user input data and results
 
+import numpy as np
+
 #determineIfDirectReadings (helper)
 #checkReportNumber
 #checkStructure
@@ -372,14 +374,16 @@ def checkInputValues(seriesTexts, sendError, highlightError):
             #Check format of positions
             if(line[0] == "<Position>"):
                 try:
-                    line[4]
+                    float(line[2])
+                    float(line[3])
+                    float(line[4])
                     continue
-                except IndexError:
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": POSITIONS ARE ENTERED IN THE FORM\n<Position>  ID  NOMINAL  DENSITY  CCE  (CORRECTION)")
+                except (ValueError, IndexError):
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": POSITIONS ARE ENTERED IN THE FORM\n<Position>  WEIGHT_ID  NOMINAL  DENSITY  CCE  (CORRECTION)\nWEIGHT_ID CANNOT CONTAIN SPACES")
                     highlightError(seriesNum, lineNum)
                     return False
 
-            #Check that tags not specially checked above have Integer-type values
+            #Check that tags not specially checked above have numeric-type values
             if(\
             #line[0] == "<Restraint-ID>" or\
             line[0] == "<Unc-Restraint>" or\
@@ -448,8 +452,13 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
     obsStartLine = 0
     envStartLine = 0
 
-    restraintPos = ""
-    checkPos = ""
+    restraintPos = []
+    checkPos = []
+
+    passDownPos = None
+    nominals = []
+    previousPassDownNominal = 0
+    restraintLine = 0
 
     for seriesText in seriesTexts:
         seriesNum += 1
@@ -463,13 +472,22 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             if(line[0][0] == "#"):
                 continue
 
+            if(line[0] == "<Position>"):
+                nominals.append(float(line[2]))
+
             #Make sure all connected series have results passed down
             if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
-                total = 0
-                for position in line[1:]:
-                    total += int(position)
-                
-                if(total == 0):
+                passDownPos = np.zeros(shape=(1, len(line[1:])))
+                for p in range(len(line[1:])):
+                    try:
+                        print(line[1:][p])
+                        passDownPos[0][p] = int(line[1:][p])
+                    except:
+                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": INCORRECT DATA ENTRY")
+                        highlightError(seriesNum, lineNum)
+                        return False
+
+                if(np.count_nonzero(passDownPos) == 0):
                     sendError("NO RESTRAINT PASSED TO SERIES " + str(seriesNum + 1))
                     highlightError(seriesNum, lineNum)
                     return False
@@ -493,7 +511,13 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
 
             #Check restraint and check positions
             if(line[0] == "<Check-Standard>"):
-                checkPos = "".join(line[1:])
+                for p in line[1:]:
+                    try:
+                        checkPos.append(int(p))
+                    except ValueError:
+                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": INCORRECT DATA ENTRY")
+                        highlightError(seriesNum, lineNum)
+                        return False
 
                 if(checkPos == restraintPos):
                     sendError("SERIES " + str(seriesNum) + ": CHECK STANDARD AND RESTRAINT ARE IN THE SAME POSITION")
@@ -501,14 +525,19 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                     return False
 
             if(line[0] == "<Restraint>"):
-                restraintPos = "".join(line[1:])
+                restraintLine = lineNum
+                for p in line[1:]:
+                    try:
+                        restraintPos.append(int(p))
+                    except ValueError:
+                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": INCORRECT DATA ENTRY")
+                        highlightError(seriesNum, lineNum)
+                        return False
 
                 if(checkPos == restraintPos):
                     sendError("SERIES " + str(seriesNum) + ": CHECK STANDARD AND RESTRAINT ARE IN THE SAME POSITION")
                     highlightError(seriesNum, lineNum)
                     return False
-
-            #Check that pass down nominal matches next restraint
 
         #Check number of balace readings
         if(numObs != designObs):
@@ -522,6 +551,21 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
             return False
 
+        #Check restraint nominal vs restrint passed down
+        nominalsArr = np.asarray(nominals)
+        restraintPosArr = np.asarray(restraintPos)
+        passDownPosArr = np.asarray(passDownPos)
+
+        if(seriesNum > 1):
+            d = np.matmul(restraintPosArr, np.matrix.transpose(nominalsArr)) - previousPassDownNominal
+            if(abs(d) > 1e-6):
+                sendError("SERIES " + str(seriesNum) + ": RESTRINT NOMINAL DOES NOT MATCH RESTRAINT PASSED DOWN FROM SERIES " + str(seriesNum - 1))
+                highlightError(seriesNum, restraintLine)
+                return False
+
+        if(seriesNum < numberOfSeries):
+            previousPassDownNominal = np.matmul(passDownPosArr, np.matrix.transpose(nominalsArr))
+
         lineNum = 0
         designObs = 0
         numObs = 0
@@ -529,8 +573,10 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
         obsStartLine = 0
         envStartLine = 0
 
-        checkPos = ""
-        restraintPos = ""
+        checkPos = []
+        restraintPos = []
+
+        nominals = []
 
     return True
 

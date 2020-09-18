@@ -120,3 +120,33 @@ def test7CheckEqualsRestraint(suite):
     except:
         suite.failTest("CHECK STANDARD EQUALS RESTRAINT -")
         suite.logFailure(["Error running front end input checks"], "CHECK STANDARD EQUALS RESTRAINT -")
+
+def test8UnequalRestraintPassed(suite):
+    #Test if input file with a passed-down restraint that does not match the nominal of the next restraint is caught by input checks
+    try:
+        with open("./Testing/MARSTest/Test-BadRestraintPassed-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = text.split("@SERIES")
+        seriesTexts[1] = "@SERIES\n" + seriesTexts[1]
+
+        seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
+        seriesTexts.pop(0)
+
+        suite.assertFalse(InputChecks.runRequiredChecks(seriesTexts, 2, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK FOR UNEQUAL RESTRAINTS -")
+    except:
+        suite.failTest("CHECK FOR UNEQUAL RESTRAINTS -")
+        suite.logFailure(["Error running front end input checks"], "CHECK FOR UNEQUAL RESTRAINTS -")
+
+def test9ErrorInPosition(suite):
+    #Test if input file with space in weight_id is caught by input checks
+    try:
+        with open("./Testing/MARSTest/Test-BadPosition-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = [text]
+
+        suite.assertFalse(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "POSITION WEIGHT_ID -")
+    except:
+        suite.failTest("POSITION WEIGHT_ID -")
+        suite.logFailure(["Error running front end input checks"], "POSITION WEIGHT_ID -")
