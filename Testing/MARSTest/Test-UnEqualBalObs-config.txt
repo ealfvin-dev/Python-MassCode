@@ -1,4 +1,4 @@
-#  Test if balance observations != design observations raises MARSException
+#  Test if balance observations != design observations is caught by input checks
 #  MARS Input
 
     <Report-Number>  Test-UnEqualBalObs
@@ -15,7 +15,7 @@
 <Direct-Reading-SF>  1.0
 
          <Check-ID>  43
-           <Grams>  1
+            <Grams>  1
          <Position>  W500g          500 7.9565  0.000045 1.222
          <Position>  W300g          300 7.9570  0.000045 0.456
          <Position>  W200g          200 7.8477  0.000045 -0.211

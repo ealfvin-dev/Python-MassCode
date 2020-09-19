@@ -1,7 +1,7 @@
-#Test if no restraint passed to series raises MARSException
+#Test if a bad restraint passed to series is caught
 #MARS input
 
-    <Report-Number>  Test-NoRestraintPassed
+    <Report-Number>  Test-BadRestraintPassed
 
      <Restraint-ID>  055
     <Unc-Restraint>  0.034
@@ -38,7 +38,7 @@
 
         <Restraint>  0 1 0 1
    <Check-Standard>  0 -1 0 1
-        <Pass-Down>  0 0 0 0
+        <Pass-Down>  0 0 0 1
 
           <Sigma-t>  0.003
           <Sigma-w>  0.0013
@@ -50,15 +50,15 @@
    <Environmentals>  19.80 737.86 46.96
    <Environmentals>  19.70 717.86 41.96
    <Environmentals>  19.60 767.86 55.96
-   <Environmentals>  19.50 777.86 59.96
-   <Environmentals>  19.40 737.86 35.96
+   <Environmentals>  19.50 777.86 54.96
+   <Environmentals>  19.40 737.86 45.96
    <Environmentals>  19.30 747.86 45.96
    <Environmentals>  18.50 727.86 41.96
-   <Environmentals>  17.50 777.86 40.96
-   <Environmentals>  19.80 767.86 36.96
-   <Environmentals>  20.80 757.86 38.96
-   <Environmentals>  21.80 757.86 58.96
-   <Environmentals>  23.80 707.86 60.96
+   <Environmentals>  19.50 777.86 40.96
+   <Environmentals>  19.80 767.86 46.96
+   <Environmentals>  20.80 757.86 48.96
+   <Environmentals>  20.80 757.86 48.96
+   <Environmentals>  20.80 707.86 40.96
 
   <Env-Corrections>  -0.3 0.9 0.7
 
@@ -118,15 +118,15 @@
    <Environmentals>  19.80 737.86 46.96
    <Environmentals>  19.70 717.86 41.96
    <Environmentals>  19.60 767.86 55.96
-   <Environmentals>  19.50 777.86 59.96
-   <Environmentals>  19.40 737.86 35.96
+   <Environmentals>  19.50 777.86 49.96
+   <Environmentals>  19.40 737.86 45.96
    <Environmentals>  19.30 747.86 45.96
    <Environmentals>  18.50 727.86 41.96
-   <Environmentals>  17.50 777.86 40.96
-   <Environmentals>  19.80 767.86 36.96
-   <Environmentals>  20.80 757.86 38.96
-   <Environmentals>  21.80 757.86 58.96
-   <Environmentals>  23.80 707.86 60.96
+   <Environmentals>  19.50 777.86 40.96
+   <Environmentals>  19.80 767.86 46.96
+   <Environmentals>  20.80 757.86 48.96
+   <Environmentals>  20.80 757.86 48.96
+   <Environmentals>  20.80 707.86 40.96
 
   <Env-Corrections>  -0.3 0.9 0.7
 

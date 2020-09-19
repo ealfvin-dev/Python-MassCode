@@ -2,17 +2,17 @@ import RunFile
 import os
 
 def test1WriteOutFile(suite):
-    #Test if output file can be written out
+    testDesc = "WRITE OUT FILE"
     try:
         data = RunFile.run("./Testing/MARSTest/Test-Writeout-config.txt")
         if(os.path.exists("Test-Writeout-out.txt")):
-            suite.passTest("WRITE OUT FILE")
+            suite.passTest(testDesc)
         else:
-            suite.failTest("WRITE OUT FILE")
-            suite.logFailure(["Could not write out test file"], "WRITE OUT FILE")
+            suite.failTest(testDesc)
+            suite.logFailure(["Could not write out test file"], testDesc)
     except:
-        suite.failTest("WRITE OUT FILE")
-        suite.logFailure(["Could not write out test file"], "WRITE OUT FILE")
+        suite.failTest(testDesc)
+        suite.logFailure(["Could not write out test file"], testDesc)
 
     if(os.path.exists("Test-Writeout-out.txt")):
         os.remove("Test-Writeout-out.txt")

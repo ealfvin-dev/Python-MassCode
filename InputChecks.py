@@ -1,12 +1,16 @@
 #Module to hold functions that perform checks on user input data and results
 
+import numpy as np
+
 #determineIfDirectReadings (helper)
 #checkReportNumber
 #checkStructure
 #checkTags
 #checkIfAllTags
 #checkForRepeats
-#runRequiredChecks
+#checkNumObservations
+#checkVectors
+#checkRestraints
 #runSecondaryChecks
 #checkResults
 
@@ -50,11 +54,13 @@ def checkReportNumber(inputText, sendError, highlightError):
 def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
     #Check structure of input file in UI (split into series)
     seriesNum = 0
-    numSeries = 0
-    lineNum = 0
 
     for seriesText in seriesTexts:
         seriesNum += 1
+
+        numSeries = 0
+        lineNum = 0
+
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
@@ -76,9 +82,6 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
             sendError("SERIES " + str(seriesNum) + ": THERE MUST BE AN @SERIES ANNOTATION BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
             goToSeries(seriesNum, True)
             return False
-
-        numSeries = 0
-        lineNum = 0
 
     return True
 
@@ -128,27 +131,28 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
 
             if(line.split()[0][0] == "#"):
                 continue
-            else:
-                try:
-                    acceptedTags[line.split()[0]]
-                except KeyError:
-                    if(seriesNum):
-                        snText = str(seriesNum)
-                    else:
-                        snText = str(seriesNumber)
 
-                    errorMessage = "SERIES " + snText + " LINE " + str(lineNum) + ": UNKNOWN TAG " + line.split()[0]
-                    highlightError(int(snText), lineNum)
-                    sendError(errorMessage)
-                    return False
+            try:
+                acceptedTags[line.split()[0]]
+            except KeyError:
+                if(seriesNum):
+                    snText = str(seriesNum)
+                else:
+                    snText = str(seriesNumber)
+
+                errorMessage = "SERIES " + snText + " LINE " + str(lineNum) + ": UNKNOWN TAG " + line.split()[0]
+                highlightError(int(snText), lineNum)
+                sendError(errorMessage)
+                return False
                     
     return True
 
 def checkIfAllTags(seriesTexts, sendError, goToSeries):
     #Checks if all tags in known tags dictionary exist in each seriesTexts
     seriesNum = 1
-    for inputText in seriesTexts:
-        if(determineIfDirectReadings(inputText)):
+
+    for seriesText in seriesTexts:
+        if(determineIfDirectReadings(seriesText)):
             tagSet = {"<Report-Number>": False, \
                         "<Restraint-ID>": False, \
                         "<Unc-Restraint>": False, \
@@ -199,7 +203,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Env-Corrections>": False}
 
         #Record required tags found in the series
-        for line in inputText.splitlines():
+        for line in seriesText.splitlines():
             if(line.split() == []):
                 continue
 
@@ -227,7 +231,6 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
 def checkForRepeats(seriesTexts, sendError, highlightError):
     #Check for repeated tags
     seriesNum = 0
-    lineNum = 0
 
     singleTags = {"<Report-Number>": 0,\
         "<Restraint-ID>": 0,\
@@ -255,11 +258,12 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
     for seriesText in seriesTexts:
         seriesNum += 1
         lineNum = 0
+        
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
 
-            if(len(line) == 0):
+            if(line == []):
                 continue
 
             try:
@@ -272,7 +276,6 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
                 highlightError(seriesNum, lineNum)
                 return False
 
-        lineNum = 0
         for key, value in singleTags.items():
             singleTags[key] = 0 
 
@@ -280,18 +283,16 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
 
 def checkInputValues(seriesTexts, sendError, highlightError):
     seriesNum = 0
-    lineNum = 0
 
     for seriesText in seriesTexts:
         seriesNum += 1
+        lineNum = 0
+
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
 
             if(line == []):
-                continue
-
-            if(line[0][0] == "#"):
                 continue
 
             #Check if report number is entered without spaces
@@ -372,14 +373,16 @@ def checkInputValues(seriesTexts, sendError, highlightError):
             #Check format of positions
             if(line[0] == "<Position>"):
                 try:
-                    line[4]
+                    float(line[2])
+                    float(line[3])
+                    float(line[4])
                     continue
-                except IndexError:
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": POSITIONS ARE ENTERED IN THE FORM\n<Position>  ID  NOMINAL  DENSITY  CCE  (CORRECTION)")
+                except (ValueError, IndexError):
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": POSITIONS ARE ENTERED IN THE FORM\n<Position>  WEIGHT_ID  NOMINAL  DENSITY  CCE  (CORRECTION)\nWEIGHT_ID CANNOT CONTAIN SPACES")
                     highlightError(seriesNum, lineNum)
                     return False
 
-            #Check that tags not specially checked above have Integer-type values
+            #Check that tags not specially checked above have numeric-type values
             if(\
             #line[0] == "<Restraint-ID>" or\
             line[0] == "<Unc-Restraint>" or\
@@ -433,48 +436,219 @@ def checkInputValues(seriesTexts, sendError, highlightError):
                     highlightError(seriesNum, lineNum)
                     return False
 
-        lineNum = 0
     return True
 
-def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
-    #Runs other required consistency checks on user input
+def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
     seriesNum = 0
-    lineNum = 0
-
-    designObs = 0
-    numObs = 0
-    numEnvs = 0
-
-    obsStartLine = 0
-    envStartLine = 0
-
-    restraintPos = ""
-    checkPos = ""
 
     for seriesText in seriesTexts:
+        numPositions = 0
+        lineNum = 0
         seriesNum += 1
+
+        #Iterate twice through to grab numPositions and check vector lengths
+        for line in seriesText.splitlines():
+            line = line.split()
+
+            if(line == []):
+                continue
+
+            if(line[0] == "<Position>"):
+                numPositions += 1
+
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
 
-            if(len(line) == 0):
+            if(line == []):
                 continue
 
-            if(line[0][0] == "#"):
+            if(line[0] == "<Design>"):
+                if(len(line[1:]) != numPositions):
+                    sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            if(line[0] == "<Restraint>"):
+                if(len(line[1:]) != numPositions):
+                    sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            if(line[0] == "<Check-Standard>"):
+                if(len(line[1:]) != numPositions):
+                    sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            if(line[0] == "<Pass-Down>"):
+                if(len(line[1:]) != numPositions):
+                    sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+    return True
+
+def checkDesignVsWeights(seriesTexts, sendError, highlightError, goToSeries):
+    seriesNum = 0
+
+    for seriesText in seriesTexts:
+        lineNum = 0
+        nominals = []
+        seriesNum += 1
+
+        #Iterate first time to grab position nominals
+        for line in seriesText.splitlines():
+            line = line.split()
+
+            if(line == []):
                 continue
+
+            if(line[0] == "<Position>"):
+                nominals.append(float(line[2]))
+
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.split()
+
+            if(line == []):
+                continue
+
+            if(line[0] == "<Design>"):
+                nominalsArr = np.asarray(nominals)
+                designLine = line[1:]
+
+                mass1Pos = [0] * len(designLine)
+                mass2Pos = [0] * len(designLine)
+
+                for p in range(len(designLine)):
+                    if(designLine[p] == "1"):
+                        mass1Pos[p] = 1
+                    if(designLine[p] == "-1"):
+                        mass2Pos[p] = 1
+
+                mass1Arr = np.asarray(mass1Pos)
+                mass2Arr = np.asarray(mass2Pos)
+
+                mass1 = np.matmul(mass1Arr, np.matrix.transpose(nominalsArr))
+                mass2 = np.matmul(mass2Arr, np.matrix.transpose(nominalsArr))
+
+                if(abs(mass1 - mass2) > 1e-6):
+                    sendError("SERIES " + str(seriesNum) + ": DESIGN LINE IS NOT COMPATIBLE WITH WEIGHT NOMINALS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+    return True
+
+def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
+    seriesNum = 0
+    previousPassDownNominal = 0
+    
+    for seriesText in seriesTexts:
+        seriesNum += 1
+
+        lineNum = 0
+        checkPos = []
+        restraintPos = []
+        passDownPos = []
+        nominals = []
+        restraintLine = 0
+
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.split()
+
+            if(line == []):
+                continue
+
+            if(line[0] == "<Position>"):
+                nominals.append(float(line[2]))
 
             #Make sure all connected series have results passed down
             if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
-                total = 0
-                for position in line[1:]:
-                    total += int(position)
-                
-                if(total == 0):
+                for p in range(len(line[1:])):
+                    try:
+                        passDownPos.append(int(line[1:][p]))
+                    except ValueError:
+                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": INCORRECT DATA ENTRY")
+                        highlightError(seriesNum, lineNum)
+                        return False
+
+                if(sum(passDownPos) == 0):
                     sendError("NO RESTRAINT PASSED TO SERIES " + str(seriesNum + 1))
                     highlightError(seriesNum, lineNum)
                     return False
                 else:
                     continue
+
+            #Check restraint and check positions
+            if(line[0] == "<Check-Standard>"):
+                for p in line[1:]:
+                    try:
+                        checkPos.append(int(p))
+                    except ValueError:
+                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": INCORRECT DATA ENTRY")
+                        highlightError(seriesNum, lineNum)
+                        return False
+
+                if(checkPos == restraintPos):
+                    sendError("SERIES " + str(seriesNum) + ": CHECK STANDARD AND RESTRAINT ARE IN THE SAME POSITION")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            if(line[0] == "<Restraint>"):
+                restraintLine = lineNum
+                for p in line[1:]:
+                    try:
+                        restraintPos.append(int(p))
+                    except ValueError:
+                        sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": INCORRECT DATA ENTRY")
+                        highlightError(seriesNum, lineNum)
+                        return False
+
+                if(checkPos == restraintPos):
+                    sendError("SERIES " + str(seriesNum) + ": CHECK STANDARD AND RESTRAINT ARE IN THE SAME POSITION")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+        #Check restraint nominal vs restraint passed down
+        nominalsArr = np.asarray(nominals)
+        restraintPosArr = np.asarray(restraintPos)
+
+        if(seriesNum > 1):
+            d = np.matmul(restraintPosArr, np.matrix.transpose(nominalsArr)) - previousPassDownNominal
+            
+            if(abs(d) > 1e-6):
+                sendError("SERIES " + str(seriesNum) + ": RESTRAINT NOMINAL DOES NOT MATCH RESTRAINT PASSED DOWN FROM SERIES " + str(seriesNum - 1))
+                highlightError(seriesNum, restraintLine)
+                return False
+
+        if(seriesNum < numberOfSeries):
+            passDownPosArr = np.asarray(passDownPos)
+            previousPassDownNominal = np.matmul(passDownPosArr, np.matrix.transpose(nominalsArr))
+
+    return True
+
+def checkNumObservations(seriesTexts, sendError, highlightError, goToSeries):
+    #Runs other required consistency checks on user input
+    seriesNum = 0
+
+    for seriesText in seriesTexts:
+        seriesNum += 1
+
+        lineNum = 0
+        designObs = 0
+        numObs = 0
+        numEnvs = 0
+        obsStartLine = 0
+        envStartLine = 0
+
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.split()
+
+            if(line == []):
+                continue
 
             #Count number of observations, balace readings, env lines provided
             if(line[0] == "<Design>"):
@@ -491,25 +665,6 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                 if(envStartLine == 0): envStartLine = lineNum
                 continue
 
-            #Check restraint and check positions
-            if(line[0] == "<Check-Standard>"):
-                checkPos = "".join(line[1:])
-
-                if(checkPos == restraintPos):
-                    sendError("SERIES " + str(seriesNum) + ": CHECK STANDARD AND RESTRAINT ARE IN THE SAME POSITION")
-                    highlightError(seriesNum, lineNum)
-                    return False
-
-            if(line[0] == "<Restraint>"):
-                restraintPos = "".join(line[1:])
-
-                if(checkPos == restraintPos):
-                    sendError("SERIES " + str(seriesNum) + ": CHECK STANDARD AND RESTRAINT ARE IN THE SAME POSITION")
-                    highlightError(seriesNum, lineNum)
-                    return False
-
-            #Check that pass down nominal matches next restraint
-
         #Check number of balace readings
         if(numObs != designObs):
             sendError("SERIES " + str(seriesNum) + ": NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
@@ -522,25 +677,20 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
             return False
 
-        lineNum = 0
-        designObs = 0
-        numObs = 0
-        numEnvs = 0
-        obsStartLine = 0
-        envStartLine = 0
-
-        checkPos = ""
-        restraintPos = ""
-
     return True
 
-def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
+def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError, debugMode=False):
     #Runs unrequired checks on user input file before running and identifies errors. Does not prevent Runfile.run
     seriesNum = 0
-    lineNum = 0
+
+    runMessage = "FILE WAS RUN AND SAVED AS " + str(reportNum) + "-out.txt\n" + "HOWEVER, "
+    if(debugMode):
+        runMessage = ""
 
     for seriesText in seriesTexts:
         seriesNum += 1
+        lineNum = 0
+
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
@@ -555,11 +705,10 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError):
                 humidity = float(line[3])
 
                 if(temp < 18 or temp > 23 or humidity < 40 or humidity > 60):
-                    sendError("FILE WAS RUN AND SAVED AS " + str(reportNum) + "-out.txt\n" + "HOWEVER, ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS\n\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
+                    sendError(runMessage + "ENVIRONMENTALS IN SERIES " + str(seriesNum) + " LINE " + str(lineNum) + " ARE OUTSIDE SOP 28 LIMITS\n\nENVIRONMENTALS ARE ENTERED IN THE FORM <Environmentals>  T P RH")
                     highlightError(seriesNum, lineNum)
                     return False
             
-        lineNum = 0
     return True
 
 def checkResults(results):

@@ -1,0 +1,65 @@
+#Test if input file with incompatible design line is caught by input checks
+#MARS input
+
+    <Report-Number>  FETest-GoodFile-SingleSeries
+
+     <Restraint-ID>  055
+    <Unc-Restraint>  0.034
+
+@SERIES
+
+             <Date>  07 30 2020
+    <Technician-ID>  019
+       <Balance-ID>  099
+  <Direct-Readings>  0
+<Direct-Reading-SF>  1.0
+
+         <Check-ID>  23
+            <Grams>  1
+         <Position>  W50g           50 7.9500  0.000045
+         <Position>  W20g           20 7.9500  0.000045
+         <Position>  W20.g          20 7.9500  0.000045
+         <Position>  W10g           10 7.9500  0.000045
+         <Position>  P10g           10 8.0175  0.000045 0.0255
+         <Position>  Wsum           10 7.9500  0.000045
+
+        <Design-ID>  310
+           <Design>  1 -1 -1 -1 -1  1
+           <Design>  1 -1 -1 -1  1 -1
+           <Design>  1 -1 -1  1 -1  1
+           <Design>  1 -1  0 -1 -1 -1
+           <Design>  1  0 -1 -1 -1 -1
+           <Design>  0  1 -1  1 -1  0
+           <Design>  0  1 -1 -1  0  1
+           <Design>  0  1 -1  0  1 -1
+
+        <Restraint>  1 1 1 1 0 0
+   <Check-Standard>  0 0 0 0 1 0
+        <Pass-Down>  0 0 0 0 0 1
+
+          <Sigma-t>  0.0035
+          <Sigma-w>  0.0025
+
+          <sw-Mass>  19.99885
+       <sw-Density>  7.95
+           <sw-CCE>  0.000045
+
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+   <Environmentals>  19.761 740.6 46.9
+
+  <Env-Corrections>  0 0.29 0
+
+  <Balance-Reading>  0       0.058 20.059 20.000
+  <Balance-Reading>  0.052   0.011 20.015 20.060
+  <Balance-Reading>  0.031   0.040 20.044 20.027
+  <Balance-Reading>  0       0.017 20.019 19.995
+  <Balance-Reading>  -0.001  0.010 20.015 20.006
+  <Balance-Reading>  0       0.021 20.021 20.001
+  <Balance-Reading>  -0.013  0.001 20.006 19.989
+  <Balance-Reading>  0.044  -0.010 19.991 20.051
