@@ -59,6 +59,10 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
 
     for seriesText in seriesTexts:
         seriesNum += 1
+
+        numSeries = 0
+        lineNum = 0
+
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
@@ -80,9 +84,6 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
             sendError("SERIES " + str(seriesNum) + ": THERE MUST BE AN @SERIES ANNOTATION BEFORE <Date> TO MARK THE BEGINNING OF EACH SERIES")
             goToSeries(seriesNum, True)
             return False
-
-        numSeries = 0
-        lineNum = 0
 
     return True
 
@@ -151,8 +152,8 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
 def checkIfAllTags(seriesTexts, sendError, goToSeries):
     #Checks if all tags in known tags dictionary exist in each seriesTexts
     seriesNum = 1
-    for inputText in seriesTexts:
-        if(determineIfDirectReadings(inputText)):
+    for seriesText in seriesTexts:
+        if(determineIfDirectReadings(seriesText)):
             tagSet = {"<Report-Number>": False, \
                         "<Restraint-ID>": False, \
                         "<Unc-Restraint>": False, \
@@ -203,7 +204,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Env-Corrections>": False}
 
         #Record required tags found in the series
-        for line in inputText.splitlines():
+        for line in seriesText.splitlines():
             if(line.split() == []):
                 continue
 
@@ -259,6 +260,7 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
     for seriesText in seriesTexts:
         seriesNum += 1
         lineNum = 0
+        
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
@@ -276,7 +278,6 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
                 highlightError(seriesNum, lineNum)
                 return False
 
-        lineNum = 0
         for key, value in singleTags.items():
             singleTags[key] = 0 
 
@@ -288,6 +289,8 @@ def checkInputValues(seriesTexts, sendError, highlightError):
 
     for seriesText in seriesTexts:
         seriesNum += 1
+        lineNum = 0
+
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
@@ -436,8 +439,6 @@ def checkInputValues(seriesTexts, sendError, highlightError):
                     highlightError(seriesNum, lineNum)
                     return False
 
-        lineNum = 0
-
     return True
 
 def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
@@ -509,6 +510,7 @@ def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goTo
     for seriesText in seriesTexts:
         seriesNum += 1
 
+        lineNum = 0
         checkPos = []
         restraintPos = []
         nominals = []
@@ -657,6 +659,8 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError, debugM
 
     for seriesText in seriesTexts:
         seriesNum += 1
+        lineNum = 0
+        
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
@@ -675,7 +679,6 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError, debugM
                     highlightError(seriesNum, lineNum)
                     return False
             
-        lineNum = 0
     return True
 
 def checkResults(results):
