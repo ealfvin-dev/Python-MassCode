@@ -8,7 +8,9 @@ import numpy as np
 #checkTags
 #checkIfAllTags
 #checkForRepeats
-#runRequiredChecks
+#checkNumObservations
+#checkVectors
+#checkRestraints
 #runSecondaryChecks
 #checkResults
 
@@ -130,19 +132,19 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
 
             if(line.split()[0][0] == "#"):
                 continue
-            else:
-                try:
-                    acceptedTags[line.split()[0]]
-                except KeyError:
-                    if(seriesNum):
-                        snText = str(seriesNum)
-                    else:
-                        snText = str(seriesNumber)
 
-                    errorMessage = "SERIES " + snText + " LINE " + str(lineNum) + ": UNKNOWN TAG " + line.split()[0]
-                    highlightError(int(snText), lineNum)
-                    sendError(errorMessage)
-                    return False
+            try:
+                acceptedTags[line.split()[0]]
+            except KeyError:
+                if(seriesNum):
+                    snText = str(seriesNum)
+                else:
+                    snText = str(seriesNumber)
+
+                errorMessage = "SERIES " + snText + " LINE " + str(lineNum) + ": UNKNOWN TAG " + line.split()[0]
+                highlightError(int(snText), lineNum)
+                sendError(errorMessage)
+                return False
                     
     return True
 
@@ -261,7 +263,7 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
             lineNum += 1
             line = line.split()
 
-            if(len(line) == 0):
+            if(line == []):
                 continue
 
             try:
@@ -291,9 +293,6 @@ def checkInputValues(seriesTexts, sendError, highlightError):
             line = line.split()
 
             if(line == []):
-                continue
-
-            if(line[0][0] == "#"):
                 continue
 
             #Check if report number is entered without spaces
@@ -438,6 +437,7 @@ def checkInputValues(seriesTexts, sendError, highlightError):
                     return False
 
         lineNum = 0
+
     return True
 
 def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
@@ -453,10 +453,9 @@ def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
 
         #Iterate twice through to grab numPositions and check vector lengths
         for line in seriesText.splitlines():
-            if(line == []):
-                continue
+            line = line.split()
 
-            if(line[0][0] == "#"):
+            if(line == []):
                 continue
 
             if(line[0] == "<Position>"):
@@ -464,10 +463,9 @@ def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
 
         for line in seriesText.splitlines():
             lineNum += 1
-            if(line == []):
-                continue
+            line = line.split()
 
-            if(line[0][0] == "#"):
+            if(line == []):
                 continue
 
             if(line[0] == "<Design>"):
@@ -493,20 +491,12 @@ def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
                     sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
                     highlightError(seriesNum, lineNum)
                     return False
-                    
+
     return True
 
-def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
-    #Runs other required consistency checks on user input
+def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
     seriesNum = 0
     lineNum = 0
-
-    designObs = 0
-    numObs = 0
-    numEnvs = 0
-
-    obsStartLine = 0
-    envStartLine = 0
 
     restraintPos = []
     checkPos = []
@@ -518,14 +508,16 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
 
     for seriesText in seriesTexts:
         seriesNum += 1
+
+        checkPos = []
+        restraintPos = []
+        nominals = []
+
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
 
             if(line == []):
-                continue
-
-            if(line[0][0] == "#"):
                 continue
 
             if(line[0] == "<Position>"):
@@ -536,9 +528,8 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                 passDownPos = np.zeros(shape=(1, len(line[1:])))
                 for p in range(len(line[1:])):
                     try:
-                        print(line[1:][p])
                         passDownPos[0][p] = int(line[1:][p])
-                    except:
+                    except ValueError:
                         sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": INCORRECT DATA ENTRY")
                         highlightError(seriesNum, lineNum)
                         return False
@@ -549,21 +540,6 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                     return False
                 else:
                     continue
-
-            #Count number of observations, balace readings, env lines provided
-            if(line[0] == "<Design>"):
-                designObs += 1
-                continue
-
-            if(line[0] == "<Balance-Reading>"):
-                numObs += 1
-                if(obsStartLine == 0): obsStartLine = lineNum
-                continue
-
-            if(line[0] == "<Environmentals>"):
-                numEnvs += 1
-                if(envStartLine == 0): envStartLine = lineNum
-                continue
 
             #Check restraint and check positions
             if(line[0] == "<Check-Standard>"):
@@ -595,19 +571,7 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
                     highlightError(seriesNum, lineNum)
                     return False
 
-        #Check number of balace readings
-        if(numObs != designObs):
-            sendError("SERIES " + str(seriesNum) + ": NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
-            highlightError(seriesNum, obsStartLine, obsStartLine + numObs - 1)
-            return False
-
-        #Check number of balace environmentals
-        if(numEnvs != designObs):
-            sendError("SERIES " + str(seriesNum) + ": NUMBER OF ENVIRONMENTAL OBSERVATIONS DO NOT MATCH THE DESIGN")
-            highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
-            return False
-
-        #Check restraint nominal vs restrint passed down
+        #Check restraint nominal vs restraint passed down
         nominalsArr = np.asarray(nominals)
         restraintPosArr = np.asarray(restraintPos)
 
@@ -622,6 +586,23 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             passDownPosArr = np.asarray(passDownPos)
             previousPassDownNominal = np.matmul(passDownPosArr, np.matrix.transpose(nominalsArr))
 
+    return True
+
+def checkNumObservations(seriesTexts, sendError, highlightError, goToSeries):
+    #Runs other required consistency checks on user input
+    seriesNum = 0
+    lineNum = 0
+
+    designObs = 0
+    numObs = 0
+    numEnvs = 0
+
+    obsStartLine = 0
+    envStartLine = 0
+
+    for seriesText in seriesTexts:
+        seriesNum += 1
+
         lineNum = 0
         designObs = 0
         numObs = 0
@@ -629,10 +610,39 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
         obsStartLine = 0
         envStartLine = 0
 
-        checkPos = []
-        restraintPos = []
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.split()
 
-        nominals = []
+            if(line == []):
+                continue
+
+            #Count number of observations, balace readings, env lines provided
+            if(line[0] == "<Design>"):
+                designObs += 1
+                continue
+
+            if(line[0] == "<Balance-Reading>"):
+                numObs += 1
+                if(obsStartLine == 0): obsStartLine = lineNum
+                continue
+
+            if(line[0] == "<Environmentals>"):
+                numEnvs += 1
+                if(envStartLine == 0): envStartLine = lineNum
+                continue
+
+        #Check number of balace readings
+        if(numObs != designObs):
+            sendError("SERIES " + str(seriesNum) + ": NUMBER OF BALANCE OBSERVATIONS DO NOT MATCH THE DESIGN")
+            highlightError(seriesNum, obsStartLine, obsStartLine + numObs - 1)
+            return False
+
+        #Check number of balace environmentals
+        if(numEnvs != designObs):
+            sendError("SERIES " + str(seriesNum) + ": NUMBER OF ENVIRONMENTAL OBSERVATIONS DO NOT MATCH THE DESIGN")
+            highlightError(seriesNum, envStartLine, envStartLine + numEnvs - 1)
+            return False
 
     return True
 

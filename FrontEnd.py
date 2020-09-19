@@ -582,8 +582,16 @@ class MainLayout(BoxLayout):
         if(not checkInputValues):
             return
 
-        requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
-        if(not requiredChecks):
+        checkNumObservations = InputChecks.checkNumObservations(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkNumObservations):
+            return
+
+        checkVectors = InputChecks.checkVectors(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkVectors):
+            return
+
+        checkRestraints = InputChecks.checkRestraints(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkRestraints):
             return
 
         secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError, debugMode=True)
@@ -678,8 +686,16 @@ class MainLayout(BoxLayout):
         if(not checkInputValues):
             return
 
-        requiredChecks = InputChecks.runRequiredChecks(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
-        if(not requiredChecks):
+        checkNumObservations = InputChecks.checkNumObservations(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkNumObservations):
+            return
+
+        checkVectors = InputChecks.checkVectors(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkVectors):
+            return
+
+        checkRestraints = InputChecks.checkRestraints(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkRestraints):
             return
         #######################
         self.clearErrors()

@@ -160,7 +160,7 @@ def test7Ascending52211(suite):
             suite.assertClose(NIST_MC_MASSES[i], calculatedMasses[i], 1e-7, "ASCENDING 52211 MASS CALCULATION " + str(i + 1))
 
         suite.assertClose(NIST_MC_FVALUE, data[0].fValue, 0.02, "ASCENDING 52211 F-VALUE CALCULATION")
-        suite.assertClose(NIST_MC_TVALUE, data[0].tValue, 0.02, "AASCENDING 52211 T-VALUE CALCULATION")
+        suite.assertClose(NIST_MC_TVALUE, data[0].tValue, 0.02, "ASCENDING 52211 T-VALUE CALCULATION")
 
     except:
         suite.failTest("ASCENDING 52211 MASS CALCULATION")

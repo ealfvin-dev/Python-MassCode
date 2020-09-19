@@ -23,7 +23,9 @@ def test1FEGoodFile(suite):
         suite.assertTrue(InputChecks.checkIfAllTags(seriesTexts, suite.sendErrorMock, suite.goToSeriesMock), "CHECK IF ALL INPUT TAGS MULTIPLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkForRepeats(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK FOR REPEATED TAGS MULTIPLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK INPUT VALUES MULTIPLE SERIES INPUT +")
-        suite.assertTrue(InputChecks.runRequiredChecks(seriesTexts, 4, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "REQUIRED INPUT CHECKS MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkNumObservations(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK NUMBER OBS MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkVectors(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK VECTORS MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkRestraints(seriesTexts, 4, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK RESTRAINTS MULTIPLE SERIES INPUT +")
         suite.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile", suite.sendErrorMock, suite.highlightErrorMock), "SECONDARY INPUT CHECKS MULTIPLE SERIES INPUT +")
     except:
         suite.failTest("MULTIPLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
@@ -44,7 +46,9 @@ def test2FEGoodSingleSeries(suite):
         suite.assertTrue(InputChecks.checkIfAllTags(seriesTexts, suite.sendErrorMock, suite.goToSeriesMock), "CHECK IF ALL INPUT TAGS SINGLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkForRepeats(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK FOR REPEATED TAGS SINGLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK INPUT VALUES SINGLE SERIES INPUT +")
-        suite.assertTrue(InputChecks.runRequiredChecks(seriesTexts, 1, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "REQUIRED INPUT CHECKS SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkNumObservations(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK NUMBER OBS SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkVectors(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK VECTORS SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkRestraints(seriesTexts, 1, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK RESTRAINTS SINGLE SERIES INPUT +")
         suite.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile-SingleSeries", suite.sendErrorMock, suite.highlightErrorMock), "SECONDARY INPUT CHECKS SINGLE SERIES INPUT +")
     except:
         suite.failTest("SINGLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
@@ -137,7 +141,7 @@ def test8CheckEqualsRestraint(suite):
 
         seriesTexts = [text]
 
-        suite.assertFalse(InputChecks.runRequiredChecks(seriesTexts, 1, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK STANDARD EQUALS RESTRAINT -")
+        suite.assertFalse(InputChecks.checkRestraints(seriesTexts, 1, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK STANDARD EQUALS RESTRAINT -")
     except:
         suite.failTest("CHECK STANDARD EQUALS RESTRAINT -")
         suite.logFailure(["Error running front end input checks"], "CHECK STANDARD EQUALS RESTRAINT -")
@@ -154,7 +158,7 @@ def test9UnequalRestraintPassed(suite):
         seriesTexts[1] = seriesTexts[0] + "\n" + seriesTexts[1]
         seriesTexts.pop(0)
 
-        suite.assertFalse(InputChecks.runRequiredChecks(seriesTexts, 2, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK FOR UNEQUAL RESTRAINTS -")
+        suite.assertFalse(InputChecks.checkRestraints(seriesTexts, 2, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK FOR UNEQUAL RESTRAINTS -")
     except:
         suite.failTest("CHECK FOR UNEQUAL RESTRAINTS -")
         suite.logFailure(["Error running front end input checks"], "CHECK FOR UNEQUAL RESTRAINTS -")
@@ -171,3 +175,55 @@ def test10ErrorInPosition(suite):
     except:
         suite.failTest("POSITION WEIGHT_ID -")
         suite.logFailure(["Error running front end input checks"], "POSITION WEIGHT_ID -")
+
+def test11BadDesignVectors(suite):
+    #Test if input file with bad design vector lengths is caught by input checks
+    try:
+        with open("./Testing/MARSTest/Test-FEBadDesignVectorLength-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = [text]
+
+        suite.assertFalse(InputChecks.checkVectors(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK FOR BAD DESIGN VECTOR LENGTH -")
+    except:
+        suite.failTest("CHECK FOR BAD DESIGN VECTOR LENGTH -")
+        suite.logFailure(["Error running front end input checks"], "CHECK FOR BAD DESIGN VECTOR LENGTH -")
+
+def test12BadRestraintVectors(suite):
+    #Test if input file with bad restraint vector lengths is caught by input checks
+    try:
+        with open("./Testing/MARSTest/Test-FEBadRestraintVectorLength-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = [text]
+
+        suite.assertFalse(InputChecks.checkVectors(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK FOR BAD RESTRAINT VECTOR LENGTH -")
+    except:
+        suite.failTest("CHECK FOR BAD RESTRAINT VECTOR LENGTH -")
+        suite.logFailure(["Error running front end input checks"], "CHECK FOR BAD RESTRAINT VECTOR LENGTH -")
+
+def test13BadCheckVectors(suite):
+    #Test if input file with bad restraint vector lengths is caught by input checks
+    try:
+        with open("./Testing/MARSTest/Test-FEBadCheckVectorLength-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = [text]
+
+        suite.assertFalse(InputChecks.checkVectors(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK FOR BAD CHECK VECTOR LENGTH -")
+    except:
+        suite.failTest("CHECK FOR BAD CHECK VECTOR LENGTH -")
+        suite.logFailure(["Error running front end input checks"], "CHECK FOR BAD CHECK VECTOR LENGTH -")
+
+def test14BadPassDownVectors(suite):
+    #Test if input file with bad restraint vector lengths is caught by input checks
+    try:
+        with open("./Testing/MARSTest/Test-FEBadPassDownVectorLength-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = [text]
+
+        suite.assertFalse(InputChecks.checkVectors(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK FOR BAD PASS DOWN VECTOR LENGTH -")
+    except:
+        suite.failTest("CHECK FOR BAD PASS DOWN VECTOR LENGTH -")
+        suite.logFailure(["Error running front end input checks"], "CHECK FOR BAD PASS DOWN VECTOR LENGTH -")
