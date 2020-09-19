@@ -440,6 +440,62 @@ def checkInputValues(seriesTexts, sendError, highlightError):
         lineNum = 0
     return True
 
+def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
+    seriesNum = 0
+    lineNum = 0
+
+    numPositions = 0
+
+    for seriesText in seriesTexts:
+        numPositions = 0
+        lineNum = 0
+        seriesNum += 1
+
+        #Iterate twice through to grab numPositions and check vector lengths
+        for line in seriesText.splitlines():
+            if(line == []):
+                continue
+
+            if(line[0][0] == "#"):
+                continue
+
+            if(line[0] == "<Position>"):
+                numPositions += 1
+
+        for line in seriesText.splitlines():
+            lineNum += 1
+            if(line == []):
+                continue
+
+            if(line[0][0] == "#"):
+                continue
+
+            if(line[0] == "<Design>"):
+                if(len(line[1:]) != numPositions):
+                    sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            if(line[0] == "<Restraint>"):
+                if(len(line[1:]) != numPositions):
+                    sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            if(line[0] == "<Check-Standard>"):
+                if(len(line[1:]) != numPositions):
+                    sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+            if(line[0] == "<Pass-Down>"):
+                if(len(line[1:]) != numPositions):
+                    sendError("VECTOR LENGTH DOES NOT MATCH NUMBER OF POSITIONS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+                    
+    return True
+
 def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
     #Runs other required consistency checks on user input
     seriesNum = 0
@@ -466,7 +522,7 @@ def runRequiredChecks(seriesTexts, numberOfSeries, sendError, highlightError, go
             lineNum += 1
             line = line.split()
 
-            if(len(line) == 0):
+            if(line == []):
                 continue
 
             if(line[0][0] == "#"):
