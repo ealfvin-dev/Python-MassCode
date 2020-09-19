@@ -25,6 +25,7 @@ def test1FEGoodFile(suite):
         suite.assertTrue(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK INPUT VALUES MULTIPLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkNumObservations(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK NUMBER OBS MULTIPLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkVectors(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK VECTORS MULTIPLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkDesignVsWeights(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK DESIGN MULTIPLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkRestraints(seriesTexts, 4, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK RESTRAINTS MULTIPLE SERIES INPUT +")
         suite.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile", suite.sendErrorMock, suite.highlightErrorMock), "SECONDARY INPUT CHECKS MULTIPLE SERIES INPUT +")
     except:
@@ -48,6 +49,7 @@ def test2FEGoodSingleSeries(suite):
         suite.assertTrue(InputChecks.checkInputValues(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock), "CHECK INPUT VALUES SINGLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkNumObservations(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK NUMBER OBS SINGLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkVectors(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK VECTORS SINGLE SERIES INPUT +")
+        suite.assertTrue(InputChecks.checkDesignVsWeights(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK DESIGN SINGLE SERIES INPUT +")
         suite.assertTrue(InputChecks.checkRestraints(seriesTexts, 1, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), "CHECK RESTRAINTS SINGLE SERIES INPUT +")
         suite.assertTrue(InputChecks.runSecondaryChecks(seriesTexts, "Test-FEGoodFile-SingleSeries", suite.sendErrorMock, suite.highlightErrorMock), "SECONDARY INPUT CHECKS SINGLE SERIES INPUT +")
     except:
@@ -250,6 +252,19 @@ def test16UnequalEnvObs(suite):
         seriesTexts = [text]
 
         suite.assertFalse(InputChecks.checkNumObservations(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), testDesc)
+    except:
+        suite.failTest(testDesc)
+        suite.logFailure(["Error running front end input checks"], testDesc)
+
+def test17BadDesignLine(suite):
+    testDesc = "CHECK FOR INCOMPATIBLE DESIGN LINE -"
+    try:
+        with open("./Testing/MARSTest/Test-FEBadDesignLine-config.txt") as file:
+            text = file.read()
+
+        seriesTexts = [text]
+
+        suite.assertFalse(InputChecks.checkDesignVsWeights(seriesTexts, suite.sendErrorMock, suite.highlightErrorMock, suite.goToSeriesMock), testDesc)
     except:
         suite.failTest(testDesc)
         suite.logFailure(["Error running front end input checks"], testDesc)
