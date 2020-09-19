@@ -590,6 +590,10 @@ class MainLayout(BoxLayout):
         if(not checkVectors):
             return
 
+        checkDesignVsWeights = InputChecks.checkDesignVsWeights(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkDesignVsWeights):
+            return
+
         checkRestraints = InputChecks.checkRestraints(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)
         if(not checkRestraints):
             return
@@ -692,6 +696,10 @@ class MainLayout(BoxLayout):
 
         checkVectors = InputChecks.checkVectors(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
         if(not checkVectors):
+            return
+
+        checkDesignVsWeights = InputChecks.checkDesignVsWeights(self.seriesTexts, self.sendError, self.highlightError, self.goToSeries)
+        if(not checkDesignVsWeights):
             return
 
         checkRestraints = InputChecks.checkRestraints(self.seriesTexts, self.numberOfSeries, self.sendError, self.highlightError, self.goToSeries)

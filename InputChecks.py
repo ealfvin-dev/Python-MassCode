@@ -54,8 +54,6 @@ def checkReportNumber(inputText, sendError, highlightError):
 def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
     #Check structure of input file in UI (split into series)
     seriesNum = 0
-    numSeries = 0
-    lineNum = 0
 
     for seriesText in seriesTexts:
         seriesNum += 1
@@ -152,6 +150,7 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
 def checkIfAllTags(seriesTexts, sendError, goToSeries):
     #Checks if all tags in known tags dictionary exist in each seriesTexts
     seriesNum = 1
+
     for seriesText in seriesTexts:
         if(determineIfDirectReadings(seriesText)):
             tagSet = {"<Report-Number>": False, \
@@ -232,7 +231,6 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
 def checkForRepeats(seriesTexts, sendError, highlightError):
     #Check for repeated tags
     seriesNum = 0
-    lineNum = 0
 
     singleTags = {"<Report-Number>": 0,\
         "<Restraint-ID>": 0,\
@@ -285,7 +283,6 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
 
 def checkInputValues(seriesTexts, sendError, highlightError):
     seriesNum = 0
-    lineNum = 0
 
     for seriesText in seriesTexts:
         seriesNum += 1
@@ -443,9 +440,6 @@ def checkInputValues(seriesTexts, sendError, highlightError):
 
 def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
     seriesNum = 0
-    lineNum = 0
-
-    numPositions = 0
 
     for seriesText in seriesTexts:
         numPositions = 0
@@ -495,25 +489,70 @@ def checkVectors(seriesTexts, sendError, highlightError, goToSeries):
 
     return True
 
+def checkDesignVsWeights(seriesTexts, sendError, highlightError, goToSeries):
+    seriesNum = 0
+
+    for seriesText in seriesTexts:
+        lineNum = 0
+        nominals = []
+        seriesNum += 1
+
+        #Iterate first time to grab position nominals
+        for line in seriesText.splitlines():
+            line = line.split()
+
+            if(line == []):
+                continue
+
+            if(line[0] == "<Position>"):
+                nominals.append(float(line[2]))
+
+        for line in seriesText.splitlines():
+            lineNum += 1
+            line = line.split()
+
+            if(line == []):
+                continue
+
+            if(line[0] == "<Design>"):
+                nominalsArr = np.asarray(nominals)
+                designLine = line[1:]
+
+                mass1Pos = [0] * len(designLine)
+                mass2Pos = [0] * len(designLine)
+
+                for p in range(len(designLine)):
+                    if(designLine[p] == "1"):
+                        mass1Pos[p] = 1
+                    if(designLine[p] == "-1"):
+                        mass2Pos[p] = 1
+
+                mass1Arr = np.asarray(mass1Pos)
+                mass2Arr = np.asarray(mass2Pos)
+
+                mass1 = np.matmul(mass1Arr, np.matrix.transpose(nominalsArr))
+                mass2 = np.matmul(mass2Arr, np.matrix.transpose(nominalsArr))
+
+                if(abs(mass1 - mass2) > 1e-6):
+                    sendError("SERIES " + str(seriesNum) + ": DESIGN LINE IS NOT COMPATIBLE WITH WEIGHT NOMINALS")
+                    highlightError(seriesNum, lineNum)
+                    return False
+
+    return True
+
 def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goToSeries):
     seriesNum = 0
-    lineNum = 0
-
-    restraintPos = []
-    checkPos = []
-
-    passDownPos = None
-    nominals = []
     previousPassDownNominal = 0
-    restraintLine = 0
-
+    
     for seriesText in seriesTexts:
         seriesNum += 1
 
         lineNum = 0
         checkPos = []
         restraintPos = []
+        passDownPos = []
         nominals = []
+        restraintLine = 0
 
         for line in seriesText.splitlines():
             lineNum += 1
@@ -527,16 +566,15 @@ def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goTo
 
             #Make sure all connected series have results passed down
             if(line[0] == "<Pass-Down>" and seriesNum < numberOfSeries):
-                passDownPos = np.zeros(shape=(1, len(line[1:])))
                 for p in range(len(line[1:])):
                     try:
-                        passDownPos[0][p] = int(line[1:][p])
+                        passDownPos.append(int(line[1:][p]))
                     except ValueError:
                         sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": INCORRECT DATA ENTRY")
                         highlightError(seriesNum, lineNum)
                         return False
 
-                if(np.count_nonzero(passDownPos) == 0):
+                if(sum(passDownPos) == 0):
                     sendError("NO RESTRAINT PASSED TO SERIES " + str(seriesNum + 1))
                     highlightError(seriesNum, lineNum)
                     return False
@@ -579,6 +617,7 @@ def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goTo
 
         if(seriesNum > 1):
             d = np.matmul(restraintPosArr, np.matrix.transpose(nominalsArr)) - previousPassDownNominal
+            
             if(abs(d) > 1e-6):
                 sendError("SERIES " + str(seriesNum) + ": RESTRAINT NOMINAL DOES NOT MATCH RESTRAINT PASSED DOWN FROM SERIES " + str(seriesNum - 1))
                 highlightError(seriesNum, restraintLine)
@@ -593,14 +632,6 @@ def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goTo
 def checkNumObservations(seriesTexts, sendError, highlightError, goToSeries):
     #Runs other required consistency checks on user input
     seriesNum = 0
-    lineNum = 0
-
-    designObs = 0
-    numObs = 0
-    numEnvs = 0
-
-    obsStartLine = 0
-    envStartLine = 0
 
     for seriesText in seriesTexts:
         seriesNum += 1
@@ -651,7 +682,6 @@ def checkNumObservations(seriesTexts, sendError, highlightError, goToSeries):
 def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError, debugMode=False):
     #Runs unrequired checks on user input file before running and identifies errors. Does not prevent Runfile.run
     seriesNum = 0
-    lineNum = 0
 
     runMessage = "FILE WAS RUN AND SAVED AS " + str(reportNum) + "-out.txt\n" + "HOWEVER, "
     if(debugMode):
@@ -660,7 +690,7 @@ def runSecondaryChecks(seriesTexts, reportNum, sendError, highlightError, debugM
     for seriesText in seriesTexts:
         seriesNum += 1
         lineNum = 0
-        
+
         for line in seriesText.splitlines():
             lineNum += 1
             line = line.split()
