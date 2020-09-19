@@ -1,4 +1,4 @@
-#  Test if balance observations != design observations raises MARSException
+#  Test if balance observations != design observations is caught by input checks
 #  MARS Input
 
     <Report-Number>  Test-UnEqualBalObs
