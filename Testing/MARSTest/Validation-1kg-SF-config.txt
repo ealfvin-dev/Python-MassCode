@@ -11,6 +11,7 @@
              <Date>  09 13 2020
     <Technician-ID>  019
        <Balance-ID>  003
+
   <Direct-Readings>  1
 <Direct-Reading-SF>  1.0027
          <Check-ID>  054
@@ -69,4 +70,3 @@
   <Balance-Reading>  6.7592	
   <Balance-Reading>  -2.3887	
   <Balance-Reading>  -9.1477
-

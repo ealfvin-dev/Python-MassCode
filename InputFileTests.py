@@ -1,6 +1,6 @@
 import InputChecks
 
-def test1FEGoodFile(suite):
+def test01FEGoodFile(suite):
     #Test if a correctly-made input file passes all front end input checks
     try:
         with open("./Testing/MARSTest/Test-FEGoodFile-config.txt") as file:
@@ -32,7 +32,7 @@ def test1FEGoodFile(suite):
         suite.failTest("MULTIPLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
         suite.logFailure(["Error running front end input checks on multiple series input"], "MULTIPLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
 
-def test2FEGoodSingleSeries(suite):
+def test02FEGoodSingleSeries(suite):
     #Test if a correctly-made input file with a single series passes all front end input checks
     try:
         with open("./Testing/MARSTest/Test-FEGoodFile-SingleSeries-config.txt") as file:
@@ -56,7 +56,7 @@ def test2FEGoodSingleSeries(suite):
         suite.failTest("SINGLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
         suite.logFailure(["Error running front end input checks on single series input"], "SINGLE SERIES INPUT FILE PASSES FE INPUT CHECKS")
 
-def test3FEBadReportNum(suite):
+def test03FEBadReportNum(suite):
     testDesc = "REPORT NUMBER FORMAT DETERMINATION -"
     try:
         with open("./Testing/MARSTest/Test-FEBadReportNum-config.txt") as file:
@@ -67,7 +67,7 @@ def test3FEBadReportNum(suite):
         suite.failTest(testDesc)
         suite.logFailure(["Error running front end input checks"], testDesc)
 
-def test4FEBadStructure(suite):
+def test04FEBadStructure(suite):
     testDesc = "INPUT FILE STRUCTURE DETERMINATION -"
     try:
         with open("./Testing/MARSTest/Test-FEGoodFile-config.txt") as file:
@@ -87,7 +87,7 @@ def test4FEBadStructure(suite):
         suite.failTest(testDesc)
         suite.logFailure(["Error running front end input checks"], testDesc)
 
-def test5FEBadTags(suite):
+def test05FEBadTags(suite):
     #Test if unrecognized, duplicate, missing tags are found by Input checks
     try:
         with open("./Testing/MARSTest/Test-FEBadTags-config.txt") as file:
@@ -109,7 +109,7 @@ def test5FEBadTags(suite):
         suite.failTest("TAG DETERMINATIONS -")
         suite.logFailure(["Error running front end input checks"], "TAG DETERMINATIONS -")
 
-def test6MissedInput(suite):
+def test06MissedInput(suite):
     testDesc = "CHECK FOR MISSED INPUT -"
     try:
         with open("./Testing/MARSTest/Test-FEBlankInput-config.txt") as file:
@@ -122,7 +122,7 @@ def test6MissedInput(suite):
         suite.failTest(testDesc)
         suite.logFailure(["Error running front end input checks"], testDesc)
 
-def test7InputNaN(suite):
+def test07InputNaN(suite):
     testDesc = "CHECK FOR NaN INPUT -"
     try:
         with open("./Testing/MARSTest/Test-FEInputNaN-config.txt") as file:
@@ -135,7 +135,7 @@ def test7InputNaN(suite):
         suite.failTest(testDesc)
         suite.logFailure(["Error running front end input checks"], testDesc)
 
-def test8CheckEqualsRestraint(suite):
+def test08CheckEqualsRestraint(suite):
     testDesc = "CHECK STANDARD EQUALS RESTRAINT -"
     try:
         with open("./Testing/MARSTest/Test-FECheckEqualRes-config.txt") as file:
@@ -148,7 +148,7 @@ def test8CheckEqualsRestraint(suite):
         suite.failTest(testDesc)
         suite.logFailure(["Error running front end input checks"], testDesc)
 
-def test9UnequalRestraintPassed(suite):
+def test09UnequalRestraintPassed(suite):
     testDesc = "CHECK FOR UNEQUAL RESTRAINTS -"
     try:
         with open("./Testing/MARSTest/Test-BadRestraintPassed-config.txt") as file:
