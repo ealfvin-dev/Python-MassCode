@@ -161,24 +161,14 @@
             BoxLayout:
                 id: logoBox
                 size_hint: (None, 1)
-                width: dp(200)
+                width: dp(230)
                 orientation: 'horizontal'
-                spacing: dp(10)
-                padding: (0, 0, 0, 0)
+                padding: (0, 10, 10, 0)
 
                 Image:
-                    size_hint: (None, None)
+                    size_hint: (1, 1)
                     size: (navBar.height, navBar.height)
-                    source: 'Logo/MarsLogo_01-01.png'
-
-                Label:
-                    id: logo
-                    size_hint: (None, None)
-                    size: self.texture_size[0], navBar.height
-                    text: "[b]M A R S[size=10dp]\nMass Reduction Software[/size][/b]"
-                    markup: True
-                    color: labelColor
-                    font_size: dp(22)
+                    source: 'Logo/MarsFELogo.png'
 
             TopMenuButton:
                 id: openFile
@@ -197,7 +187,7 @@
 
             TopMenuButton:
                 id: tutorial
-                text: "Tutorial"
+                text: "Visualization"
 
             TopMenuButton:
                 id: about

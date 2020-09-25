@@ -2,6 +2,7 @@ import kivy
 
 from kivy.graphics import Color, Rectangle, Line
 from kivy.graphics.vertex_instructions import RoundedRectangle
+from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from kivy.metrics import dp
 
 from kivy.app import App

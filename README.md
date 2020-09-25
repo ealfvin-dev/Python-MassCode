@@ -7,6 +7,8 @@
  - Kivy v1.11.1:
     ```
     python -m pip install kivy==1.11.1
+    python -m pip install kivy-garden
+    garden install matplotlib
     ```
  - numpy: 1.17.2:
     ```
