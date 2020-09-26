@@ -90,3 +90,28 @@ def getAirDensities(fileText):
             seriesAirDensities = []
 
     return airDensities
+
+def getNominals(fileText):
+    nominals = []
+
+    targetLine = -9999
+    units = "g"
+    lineNum = 0
+    for line in fileText.splitlines():
+        if(line.strip == ""):
+            continue
+
+        lineNum += 1
+        if("NOMINAL" in line and "CCE" in line and "CORRECTION" in line):
+            targetLine = lineNum + 3
+
+        if(lineNum == targetLine - 2):
+            if("lb" in line):
+                units = "lb"
+            else:
+                units = "g"
+        
+        if(lineNum == targetLine):
+            nominals.append(line.split()[1] + " " + units)
+
+    return nominals

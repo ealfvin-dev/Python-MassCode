@@ -40,7 +40,7 @@ def plotDeltas(deltas, sw):
     dottedLine, = ax.plot([0.5, len(deltas) + 0.5], [sw, sw], "k:", label=chr(177) + ' ' + chr(963) + '$_w$' + " Accepted")
     ax.plot([0.5, len(deltas) + 0.5], [-1*sw, -1*sw], "k:")
 
-    legend = fig.legend(handles=[dottedLine], loc='upper right')
+    legend = fig.legend(handles=[dottedLine], loc='upper right', fontsize=14)
 
     ax.set_xlabel('Observation', fontsize=16)
     ax.set_ylabel('Delta (mg)', fontsize=16)
@@ -74,7 +74,7 @@ def plotSensitivities(sensitivities):
     fig, ax = plt.subplots()
 
     ax.bar(x_units, relativeSensitivities, tick_label=tick_label,
-            width=0.8, color=(0.11, 0.45, 0.82, 0.92))
+            width=0.8, color=(0.11, 0.45, 0.82, 0.90))
 
     ax.plot([0.5, len(relativeSensitivities) + 0.5], [0, 0], "k-")
 
@@ -105,10 +105,14 @@ def plotScatter(airDensities, deltas):
     adMin = min(plotAirDensities)
     adMax = max(plotAirDensities)
     adRange = adMax - adMin
+    if(adRange == 0):
+        adRange = 0.001
 
     dMin = min(absDeltas)
     dMax = max(absDeltas)
     dRange = dMax - dMin
+    if(dRange == 0):
+        dRange = 0.001
 
     ax.set_xlim(adMin - adRange / 3, adMax + adRange / 3)
     ax.set_ylim(dMin - dRange / 3, dMax + dRange / 3)

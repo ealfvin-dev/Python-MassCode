@@ -1963,34 +1963,71 @@ class VisualizationPop(Popup):
         self.size_hint = (0.9, 0.9)
         self.series = 1
         self.title = "Data Visualization"
-        #self.auto_dismiss = False
+        self.auto_dismiss = False
         self.deltas = kwargs.get("deltas", [])
         self.sensitivities = kwargs.get("sensitivities", [])
         self.airDensities = kwargs.get("airDensities", [])
         self.sws = kwargs.get("sws", 0)
         self.reportNum = kwargs.get("reportNum", "")
+        self.nominals = kwargs.get("nominals", [])
+
+    def goBack(self, inst):
+        self.dismiss()
+
+    def gotoNext(self, inst):
+        if(self.series < len(self.deltas)):
+            self.series += 1
+            self.buildVisPop()
+    
+    def gotoPrev(self, inst):
+        if(self.series > 1):
+            self.series -= 1
+            self.buildVisPop()
 
     def buildVisPop(self):
         self.title = self.reportNum + " Data Visualization Dashboard"
 
+        try:
+            nominal = self.nominals[self.series - 1]
+        except:
+            nominal = ""
+
         mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
         graphLayout = BoxLayout(orientation="horizontal", spacing=dp(10))
         barGraphLayout = BoxLayout(orientation="vertical", spacing=dp(10))
+        bottomLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
 
-        #try:
-        deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1]))
-        # except:
-        #     deltaPlot = Label(text="Delta Plot: No Data")
+        try:
+            deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1]))
+        except:
+            deltaPlot = Label(text="Delta Plot: No Data")
 
-        #try:
-        sensitivityPlot = FigureCanvasKivyAgg(plotSensitivities(self.sensitivities[self.series - 1]))
-        # except:
-        #     sensitivityPlot = Label(text="Sensitivity Plot: No Data")
+        try:
+            sensitivityPlot = FigureCanvasKivyAgg(plotSensitivities(self.sensitivities[self.series - 1]))
+        except:
+            sensitivityPlot = Label(text="Sensitivity Plot: No Data")
 
-        #try:
-        scatter = FigureCanvasKivyAgg(plotScatter(self.airDensities[self.series - 1], self.deltas[self.series - 1]))
-        # except:
-        #     scatter = Label(text="Scatter Plot: No Data")
+        try:
+            scatter = FigureCanvasKivyAgg(plotScatter(self.airDensities[self.series - 1], self.deltas[self.series - 1]))
+        except:
+            scatter = Label(text="Scatter Plot: No Data")
+
+        backButton = WriteButton(text="Back")
+        backButton.bind(on_release=self.goBack)
+
+        blank = Label(text="", size_hint=(None, 1), width=dp(200))
+        seriesLabel = Label(text="Series " + str(self.series) + " - " + nominal, size_hint=(None, 1), width=dp(200), halign='center')
+        nextSeries = Button(text="=>", size_hint=(None, 1), width=dp(40), background_normal='', background_color = (0.99, 0.99, 0.99, 0.5), font_size=dp(20))
+        prevSeries = Button(text="<=", size_hint=(None, 1), width=dp(40), background_normal='', background_color = (0.99, 0.99, 0.99, 0.5), font_size=dp(20))
+
+        nextSeries.bind(on_release=self.gotoNext)
+        prevSeries.bind(on_release=self.gotoPrev)
+
+        bottomLayout.add_widget(backButton)
+        bottomLayout.add_widget(blank)
+        bottomLayout.add_widget(prevSeries)
+        bottomLayout.add_widget(seriesLabel)
+        bottomLayout.add_widget(nextSeries)
 
         barGraphLayout.add_widget(deltaPlot)
         barGraphLayout.add_widget(sensitivityPlot)
@@ -1998,6 +2035,7 @@ class VisualizationPop(Popup):
         graphLayout.add_widget(barGraphLayout)
         graphLayout.add_widget(scatter)
         mainPopLayout.add_widget(graphLayout)
+        mainPopLayout.add_widget(bottomLayout)
 
         self.content = mainPopLayout
 
@@ -2231,7 +2269,12 @@ class Mars(App):
         except:
             airDensities = []
 
-        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, airDensities=airDensities, sws=sws, reportNum=self.root.reportNum)
+        try:
+            nominals = getNominals(fileText)
+        except:
+            nominals = []
+
+        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, airDensities=airDensities, sws=sws, reportNum=self.root.reportNum, nominals=nominals)
         pop.buildVisPop()
         pop.open()
 

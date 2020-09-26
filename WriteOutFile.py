@@ -187,6 +187,11 @@ def writeTTest(series, f):
 
 def writeMasses(series, f):
     table = []
+    if(series.nominalsInGrams == 1):
+        units = "g"
+    else:
+        units = "lb"
+
     for i in range(len(series.weightIds)):
         line = []
         line.append(series.weightIds[i])
@@ -202,6 +207,6 @@ def writeMasses(series, f):
         
         table.append(line)
 
-    f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL\n(g, lb)", "DENSITY\n(g/cm)", "CCE\n(/" + chr(730) + "C)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
+    f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL\n(" + units + ")", "DENSITY\n(g/cm)", "CCE\n(/" + chr(730) + "C)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
         floatfmt=("", "", ".5f", ".7f", ".8f", ".5f"),\
         colalign=("left", "center", "center", "center", "decimal", "decimal")) + "\n\n")

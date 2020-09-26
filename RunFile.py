@@ -122,7 +122,7 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Grams>":
-                seriesObjects[seriesNumber].toGrams = int(splitLine[1])
+                seriesObjects[seriesNumber].nominalsInGrams = int(splitLine[1])
                 if int(splitLine[1]) == 0:
                     toGrams = 453.59237
                 else:

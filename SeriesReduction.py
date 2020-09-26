@@ -76,7 +76,7 @@ class MatrixSolution:
 
         self.directReadings = 0
         self.directReadingsSF = 0
-        self.nominalsInPounds = 0
+        self.nominalsInGrams = 0
 
         self.designId = 0
 
