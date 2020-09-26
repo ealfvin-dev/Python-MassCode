@@ -32,7 +32,7 @@ from MARSException import MARSException
 from Configs import Configs
 
 from ParsePlotData import *
-from PlotDeltas import plotDeltas
+from MakePlots import *
 
 import sys
 import os
@@ -1971,18 +1971,22 @@ class VisualizationPop(Popup):
         self.reportNum = kwargs.get("reportNum", "")
 
     def buildVisPop(self):
-        self.title = self.reportNum + " Data Visualization"
+        self.title = self.reportNum + " Data Visualization Dashboard"
 
         mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
         graphLayout = BoxLayout(orientation="horizontal", spacing=dp(10))
         barGraphLayout = BoxLayout(orientation="vertical", spacing=dp(10))
 
-        try:
-            deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1]))
-        except:
-            deltaPlot = Label(text="Deltas Plot: No Data")
+        #try:
+        deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1]))
+        # except:
+        #     deltaPlot = Label(text="Delta Plot: No Data")
 
-        sensitivityPlot = Label(text="sensitivity plot")
+        #try:
+        sensitivityPlot = FigureCanvasKivyAgg(plotSensitivities(self.sensitivities[self.series - 1]))
+        # except:
+        #     sensitivityPlot = Label(text="Sensitivity Plot: No Data")
+
         scatter = Label(text="scatter plot")
 
         barGraphLayout.add_widget(deltaPlot)
