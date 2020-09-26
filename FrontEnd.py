@@ -2,6 +2,7 @@ import kivy
 
 from kivy.graphics import Color, Rectangle, Line
 from kivy.graphics.vertex_instructions import RoundedRectangle
+from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from kivy.metrics import dp
 
 from kivy.app import App
@@ -29,6 +30,9 @@ import InputChecks
 import API
 from MARSException import MARSException
 from Configs import Configs
+
+from ParsePlotData import *
+from MakePlots import *
 
 import sys
 import os
@@ -1953,6 +1957,50 @@ class ValidationPopup(Popup):
         self.ids.testingMessage.text = ""
         return
 
+class VisualizationPop(Popup):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.size_hint = (0.9, 0.9)
+        self.series = 1
+        self.title = "Data Visualization"
+        #self.auto_dismiss = False
+        self.deltas = kwargs.get("deltas", [])
+        self.sensitivities = kwargs.get("sensitivities", [])
+        self.airDensities = kwargs.get("airDensities", [])
+        self.sws = kwargs.get("sws", 0)
+        self.reportNum = kwargs.get("reportNum", "")
+
+    def buildVisPop(self):
+        self.title = self.reportNum + " Data Visualization Dashboard"
+
+        mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
+        graphLayout = BoxLayout(orientation="horizontal", spacing=dp(10))
+        barGraphLayout = BoxLayout(orientation="vertical", spacing=dp(10))
+
+        #try:
+        deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1]))
+        # except:
+        #     deltaPlot = Label(text="Delta Plot: No Data")
+
+        #try:
+        sensitivityPlot = FigureCanvasKivyAgg(plotSensitivities(self.sensitivities[self.series - 1]))
+        # except:
+        #     sensitivityPlot = Label(text="Sensitivity Plot: No Data")
+
+        #try:
+        scatter = FigureCanvasKivyAgg(plotScatter(self.airDensities[self.series - 1], self.deltas[self.series - 1]))
+        # except:
+        #     scatter = Label(text="Scatter Plot: No Data")
+
+        barGraphLayout.add_widget(deltaPlot)
+        barGraphLayout.add_widget(sensitivityPlot)
+
+        graphLayout.add_widget(barGraphLayout)
+        graphLayout.add_widget(scatter)
+        mainPopLayout.add_widget(graphLayout)
+
+        self.content = mainPopLayout
+
 class StartupTestsPopup(Popup):
     def __init__(self, **kwargs):
         super().__init__()
@@ -2154,6 +2202,37 @@ class Mars(App):
 
     def openValidationPop(self):
         pop = ValidationPopup()
+        pop.open()
+
+    def openVisualizationPop(self):
+        try:
+            with open(os.path.join(self.root.baseFilePath, self.root.reportNum + "-out.txt"), 'r') as f:
+                fileText = f.read()
+        except:
+            fileText = ""
+
+        try:
+            deltas = getDeltas(fileText)
+        except:
+            deltas = []
+
+        try:
+            sws = getSws(fileText)
+        except:
+            sws = []
+
+        try:
+            sensitivities = getSensitivities(fileText)
+        except:
+            sensitivities = []
+
+        try:
+            airDensities = getAirDensities(fileText)
+        except:
+            airDensities = []
+
+        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, airDensities=airDensities, sws=sws, reportNum=self.root.reportNum)
+        pop.buildVisPop()
         pop.open()
 
 if(__name__ == "__main__"):

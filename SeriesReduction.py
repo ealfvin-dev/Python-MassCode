@@ -13,9 +13,10 @@
 import numpy as np
 import scipy.stats
 from statistics import mean, stdev
-from math import sqrt, exp
+from math import sqrt
 
 from MARSException import MARSException
+from CIPM import calculateAirDensity
 
 class MatrixSolution:
     # The MatrixSolution class holds all calibration data and data reduction results for a given series.
@@ -24,7 +25,7 @@ class MatrixSolution:
     # The parser needs to push read data into MatrixSolution class instance variables for each series.
     # The variable self.seriesNumber holds the series number 0 = first series
 
-    # Functions: calculateAirDensity, calculateDoubleSubs, solution, doStatistics
+    # Functions: calculateDoubleSubs, solution, doStatistics
 
     def __init__(self):
         self.reportNumber = "000000"
@@ -61,9 +62,9 @@ class MatrixSolution:
 
         self.nextRestraint = None
 
-        self.swMass = 0
-        self.swDensity = 0
-        self.swCCE = 0
+        self.swMass = "NA"
+        self.swDensity = "NA"
+        self.swCCE = "NA"
 
         self.sigmaW = 0
         self.sigmaT = 0
@@ -101,51 +102,6 @@ class MatrixSolution:
         self.tValue = 0
         self.deltas = [] #mg
 
-    def calculateAirDensity(self, t, p, rh):
-        #Calculates the air density using the CIPM 2007 air density equation
-        #Picard et al.: https://iopscience.iop.org/article/10.1088/0026-1394/45/2/004
-
-        tKelvin = t + 273.15
-        humidity = rh / 100.0
-        pressurePa = p * (101325 / 760)
-
-        a = 1.2378847*10**-5
-        b = -1.9121316*10**-2
-        c = 33.93711047
-        d = -6.3431645*10**3
-
-        alpha = 1.00062
-        beta = 3.14*10**-8
-        gamma = 5.6*10**-7
-
-        r = 8.31446261815324
-        ma = 28.96546*10**-3
-        mv = 18.01528*10**-3
-
-        aZero = 1.58123*10**-6
-        aOne = -2.9331*10**-8
-        aTwo = 1.1043*10**-10
-        bZero = 5.707*10**-6
-        bOne = -2.051*10**-8
-        cZero = 1.9898*10**-4
-        cOne = -2.376*10**-6
-        dZ = 1.83*10**-11
-        e = -0.765*10**-8
-
-        vaporPressure = exp(a * tKelvin**2 + b * tKelvin + c + d / tKelvin)
-        f = alpha + beta * pressurePa + gamma * t**2
-        xv = humidity * f * (vaporPressure / pressurePa)
-
-        z = 1 - (pressurePa / tKelvin) * (aZero + aOne*t + aTwo*t**2 + (bZero + bOne*t)*xv + (cZero + cOne*t)*xv**2) + \
-            (pressurePa / tKelvin)**2 * (dZ + e*xv**2)
-
-        airDensity = (pressurePa * ma / (z * r * tKelvin)) * (1 - xv * (1 - mv / ma)) * 10**-3
-        return airDensity
-
-        #Approximated air density:
-        #es = 1.3146*10**9*exp(-5315.56/(t + 273.15))
-        #airDensity = (0.46460 / (t + 273.15)) * (p - 0.0037960 * rh * es) * 10**-3
-
     def calculateSensitivities(self):
         #Calculate the average sensitivity factors for each load in the weighing design if doing double subs. Function is called in solution function if doing double substitutions.
         #Returns a dictionary of load:sensitivity pairs.
@@ -164,7 +120,7 @@ class MatrixSolution:
 
             swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((self.environmentals[i][0] - self.envCorrections[0]) - self.referenceTemperature))
 
-            airDensity = self.calculateAirDensity(\
+            airDensity = calculateAirDensity(\
                 self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
 
             swDrift = ((obsFour - obsOne) - (obsThree - obsTwo)) / 2
@@ -212,7 +168,7 @@ class MatrixSolution:
 
 
         for i in range(len(self.balanceReadings)):
-            airDensity = self.calculateAirDensity(\
+            airDensity = calculateAirDensity(\
                 self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
             
             self.airDensities.append(airDensity)
