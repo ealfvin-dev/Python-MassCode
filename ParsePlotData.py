@@ -26,6 +26,15 @@ def getDeltas(fileText):
 
     return deltas
 
+def getSws(fileText):
+    sws = []
+
+    for line in fileText.splitlines():
+        if("ACCEPTED_SW" in line):
+            sws.append(float(line.split()[1]))
+
+    return sws
+
 def getSensitivities(fileText):
     pass
 

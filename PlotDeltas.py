@@ -1,13 +1,15 @@
 import matplotlib.pyplot as plt
 
 def plotDeltas(deltas, sw):
-    sw = 0.35
+    x_units = []
+    tick_label = []
 
-    x_units = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    y_units = [0.1, 0.2, -0.3, -0.05, 0.7, -0.2, -0.1, 0.05, 0.3, 0.46, -0.3]
+    for i in range(len(deltas)):
+        x_units.append(i + 1)
+        tick_label.append(str(i + 1))
 
     colors = []
-    for s in y_units:
+    for s in deltas:
         diff = abs(s) / sw
 
         if(diff <= 1):
@@ -28,16 +30,14 @@ def plotDeltas(deltas, sw):
 
         colors.append((r, g, b, a))
 
-    tick_label = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
-
     fig, ax = plt.subplots()
 
-    ax.bar(x_units, y_units, tick_label=tick_label,
+    ax.bar(x_units, deltas, tick_label=tick_label,
             width=0.8, color=colors)
 
-    ax.plot([0.5, 11.5], [0, 0], "k-")
-    dottedLine, = ax.plot([0.5, 11.5], [sw, sw], "k:", label=chr(177) + ' ' + chr(963) + '$_w$')
-    ax.plot([0.5, 11.5], [-1*sw, -1*sw], "k:")
+    ax.plot([0.5, len(deltas) - 0.5], [0, 0], "k-")
+    dottedLine, = ax.plot([0.5, len(deltas) - 0.5], [sw, sw], "k:", label="Accepted " + chr(177) + ' ' + chr(963) + '$_w$')
+    ax.plot([0.5, len(deltas) - 0.5], [-1*sw, -1*sw], "k:")
 
     legend = plt.legend(handles=[dottedLine], loc='upper right')
 

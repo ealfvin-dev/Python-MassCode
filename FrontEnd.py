@@ -1963,11 +1963,11 @@ class VisualizationPop(Popup):
         self.size_hint = (0.9, 0.9)
         self.series = 1
         self.title = "Data Visualization"
-        self.auto_dismiss = False
+        #self.auto_dismiss = False
         self.deltas = kwargs.get("deltas", [])
         self.sensitivities = kwargs.get("sensitivities", [])
         self.airDensities = kwargs.get("airDensities", [])
-        self.sw = kwargs.get("sw", 0)
+        self.sws = kwargs.get("sws", 0)
         self.reportNum = kwargs.get("reportNum", "")
 
     def buildVisPop(self):
@@ -1977,7 +1977,11 @@ class VisualizationPop(Popup):
         graphLayout = BoxLayout(orientation="horizontal", spacing=dp(10))
         barGraphLayout = BoxLayout(orientation="vertical", spacing=dp(10))
 
-        deltaPlot = FigureCanvasKivyAgg(plotDeltas(deltas[self.series - 1], sw))
+        try:
+            deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1]))
+        except:
+            deltaPlot = Label(text="Deltas Plot: No Data")
+
         sensitivityPlot = Label(text="sensitivity plot")
         scatter = Label(text="scatter plot")
 
@@ -2206,6 +2210,11 @@ class Mars(App):
             deltas = []
 
         try:
+            sws = getSws(fileText)
+        except:
+            sws = []
+
+        try:
             sensitivities = getSensitivities(fileText)
         except:
             sensitivities = []
@@ -2215,7 +2224,7 @@ class Mars(App):
         except:
             airDensities = []
 
-        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, airDensities=airDensities, sw=self.root.sigmaW, reportNum=self.root.reportNum)
+        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, airDensities=airDensities, sws=sws, reportNum=self.root.reportNum)
         pop.buildVisPop()
         pop.open()
 
