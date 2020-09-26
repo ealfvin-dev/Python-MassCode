@@ -1984,6 +1984,9 @@ class VisualizationPop(Popup):
             self.series -= 1
             self.buildVisPop()
 
+    def adjustSpacing(self, inst, value):
+        inst.spacing = value / 2 - dp(290)
+
     def buildVisPop(self):
         self.title = self.reportNum + " Data Visualization Dashboard"
 
@@ -1996,6 +1999,7 @@ class VisualizationPop(Popup):
         graphLayout = BoxLayout(orientation="horizontal", spacing=dp(10))
         barGraphLayout = BoxLayout(orientation="vertical", spacing=dp(10))
         bottomLayout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=dp(50))
+        navLayout = BoxLayout(orientation="horizontal", size_hint=(None, 1), width=dp(300))
 
         try:
             deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1]))
@@ -2015,19 +2019,20 @@ class VisualizationPop(Popup):
         backButton = WriteButton(text="Back")
         backButton.bind(on_release=self.goBack)
 
-        blank = Label(text="", size_hint=(None, 1), width=dp(200))
         seriesLabel = Label(text="Series " + str(self.series) + " - " + nominal, size_hint=(None, 1), width=dp(200), halign='center')
-        nextSeries = Button(text="=>", size_hint=(None, 1), width=dp(40), background_normal='', background_color = (0.99, 0.99, 0.99, 0.5), font_size=dp(20))
-        prevSeries = Button(text="<=", size_hint=(None, 1), width=dp(40), background_normal='', background_color = (0.99, 0.99, 0.99, 0.5), font_size=dp(20))
+        nextSeries = Button(text=">", size_hint=(None, 1), width=dp(40), background_normal='', background_color = (0.99, 0.99, 0.99, 0.5), font_size=dp(24))
+        prevSeries = Button(text="<", size_hint=(None, 1), width=dp(40), background_normal='', background_color = (0.99, 0.99, 0.99, 0.5), font_size=dp(24))
 
         nextSeries.bind(on_release=self.gotoNext)
         prevSeries.bind(on_release=self.gotoPrev)
 
+        navLayout.add_widget(prevSeries)
+        navLayout.add_widget(seriesLabel)
+        navLayout.add_widget(nextSeries)
+
         bottomLayout.add_widget(backButton)
-        bottomLayout.add_widget(blank)
-        bottomLayout.add_widget(prevSeries)
-        bottomLayout.add_widget(seriesLabel)
-        bottomLayout.add_widget(nextSeries)
+        bottomLayout.add_widget(navLayout)
+        bottomLayout.bind(width=self.adjustSpacing)
 
         barGraphLayout.add_widget(deltaPlot)
         barGraphLayout.add_widget(sensitivityPlot)
