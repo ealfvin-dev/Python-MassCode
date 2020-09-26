@@ -159,7 +159,6 @@
             padding: (0, 0, 0, 0)
 
             BoxLayout:
-                id: logoBox
                 size_hint: (None, 1)
                 width: dp(230)
                 orientation: 'horizontal'
@@ -167,30 +166,25 @@
 
                 Image:
                     size_hint: (1, 1)
-                    size: (navBar.height, navBar.height)
-                    source: 'Logo/MarsFELogo.png'
+                    source: './Logo/MarsFELogo.png'
 
             TopMenuButton:
-                id: openFile
                 text: "Open File"
                 on_release: app.openFilePop()
 
             TopMenuButton:
-                id: newFile
                 text: "New File"
                 on_release: app.openNewFilePop()
 
             TopMenuButton:
-                id: validation
                 text: "Run Tests"
                 on_release: app.openValidationPop()
 
             TopMenuButton:
-                id: tutorial
                 text: "Visualization"
+                on_release: app.openVisualizationPop()
 
             TopMenuButton:
-                id: about
                 text: "About MARS"
 
         BoxLayout:

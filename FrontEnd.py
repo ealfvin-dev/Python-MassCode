@@ -31,6 +31,9 @@ import API
 from MARSException import MARSException
 from Configs import Configs
 
+from ParsePlotData import *
+from PlotDeltas import plotDeltas
+
 import sys
 import os
 import threading
@@ -1954,6 +1957,39 @@ class ValidationPopup(Popup):
         self.ids.testingMessage.text = ""
         return
 
+class VisualizationPop(Popup):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.size_hint = (0.9, 0.9)
+        self.series = 1
+        self.title = "Data Visualization"
+        self.auto_dismiss = False
+        self.deltas = kwargs.get("deltas", [])
+        self.sensitivities = kwargs.get("sensitivities", [])
+        self.airDensities = kwargs.get("airDensities", [])
+        self.sw = kwargs.get("sw", 0)
+        self.reportNum = kwargs.get("reportNum", "")
+
+    def buildVisPop(self):
+        self.title = self.reportNum + " Data Visualization"
+
+        mainPopLayout = BoxLayout(orientation="vertical", spacing=dp(12), padding=(dp(10), dp(10)))
+        graphLayout = BoxLayout(orientation="horizontal", spacing=dp(10))
+        barGraphLayout = BoxLayout(orientation="vertical", spacing=dp(10))
+
+        deltaPlot = FigureCanvasKivyAgg(plotDeltas(deltas[self.series - 1], sw))
+        sensitivityPlot = Label(text="sensitivity plot")
+        scatter = Label(text="scatter plot")
+
+        barGraphLayout.add_widget(deltaPlot)
+        barGraphLayout.add_widget(sensitivityPlot)
+
+        graphLayout.add_widget(barGraphLayout)
+        graphLayout.add_widget(scatter)
+        mainPopLayout.add_widget(graphLayout)
+
+        self.content = mainPopLayout
+
 class StartupTestsPopup(Popup):
     def __init__(self, **kwargs):
         super().__init__()
@@ -2155,6 +2191,32 @@ class Mars(App):
 
     def openValidationPop(self):
         pop = ValidationPopup()
+        pop.open()
+
+    def openVisualizationPop(self):
+        try:
+            with open(os.path.join(self.root.baseFilePath, self.root.reportNum + "-out.txt"), 'r') as f:
+                fileText = f.read()
+        except:
+            fileText = ""
+
+        try:
+            deltas = getDeltas(fileText)
+        except:
+            deltas = []
+
+        try:
+            sensitivities = getSensitivities(fileText)
+        except:
+            sensitivities = []
+
+        try:
+            airDensities = getAirDensities(fileText)
+        except:
+            airDensities = []
+
+        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, airDensities=airDensities, sw=self.root.sigmaW, reportNum=self.root.reportNum)
+        pop.buildVisPop()
         pop.open()
 
 if(__name__ == "__main__"):

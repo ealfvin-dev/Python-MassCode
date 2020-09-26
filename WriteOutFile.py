@@ -17,6 +17,7 @@ def writeOut(seriesList, basePath):
         writeSeriesRestraint(series, f)
         writeSeriesCheck(series, f)
         writeSentitivityWeight(series, f)
+        writeDesignData(series, f)
         writeEnvironmentals(series, f)
         writeObservations(series, f)
         writeSensitivities(series, f)
@@ -38,8 +39,7 @@ def writeHeader(series, f):
 def writeSeriesMetaData(series, f):
     f.write("DATE  " + " ".join(series.date) + "\n\n")
     f.write("OPERATOR_ID  " + str(series.technicianId) + "\n")
-    f.write("BALANCE_ID  " + str(series.balanceId) + "\n")
-    f.write("DESIGN_ID  " + series.designId + "\n\n")
+    f.write("BALANCE_ID  " + str(series.balanceId) + "\n\n")
 
 def writeSeriesRestraint(series, f):
     restraint = []
@@ -67,6 +67,11 @@ def writeSentitivityWeight(series, f):
     f.write("SENSITIVITY_WEIGHT_DENSITY  " + str(series.swDensity) + "\n")
     f.write("SENSITIVITY_WEIGHT_CCE  " + str(series.swCCE) + "\n\n")
 
+def writeDesignData(series, f):
+    f.write("DESIGN_ID  " + str(series.designId) + "\n")
+    f.write("POSITIONS  " + str(series.positions) + "\n")
+    f.write("OBSERVATIONS  " + str(series.observations) + "\n\n")
+
 def writeEnvironmentals(series, f):
     f.write("##ENVIRONMENTALS (CORRECTED)##\n")
     f.write("        T(" + chr(730) + "C) P(mmHg) RH(%)  AIR DENSITY(g/cm)\n")
@@ -93,7 +98,7 @@ def writeEnvironmentals(series, f):
     f.write(tabulate(table, tablefmt="plain", floatfmt=("", ".2f", ".2f", ".2f", ".8f")) + "\n\n")
 
 def writeObservations(series, f):
-    f.write("##BALANCE OBSERVATIONS##\n")
+    f.write("##BALANCE READINGS##\n")
     table = []
     for i in range(len(series.balanceReadings)):
         line = []
@@ -138,7 +143,7 @@ def writeSensitivities(series, f):
 
         table.append(line)
 
-    f.write(tabulate(table, headers=["", "LOAD\n(g)", "A(I)\n(mg)", "DELTA(MG)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"],\
+    f.write(tabulate(table, headers=["", "LOAD\n(g)", "A(I)\n(mg)", "DELTA\n(mg)", "OBS SENSITIVITY\n(mg/DIV)", "AVE SENSITIVITY\n(mg/DIV)"],\
         floatfmt=("", ".5f", ".5f", ".5f", ".5f", ".5f"), tablefmt="plain",\
         colalign=("left", "center", "decimal", "decimal", "decimal", "decimal")) + "\n\n")
 
