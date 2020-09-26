@@ -1987,7 +1987,10 @@ class VisualizationPop(Popup):
         # except:
         #     sensitivityPlot = Label(text="Sensitivity Plot: No Data")
 
-        scatter = Label(text="scatter plot")
+        #try:
+        scatter = FigureCanvasKivyAgg(plotScatter(self.airDensities[self.series - 1], self.deltas[self.series - 1]))
+        # except:
+        #     scatter = Label(text="Scatter Plot: No Data")
 
         barGraphLayout.add_widget(deltaPlot)
         barGraphLayout.add_widget(sensitivityPlot)

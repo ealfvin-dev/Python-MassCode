@@ -42,16 +42,15 @@ def plotDeltas(deltas, sw):
 
     legend = fig.legend(handles=[dottedLine], loc='upper right')
 
-    ax.set_xlabel('Observation')
-    ax.set_ylabel('Delta (mg)')
-    ax.set_title('Residuals (Deltas)')
+    ax.set_xlabel('Observation', fontsize=16)
+    ax.set_ylabel('Delta (mg)', fontsize=16)
+    ax.set_title('Residuals (Deltas)', fontsize=17)
 
     return fig
 
 def plotSensitivities(sensitivities):
     x_units = []
     tick_label = []
-    colors = []
     relativeSensitivities = []
 
     if(mean(sensitivities) < 5):
@@ -70,21 +69,48 @@ def plotSensitivities(sensitivities):
     for i in range(len(sensitivities)):
         x_units.append(i + 1)
         tick_label.append(str(i + 1))
-        colors.append((0.11, 0.45, 0.82, 0.92))
         relativeSensitivities.append(sensitivities[i] - relativeSensitivity)
 
     fig, ax = plt.subplots()
 
     ax.bar(x_units, relativeSensitivities, tick_label=tick_label,
-            width=0.8, color=colors)
+            width=0.8, color=(0.11, 0.45, 0.82, 0.92))
 
     ax.plot([0.5, len(relativeSensitivities) + 0.5], [0, 0], "k-")
 
-    ax.set_xlabel('Observation')
-    ax.set_ylabel('Sensitivity - ' + str(relativeSensitivity) + ' (mg/div)')
-    ax.set_title('Sensitivities')
+    ax.set_xlabel('Observation', fontsize=16)
+    ax.set_ylabel('Sensitivity - ' + str(relativeSensitivity) + ' (mg/div)', fontsize=16)
+    ax.set_title('Sensitivities', fontsize=17)
 
     return fig
 
-def plotScatter(self, airDensities, deltas):
-    pass
+def plotScatter(airDensities, deltas):
+    colors = []
+    plotAirDensities = []
+    absDeltas = []
+
+    for i in range(len(airDensities)):
+        plotAirDensities.append(airDensities[i] * 1000)
+        absDeltas.append(abs(deltas[i]))
+        colors.append((0.11, 0.45, 0.82, 0.92))
+
+    fig, ax = plt.subplots()
+
+    ax.scatter(plotAirDensities, absDeltas, c=colors, s=50, alpha=0.8)
+
+    ax.set_xlabel(chr(961) + '$_a$' + ' (mg/cm' + '$^3$' + ')', fontsize=16)
+    ax.set_ylabel('abs(Delta) (mg)', fontsize=16)
+    ax.set_title('abs(Delta) vs ' + chr(961) + '$_a$', fontsize=17)
+
+    adMin = min(plotAirDensities)
+    adMax = max(plotAirDensities)
+    adRange = adMax - adMin
+
+    dMin = min(absDeltas)
+    dMax = max(absDeltas)
+    dRange = dMax - dMin
+
+    ax.set_xlim(adMin - adRange / 3, adMax + adRange / 3)
+    ax.set_ylim(dMin - dRange / 3, dMax + dRange / 3)
+
+    return fig
