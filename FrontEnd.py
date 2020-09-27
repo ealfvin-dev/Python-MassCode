@@ -2014,10 +2014,10 @@ class VisualizationPop(Popup):
         except:
             sensitivityPlot = Label(text="Sensitivity Plot: No Data")
 
-        try:
-            scatter = FigureCanvasKivyAgg(plotScatter(self.sensitivities[self.series - 1], self.deltas[self.series - 1], self.temperatures[self.series - 1], dp(9), dp(40)))
-        except:
-            scatter = Label(text="Scatter Plot: No Data")
+        #try:
+        scatter = FigureCanvasKivyAgg(plotScatter(self.sensitivities[self.series - 1], self.deltas[self.series - 1], self.temperatures[self.series - 1], dp(9), dp(120)))
+        # except:
+        #     scatter = Label(text="Scatter Plot: No Data")
 
         backButton = WriteButton(text="Back")
         backButton.bind(on_release=self.goBack)

@@ -40,7 +40,7 @@ def plotDeltas(deltas, sw, fontSize):
     dottedLine, = ax.plot([0.5, len(deltas) + 0.5], [sw, sw], "k:", label=chr(177) + ' ' + chr(963) + '$_w$' + " Accepted")
     ax.plot([0.5, len(deltas) + 0.5], [-1*sw, -1*sw], "k:")
 
-    legend = fig.legend(handles=[dottedLine], loc='upper right', fontsize=int(fontSize * 0.85))
+    fig.legend(handles=[dottedLine], loc='upper right', fontsize=int(fontSize * 0.85))
 
     ax.set_xlabel('Observation', fontsize=fontSize)
     ax.set_ylabel('Delta (mg)', fontsize=fontSize)
@@ -99,25 +99,40 @@ def plotScatter(sensitivities, deltas, temperatures, fontSize, dotSize):
             continue
 
         if(temperatures[i] <= (tMin + tMax) / 2):
-            r = 0.01 + 0.91 * (temperatures[i] - tMin) / (tRange / 2)
-            g = 0.15
-            b = 0.92
+            r = 0.01 + 0.81 * (temperatures[i] - tMin) / (tRange / 2)
+            g = 0.10 + 0.50 * (temperatures[i] - tMin) / (tRange / 2)
+            b = 0.82
 
             colors.append((r, g, b, 0.92))
         else:
-            r = 0.92
-            g = 0.15
-            b = 0.92 - 0.91 * (temperatures[i] - ((tMax + tMin) / 2)) / (tRange / 2)
+            r = 0.82
+            g = 0.60 - 0.50 * (temperatures[i] - ((tMax + tMin) / 2)) / (tRange / 2)
+            b = 0.82 - 0.81 * (temperatures[i] - ((tMax + tMin) / 2)) / (tRange / 2)
 
             colors.append((r, g, b, 0.92))
 
     fig, ax = plt.subplots()
 
-    ax.scatter(sensitivities, absDeltas, c=colors, s=dotSize, alpha=0.9)
+    tMinLabel = False
+    tMaxLabel = False
+
+    for i in range(len(sensitivities)):
+        if(temperatures[i] == tMin and tMinLabel == False):
+            ax.scatter([sensitivities[i]], [absDeltas[i]], c=[colors[i]], s=dotSize, alpha=0.9, label=str(tMin) + " " + chr(730) + "C")
+            tMinLabel = True
+
+        elif(temperatures[i] == tMax and tMaxLabel == False and tRange != 0):
+            ax.scatter([sensitivities[i]], [absDeltas[i]], c=[colors[i]], s=dotSize, alpha=0.9, label=str(tMax) + " " + chr(730) + "C")
+            tMaxLabel = True
+
+        else:
+            ax.scatter([sensitivities[i]], [absDeltas[i]], c=[colors[i]], s=dotSize, alpha=0.9)
 
     ax.set_xlabel('Sensitivity (mg/div)', fontsize=fontSize)
     ax.set_ylabel('abs(Delta) (mg)', fontsize=fontSize)
     ax.set_title('Sensitivity vs abs(Delta) vs Temp', fontsize=fontSize)
+    ax.legend(fontsize=fontSize*0.85)
+    #ax.grid(True)
 
     senMin = min(sensitivities)
     senMax = max(sensitivities)
