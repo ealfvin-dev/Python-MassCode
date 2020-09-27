@@ -1972,15 +1972,18 @@ class VisualizationPop(Popup):
         self.nominals = kwargs.get("nominals", [])
 
     def goBack(self, inst):
+        closeFigures()
         self.dismiss()
 
     def gotoNext(self, inst):
         if(self.series < len(self.deltas)):
             self.series += 1
+            closeFigures()
             self.buildVisPop()
     
     def gotoPrev(self, inst):
         if(self.series > 1):
+            closeFigures()
             self.series -= 1
             self.buildVisPop()
 

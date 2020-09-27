@@ -135,3 +135,6 @@ def plotScatter(sensitivities, deltas, temperatures, fontSize, dotSize):
     ax.set_ylim(dMin - dRange / 2.3, dMax + dRange / 2.3)
 
     return fig
+
+def closeFigures():
+    plt.close(fig='all')
