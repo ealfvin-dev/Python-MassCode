@@ -1966,7 +1966,7 @@ class VisualizationPop(Popup):
         self.auto_dismiss = False
         self.deltas = kwargs.get("deltas", [])
         self.sensitivities = kwargs.get("sensitivities", [])
-        self.airDensities = kwargs.get("airDensities", [])
+        self.temperatures = kwargs.get("temperatures", [])
         self.sws = kwargs.get("sws", 0)
         self.reportNum = kwargs.get("reportNum", "")
         self.nominals = kwargs.get("nominals", [])
@@ -1991,7 +1991,7 @@ class VisualizationPop(Popup):
         self.title = self.reportNum + " Data Visualization Dashboard"
 
         try:
-            nominal = self.nominals[self.series - 1]
+            nominal = " - " + self.nominals[self.series - 1]
         except:
             nominal = ""
 
@@ -2002,24 +2002,24 @@ class VisualizationPop(Popup):
         navLayout = BoxLayout(orientation="horizontal", size_hint=(None, 1), width=dp(300))
 
         try:
-            deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1]))
+            deltaPlot = FigureCanvasKivyAgg(plotDeltas(self.deltas[self.series - 1], self.sws[self.series - 1], dp(9)))
         except:
             deltaPlot = Label(text="Delta Plot: No Data")
 
         try:
-            sensitivityPlot = FigureCanvasKivyAgg(plotSensitivities(self.sensitivities[self.series - 1]))
+            sensitivityPlot = FigureCanvasKivyAgg(plotSensitivities(self.sensitivities[self.series - 1], dp(9)))
         except:
             sensitivityPlot = Label(text="Sensitivity Plot: No Data")
 
         try:
-            scatter = FigureCanvasKivyAgg(plotScatter(self.airDensities[self.series - 1], self.deltas[self.series - 1]))
+            scatter = FigureCanvasKivyAgg(plotScatter(self.sensitivities[self.series - 1], self.deltas[self.series - 1], self.temperatures[self.series - 1], dp(9), dp(40)))
         except:
             scatter = Label(text="Scatter Plot: No Data")
 
         backButton = WriteButton(text="Back")
         backButton.bind(on_release=self.goBack)
 
-        seriesLabel = Label(text="Series " + str(self.series) + " - " + nominal, size_hint=(None, 1), width=dp(200), halign='center')
+        seriesLabel = Label(text="Series " + str(self.series) + nominal, size_hint=(None, 1), width=dp(200), halign='center')
         nextSeries = Button(text=">", size_hint=(None, 1), width=dp(40), background_normal='', background_color = (0.99, 0.99, 0.99, 0.5), font_size=dp(24))
         prevSeries = Button(text="<", size_hint=(None, 1), width=dp(40), background_normal='', background_color = (0.99, 0.99, 0.99, 0.5), font_size=dp(24))
 
@@ -2270,16 +2270,16 @@ class Mars(App):
             sensitivities = []
 
         try:
-            airDensities = getAirDensities(fileText)
+            temperatures = getTemperatures(fileText)
         except:
-            airDensities = []
+            temperatures = []
 
         try:
             nominals = getNominals(fileText)
         except:
             nominals = []
 
-        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, airDensities=airDensities, sws=sws, reportNum=self.root.reportNum, nominals=nominals)
+        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, temperatures=temperatures, sws=sws, reportNum=self.root.reportNum, nominals=nominals)
         pop.buildVisPop()
         pop.open()
 

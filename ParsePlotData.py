@@ -63,9 +63,9 @@ def getSensitivities(fileText):
 
     return sensitivities
 
-def getAirDensities(fileText):
-    airDensities = []
-    seriesAirDensities = []
+def getTemperatures(fileText):
+    temperatures = []
+    seriesTemperatures = []
 
     observations = 0
     headerLine = -9999
@@ -82,14 +82,14 @@ def getAirDensities(fileText):
             headerLine = lineNum + 1
 
         if(lineNum > headerLine and lineNum < headerLine + observations):
-            seriesAirDensities.append(float(line.split()[4]))
+            seriesTemperatures.append(float(line.split()[1]))
 
         if(lineNum == headerLine + observations):
-            seriesAirDensities.append(float(line.split()[4]))
-            airDensities.append(seriesAirDensities)
-            seriesAirDensities = []
+            seriesTemperatures.append(float(line.split()[1]))
+            temperatures.append(seriesTemperatures)
+            seriesTemperatures = []
 
-    return airDensities
+    return temperatures
 
 def getNominals(fileText):
     nominals = []
