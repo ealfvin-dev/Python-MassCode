@@ -56,7 +56,6 @@ class MainLayout(BoxLayout):
         super().__init__()
 
         with self.canvas.before:
-            #Color(rgba=(231/255, 234/255, 236/255, 1))
             Color(rgba=Configs.backgroundColor)
             self.backgroundRect = Rectangle(size=self.size, pos=self.pos)
 
@@ -1983,15 +1982,15 @@ class VisualizationPop(Popup):
     
     def gotoPrev(self, inst):
         if(self.series > 1):
-            closeFigures()
             self.series -= 1
+            closeFigures()
             self.buildVisPop()
 
     def adjustSpacing(self, inst, value):
         inst.spacing = value / 2 - dp(290)
 
     def buildVisPop(self):
-        self.title = self.reportNum + " Data Visualization Dashboard"
+        self.title = "Data Visualization Dashboard"
 
         try:
             nominal = " - " + self.nominals[self.series - 1]
@@ -2014,10 +2013,10 @@ class VisualizationPop(Popup):
         except:
             sensitivityPlot = Label(text="Sensitivity Plot: No Data")
 
-        #try:
-        scatter = FigureCanvasKivyAgg(plotScatter(self.sensitivities[self.series - 1], self.deltas[self.series - 1], self.temperatures[self.series - 1], dp(9), dp(120)))
-        # except:
-        #     scatter = Label(text="Scatter Plot: No Data")
+        try:
+            scatter = FigureCanvasKivyAgg(plotScatter(self.sensitivities[self.series - 1], self.deltas[self.series - 1], self.temperatures[self.series - 1], dp(9), dp(120)))
+        except:
+            scatter = Label(text="Scatter Plot: No Data")
 
         backButton = WriteButton(text="Back")
         backButton.bind(on_release=self.goBack)
