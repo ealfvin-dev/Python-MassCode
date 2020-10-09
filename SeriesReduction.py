@@ -14,6 +14,7 @@ import numpy as np
 import scipy.stats
 from statistics import mean, stdev
 from math import sqrt
+from decimal import *
 
 from MARSException import MARSException
 from CIPM import calculateAirDensity
@@ -121,7 +122,7 @@ class MatrixSolution:
             swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((self.environmentals[i][0] - self.envCorrections[0]) - self.referenceTemperature))
 
             airDensity = calculateAirDensity(\
-                self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
+                Decimal(self.environmentals[i][0] - self.envCorrections[0]), Decimal(self.environmentals[i][1] - self.envCorrections[1]), Decimal(self.environmentals[i][2] - self.envCorrections[2]))
 
             swDrift = ((obsFour - obsOne) - (obsThree - obsTwo)) / 2
 
@@ -169,7 +170,7 @@ class MatrixSolution:
 
         for i in range(len(self.balanceReadings)):
             airDensity = calculateAirDensity(\
-                self.environmentals[i][0] - self.envCorrections[0], self.environmentals[i][1] - self.envCorrections[1], self.environmentals[i][2] - self.envCorrections[2])
+                Decimal(self.environmentals[i][0] - self.envCorrections[0]), Decimal(self.environmentals[i][1] - self.envCorrections[1]), Decimal(self.environmentals[i][2] - self.envCorrections[2]))
             
             self.airDensities.append(airDensity)
 
