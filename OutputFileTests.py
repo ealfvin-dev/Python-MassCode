@@ -39,12 +39,12 @@ def test2OutFileData(suite):
         outFileTcrit = 0.0
         outFileTvalue = 0.0
 
-        calculatedSw = round(data[0].swObs, 6)
-        calculatedFcrit = round(data[0].fCritical, 2)
-        calculatedFvalue = round(data[0].fValue, 2)
-        calculatedCheckStd = round(data[0].calculatedCheckCorrection, 6)
-        calculatedTcrit = round(data[0].tCritical, 2)
-        calculatedTvalue = round(data[0].tValue, 2)
+        calculatedSw = round(float(data[0].swObs), 6)
+        calculatedFcrit = round(float(data[0].fCritical), 2)
+        calculatedFvalue = round(float(data[0].fValue), 2)
+        calculatedCheckStd = round(float(data[0].calculatedCheckCorrection), 6)
+        calculatedTcrit = round(float(data[0].tCritical), 2)
+        calculatedTvalue = round(float(data[0].tValue), 2)
 
         inputDensities = []
         inputRestraintID = ""
@@ -132,7 +132,7 @@ def test2OutFileData(suite):
 
         #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
         for i in range(len(expectedMasses)):
-            suite.assertEqual(outFileMasses[i], round(expectedMasses[i], 8), "DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
+            suite.assertEqual(outFileMasses[i], round(float(expectedMasses[i]), 8), "DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
 
         #Test if densities in output file match input
         for i in range(len(inputDensities)):

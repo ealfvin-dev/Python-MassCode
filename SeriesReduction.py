@@ -314,7 +314,7 @@ class MatrixSolution:
         matrixYHat = np.matmul(np.matmul(np.matmul(self.designMatrix, matrixQ), np.matrix.transpose(self.designMatrix)), self.matrixY)
 
         #Calculate the within process standard deviation (in mg):
-        sumOfResiduals = 0.0 #grams^2
+        sumOfResiduals = 0 #grams^2
         for i in range(np.shape(matrixYHat)[0]):
             sumOfResiduals += (self.matrixY[i, 0] - matrixYHat[i, 0])**2
             self.deltas.append((self.matrixY[i, 0] - matrixYHat[i, 0]) * 1000)

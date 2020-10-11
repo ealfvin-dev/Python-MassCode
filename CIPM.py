@@ -1,6 +1,6 @@
 from math import exp
 from decimal import *
-import numpy as np
+from numpy import longdouble
 
 def calculateAirDensity(tObs, tc, pObs, pc, rhObs, rhc):
     #Calculates the air density using the CIPM 2007 air density equation
@@ -47,7 +47,7 @@ def calculateAirDensity(tObs, tc, pObs, pc, rhObs, rhc):
         (pressurePa / tKelvin)**2 * (dZ + e*xv**2)
 
     airDensity = (pressurePa * ma / (z * r * tKelvin)) * (1 - xv * (1 - mv / ma)) * Decimal('0.001')
-    return float(airDensity)
+    return longdouble(airDensity)
 
     #Approximated air density:
     #es = 1.3146*10**9*exp(-5315.56/(t + 273.15))
