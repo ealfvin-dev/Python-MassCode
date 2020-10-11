@@ -224,13 +224,13 @@ def parse(fileName):
             if splitLine[0] == "<Environmentals>":
                 envs = []
                 for i in range(1, 4):
-                    envs.append(float(splitLine[i]))
+                    envs.append(splitLine[i])
                 seriesObjects[seriesNumber].environmentals.append(envs)
                 continue
 
             if splitLine[0] == "<Env-Corrections>":
                 for i in range(1, 4):
-                    seriesObjects[seriesNumber].envCorrections.append(float(splitLine[i]))
+                    seriesObjects[seriesNumber].envCorrections.append(splitLine[i])
                 continue
 
             if splitLine[0] == "<Gravity-Grad>":

@@ -1,11 +1,16 @@
 from math import exp
 from decimal import *
+import numpy as np
 
-def calculateAirDensity(temp, pressure, humidity):
+def calculateAirDensity(tObs, tc, pObs, pc, rhObs, rhc):
     #Calculates the air density using the CIPM 2007 air density equation
     #Picard et al.: https://iopscience.iop.org/article/10.1088/0026-1394/45/2/004
 
     getcontext().prec = 28
+
+    temp = Decimal(tObs) - Decimal(tc)
+    pressure = Decimal(pObs) - Decimal(pc)
+    humidity = Decimal(rhObs) - Decimal(rhc)
 
     tKelvin = temp + Decimal('273.15')
     humidity = humidity / Decimal('100')

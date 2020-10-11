@@ -14,7 +14,6 @@ import numpy as np
 import scipy.stats
 from statistics import mean, stdev
 from math import sqrt
-from decimal import *
 
 from MARSException import MARSException
 from CIPM import calculateAirDensity
@@ -119,10 +118,10 @@ class MatrixSolution:
             obsThree = self.balanceReadings[i][2]
             obsFour = self.balanceReadings[i][3]
 
-            swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((self.environmentals[i][0] - self.envCorrections[0]) - self.referenceTemperature))
+            swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((np.longdouble(self.environmentals[i][0]) - np.longdouble(self.envCorrections[0])) - self.referenceTemperature))
 
             airDensity = calculateAirDensity(\
-                Decimal(self.environmentals[i][0] - self.envCorrections[0]), Decimal(self.environmentals[i][1] - self.envCorrections[1]), Decimal(self.environmentals[i][2] - self.envCorrections[2]))
+                self.environmentals[i][0], self.envCorrections[0], self.environmentals[i][1], self.envCorrections[1], self.environmentals[i][2], self.envCorrections[2])
 
             swDrift = ((obsFour - obsOne) - (obsThree - obsTwo)) / 2
 
@@ -170,14 +169,14 @@ class MatrixSolution:
 
         for i in range(len(self.balanceReadings)):
             airDensity = calculateAirDensity(\
-                Decimal(self.environmentals[i][0] - self.envCorrections[0]), Decimal(self.environmentals[i][1] - self.envCorrections[1]), Decimal(self.environmentals[i][2] - self.envCorrections[2]))
+                self.environmentals[i][0], self.envCorrections[0], self.environmentals[i][1], self.envCorrections[1], self.environmentals[i][2], self.envCorrections[2])
             
             self.airDensities.append(airDensity)
 
             #Adjust densities for lab temperature for each observation:
             adjustedDensities = []
             for j in range(self.positions):
-                adjustedDensities.append(self.weightDensities[j] / (1 + self.weightCCEs[j] * ((self.environmentals[i][0] - self.envCorrections[0]) - self.referenceTemperature)))
+                adjustedDensities.append(self.weightDensities[j] / (1 + self.weightCCEs[j] * ((np.longdouble(self.environmentals[i][0]) - np.longdouble(self.envCorrections[0])) - self.referenceTemperature)))
             
             #Estimate Mass1Sum, Mass2Sum and effective densities for ABC using estimateMasses:
             designLine = self.designMatrix[i:i+1] #Get sigle line of design matrix as an array

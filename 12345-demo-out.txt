@@ -1,0 +1,402 @@
+# Demo Calibration
+# Lab Zeppelin
+# 1234 Misty Mountain Road
+
+REPORT_NUMBER  12345-demo
+
+***SERIES 1***
+
+DATE  08 29 2020
+
+OPERATOR  019
+BALANCE_ID  14
+DESIGN_ID  112
+
+RESTRAINT_ID  0
+RESTRAINT  P1kg+P1kg.
+
+CHECK_STANDARD_ID  12
+CHECK_STANDARD  P1kg-P1kg.
+
+SENSITIVITY_WEIGHT_MASS  0
+SENSITIVITY_WEIGHT_DENSITY  0
+SENSITIVITY_WEIGHT_CCE  0
+
+##ENVIRONMENTALS (CORRECTED)##
+        T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm)
+1:     19.65  740.10  45.80  0.00116971
+2:     19.75  740.10  45.90  0.00116927
+3:     19.75  740.20  45.80  0.00116943
+4:     19.75  740.30  45.90  0.00116958
+5:     19.65  740.30  46.00  0.00117000
+6:     19.65  740.40  46.00  0.00117016
+AVE:   19.70  740.23  45.90  0.00116969
+CORR:   0.05    0.00  -0.20
+
+##BALANCE OBSERVATIONS##
+1:   0.0707
+2:   0.0777
+3:   0.0072
+4:  -0.5459
+5:  -0.4764
+6:  -0.467
+
+##METRICS##
+     LOAD       A(I)    DELTA(MG)    OBS SENSITIVITY    AVE SENSITIVITY
+     (g)        (mg)                        (mg/DIV)           (mg/DIV)
+1:   1000   -0.07210     -0.24143            1.00000            1.00000
+2:   1000    0.07588      0.03912            1.00000            1.00000
+3:   1000    0.12962      0.20231            1.00000            1.00000
+4:   1000   -0.40494     -0.27236            1.00000            1.00000
+5:   1000   -0.21109      0.03093            1.00000            1.00000
+6:   1000   -0.34268     -0.23324            1.00000            1.00000
+
+##STATISTICS##
+################################################################
+#F-TEST
+ACCEPTED_SW = 0.0082 MG
+OBSERVED_SW = 0.277059 MG
+CRITICAL_F-VALUE = 2.61
+OBSERVED_F-VALUE = 1141.61
+--------
+| FAIL |
+--------
+
+################################################################
+
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = -0.9519999999999997 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 3.7e-05 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
+WEIGHT ID     NOMINAL    DENSITY      CCE         TRUE MASS    CORRECTION
+              (g, lb)    (g/cm)      (/˚C)              (g)          (mg)
+-----------  ---------  ---------  ---------  -------------  ------------
+P1kg           1000      7.99650   0.0000450  1000.00185838    1.85837693
+X1kg           1000      7.98870   0.0000450  1000.00168904    1.68904227
+P1kg.          1000      7.99640   0.0000450  1000.00182162    1.82162307
+S1kgSum        1000      8.00320   0.0000450  1000.00193107    1.93106586
+
+***SERIES 2***
+
+DATE  08 29 2020
+
+OPERATOR  019
+BALANCE_ID  14
+DESIGN_ID  112
+
+RESTRAINT_ID  0
+RESTRAINT  S500g+S500g.
+
+CHECK_STANDARD_ID  12
+CHECK_STANDARD  S500g-S500g.
+
+SENSITIVITY_WEIGHT_MASS  0
+SENSITIVITY_WEIGHT_DENSITY  0
+SENSITIVITY_WEIGHT_CCE  0
+
+##ENVIRONMENTALS (CORRECTED)##
+        T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm)
+1:     19.65  740.10  48.80  0.00116940
+2:     19.75  740.10  48.90  0.00116896
+3:     19.75  740.20  48.80  0.00116913
+4:     19.75  740.30  48.90  0.00116927
+5:     19.65  740.30  49.00  0.00116970
+6:     19.65  740.40  49.00  0.00116985
+AVE:   19.70  740.23  48.90  0.00116938
+CORR:   0.05    0.00  -0.20
+
+##BALANCE OBSERVATIONS##
+1:  -0.5459
+2:  -0.4764
+3:  -0.467
+4:   0.0689
+5:   0.0782
+6:   0.0083
+
+##METRICS##
+     LOAD       A(I)    DELTA(MG)    OBS SENSITIVITY    AVE SENSITIVITY
+     (g)        (mg)                        (mg/DIV)           (mg/DIV)
+1:   500    -0.61738     -0.00031            1.00000            1.00000
+2:   500    -0.47738     -0.00011            1.00000            1.00000
+3:   500    -0.40586      0.00043            1.00000            1.00000
+4:   500     0.13939     -0.00041            1.00000            1.00000
+5:   500     0.21087      0.00009            1.00000            1.00000
+6:   500     0.07046     -0.00052            1.00000            1.00000
+
+##STATISTICS##
+#F-TEST
+ACCEPTED_SW = 0.18 MG
+OBSERVED_SW = 0.000496 MG
+CRITICAL_F-VALUE = 2.61
+OBSERVED_F-VALUE = 0.0
+--------
+| PASS |
+--------
+
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 0.0 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 7.1e-05 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
+WEIGHT ID     NOMINAL    DENSITY      CCE        TRUE MASS    CORRECTION
+              (g, lb)    (g/cm)      (/˚C)             (g)          (mg)
+-----------  ---------  ---------  ---------  ------------  ------------
+P500gSum        500      7.99650   0.0000450  500.00052375    0.52375290
+X500g           500      7.98870   0.0000450  500.00114082    1.14081943
+S500g           500      7.99640   0.0000450  500.00100102    1.00102325
+S500g.          500      8.00320   0.0000450  500.00093004    0.93004261
+
+***SERIES 3***
+
+DATE  08 29 2020
+
+OPERATOR  019
+BALANCE_ID  14
+DESIGN_ID  112
+
+RESTRAINT_ID  0
+RESTRAINT  P1kg+P1kg.
+
+CHECK_STANDARD_ID  12
+CHECK_STANDARD  P1kg-X1kg
+
+SENSITIVITY_WEIGHT_MASS  0
+SENSITIVITY_WEIGHT_DENSITY  0
+SENSITIVITY_WEIGHT_CCE  0
+
+##ENVIRONMENTALS (CORRECTED)##
+        T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm)
+1:     19.65  740.10  45.80  0.00116971
+2:     19.75  740.10  45.90  0.00116927
+3:     19.75  740.20  45.80  0.00116943
+4:     19.75  740.30  45.90  0.00116958
+5:     19.65  740.30  46.00  0.00117000
+6:     19.65  740.40  46.00  0.00117016
+AVE:   19.70  740.23  45.90  0.00116969
+CORR:   0.05    0.00  -0.20
+
+##BALANCE OBSERVATIONS##
+1:  -0.024
+2:   0.952
+3:   0.159
+4:   1
+5:   1
+6:   1
+
+##METRICS##
+     LOAD       A(I)    DELTA(MG)    OBS SENSITIVITY    AVE SENSITIVITY
+     (g)        (mg)                        (mg/DIV)           (mg/DIV)
+1:   500    -0.05974      0.21026            1.00000            1.00000
+2:   500     0.95162      0.44226            1.00000            1.00000
+3:   500     0.18973     -0.65251            1.00000            1.00000
+4:   1000    1.03536      0.25600            1.00000            1.00000
+5:   1000    1.06650     -0.04574            1.00000            1.00000
+6:   1000    1.03113      0.69825            1.00000            1.00000
+
+##STATISTICS##
+################################################################
+#F-TEST
+ACCEPTED_SW = 0.0082 MG
+OBSERVED_SW = 0.637901 MG
+CRITICAL_F-VALUE = 2.61
+OBSERVED_F-VALUE = 6051.71
+--------
+| FAIL |
+--------
+
+################################################################
+
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 1.364 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 499.99973 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
+WEIGHT ID     NOMINAL    DENSITY      CCE        TRUE MASS        CORRECTION
+              (g, lb)    (g/cm)      (/˚C)             (g)              (mg)
+-----------  ---------  ---------  ---------  ------------  ----------------
+P1kg            500      7.99650   0.0000450  250.00051656  -249999.48344275
+X1kg           1000      7.98870   0.0000450  250.00078656  -749999.21344316
+P1kg.          1000      7.99640   0.0000450  250.00000720  -749999.99280435
+S1kgSum        1000      8.00320   0.0000450  249.99967432  -750000.32568377
+
+***SERIES 4***
+
+DATE  08 29 2020
+
+OPERATOR  019
+BALANCE_ID  12
+DESIGN_ID  032
+
+RESTRAINT_ID  0
+RESTRAINT  T50g+T30g+T20g
+
+CHECK_STANDARD_ID  08
+CHECK_STANDARD  P10g
+
+SENSITIVITY_WEIGHT_MASS  19.99899
+SENSITIVITY_WEIGHT_DENSITY  7.95
+SENSITIVITY_WEIGHT_CCE  4.5e-05
+
+##ENVIRONMENTALS (CORRECTED)##
+        T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm)
+1:     19.53  736.70  48.80  0.00116452
+2:     19.54  736.70  48.70  0.00116448
+3:     19.56  736.80  48.70  0.00116456
+4:     19.54  736.80  48.60  0.00116465
+5:     19.52  736.80  48.50  0.00116475
+6:     19.52  736.90  48.40  0.00116492
+7:     19.50  736.90  48.60  0.00116498
+8:     19.51  737.00  48.50  0.00116511
+9:     19.56  737.00  48.60  0.00116488
+10:    19.58  737.00  48.80  0.00116478
+11:    19.60  737.10  48.70  0.00116486
+AVE:   19.54  736.88  48.63  0.00116477
+CORR:   0.05    0.00  -0.20
+
+##BALANCE OBSERVATIONS##
+1:    0      -0.092  19.91   20.006
+2:   -0.058  -0.018  19.986  19.941
+3:    0.029  -0.005  19.995  20.029
+4:    0      -0.028  19.971  20
+5:    0      -0.078  19.916  20.005
+6:    0      -0.115  19.883  19.998
+7:   -0.061  -0.049  19.949  19.934
+8:    0.009  -0.119  19.881  20.006
+9:    0      -0.006  19.994  19.996
+10:  -0.004   0.06   20.062  19.996
+11:  -0.005  -0.006  19.993  19.994
+
+##METRICS##
+      LOAD       A(I)    DELTA(MG)    OBS SENSITIVITY    AVE SENSITIVITY
+      (g)        (mg)                        (mg/DIV)           (mg/DIV)
+1:     60     0.25949      0.00068            0.99980            0.99969
+2:     60     0.15359     -0.00063            0.99948            0.99969
+3:     60     0.25453      0.00030            0.99980            0.99969
+4:     50     0.22257      0.00015            0.99988            1.00013
+5:     50     0.32908     -0.00050            1.00038            1.00013
+6:     40     0.10948     -0.00059            0.99990            0.99982
+7:     40     0.03807      0.00079            0.99983            0.99982
+8:     40     0.17398      0.00029            0.99973            0.99982
+9:     20     0.03245     -0.00102            0.99970            0.99974
+10:    20    -0.03450      0.00023            0.99965            0.99974
+11:    20     0.00295      0.00129            0.99985            0.99974
+
+##STATISTICS##
+#F-TEST
+ACCEPTED_SW = 0.0042 MG
+OBSERVED_SW = 0.000917 MG
+CRITICAL_F-VALUE = 2.11
+OBSERVED_F-VALUE = 0.05
+--------
+| PASS |
+--------
+
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 0.0256 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 14.999925 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
+WEIGHT ID     NOMINAL    DENSITY      CCE        TRUE MASS      CORRECTION
+              (g, lb)    (g/cm)      (/˚C)             (g)            (mg)
+-----------  ---------  ---------  ---------  ------------  --------------
+T50g            50       7.86270   0.0000450  124.99994837  74999.94836939
+T30g            30       7.93990   0.0000450   74.99987835  44999.87834629
+T20g            20       7.95510   0.0000450   49.99984760  29999.84760055
+P10g            10       8.01750   0.0000450   24.99992526  14999.92526023
+T10g            10       7.95500   0.0000450   24.99988887  14999.88886790
+T10gsum         10       7.95945   0.0000450   24.99995707  14999.95706863
+
+***SERIES 5***
+
+DATE  08 29 2020
+
+OPERATOR  019
+BALANCE_ID  14
+DESIGN_ID  112
+
+RESTRAINT_ID  0
+RESTRAINT  P1kg+P1kg.
+
+CHECK_STANDARD_ID  12
+CHECK_STANDARD  P1kg-X1kg
+
+SENSITIVITY_WEIGHT_MASS  0
+SENSITIVITY_WEIGHT_DENSITY  0
+SENSITIVITY_WEIGHT_CCE  0
+
+##ENVIRONMENTALS (CORRECTED)##
+        T(˚C) P(mmHg) RH(%)  AIR DENSITY(g/cm)
+1:     19.65  740.10  45.80  0.00116971
+2:     19.75  740.10  45.90  0.00116927
+3:     19.75  740.20  45.80  0.00116943
+4:     19.75  740.30  45.90  0.00116958
+5:     19.65  740.30  46.00  0.00117000
+6:     19.65  740.40  46.00  0.00117016
+AVE:   19.70  740.23  45.90  0.00116969
+CORR:   0.05    0.00  -0.20
+
+##BALANCE OBSERVATIONS##
+1:  -0.024
+2:   0.952
+3:   0.159
+4:   1
+5:   1
+6:   1
+
+##METRICS##
+     LOAD       A(I)    DELTA(MG)    OBS SENSITIVITY    AVE SENSITIVITY
+     (g)        (mg)                        (mg/DIV)           (mg/DIV)
+1:    5     -0.02582      0.21025            1.00000            1.00000
+2:    5      0.95205      0.44225            1.00000            1.00000
+3:    5      0.16065     -0.65250            1.00000            1.00000
+4:   1000    1.00187      0.25600            1.00000            1.00000
+5:   1000    1.00347     -0.04575            1.00000            1.00000
+6:   1000    1.00160      0.69825            1.00000            1.00000
+
+##STATISTICS##
+################################################################
+#F-TEST
+ACCEPTED_SW = 0.0082 MG
+OBSERVED_SW = 0.637895 MG
+CRITICAL_F-VALUE = 2.61
+OBSERVED_F-VALUE = 6051.6
+--------
+| FAIL |
+--------
+
+################################################################
+
+#T-TEST
+ACCEPTED_CHECK_STANDARD_CORRECTION = 1.364 MG
+OBSERVED_CHECK_STANDARD_CORRECTION = 994.999764 MG
+CRITICAL_T-VALUE = 1.65
+OBSERVED_T-VALUE = 0
+--------
+| PASS |
+--------
+
+WEIGHT ID     NOMINAL    DENSITY      CCE       TRUE MASS        CORRECTION
+              (g, lb)    (g/cm)      (/˚C)            (g)              (mg)
+-----------  ---------  ---------  ---------  -----------  ----------------
+P1kg             5       7.99650   0.0000450  12.50023344     7500.23343501
+X1kg           1000      7.98870   0.0000450  12.50046951  -987499.53049487
+P1kg.          1000      7.99640   0.0000450  12.49972363  -987500.27636638
+S1kgSum        1000      8.00320   0.0000450  12.49942029  -987500.57971474
+
