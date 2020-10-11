@@ -119,7 +119,7 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Direct-Reading-SF>":
-                seriesObjects[seriesNumber].directReadingsSF = np.longdouble(splitLine[1])
+                seriesObjects[seriesNumber].directReadingsSF = np.float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Grams>":
@@ -139,23 +139,23 @@ def parse(fileName):
 
                 #Make weight nominals array and set calculatedMasses to nominals for first-pass estimates. Initialize matrixY:
                 if positionRow == 0:
-                    seriesObjects[seriesNumber].weightNominals = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.longdouble)
-                    seriesObjects[seriesNumber].ogNominals = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.longdouble)
+                    seriesObjects[seriesNumber].weightNominals = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
+                    seriesObjects[seriesNumber].ogNominals = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
 
-                    seriesObjects[seriesNumber].calculatedMasses = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.longdouble)
-                    seriesObjects[seriesNumber].matrixY = np.zeros(shape=(seriesObjects[seriesNumber].observations, 1), dtype=np.longdouble)
-                    seriesObjects[seriesNumber].referenceValues = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.longdouble)
+                    seriesObjects[seriesNumber].calculatedMasses = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
+                    seriesObjects[seriesNumber].matrixY = np.zeros(shape=(seriesObjects[seriesNumber].observations, 1), dtype=np.float64)
+                    seriesObjects[seriesNumber].referenceValues = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
 
-                seriesObjects[seriesNumber].weightNominals[0, positionRow] = np.longdouble(splitLine[2]) * toGrams
-                seriesObjects[seriesNumber].ogNominals[0, positionRow] = np.longdouble(splitLine[2])
+                seriesObjects[seriesNumber].weightNominals[0, positionRow] = np.float64(splitLine[2]) * toGrams
+                seriesObjects[seriesNumber].ogNominals[0, positionRow] = np.float64(splitLine[2])
 
-                seriesObjects[seriesNumber].calculatedMasses[0, positionRow] = np.longdouble(splitLine[2]) * toGrams
+                seriesObjects[seriesNumber].calculatedMasses[0, positionRow] = np.float64(splitLine[2]) * toGrams
 
-                seriesObjects[seriesNumber].weightDensities.append(np.longdouble(splitLine[3]))
-                seriesObjects[seriesNumber].weightCCEs.append(np.longdouble(splitLine[4]))
+                seriesObjects[seriesNumber].weightDensities.append(np.float64(splitLine[3]))
+                seriesObjects[seriesNumber].weightCCEs.append(np.float64(splitLine[4]))
 
                 try:
-                    seriesObjects[seriesNumber].referenceValues[0, positionRow] = np.longdouble(splitLine[5])
+                    seriesObjects[seriesNumber].referenceValues[0, positionRow] = np.float64(splitLine[5])
                 except IndexError:
                     seriesObjects[seriesNumber].referenceValues[0, positionRow] = 0
                 positionRow += 1
@@ -196,29 +196,29 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Sigma-w>":
-                seriesObjects[seriesNumber].sigmaW = np.longdouble(splitLine[1])
+                seriesObjects[seriesNumber].sigmaW = np.float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Sigma-t>":
-                seriesObjects[seriesNumber].sigmaT = np.longdouble(splitLine[1])
+                seriesObjects[seriesNumber].sigmaT = np.float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<sw-Mass>":
-                seriesObjects[seriesNumber].swMass = np.longdouble(splitLine[1])
+                seriesObjects[seriesNumber].swMass = np.float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<sw-Density>":
-                seriesObjects[seriesNumber].swDensity = np.longdouble(splitLine[1])
+                seriesObjects[seriesNumber].swDensity = np.float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<sw-CCE>":
-                seriesObjects[seriesNumber].swCCE = np.longdouble(splitLine[1])
+                seriesObjects[seriesNumber].swCCE = np.float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Balance-Reading>":
                 readings = []
                 for i in range(1, len(splitLine)):
-                    readings.append(np.longdouble(splitLine[i]))
+                    readings.append(np.float64(splitLine[i]))
                 seriesObjects[seriesNumber].balanceReadings.append(readings)
                 continue
 
@@ -235,19 +235,19 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Gravity-Grad>":
-                seriesObjects[seriesNumber].gravityGradient = np.longdouble(splitLine[1])
+                seriesObjects[seriesNumber].gravityGradient = np.float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Gravity-Local>":
-                seriesObjects[seriesNumber].localGravity = np.longdouble(splitLine[1])
+                seriesObjects[seriesNumber].localGravity = np.float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Height>":
                 if(seriesObjects[seriesNumber].weightHeights.size == 0):
                     #Initialize np matrix
-                    seriesObjects[seriesNumber].weightHeights = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.longdouble)
+                    seriesObjects[seriesNumber].weightHeights = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
 
-                seriesObjects[seriesNumber].weightHeights[0, heightRow] = np.longdouble(splitLine[1]) / 100
+                seriesObjects[seriesNumber].weightHeights[0, heightRow] = np.float64(splitLine[1]) / 100
                 heightRow += 1
                 continue
 
