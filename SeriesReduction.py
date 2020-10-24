@@ -173,11 +173,6 @@ class MatrixSolution:
             
             self.airDensities.append(airDensity)
 
-            #Adjust densities for lab temperature for each observation:
-            adjustedDensities = []
-            for j in range(self.positions):
-                adjustedDensities.append(self.weightDensities[j] / (1 + self.weightCCEs[j] * ((np.float64(self.environmentals[i][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature)))
-            
             #Estimate Mass1Sum, Mass2Sum and effective densities for ABC using estimateMasses:
             designLine = self.designMatrix[i:i+1] #Get sigle line of design matrix as an array
             positionMassOne = np.zeros(shape=(1, self.positions)) #Will be changed below...
@@ -195,14 +190,19 @@ class MatrixSolution:
             estimatedMassOne = float(np.matmul(positionMassOne, np.matrix.transpose(estimateMasses)))
             estimatedMassTwo = float(np.matmul(positionMassTwo, np.matrix.transpose(estimateMasses)))
 
-            #Calculate effective density of MassOne and MassTwo:
+            #Calculate volume and effective density of MassOne and MassTwo:
             volumeMassOne = 0
             volumeMassTwo = 0
             for position in range(np.shape(positionMassOne)[1]):
-                volumeMassOne += positionMassOne[0, position] * estimateMasses[0, position] / adjustedDensities[position]
+                if(i == 0):
+                    print("########HERE#########")
+                    print(positionMassOne[0, position] * estimateMasses[0, position])
+                volumeMassOne += (positionMassOne[0, position] * estimateMasses[0, position] / self.weightDensities[position]) *\
+                    (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[position][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
 
             for position in range(np.shape(positionMassTwo)[1]):
-                volumeMassTwo += positionMassTwo[0, position] * estimateMasses[0, position] / adjustedDensities[position]
+                volumeMassTwo += (positionMassTwo[0, position] * estimateMasses[0, position] / self.weightDensities[position]) *\
+                    (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[position][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
 
             effectiveDensityMassOne = estimatedMassOne / volumeMassOne
             effectiveDensityMassTwo = estimatedMassTwo / volumeMassTwo
@@ -245,7 +245,7 @@ class MatrixSolution:
                     raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": UNEQUAL NUMBER OF WEIGHT HEIGHTS AND POSITIONS\nHEIGHTS MUST BE > 0")
 
             #Extrapolate what delta would be in vaccum and add to matrixY
-            deltaVaccum = deltaLab + airDensity * ((estimatedMassTwo / effectiveDensityMassTwo) - (estimatedMassOne / effectiveDensityMassOne)) #grams
+            deltaVaccum = deltaLab + airDensity * (volumeMassTwo - volumeMassOne) #grams
             self.matrixY[i, 0] = -1 * deltaVaccum
 
     def solution(self, seriesObjects):
