@@ -1,8 +1,8 @@
-#Test if correct file passes Input checks
+#Test if blank input is caught by input checks
 #  MARS input
  #Notes
 
-    <Report-Number>  Test-FEGoodFile
+    <Report-Number>  Test-FEBlankInput
 
      <Restraint-ID>  055
     <Unc-Restraint>  0.034
@@ -65,18 +65,18 @@
 
   <Env-Corrections>  -0.3 0.9 0.0
 
-  <Balance-Reading>  -6.7570
-  <Balance-Reading>  0.0018
-  <Balance-Reading>  -9.1448
-  <Balance-Reading>  6.7572
-  <Balance-Reading>  -2.3888
-  <Balance-Reading>  -9.1465
-  <Balance-Reading>  -6.7574
-  <Balance-Reading>  0.0010
-  <Balance-Reading>  -9.1446
-  <Balance-Reading>  6.7592
-  <Balance-Reading>  -2.3887
-  <Balance-Reading>  -9.1477
+  <Balance-Reading>  6.7570
+  <Balance-Reading>  -0.0018
+  <Balance-Reading>  9.1448
+  <Balance-Reading>  -6.7572
+  <Balance-Reading>  2.3888
+  <Balance-Reading>  9.1465
+  <Balance-Reading>  6.7574
+  <Balance-Reading>  -0.0010
+  <Balance-Reading>  9.1446
+  <Balance-Reading>  -6.7592
+  <Balance-Reading>  2.3887
+  <Balance-Reading>  9.1477
 
 @SERIES
 

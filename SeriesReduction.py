@@ -161,8 +161,8 @@ class MatrixSolution:
 
             self.loads.append(nominal)
 
-    def calculateDoubleSubs(self, estimateMasses, averageSensitivities):
-        # Calculates resulting "a" values of double subs. This function is called iteratively, passing the latest calculated values (estimateMasses) in to do line-by-line air buoyancy corrections.
+    def calculateDoubleSubs(self):
+        # Calculates resulting "a" values of double subs. This function is called iteratively, passing the latest calculated values (self.calculatedMasses) in to do line-by-line air buoyancy corrections.
         # The first pass through uses the nominal values as a first guess at masses. Sensitivity is passed in and the average sensitivity for each load is used. Automated balances use Direct-Readings-SF 
         # as the sensitivity factor.
 
@@ -173,7 +173,7 @@ class MatrixSolution:
             
             self.airDensities.append(airDensity)
 
-            #Estimate Mass1Sum, Mass2Sum and effective densities for ABC using estimateMasses:
+            #Estimate Mass1Sum, Mass2Sum and effective densities for ABC using self.calculatedMasses:
             designLine = self.designMatrix[i:i+1] #Get sigle line of design matrix as an array
             positionMassOne = np.zeros(shape=(1, self.positions)) #Will be changed below...
             positionMassTwo = np.zeros(shape=(1, self.positions)) #Will be changed below...
@@ -187,21 +187,18 @@ class MatrixSolution:
                     positionMassTwo[0, position] = 1
 
             #Multiply mass position matrix by transpose of estimated masses to get estimated mass of the line:
-            estimatedMassOne = float(np.matmul(positionMassOne, np.matrix.transpose(estimateMasses)))
-            estimatedMassTwo = float(np.matmul(positionMassTwo, np.matrix.transpose(estimateMasses)))
+            estimatedMassOne = float(np.matmul(positionMassOne, np.matrix.transpose(self.calculatedMasses)))
+            estimatedMassTwo = float(np.matmul(positionMassTwo, np.matrix.transpose(self.calculatedMasses)))
 
             #Calculate volume and effective density of MassOne and MassTwo:
             volumeMassOne = 0
             volumeMassTwo = 0
             for position in range(np.shape(positionMassOne)[1]):
-                if(i == 0):
-                    print("########HERE#########")
-                    print(positionMassOne[0, position] * estimateMasses[0, position])
-                volumeMassOne += (positionMassOne[0, position] * estimateMasses[0, position] / self.weightDensities[position]) *\
+                volumeMassOne += (positionMassOne[0, position] * self.calculatedMasses[0, position] / self.weightDensities[position]) *\
                     (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[position][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
 
             for position in range(np.shape(positionMassTwo)[1]):
-                volumeMassTwo += (positionMassTwo[0, position] * estimateMasses[0, position] / self.weightDensities[position]) *\
+                volumeMassTwo += (positionMassTwo[0, position] * self.calculatedMasses[0, position] / self.weightDensities[position]) *\
                     (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[position][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
 
             effectiveDensityMassOne = estimatedMassOne / volumeMassOne
@@ -215,10 +212,10 @@ class MatrixSolution:
                 obsFour = self.balanceReadings[i][3]
 
                 deltaLab = (((obsTwo - obsOne) + (obsThree - obsFour)) / 2) * \
-                    averageSensitivities[round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
+                    self.aveSensitivities[round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
 
             elif self.directReadings == 1:
-                deltaLab = -1 * self.balanceReadings[i][0] * averageSensitivities['balance'] / 1000
+                deltaLab = self.balanceReadings[i][0] * self.aveSensitivities['balance'] / 1000
             
             else:
                 raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": PLEASE ENTER A VALID DIRECT-READINGS ARGUMENT.\n1 = DIRECT READINGS ENTERED, 0 = DOUBLE SUBSTITUTION OBSERVATIONS ENTERED")
@@ -227,14 +224,14 @@ class MatrixSolution:
             if(self.weightHeights.size != 0):
                 if(np.count_nonzero(self.weightHeights) == self.positions):
                     #Calculate COMs of massOne and massTwo
-                    mass1Array = np.multiply(positionMassOne, estimateMasses)
-                    mass2Array = np.multiply(positionMassTwo, estimateMasses)
+                    mass1Array = np.multiply(positionMassOne, self.calculatedMasses)
+                    mass2Array = np.multiply(positionMassTwo, self.calculatedMasses)
 
                     COM1 = np.matmul(mass1Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass1Array)
                     COM2 = np.matmul(mass2Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass2Array)
 
                     #Calculate reference height (COM of restraint):
-                    massRArray = np.multiply(self.restraintPos, estimateMasses)
+                    massRArray = np.multiply(self.restraintPos, self.calculatedMasses)
                     COMref = np.matmul(massRArray, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(massRArray)
 
                     #Perform gravitational correction back to reference height
@@ -247,6 +244,7 @@ class MatrixSolution:
             #Extrapolate what delta would be in vaccum and add to matrixY
             deltaVaccum = deltaLab + airDensity * (volumeMassTwo - volumeMassOne) #grams
             self.matrixY[i, 0] = -1 * deltaVaccum
+            print(deltaVaccum*1000)
 
     def solution(self, seriesObjects):
         if(len(self.environmentals) != self.observations or len(self.balanceReadings) != self.observations):
@@ -283,7 +281,7 @@ class MatrixSolution:
 
         self.calculateLoads()
 
-        #If direct readings entered (a values), set sesitivity to Direct-Readings-SF, put this in averageSensitivities dictionary and pass to calculateDoubleSubs:
+        #If direct readings entered (a values), set sesitivity to Direct-Readings-SF, put this in self.aveSensitivities dictionary:
         if self.directReadings == 1:
             for i in range(self.observations):
                 self.sensitivities.append(self.directReadingsSF)
@@ -294,10 +292,10 @@ class MatrixSolution:
         else:
             self.calculateSensitivities()
 
-        #Iterate 4 times through solution, update calculated masses matrix each time and repeat:
-        for i in range(4):
+        #Iterate 5 times through solution, update calculated masses matrix each time and repeat:
+        for i in range(5):
             self.airDensities = []
-            self.calculateDoubleSubs(self.calculatedMasses, self.aveSensitivities)
+            self.calculateDoubleSubs()
 
             matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
             self.calculatedMasses = np.matrix.transpose(matrixBHat)
