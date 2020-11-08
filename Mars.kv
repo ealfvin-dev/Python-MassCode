@@ -1391,18 +1391,17 @@
         
             OrderedText:
                 id: heightText
-                size_hint: (0.7, 1)
+                size_hint: (0.6, 1)
                 hint_text: "10.3\n10.5\n14.0\n9.7"
                 multiline: True
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 orderNum: 13
 
             Label:
-                id: gravityPositionsText
-                size_hint: (0.3, None)
+                id: gravityWeightIds
+                size_hint: (0.4, None)
                 height: heightText.height
                 text_size: (self.width, self.height)
-                text: "P500lb\nP500lb.\nC500lb\n500lb-stack"
                 color: labelColor
                 font_size: dp(13)
                 padding: (dp(5), dp(5) + 0.5 * (heightText.height - 2*dp(5)) % heightText.line_height)

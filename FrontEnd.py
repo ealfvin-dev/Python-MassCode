@@ -1832,6 +1832,10 @@ class MeasurementsPopup(PopupBase):
             pass
 
 class GravityPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.bind(on_open=self.setWeightIds)
+
     def submit(self):
         gradientText = self.ids.gradientText.text
         localGravText = self.ids.localGravityText.text
@@ -1850,8 +1854,18 @@ class GravityPopup(PopupBase):
         rowStart3, rowEnd3 = self.parent.children[1].writeText(heightText, heightOrder)
 
         self.parent.children[1].highlight(rowStart1, rowEnd3)
-
         self.dismiss()
+
+    def setWeightIds(self, e):
+        ids = []
+        userText = self.parent.children[1].ids.userText.text
+        for line in userText.splitlines():
+            if(line.split() == []):
+                continue
+            if(line.split()[0] == "<Position>"):
+                ids.append(line.split()[1])
+
+        self.ids.gravityWeightIds.text = "\n".join(ids)
 
 class OpenFilePopup(Popup):
     def openFile(self, selection):
