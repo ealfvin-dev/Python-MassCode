@@ -160,9 +160,9 @@
 
             BoxLayout:
                 size_hint: (None, 1)
-                width: dp(230)
+                width: dp(250)
                 orientation: 'horizontal'
-                padding: (0, 10, 10, 0)
+                padding: (0, dp(5), dp(20), 0)
 
                 Image:
                     size_hint: (1, 1)
@@ -491,7 +491,7 @@
 
 <LabInfoPopup>:
     auto_dismiss: False
-    title: "Series 1 Header"
+    title: "Report Number and Notes"
     size: (dp(600), dp(475))
 
     BoxLayout:
@@ -542,7 +542,7 @@
 
 <RestraintPopup>:
     auto_dismiss: False
-    title: "Series 1 Restraint Data"
+    title: "Series 1 Restraint"
     size: (dp(400), dp(330))
 
     BoxLayout:
@@ -594,7 +594,7 @@
 
 <DatePopup>:
     auto_dismiss: False
-    title: "Date, Balance"
+    title: "Date and Balance"
     size: (dp(570), dp(410))
 
     BoxLayout:
@@ -743,7 +743,7 @@
                 ExtraButton:
                     id: dropDownMain
                     text: "Presets"
-                    size_hint: (1, None)
+                    size_hint: (None, None)
                     size: (dp(140), dp(50))
                     on_release: dropDownn.open(self)
 
@@ -1391,18 +1391,17 @@
         
             OrderedText:
                 id: heightText
-                size_hint: (0.7, 1)
+                size_hint: (0.6, 1)
                 hint_text: "10.3\n10.5\n14.0\n9.7"
                 multiline: True
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 orderNum: 13
 
             Label:
-                id: gravityPositionsText
-                size_hint: (0.3, None)
+                id: gravityWeightIds
+                size_hint: (0.4, None)
                 height: heightText.height
                 text_size: (self.width, self.height)
-                text: "P500lb\nP500lb.\nC500lb\n500lb-stack"
                 color: labelColor
                 font_size: dp(13)
                 padding: (dp(5), dp(5) + 0.5 * (heightText.height - 2*dp(5)) % heightText.line_height)

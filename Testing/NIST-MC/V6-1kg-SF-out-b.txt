@@ -1,4 +1,4 @@
-Test file #3 - 1 kg 4-1 direct readings                          PAGE  2
+Test file #6 - 1 kg 4-1 direct readings with sensitivity factor !PAGE  2
  MassCode 4 Input                                                 SERIES 1
  Erik Alfvin                                                       4/ 3/20
  TEST NUMBER  V6-1kg-SF         
@@ -13,7 +13,7 @@
  CALIBRATION DESIGN  112
  RESTRAINT VECTOR     0    1    0    1
  MASS CORRECTION OF RESTRAINT                                      10.31400 MG
- VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  23.10              250.26763 CM3
+ VOLUME OF WEIGHTS BEING USED IN RESTRAINT AT  23.10              250.26766 CM3
  TYPE B UNCERTAINTY IN THE RESTRAINT                                0.03400 MG
  TYPE A UNCERTAINTY AFFECTING RESTRAINT                             0.00000 MG
 
@@ -47,7 +47,7 @@
 
 
  ** 101325 PASCALS = 760 TORR
-Test file #3 - 1 kg 4-1 direct readings                          PAGE  3
+Test file #6 - 1 kg 4-1 direct readings with sensitivity factor !PAGE  3
  MassCode 4 Input                                                 SERIES 1
  Erik Alfvin                                                       4/ 3/20
  TEST NUMBER  V6-1kg-SF         
@@ -90,7 +90,7 @@
  A 10        6.7592
  A 11       -2.3887
  A 12       -9.1477      40.8523
-Test file #3 - 1 kg 4-1 direct readings                          PAGE  4
+Test file #6 - 1 kg 4-1 direct readings with sensitivity factor !PAGE  4
  MassCode 4 Input                                                 SERIES 1
  Erik Alfvin                                                       4/ 3/20
  TEST NUMBER  V6-1kg-SF         
@@ -116,17 +116,17 @@
               A(I)      DELTA(I)      SENSITIVITY
               (MG)        (MG)        (MG/DIV)
 
- A  1       -6.77524     -0.00022      1.00000
+ A  1       -6.77524     -0.00021      1.00000
  A  2        0.00180      0.00025
  A  3       -9.16949      0.00046
  A  4        6.77544     -0.00114
- A  5       -2.39525     -0.00032
+ A  5       -2.39525     -0.00033
  A  6       -9.17120      0.00031
- A  7       -6.77564     -0.00062
+ A  7       -6.77564     -0.00061
  A  8        0.00100     -0.00055
  A  9       -9.16929      0.00066
- A 10        6.77745      0.00087
- A 11       -2.39515     -0.00022
+ A 10        6.77745      0.00086
+ A 11       -2.39515     -0.00023
  A 12       -9.17240     -0.00089      1.00000
 
 
@@ -134,14 +134,14 @@
      ITEM        CORRECTION    (AT T)       UNCERT     UNCERT     UNCERT
       (G)            (MG)       (CM3)         (MG)       (MG)       (MG)
 
-    1000.0000     -1.93617    125.90482    0.01700    0.00251    0.03437
-    1000.0000      3.95936    125.13370    0.01700    0.00145    0.03412
+    1000.0000     -1.93618    125.90482    0.01700    0.00251    0.03437
+    1000.0000      3.95937    125.13368    0.01700    0.00145    0.03412
     1000.0000     -1.93592    125.90641    0.01700    0.00251    0.03437
-    1000.0000      6.35463    125.13400    0.01700    0.00145    0.03412
+    1000.0000      6.35463    125.13398    0.01700    0.00145    0.03412
 
  TEMPERATURE T= 23.10  C
 
-Test file #3 - 1 kg 4-1 direct readings                          PAGE  5
+Test file #6 - 1 kg 4-1 direct readings with sensitivity factor !PAGE  5
  MassCode 4 Input                                                 SERIES 1
  Erik Alfvin                                                       4/ 3/20
  TEST NUMBER  V6-1kg-SF         
@@ -162,7 +162,7 @@
  OBSERVED STANDARD DEVIATION OF THE PROCESS     0.00071  MG
  ACCEPTED STANDARD DEVIATION OF THE PROCESS     0.00130  MG
  DEGREES OF FREEDOM    9
- F RATIO       0.298
+ F RATIO       0.299
 
  F RATIO IS LESS THAN  1.88 (CRITICAL VALUE FOR PROBABILITY = .05).
  THEREFORE THE STANDARD DEVIATION IS IN CONTROL.
@@ -200,7 +200,7 @@
 
 
  ** 101325 PASCALS = 760 TORR
-Test file #3 - 1 kg 4-1 direct readings                          PAGE  6
+Test file #6 - 1 kg 4-1 direct readings with sensitivity factor !PAGE  6
  MassCode 4 Input                                                  4/ 3/20
  Erik Alfvin                                                      
  TEST NUMBER  V6-1kg-SF         
@@ -215,9 +215,9 @@
        ITEM              (G)             (G)      (CM3)
 
   D1kg              1000.00635463    0.00003412  125.11653 0.000045
-  B1kg              1000.00395936    0.00003412  125.11622 0.000045
-  C1kg               999.99806408    0.00003437  125.88890 0.000045
-  A1kg               999.99806383    0.00003437  125.88730 0.000045
+  B1kg              1000.00395937    0.00003412  125.11623 0.000045
+  C1kg               999.99806408    0.00003437  125.88885 0.000045
+  A1kg               999.99806382    0.00003437  125.88726 0.000045
 
  SOFTWARE VERSION 08/15/2013
 
@@ -226,7 +226,7 @@
 NOTE 1297 IMPLEMENTED JANUARY 1, 1994,  SEE REFERENCE NO. 14.
 THE EXPANDED UNCERTAINTY IS 2 TIMES THE ROOT SUM SQUARE OF
 THE TYPE A AND TYPE B UNCERTAINTIES.
-Test file #3 - 1 kg 4-1 direct readings                          PAGE  7
+Test file #6 - 1 kg 4-1 direct readings with sensitivity factor !PAGE  7
  MassCode 4 Input                                                  4/ 3/20
  Erik Alfvin                                                      
  TEST NUMBER  V6-1kg-SF         
@@ -240,7 +240,7 @@ THE TYPE A AND TYPE B UNCERTAINTIES.
   ITEM                      COR.A (MG)           COR.B (MG)
 
   D1kg                         -.77388              6.21573
-  B1kg                        -3.16914              3.82046
+  B1kg                        -3.16913              3.82047
   C1kg                        -9.99254             -3.00299
   A1kg                        -9.99089             -3.00134
 

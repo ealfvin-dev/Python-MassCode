@@ -55,16 +55,16 @@
 
   <Env-Corrections>  0 -0.025 0.488
 
-  <Balance-Reading>  7.9434
-  <Balance-Reading>  0.0735
-  <Balance-Reading>  10.1625
-  <Balance-Reading>  -7.8708
-  <Balance-Reading>  2.2187
-  <Balance-Reading>  10.0898
-  <Balance-Reading>  7.9453
-  <Balance-Reading>  0.0732
-  <Balance-Reading>  10.1635
-  <Balance-Reading>  -7.8720
-  <Balance-Reading>  2.2185
-  <Balance-Reading>  10.0897
+  <Balance-Reading>  -7.9434
+  <Balance-Reading>  -0.0735
+  <Balance-Reading>  -10.1625
+  <Balance-Reading>  7.8708
+  <Balance-Reading>  -2.2187
+  <Balance-Reading>  -10.0898
+  <Balance-Reading>  -7.9453
+  <Balance-Reading>  -0.0732
+  <Balance-Reading>  -10.1635
+  <Balance-Reading>  7.8720
+  <Balance-Reading>  -2.2185
+  <Balance-Reading>  -10.0897
 

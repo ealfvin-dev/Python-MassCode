@@ -79,21 +79,21 @@ def writeEnvironmentals(series, f):
     for i in range(len(series.environmentals)):
         line = []
         line.append(str(i + 1) + ": ")
-        line.append(series.environmentals[i][0] - series.envCorrections[0])
-        line.append(series.environmentals[i][1] - series.envCorrections[1])
-        line.append(series.environmentals[i][2] - series.envCorrections[2])
+        line.append(float(series.environmentals[i][0]) - float(series.envCorrections[0]))
+        line.append(float(series.environmentals[i][1]) - float(series.envCorrections[1]))
+        line.append(float(series.environmentals[i][2]) - float(series.envCorrections[2]))
 
         line.append(float(series.airDensities[i]))
         table.append(line)
 
     transposed = []
     for i in range(3):
-        transposed.append([row[i] for row in series.environmentals])
+        transposed.append([float(row[i]) for row in series.environmentals])
 
-    table.append(["AVE: ", mean(transposed[0]) - series.envCorrections[0], mean(transposed[1]) - series.envCorrections[1], mean(transposed[2]) - series.envCorrections[2], \
+    table.append(["AVE: ", mean(transposed[0]) - float(series.envCorrections[0]), mean(transposed[1]) - float(series.envCorrections[1]), mean(transposed[2]) - float(series.envCorrections[2]), \
         mean(series.airDensities)])
 
-    table.append(["CORR: ", series.envCorrections[0], series.envCorrections[1], series.envCorrections[2]])
+    table.append(["CORR: ", float(series.envCorrections[0]), float(series.envCorrections[1]), float(series.envCorrections[2])])
 
     f.write(tabulate(table, tablefmt="plain", floatfmt=("", ".2f", ".2f", ".2f", ".8f")) + "\n\n")
 
@@ -187,6 +187,11 @@ def writeTTest(series, f):
 
 def writeMasses(series, f):
     table = []
+    if(series.nominalsInGrams == 1):
+        units = "g"
+    else:
+        units = "lb"
+
     for i in range(len(series.weightIds)):
         line = []
         line.append(series.weightIds[i])
@@ -202,6 +207,6 @@ def writeMasses(series, f):
         
         table.append(line)
 
-    f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL\n(g, lb)", "DENSITY\n(g/cm)", "CCE\n(/" + chr(730) + "C)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
+    f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL\n(" + units + ")", "DENSITY\n(g/cm)", "CCE\n(/" + chr(730) + "C)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
         floatfmt=("", "", ".5f", ".7f", ".8f", ".5f"),\
         colalign=("left", "center", "center", "center", "decimal", "decimal")) + "\n\n")

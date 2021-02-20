@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from statistics import mean
 
-def plotDeltas(deltas, sw):
+def plotDeltas(deltas, sw, fontSize):
     x_units = []
     tick_label = []
 
@@ -40,15 +40,15 @@ def plotDeltas(deltas, sw):
     dottedLine, = ax.plot([0.5, len(deltas) + 0.5], [sw, sw], "k:", label=chr(177) + ' ' + chr(963) + '$_w$' + " Accepted")
     ax.plot([0.5, len(deltas) + 0.5], [-1*sw, -1*sw], "k:")
 
-    legend = fig.legend(handles=[dottedLine], loc='upper right')
+    fig.legend(handles=[dottedLine], loc='upper right', fontsize=int(fontSize * 0.85))
 
-    ax.set_xlabel('Observation', fontsize=16)
-    ax.set_ylabel('Delta (mg)', fontsize=16)
-    ax.set_title('Residuals (Deltas)', fontsize=17)
+    ax.set_xlabel('Observation', fontsize=fontSize)
+    ax.set_ylabel('Delta (mg)', fontsize=fontSize)
+    ax.set_title('Residuals (Deltas)', fontsize=fontSize)
 
     return fig
 
-def plotSensitivities(sensitivities):
+def plotSensitivities(sensitivities, fontSize):
     x_units = []
     tick_label = []
     relativeSensitivities = []
@@ -74,43 +74,82 @@ def plotSensitivities(sensitivities):
     fig, ax = plt.subplots()
 
     ax.bar(x_units, relativeSensitivities, tick_label=tick_label,
-            width=0.8, color=(0.11, 0.45, 0.82, 0.92))
+            width=0.8, color=(0.11, 0.45, 0.82, 0.90))
 
     ax.plot([0.5, len(relativeSensitivities) + 0.5], [0, 0], "k-")
 
-    ax.set_xlabel('Observation', fontsize=16)
-    ax.set_ylabel('Sensitivity - ' + str(relativeSensitivity) + ' (mg/div)', fontsize=16)
-    ax.set_title('Sensitivities', fontsize=17)
+    ax.set_xlabel('Observation', fontsize=fontSize)
+    ax.set_ylabel('Sensitivity - ' + str(relativeSensitivity) + ' (mg/div)', fontsize=fontSize)
+    ax.set_title('Sensitivities', fontsize=fontSize)
 
     return fig
 
-def plotScatter(airDensities, deltas):
+def plotScatter(sensitivities, deltas, temperatures, fontSize, dotSize):
     colors = []
-    plotAirDensities = []
     absDeltas = []
 
-    for i in range(len(airDensities)):
-        plotAirDensities.append(airDensities[i] * 1000)
+    tMax = max(temperatures)
+    tMin = min(temperatures)
+    tRange = tMax - tMin
+
+    for i in range(len(deltas)):
         absDeltas.append(abs(deltas[i]))
-        colors.append((0.11, 0.45, 0.82, 0.92))
+        if(tRange == 0):
+            colors.append((0.10, 0.25, 0.82, 0.92))
+            continue
+
+        if(temperatures[i] <= (tMin + tMax) / 2):
+            r = 0.01 + 0.81 * (temperatures[i] - tMin) / (tRange / 2)
+            g = 0.10 + 0.50 * (temperatures[i] - tMin) / (tRange / 2)
+            b = 0.82
+
+            colors.append((r, g, b, 0.92))
+        else:
+            r = 0.82
+            g = 0.60 - 0.50 * (temperatures[i] - ((tMax + tMin) / 2)) / (tRange / 2)
+            b = 0.82 - 0.81 * (temperatures[i] - ((tMax + tMin) / 2)) / (tRange / 2)
+
+            colors.append((r, g, b, 0.92))
 
     fig, ax = plt.subplots()
 
-    ax.scatter(plotAirDensities, absDeltas, c=colors, s=50, alpha=0.8)
+    tMinLabel = False
+    tMaxLabel = False
 
-    ax.set_xlabel(chr(961) + '$_a$' + ' (mg/cm' + '$^3$' + ')', fontsize=16)
-    ax.set_ylabel('abs(Delta) (mg)', fontsize=16)
-    ax.set_title('abs(Delta) vs ' + chr(961) + '$_a$', fontsize=17)
+    for i in range(len(sensitivities)):
+        if(temperatures[i] == tMin and tMinLabel == False):
+            ax.scatter([sensitivities[i]], [absDeltas[i]], c=[colors[i]], s=dotSize, alpha=0.9, label=str(tMin) + " " + chr(730) + "C")
+            tMinLabel = True
 
-    adMin = min(plotAirDensities)
-    adMax = max(plotAirDensities)
-    adRange = adMax - adMin
+        elif(temperatures[i] == tMax and tMaxLabel == False and tRange != 0):
+            ax.scatter([sensitivities[i]], [absDeltas[i]], c=[colors[i]], s=dotSize, alpha=0.9, label=str(tMax) + " " + chr(730) + "C")
+            tMaxLabel = True
+
+        else:
+            ax.scatter([sensitivities[i]], [absDeltas[i]], c=[colors[i]], s=dotSize, alpha=0.9)
+
+    ax.set_xlabel('Sensitivity (mg/div)', fontsize=fontSize)
+    ax.set_ylabel('abs(Delta) (mg)', fontsize=fontSize)
+    ax.set_title('Sensitivity vs abs(Delta) vs Temp', fontsize=fontSize)
+    ax.legend(fontsize=fontSize*0.85)
+    #ax.grid(True)
+
+    senMin = min(sensitivities)
+    senMax = max(sensitivities)
+    senRange = senMax - senMin
+    if(senRange == 0):
+        senRange = 0.001
 
     dMin = min(absDeltas)
     dMax = max(absDeltas)
     dRange = dMax - dMin
+    if(dRange == 0):
+        dRange = 0.001
 
-    ax.set_xlim(adMin - adRange / 3, adMax + adRange / 3)
-    ax.set_ylim(dMin - dRange / 3, dMax + dRange / 3)
+    ax.set_xlim(senMin - senRange / 2.3, senMax + senRange / 2.3)
+    ax.set_ylim(dMin - dRange / 2.3, dMax + dRange / 2.3)
 
     return fig
+
+def closeFigures():
+    plt.close(fig='all')
