@@ -244,7 +244,6 @@ class MatrixSolution:
             #Extrapolate what delta would be in vaccum and add to matrixY
             deltaVaccum = deltaLab + airDensity * (volumeMassTwo - volumeMassOne) #grams
             self.matrixY[i, 0] = -1 * deltaVaccum
-            print(deltaVaccum*1000)
 
     def solution(self, seriesObjects):
         if(len(self.environmentals) != self.observations or len(self.balanceReadings) != self.observations):
