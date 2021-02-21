@@ -156,7 +156,7 @@ class MatrixSolution:
                 else:
                     positionMassOne[i] = 0
 
-            nominal = float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+            nominal = np.float64(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
             nominal = round(nominal, 5)
 
             self.loads.append(nominal)
@@ -166,14 +166,13 @@ class MatrixSolution:
         # The first pass through uses the nominal values as a first guess at masses. Sensitivity is passed in and the average sensitivity for each load is used. Automated balances use Direct-Readings-SF 
         # as the sensitivity factor.
 
-
         for i in range(len(self.balanceReadings)):
             airDensity = calculateAirDensity(\
                 self.environmentals[i][0], self.envCorrections[0], self.environmentals[i][1], self.envCorrections[1], self.environmentals[i][2], self.envCorrections[2])
             
             self.airDensities.append(airDensity)
 
-            #Estimate Mass1Sum, Mass2Sum and effective densities for ABC using self.calculatedMasses:
+            #Estimate Mass1Sum, Mass2Sum for ABC using self.calculatedMasses:
             designLine = self.designMatrix[i:i+1] #Get sigle line of design matrix as an array
             positionMassOne = np.zeros(shape=(1, self.positions)) #Will be changed below...
             positionMassTwo = np.zeros(shape=(1, self.positions)) #Will be changed below...
@@ -187,22 +186,19 @@ class MatrixSolution:
                     positionMassTwo[0, position] = 1
 
             #Multiply mass position matrix by transpose of estimated masses to get estimated mass of the line:
-            estimatedMassOne = float(np.matmul(positionMassOne, np.matrix.transpose(self.calculatedMasses)))
-            estimatedMassTwo = float(np.matmul(positionMassTwo, np.matrix.transpose(self.calculatedMasses)))
+            estimatedMassOne = np.float64(np.matmul(positionMassOne, np.matrix.transpose(self.calculatedMasses)))
+            estimatedMassTwo = np.float64(np.matmul(positionMassTwo, np.matrix.transpose(self.calculatedMasses)))
 
-            #Calculate volume and effective density of MassOne and MassTwo:
+            #Calculate volume of MassOne and MassTwo:
             volumeMassOne = 0
             volumeMassTwo = 0
             for position in range(np.shape(positionMassOne)[1]):
                 volumeMassOne += (positionMassOne[0, position] * self.calculatedMasses[0, position] / self.weightDensities[position]) *\
-                    (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[position][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
+                    (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[i][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
 
             for position in range(np.shape(positionMassTwo)[1]):
                 volumeMassTwo += (positionMassTwo[0, position] * self.calculatedMasses[0, position] / self.weightDensities[position]) *\
-                    (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[position][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
-
-            effectiveDensityMassOne = estimatedMassOne / volumeMassOne
-            effectiveDensityMassTwo = estimatedMassTwo / volumeMassTwo
+                    (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[i][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
 
             #Calculate the difference between masses measured in lab air:
             if self.directReadings == 0:
@@ -212,7 +208,7 @@ class MatrixSolution:
                 obsFour = self.balanceReadings[i][3]
 
                 deltaLab = (((obsTwo - obsOne) + (obsThree - obsFour)) / 2) * \
-                    self.aveSensitivities[round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
+                    self.aveSensitivities[round(np.float64(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
 
             elif self.directReadings == 1:
                 deltaLab = self.balanceReadings[i][0] * self.aveSensitivities['balance'] / 1000

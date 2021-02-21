@@ -1,0 +1,70 @@
+#  4-1 Validation at 1 kg with line-by-line air buoyancy
+    <Report-Number>  Validation-4-1-ABC
+
+     <Restraint-ID>  061
+    <Unc-Restraint>  0.28
+
+@SERIES
+             <Date>  09 05 2020
+    <Technician-ID>  019
+       <Balance-ID>  004
+  <Direct-Readings>  1
+<Direct-Reading-SF>  1.0
+
+         <Check-ID>  003
+            <Grams>  1
+
+         <Position>  P1kg      1000  8.0000   0.000045  10.274
+         <Position>  R1kg      1000  7.9748   0.000045
+         <Position>  X1kg      1000  8.0000   0.000045
+         <Position>  M1kgSum   1000  8.01242  0.000045 -0.1059
+
+        <Design-ID>  112
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+           <Design>  1 -1  0  0
+           <Design>  1  0 -1  0
+           <Design>  1  0  0 -1
+           <Design>  0  1 -1  0
+           <Design>  0  1  0 -1
+           <Design>  0  0  1 -1
+
+        <Restraint>  0 0 0 1
+   <Check-Standard>  1 0 0 0
+        <Pass-Down>  0 0 0 0
+
+          <Sigma-w>  0.0013
+          <Sigma-t>  0.01304
+
+<Environmentals>  19.922 762.837 44.104
+<Environmentals>  18.122 748.237 43.104
+<Environmentals>  19.522 738.237 47.104
+<Environmentals>  19.122 741.237 52.104
+<Environmentals>  19.622 729.237 48.104
+<Environmentals>  19.722 729.237 48.104
+<Environmentals>  20.122 759.237 45.104
+<Environmentals>  19.822 739.237 48.104
+<Environmentals>  19.122 724.237 47.104
+<Environmentals>  18.622 724.237 46.104
+<Environmentals>  18.622 729.937 45.104
+<Environmentals>  19.922 762.837 44.104
+
+  <Env-Corrections>  0 -0.025 0.488
+
+  <Balance-Reading>  7.92221
+  <Balance-Reading>  0.07350
+  <Balance-Reading>  10.16556
+  <Balance-Reading>  -7.86215
+  <Balance-Reading>  2.21933
+  <Balance-Reading>  10.08992
+  <Balance-Reading>  7.92675
+  <Balance-Reading>  0.07320
+  <Balance-Reading>  10.16260
+  <Balance-Reading>  -7.87299
+  <Balance-Reading>  2.22243
+  <Balance-Reading>  10.10000
+
