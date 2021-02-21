@@ -165,3 +165,18 @@ def test7Ascending52211(suite):
     except:
         suite.failTest("ASCENDING 52211 MASS CALCULATION")
         suite.logFailure(["Error running ascending 52211 input file"], "ASCENDING 52211 MASS CALCULATION")
+
+def test8LineByLineABC(suite):
+    #Test if ascending 52211 masses match NIST MassCode
+    try:
+        data = RunFile.run("./Testing/MARSTest/Validation-LBL-ABC-config.txt", writeOutFile=False)
+        calculatedMasses = data[0].calculatedMasses[0]
+
+        EXPECTED_MASSES = [999.98995274, 999.99835319, 999.99002598, 999.99989410]
+
+        for i in range(len(EXPECTED_MASSES)):
+            suite.assertClose(EXPECTED_MASSES[i], calculatedMasses[i], 1e-7, "LINE-BY-LINE AIR BUOYANCY CORRECTIONS " + str(i + 1))
+
+    except:
+        suite.failTest("LINE-BY-LINE AIR BUOYANCY CORRECTIONS")
+        suite.logFailure(["Error running line-by-line ABC input file"], "LINE-BY-LINE AIR BUOYANCY CORRECTIONS")

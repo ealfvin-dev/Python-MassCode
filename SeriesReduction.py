@@ -156,7 +156,7 @@ class MatrixSolution:
                 else:
                     positionMassOne[i] = 0
 
-            nominal = float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+            nominal = np.float64(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
             nominal = round(nominal, 5)
 
             self.loads.append(nominal)
@@ -208,7 +208,7 @@ class MatrixSolution:
                 obsFour = self.balanceReadings[i][3]
 
                 deltaLab = (((obsTwo - obsOne) + (obsThree - obsFour)) / 2) * \
-                    self.aveSensitivities[round(float(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
+                    self.aveSensitivities[round(np.float64(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
 
             elif self.directReadings == 1:
                 deltaLab = self.balanceReadings[i][0] * self.aveSensitivities['balance'] / 1000
