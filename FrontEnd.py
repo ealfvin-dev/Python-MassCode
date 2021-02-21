@@ -662,7 +662,7 @@ class MainLayout(BoxLayout):
         self.ids.runButton.colorBlue()
         self.ids.saveButton.colorGrey()
 
-    def run(self):
+    def runReduction(self):
         #Perform checks to make sure the input file is in a runnable state
         #######################
         start = time.time()
