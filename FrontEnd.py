@@ -625,11 +625,9 @@ class MainLayout(BoxLayout):
             f.close()
 
     def save(self):
-        if(self.currentSeries == None):
-            return
-
-        #Save current working series Text into self.seriesTexts array
-        self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+        #Save current working series text into self.seriesTexts array
+        if(self.currentSeries != None):
+            self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
         #Run tests to check the provided report number before saving
         reportNum = self.getReportNum()
@@ -642,7 +640,8 @@ class MainLayout(BoxLayout):
         if(checkReportNum == False):
             return
 
-        self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids["series" + str(self.currentSeries)])
+        if(self.currentSeries != None):
+            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids["series" + str(self.currentSeries)])
         
         fileText = ""
         for seriesText in self.seriesTexts:
@@ -658,7 +657,9 @@ class MainLayout(BoxLayout):
         self.saved = True
         self.sendSuccess("FILE SAVED AS " + reportNum + "-config.txt")
 
-        self.renderButtons(self.ids.userText.text)
+        if(self.currentSeries != None):
+            self.renderButtons(self.ids.userText.text)
+            
         self.ids.runButton.colorBlue()
         self.ids.saveButton.colorGrey()
 
