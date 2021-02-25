@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+from matplotlib.pyplot import subplots, close
 from statistics import mean
 
 def plotDeltas(deltas, sw, fontSize):
@@ -31,7 +31,7 @@ def plotDeltas(deltas, sw, fontSize):
 
         colors.append((r, g, b, a))
 
-    fig, ax = plt.subplots()
+    fig, ax = subplots()
 
     ax.bar(x_units, deltas, tick_label=tick_label,
             width=0.8, color=colors)
@@ -71,7 +71,7 @@ def plotSensitivities(sensitivities, fontSize):
         tick_label.append(str(i + 1))
         relativeSensitivities.append(sensitivities[i] - relativeSensitivity)
 
-    fig, ax = plt.subplots()
+    fig, ax = subplots()
 
     ax.bar(x_units, relativeSensitivities, tick_label=tick_label,
             width=0.8, color=(0.11, 0.45, 0.82, 0.90))
@@ -111,7 +111,7 @@ def plotScatter(sensitivities, deltas, temperatures, fontSize, dotSize):
 
             colors.append((r, g, b, 0.92))
 
-    fig, ax = plt.subplots()
+    fig, ax = subplots()
 
     tMinLabel = False
     tMaxLabel = False
@@ -152,4 +152,4 @@ def plotScatter(sensitivities, deltas, temperatures, fontSize, dotSize):
     return fig
 
 def closeFigures():
-    plt.close(fig='all')
+    close(fig='all')

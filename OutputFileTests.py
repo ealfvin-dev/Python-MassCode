@@ -1,11 +1,11 @@
 import RunFile
-import os
+from os import path, remove
 
 def test1WriteOutFile(suite):
     testDesc = "WRITE OUT FILE"
     try:
         data = RunFile.run("./Testing/MARSTest/Test-Writeout-config.txt")
-        if(os.path.exists("Test-Writeout-out.txt")):
+        if(path.exists("Test-Writeout-out.txt")):
             suite.passTest(testDesc)
         else:
             suite.failTest(testDesc)
@@ -14,8 +14,8 @@ def test1WriteOutFile(suite):
         suite.failTest(testDesc)
         suite.logFailure(["Could not write out test file"], testDesc)
 
-    if(os.path.exists("Test-Writeout-out.txt")):
-        os.remove("Test-Writeout-out.txt")
+    if(path.exists("Test-Writeout-out.txt")):
+        remove("Test-Writeout-out.txt")
 
 def test2OutFileData(suite):
     #Test writing stuff into output file
@@ -153,5 +153,5 @@ def test2OutFileData(suite):
         suite.failTest("OUTPUT FILE DATA")
         suite.logFailure(["Error in run/output report generation"], "OUTPUT FILE DATA")
 
-    if(os.path.exists("Test-Writeout-out.txt")):
-        os.remove("Test-Writeout-out.txt")
+    if(path.exists("Test-Writeout-out.txt")):
+        remove("Test-Writeout-out.txt")

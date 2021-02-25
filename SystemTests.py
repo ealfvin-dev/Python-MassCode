@@ -1,9 +1,9 @@
-import sys
+from sys import version_info
 
 def test1PythonVersion(suite):
     testDesc = "PYTHON VERSION"
     try:
-        assert sys.version_info >= (3, 5)
+        assert version_info >= (3, 5)
         suite.passTest(testDesc)
     except AssertionError:
         suite.failTest(testDesc)

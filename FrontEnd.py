@@ -34,14 +34,13 @@ from Configs import Configs
 from ParsePlotData import *
 from MakePlots import *
 
-import sys
-import os
-import threading
+from os import path, remove
+from threading import Thread
 
-import time
+from time import sleep
 
 class MainLayout(BoxLayout):
-    baseFilePath = os.path.abspath(".")
+    baseFilePath  = path.abspath(".")
     configFilePath = ""
 
     numberOfSeries = 1
@@ -226,9 +225,9 @@ class MainLayout(BoxLayout):
             if(line.split()[0] == "<Report-Number>"):
                 try:
                     self.reportNum = line.split()[1]
-                    self.configFilePath = os.path.join(self.baseFilePath, self.reportNum + "-config.txt")
-                    baseDir = os.path.split(self.baseFilePath)[1]
-                    self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
+                    self.configFilePath = path.join(self.baseFilePath, self.reportNum + "-config.txt")
+                    baseDir = path.split(self.baseFilePath)[1]
+                    self.ids.configFileName.text = path.join(baseDir, self.reportNum + "-config.txt")
                     if(self.currentSeries != None):
                         self.grabOutputFile()
 
@@ -613,11 +612,11 @@ class MainLayout(BoxLayout):
 
         notes = self.ids.notesText.text.strip()
         fileName = self.reportNum + "-notes.txt"
-        fileLoc = os.path.join(self.baseFilePath, fileName)
+        fileLoc = path.join(self.baseFilePath, fileName)
 
         if(notes == ""):
-            if(os.path.exists(fileLoc)):
-                os.remove(fileLoc)
+            if(path.exists(fileLoc)):
+                remove(fileLoc)
 
         else:
             f = open(fileLoc, 'w')
@@ -666,7 +665,7 @@ class MainLayout(BoxLayout):
     def runReduction(self):
         #Perform checks to make sure the input file is in a runnable state
         #######################
-        start = time.time()
+        #start = time.time()
         if(self.currentSeries == None):
             return
 
@@ -712,7 +711,7 @@ class MainLayout(BoxLayout):
         #######################
         self.clearErrors()
 
-        if(os.path.exists(self.configFilePath) == False):
+        if(path.exists(self.configFilePath) == False):
             self.sendError(self.configFilePath + " NOT FOUND")
             return
 
@@ -734,8 +733,8 @@ class MainLayout(BoxLayout):
         except:
             self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
 
-        end = time.time()
-        print(str((end - start)*1000) + " ms")
+        #end = time.time()
+        #print(str((end - start)*1000) + " ms")
 
     def sendError(self, message):
         self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
@@ -750,9 +749,9 @@ class MainLayout(BoxLayout):
 
     def grabNotes(self):
         notesFile = self.reportNum + "-notes.txt"
-        notesFileLocation = os.path.join(self.baseFilePath, notesFile)
+        notesFileLocation = path.join(self.baseFilePath, notesFile)
 
-        if(os.path.exists(notesFileLocation)):
+        if(path.exists(notesFileLocation)):
             f = open(notesFileLocation, 'r')
             fileText = f.read()
             f.close()
@@ -763,9 +762,9 @@ class MainLayout(BoxLayout):
 
     def grabOutputFile(self):
         outFile = self.reportNum + "-out.txt"
-        outFileLocation = os.path.join(self.baseFilePath, outFile)
+        outFileLocation = path.join(self.baseFilePath, outFile)
 
-        if(os.path.exists(outFileLocation)):
+        if(path.exists(outFileLocation)):
             f = open(outFileLocation, 'r')
             fileText = f.read()
             f.close()
@@ -1396,14 +1395,14 @@ class SaveStatisticsPopup(PopupBase):
 
                 self.ids.statsError.color = (0.05, 0.65, 0.1, 0.98)
                 self.ids.statsError.text = "Added " + self.ids.descriptionText.text.strip() + " stats"
-                threading.Thread(target=self.displaySuccess).start()
+                Thread(target=self.displaySuccess).start()
             except:
                 self.ids.statsError.text = "Error adding stats to database"
         else:
             self.ids.statsError.text = "Enter all fields"
 
     def displaySuccess(self):
-        time.sleep(1)
+        sleep(1)
         self.dismiss()
 
 class StatsDbPopup(PopupBase):
@@ -1608,20 +1607,20 @@ class SaveSwPopup(PopupBase):
 
     def saveSw(self, inst):
         if(self.ids.swNameText.text.strip() != ""):
-            threading.Thread(target=self.setDebounce).start()
+            Thread(target=self.setDebounce).start()
             try:
                 API.saveSw(self.ids.swNameText.text.strip(), self.swMass, self.swDensity, self.swCCE)
 
                 self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
-                threading.Thread(target=self.pauseSuccess).start()
+                Thread(target=self.pauseSuccess).start()
             except:
                 self.ids.swNameError.text = "Error adding sw to database"
         else:
             self.ids.swNameError.text = "Name required to add sw"
 
     def pauseSuccess(self):
-        time.sleep(1)
+        sleep(1)
         self.dismiss()
 
     def setDebounce(self, *args):
@@ -1872,7 +1871,7 @@ class OpenFilePopup(Popup):
     def openFile(self, selection):
         try:
             selection[0]
-            fileName = os.path.split(selection[0])[1]
+            fileName = path.split(selection[0])[1]
             if(not "-config.txt" in fileName):
                 self.parent.children[1].sendError("NO FILE SELECTED")
                 self.dismiss()
@@ -1890,7 +1889,7 @@ class OpenFilePopup(Popup):
             self.dismiss()
             return
 
-        self.parent.children[1].baseFilePath = os.path.split(selection[0])[0]
+        self.parent.children[1].baseFilePath = path.split(selection[0])[0]
         self.parent.children[1].splitSeries(fileText)
         self.parent.children[1].configFilePath = selection
         self.dismiss()
@@ -1957,7 +1956,7 @@ class ValidationPopup(Popup):
         self.bind(on_open=self.runTestThread)
 
     def runTestThread(self, e):
-        threading.Thread(target=self.runTestSuite).start()
+        Thread(target=self.runTestSuite).start()
 
     def runTestSuite(self):
         self.ids.testingMessage.text = "Running Tests..."
@@ -2067,14 +2066,14 @@ class StartupTestsPopup(Popup):
         self.bind(on_open=self.runTestThread)
 
     def runTestThread(self, *args):
-        threading.Thread(target=self.runStartupTests).start()
+        Thread(target=self.runStartupTests).start()
 
     def runStartupTests(self):
-        start = time.time()
+        #start = time.time()
         testSuite = TestSuite.TestSuite()
         testSuite.runAll()
-        end = time.time()
-        print(str((end - start)*1000) + " ms")
+        #end = time.time()
+        #print(str((end - start)*1000) + " ms")
 
         if(testSuite.failed == 0):
             self.dismiss()
@@ -2266,7 +2265,7 @@ class Mars(App):
 
     def openVisualizationPop(self):
         try:
-            with open(os.path.join(self.root.baseFilePath, self.root.reportNum + "-out.txt"), 'r') as f:
+            with open(path.join(self.root.baseFilePath, self.root.reportNum + "-out.txt"), 'r') as f:
                 fileText = f.read()
         except:
             fileText = ""
