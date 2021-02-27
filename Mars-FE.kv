@@ -154,7 +154,7 @@
         BoxLayout:
             id: navBar
             orientation: 'horizontal'
-            size_hint: (1.0, None)
+            size_hint: (1, None)
             height: dp(50)
             padding: (0, 0, 0, 0)
 
@@ -185,7 +185,8 @@
                 on_release: app.openVisualizationPop()
 
             TopMenuButton:
-                text: "About MARS"
+                text: "Settings"
+                on_release: app.openSettingPop()
 
         BoxLayout:
             id: content
@@ -426,7 +427,6 @@
                     id: notesText
                     size_hint: (1, 0.1)
                     size_hint_min_y: dp(70)
-                    font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
                     background_color: (1, 1, 1, 1)
@@ -456,7 +456,6 @@
                 UserInput:
                     id: userText
                     size_hint: (1, 0.87)
-                    font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
                     background_color: (1, 1, 1, 1)
@@ -487,7 +486,7 @@
             text_size: root.width, None
             size: self.texture_size
             halign: 'center'
-            size_hint: (1.0, 0.01)
+            size_hint: (1, 0.01)
 
 <LabInfoPopup>:
     auto_dismiss: False
@@ -1610,6 +1609,61 @@
             PopupErrorLabel:
                 size_hint: (1, None)
                 height: testingCloseButton.height
+
+<SettingsPopup>:
+    auto_dismiss: False
+    title: "MARS Settings"
+    size: (dp(440), dp(305))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Font Size"
+            size_hint: (1, None)
+
+        OrderedText:
+            id: fontSize
+            size_hint: (1, None)
+            height: 3 * self.font_size
+
+        PopupLabel:
+            text: "Default File Path"
+            size_hint: (1, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(8)
+
+            OrderedText:
+                id: filePath
+                size_hint: (0.8, None)
+                height: 3 * self.font_size
+
+            ExtraButton:
+                size_hint: (0.2, None)
+                height: 3 * dp(13)
+                text: "Choose"
+
+        PopupErrorLabel:
+            id: settingsError
+            size_hint: (1, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
+
+            CancelButton:
+                text: "Back"
+                on_release: root.dismiss()
+
+            WriteButton:
+                text: "Save"
+                on_release: root.saveSettings()
 
 <StartupTestsPopup>:
     auto_dismiss: False

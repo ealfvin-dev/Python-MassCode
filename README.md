@@ -15,9 +15,9 @@
     python -m pip install numpy==1.17.2
     ```
 
- - scipy.stats 1.3.1:
+ - scipy 1.6.1:
     ```
-    python -m pip install scipy==1.3.1
+    python -m pip install scipy==1.6.1
     ```
 
  - Python 3.7.3 statistics  

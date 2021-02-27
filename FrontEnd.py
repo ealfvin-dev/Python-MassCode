@@ -6,6 +6,7 @@ from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from kivy.metrics import dp
 
 from kivy.app import App
+from kivy.lang import Builder
 from kivy.core.window import Window, WindowBase
 from kivy.clock import Clock
 
@@ -846,6 +847,7 @@ class OrderedText(TextInput):
 class UserInput(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
+        self.font_size = dp(12)
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -963,7 +965,7 @@ class CancelButton(Button):
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_down = ''
-        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.background_color = Configs.cancelButtonColor
         self.font_size = dp(16)
         self.text = kwargs.get("text", "Cancel")
         self.halign = 'center'
@@ -974,7 +976,7 @@ class CancelButton(Button):
         if(value == "down"):
             self.background_color = (0.70*0.6, 0.135*0.6, 0.05*0.6, 0.92)
         elif(value == "normal"):
-            self.background_color = (0.70, 0.135, 0.05, 0.92)
+            self.background_color = Configs.cancelButtonColor
 
 class WriteButton(Button):
     def __init__(self, **kwargs):
@@ -1970,7 +1972,7 @@ class ValidationPopup(Popup):
         self.ids.testingMessage.text = ""
         return
 
-class VisualizationPop(Popup):
+class VisualizationPopup(Popup):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint = (0.9, 0.9)
@@ -2060,6 +2062,25 @@ class VisualizationPop(Popup):
 
         self.content = mainPopLayout
 
+class SettingsPopup(PopupBase):
+    def saveSettings(self):
+        fontSize = self.ids.fontSize.text.strip()
+        filePath = self.ids.filePath.text.strip()
+
+        if(fontSize == ""):
+            self.ids.settingsError.text = "Please enter a font size"
+            return
+
+        try:
+            int(fontSize)
+        except:
+            self.ids.settingsError.text = "Please enter a numerical font size"
+            return
+
+        if(filePath == ""):
+            self.ids.settingsError.text = "Please enter a file path"
+            return
+
 class StartupTestsPopup(Popup):
     def __init__(self, **kwargs):
         super().__init__()
@@ -2095,6 +2116,7 @@ class RequestClosePopUp(Popup):
 
 class Mars(App):
     def build(self):
+        Builder.load_file('Mars-FE.kv')
         Config.set('input', 'mouse', 'mouse,disable_multitouch')
         Config.set('graphics', 'fullscreen', 0)
         Config.set('graphics', 'window_state', 'maximized')
@@ -2295,8 +2317,12 @@ class Mars(App):
         except:
             nominals = []
 
-        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, temperatures=temperatures, sws=sws, reportNum=self.root.reportNum, nominals=nominals)
+        pop = VisualizationPopup(deltas=deltas, sensitivities=sensitivities, temperatures=temperatures, sws=sws, reportNum=self.root.reportNum, nominals=nominals)
         pop.buildVisPop()
+        pop.open()
+
+    def openSettingPop(self):
+        pop = SettingsPopup()
         pop.open()
 
 if(__name__ == "__main__"):
