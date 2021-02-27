@@ -1437,7 +1437,7 @@
             #Line 339 -> height: '24dp' before it was dependent on screen resolution
             id: filechooser
             dirselect: False
-            path: "."
+            path: root.getDefaultPath()
             filters: ["*-config.txt"]
 
         BoxLayout:
@@ -1511,7 +1511,7 @@
             #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
             #Line 339 -> height: '24dp' before it was dependent on screen resolution
             id: filechooserSaveLoc
-            path: "."
+            path: root.getDefaultPath()
             filters: ["*-config.txt"]
             dirselect: False
 

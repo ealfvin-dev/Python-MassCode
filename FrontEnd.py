@@ -1902,6 +1902,9 @@ class OpenFilePopup(Popup):
         self.parent.children[1].configFilePath = selection
         self.dismiss()
 
+    def getDefaultPath(self):
+        return API.getSettings()[0][1]
+
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
         seriesNum = self.parent.children[1].currentSeries
@@ -1957,6 +1960,9 @@ class NewFileSaveLocPopup(Popup):
         self.parent.children[1].baseFilePath = path
         self.parent.children[1].splitSeries("@SERIES\n\n")
         self.dismiss()
+
+    def getDefaultPath(self):
+        return API.getSettings()[0][1]
 
 class ValidationPopup(Popup):
     def __init__(self, **kwargs):
