@@ -35,7 +35,7 @@
                     id: series1
                     seriesNum: 1
                     text: "[color=#000000]Series 1[/color]"
-                    background_color: (0.936, 0.938, 0.946, 1)
+                    background_color: (0.956, 0.958, 0.964, 1)
                     exists: True
                     on_press: root.goToSeries(self.seriesNum, self.exists)
 
@@ -466,10 +466,9 @@
                     on_focus: self.selection_color = (0.1843, 0.6549, 0.8313, 0.27)
                     on_text: root.textAdded(self.cursor_row)
 
-                TextInput:
+                MainErrorText:
                     id: errors
                     size_hint: (1, 0.13)
-                    font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
                     background_active: ''
@@ -519,7 +518,6 @@
         OrderedText:
             id: reportNumText
             size_hint: (0.5, None)
-            height: 3 * self.font_size
             hint_text: "999999a"
             orderNum: 1
 
@@ -542,7 +540,7 @@
 <RestraintPopup>:
     auto_dismiss: False
     title: "Series 1 Restraint"
-    size: (dp(400), dp(330))
+    size: (dp(400), dp(310))
 
     BoxLayout:
         orientation: "vertical"
@@ -556,7 +554,6 @@
         OrderedText:
             id: restraintIDText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "049"
             orderNum: 2
 
@@ -567,13 +564,8 @@
         OrderedText:
             id: restraintUncertaintyText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0.062"
             orderNum: 3
-
-        PopupLabel:
-            text: "Random Error (mg):"
-            size_hint: (1, None)
 
         PopupErrorLabel:
             id: restraintPopError
@@ -620,7 +612,6 @@
                 OrderedText:
                     id: dateText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     hint_text: "MM DD YYYY"
                     orderNum: 6
 
@@ -631,7 +622,6 @@
                 OrderedText:
                     id: techIDText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     hint_text: "019"
                     orderNum: 7
 
@@ -656,7 +646,6 @@
                 OrderedText:
                     id: balanceIDText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     hint_text: "14"
                     orderNum: 8
 
@@ -667,7 +656,6 @@
                 OrderedText:
                     id: directReadingsText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     text: "0"
                     hint_text: "0"
                     orderNum: 9
@@ -680,7 +668,6 @@
                 OrderedText:
                     id: directReadingsSFText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     text: "1.0"
                     hint_text: "1.0"
                     orderNum: 10
@@ -802,7 +789,6 @@
         OrderedText:
             id: designIDText
             size_hint: (0.4, None)
-            height: 3 * self.font_size
             hint_text: "112"
             orderNum: 17
 
@@ -869,7 +855,6 @@
             OrderedText:
                 id: nominalsText
                 size_hint: (0.5, None)
-                height: 3 * self.font_size
                 hint_text: "1"
                 text: "1"
                 orderNum: 15
@@ -877,7 +862,6 @@
             OrderedText:
                 id: checkIDText
                 size_hint: (0.5, None)
-                height: 3 * self.font_size
                 hint_text: "54"
                 orderNum: 14
 
@@ -914,7 +898,6 @@
         OrderedText:
             id: restraintVectorText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "1 1 0 0"
             orderNum: 19
 
@@ -925,7 +908,6 @@
         OrderedText:
             id: checkVectorText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "1 -1 0 0"
             orderNum: 20
 
@@ -936,7 +918,6 @@
         OrderedText:
             id: nextRestraintText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0 0 0 0"
             orderNum: 21
 
@@ -1004,7 +985,6 @@
         OrderedText:
             id: sigmawText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0.012"
             on_text: root.evalSaveButtons(saveStatsButton.disabled)
             orderNum: 22
@@ -1016,7 +996,6 @@
         OrderedText:
             id: sigmatText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0.008"
             on_text: root.evalSaveButtons(saveStatsButton.disabled)
             orderNum: 23
@@ -1062,7 +1041,6 @@
         OrderedText:
             id: nominalText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "100 mg"
 
         PopupLabel:
@@ -1072,7 +1050,6 @@
         OrderedText:
             id: descriptionText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "AT1006 4-1"
 
         PopupErrorLabel:
@@ -1153,7 +1130,6 @@
         OrderedText:
             id: swMassText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "50.1023"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 24
@@ -1165,7 +1141,6 @@
         OrderedText:
             id: swDensityText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "7.95"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 25
@@ -1177,7 +1152,6 @@
         OrderedText:
             id: swCCEText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0.000045"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 26
@@ -1223,7 +1197,6 @@
         OrderedText:
             id: swNameText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "sw5g"
 
         PopupErrorLabel:
@@ -1349,7 +1322,6 @@
             OrderedText:
                 id: envCorrectionsText
                 size_hint: (0.35, None)
-                height: 3 * self.font_size
                 hint_text: "0.05 0.105 -0.07"
                 orderNum: 28
 
@@ -1414,7 +1386,6 @@
         OrderedText:
             id: gradientText
             size_hint: (0.5, None)
-            height: 3 * self.font_size
             hint_text: "0.0000031"
             orderNum: 11
 
@@ -1425,7 +1396,6 @@
         OrderedText:
             id: localGravityText
             size_hint: (0.5, None)
-            height: 3 * self.font_size
             hint_text: "9.8"
             orderNum: 12
 
@@ -1466,7 +1436,7 @@
             #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
             #Line 339 -> height: '24dp' before it was dependent on screen resolution
             id: filechooser
-            dirselect: True
+            dirselect: False
             path: "."
             filters: ["*-config.txt"]
 
@@ -1543,7 +1513,7 @@
             id: filechooserSaveLoc
             path: "."
             filters: ["*-config.txt"]
-            dirselect: True
+            dirselect: False
 
         BoxLayout:
             orientation: "horizontal"
@@ -1627,7 +1597,6 @@
         OrderedText:
             id: fontSize
             size_hint: (1, None)
-            height: 3 * self.font_size
             text: root.getFontSize()
 
         PopupLabel:
@@ -1641,7 +1610,6 @@
             OrderedText:
                 id: filePath
                 size_hint: (0.8, None)
-                height: 3 * self.font_size
                 text: root.getDefaultPath()
 
             ExtraButton:

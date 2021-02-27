@@ -824,6 +824,7 @@ class MainLayout(BoxLayout):
 class OrderedText(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
+        self.height = dp(39)
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -835,7 +836,7 @@ class OrderedText(TextInput):
         self.text = ""
         self.orderNum = 0
         self.background_normal = ''
-        self.font_size = dp(13)
+        self.font_size = dp(API.getSettings()[0][0])
         self.write_tab = False
         self.multiline = False
         self.padding = [dp(5), dp(5), dp(5), dp(5)]
@@ -847,7 +848,7 @@ class OrderedText(TextInput):
 class UserInput(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
-        self.font_size = dp(12)
+        self.font_size = dp(API.getSettings()[0][0])
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -858,6 +859,11 @@ class UserInput(TextInput):
     def _update_rect(self, instance, value):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
         self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
+
+class MainErrorText(TextInput):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.font_size = dp(API.getSettings()[0][0])
 
 class ExtraButton(Button):
     def __init__(self, **kwargs):
@@ -904,9 +910,9 @@ class InputButton(Button):
         self.background_normal = ''
         self.background_color = (0, 0, 0, 0)
         self.markup = True
-        self.font_size = dp(13)
+        self.font_size = dp(14)
         self.halign = 'center'
-        self.size = (dp(110), dp(60))
+        self.size = (dp(118), dp(62))
 
         with self.canvas.before:
             self.canvasColor = Color(rgba=self.currentColor)
@@ -2088,6 +2094,10 @@ class SettingsPopup(PopupBase):
             return
 
         API.saveSettings(int(fontSize), filePath)
+
+        self.parent.children[1].ids.userText.font_size = dp(int(fontSize))
+        self.parent.children[1].ids.notesText.font_size = dp(int(fontSize))
+        self.parent.children[1].ids.errors.font_size = dp(int(fontSize))
         self.dismiss()
 
 class StartupTestsPopup(Popup):
