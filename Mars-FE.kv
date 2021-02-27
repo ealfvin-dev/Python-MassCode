@@ -1628,6 +1628,7 @@
             id: fontSize
             size_hint: (1, None)
             height: 3 * self.font_size
+            text: root.getFontSize()
 
         PopupLabel:
             text: "Default File Path"
@@ -1641,6 +1642,7 @@
                 id: filePath
                 size_hint: (0.8, None)
                 height: 3 * self.font_size
+                text: root.getDefaultPath()
 
             ExtraButton:
                 size_hint: (0.2, None)

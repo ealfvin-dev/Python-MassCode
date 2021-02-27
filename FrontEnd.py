@@ -35,7 +35,7 @@ from Configs import Configs
 from ParsePlotData import *
 from MakePlots import *
 
-from os import path, remove
+from os import path, remove, getcwd
 from threading import Thread
 
 from time import sleep
@@ -2063,6 +2063,12 @@ class VisualizationPopup(Popup):
         self.content = mainPopLayout
 
 class SettingsPopup(PopupBase):
+    def getFontSize(self):
+        return str(API.getSettings()[0][0])
+
+    def getDefaultPath(self):
+        return API.getSettings()[0][1]
+
     def saveSettings(self):
         fontSize = self.ids.fontSize.text.strip()
         filePath = self.ids.filePath.text.strip()
@@ -2080,6 +2086,9 @@ class SettingsPopup(PopupBase):
         if(filePath == ""):
             self.ids.settingsError.text = "Please enter a file path"
             return
+
+        API.saveSettings(int(fontSize), filePath)
+        self.dismiss()
 
 class StartupTestsPopup(Popup):
     def __init__(self, **kwargs):
@@ -2326,5 +2335,10 @@ class Mars(App):
         pop.open()
 
 if(__name__ == "__main__"):
+    try:
+        API.getSettings()
+    except:
+        API.saveSettings(13, path.abspath(getcwd()))
+
     mainApp = Mars()
     mainApp.run()
