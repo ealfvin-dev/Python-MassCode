@@ -164,7 +164,7 @@ class MainLayout(BoxLayout):
             lineNum += 1
 
         endPosition -= 1
-        self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
+        self.ids.userText.selection_color = Configs.highlightNewTextColor
         self.ids.userText.select_text(startPosition, endPosition)
 
     def highlightError(self, series, startLine, endLine=None):
@@ -192,7 +192,7 @@ class MainLayout(BoxLayout):
             lineNum += 1
 
         endPosition -= 1
-        self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
+        self.ids.userText.selection_color = Configs.highlightErrorColor
         self.ids.userText.select_text(startPosition, endPosition)
 
     def textAdded(self, cursor_row):
@@ -392,6 +392,9 @@ class MainLayout(BoxLayout):
         self.ids.positionVectorsButton.colorGrey()
         self.ids.swButton.colorGrey()
         self.ids.measurementsButton.colorGrey()
+
+    def getGravityButtonColor(self):
+        return Configs.gravityButtonColor
 
     def addSeries(self):
         if(self.numberOfSeries == self.maxSeries):
@@ -738,11 +741,11 @@ class MainLayout(BoxLayout):
         #print(str((end - start)*1000) + " ms")
 
     def sendError(self, message):
-        self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
+        self.ids.errors.foreground_color = Configs.redTextColor
         self.ids.errors.text = "ERROR:\n" + message
 
     def sendSuccess(self, message):
-        self.ids.errors.foreground_color = (0.05, 0.65, 0.1, 0.98)
+        self.ids.errors.foreground_color = Configs.greenTextColor
         self.ids.errors.text = message
 
     def clearErrors(self):
@@ -860,10 +863,16 @@ class UserInput(TextInput):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
         self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
 
+    def setSelectionColor(self):
+        self.selection_color = Configs.highlightColor
+
 class MainErrorText(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
         self.font_size = dp(API.getSettings()[0][0])
+        self.text = "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
+        self.foreground_color = Configs.greenTextColor
+        self.selection_color = Configs.highlightColor
 
 class ExtraButton(Button):
     def __init__(self, **kwargs):
@@ -938,7 +947,7 @@ class InputButton(Button):
         Clock.schedule_once(self.colorBlue, 0)
 
     def colorGrey(self, *args):
-        self.currentColor = (0.62, 0.62, 0.62, 0.62)
+        self.currentColor = (0.52, 0.52, 0.52, 0.72)
         self.canvasColor.rgba = self.currentColor
 
     def colorBlue(self, *args):
@@ -1019,7 +1028,7 @@ class AddSeriesButton(Button):
         self.markup = True
         self.background_normal = ''
         self.background_down = ''
-        self.background_color = Configs.addSeriesColor
+        self.background_color = Configs.addSeriesButtonColor
         self.text = "[b]+[/b] Add Series"
         self.halign = 'center'
         self.font_size = dp(17)
@@ -1030,7 +1039,7 @@ class AddSeriesButton(Button):
         if(value == "down"):
             self.background_color = (self.background_color[0]*0.68, self.background_color[1]*0.68, self.background_color[2]*0.68, self.background_color[3])
         elif(value == "normal"):
-            self.background_color = Configs.addSeriesColor
+            self.background_color = Configs.addSeriesButtonColor
 
 class SeriesButton(Button):
     def __init__(self, **kwargs):
@@ -1058,7 +1067,7 @@ class RemoveSeriesButton(Button):
         self.halign = 'center'
         self.text = "[b]-[/b] Remove Last\nSeries"
         self.font_size = dp(16)
-        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.background_color = Configs.cancelButtonColor
 
         self.bind(state=self._updateState)
 
@@ -1066,7 +1075,7 @@ class RemoveSeriesButton(Button):
         if(value == "down"):
             self.background_color = (0.70*0.6, 0.135*0.6, 0.05*0.6, 0.92)
         elif(value == "normal"):
-            self.background_color = (0.70, 0.135, 0.05, 0.92)
+            self.background_color = Configs.cancelButtonColor
 
 class PopupBase(Popup):
     def __init__(self, **kwargs):
@@ -1097,7 +1106,7 @@ class PopupErrorLabel(Label):
         self.markup = True
         self.halign = "left"
         self.valign = "bottom"
-        self.color = (0.95, 0.05, 0.09, 1)
+        self.color = Configs.redTextColor
         self.font_size = dp(15)
         self.height = dp(20)
         self.text = ""
@@ -1128,7 +1137,7 @@ class DBSelectButton(Button):
         self.size_hint = (0.13, None)
         self.height = dp(37)
         self.background_normal = ''
-        self.background_color = (0.00, 0.76, 0.525, 1)
+        self.background_color = Configs.greenButtonColor
         self.text = "Select"
 
         self.rowId = kwargs.get("rowId", "")
@@ -1139,7 +1148,7 @@ class DBDeleteButton(Button):
         self.size_hint = (0.07, None)
         self.height = dp(37)
         self.background_normal = ''
-        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.background_color = Configs.cancelButtonColor
         self.text = "Del"
 
         self.clicked = False
@@ -1361,6 +1370,7 @@ class StatisticsPopup(PopupBase):
         sigmatOrder = self.ids.sigmatText.orderNum
 
         if(sigmawText == "" or sigmatText == ""):
+            self.ids.sigmaPopError.color = Configs.redTextColor
             self.ids.sigmaPopError.text = "Enter data for all fields"
             return
 
@@ -1401,12 +1411,14 @@ class SaveStatisticsPopup(PopupBase):
             try:
                 API.saveStats(self.ids.nominalText.text.strip(), self.ids.descriptionText.text.strip(), self.sigw, self.sigt)
 
-                self.ids.statsError.color = (0.05, 0.65, 0.1, 0.98)
+                self.ids.statsError.color = Configs.greenTextColor
                 self.ids.statsError.text = "Added " + self.ids.descriptionText.text.strip() + " stats"
                 Thread(target=self.displaySuccess).start()
             except:
+                self.ids.statsError.color = Configs.redTextColor
                 self.ids.statsError.text = "Error adding stats to database"
         else:
+            self.ids.statsError.color = Configs.redTextColor
             self.ids.statsError.text = "Enter all fields"
 
     def displaySuccess(self):
@@ -1437,13 +1449,14 @@ class StatsDbPopup(PopupBase):
         try:
             statData = API.getStat(inst.rowId)[0]
         except:
+            self.rootPop.ids.sigmaPopError.color = Configs.redTextColor
             self.rootPop.ids.sigmaPopError.text = "Error getting statistics from database"
             return
 
         self.rootPop.ids.sigmawText.text = statData[1]
         self.rootPop.ids.sigmatText.text = statData[2]
 
-        self.rootPop.ids.sigmaPopError.color = (0.05, 0.65, 0.1, 0.98)
+        self.rootPop.ids.sigmaPopError.color = Configs.greenTextColor
         self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[0] + " statistics"
 
         self.dismiss()
@@ -1464,7 +1477,7 @@ class StatsDbPopup(PopupBase):
         if(inst.clicked == False):
             self.stagedDelete.append(rowId)
             
-            inst.background_color = (0.62, 0.62, 0.62, 0.62)
+            inst.background_color = (0.42, 0.42, 0.42, 0.42)
             inst.text = "Undo"
             inst.color = (0, 0, 0, 1)
             inst.selectButtonPair.disabled = True
@@ -1477,7 +1490,7 @@ class StatsDbPopup(PopupBase):
                     self.stagedDelete.pop(i)
                     break
 
-            inst.background_color = (0.70, 0.135, 0.05, 0.92)
+            inst.background_color = Configs.cancelButtonColor
             inst.text = "Del"
             inst.color = (1, 1, 1, 1)
             inst.selectButtonPair.disabled = False
@@ -1572,7 +1585,7 @@ class SwPopup(PopupBase):
         swCCEOrder = self.ids.swCCEText.orderNum
 
         if(swMassText == "" or swDensityText == "" or swCCEText == ""):
-            self.ids.swPopError.color = (0.95, 0.05, 0.09, 1)
+            self.ids.swPopError.color = Configs.redTextColor
             self.ids.swPopError.text = "Enter data for all fields"
             return
 
@@ -1619,12 +1632,14 @@ class SaveSwPopup(PopupBase):
             try:
                 API.saveSw(self.ids.swNameText.text.strip(), self.swMass, self.swDensity, self.swCCE)
 
-                self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
+                self.ids.swNameError.color = Configs.greenTextColor
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
                 Thread(target=self.pauseSuccess).start()
             except:
+                self.ids.swNameError.color = Configs.redTextColor
                 self.ids.swNameError.text = "Error adding sw to database"
         else:
+            self.ids.swNameError.color = Configs.redTextColor
             self.ids.swNameError.text = "Name required to add sw"
 
     def pauseSuccess(self):
@@ -1658,6 +1673,7 @@ class SwDbPopup(PopupBase):
         try:
             swData = API.getSw(inst.rowId)[0]
         except:
+            self.rootPop.ids.swPopError.color = Configs.redTextColor
             self.rootPop.ids.swPopError.text = "Error getting sw from database"
             return
 
@@ -1665,7 +1681,7 @@ class SwDbPopup(PopupBase):
         self.rootPop.ids.swDensityText.text = swData[2]
         self.rootPop.ids.swCCEText.text = swData[3]
 
-        self.rootPop.ids.swPopError.color = (0.05, 0.65, 0.1, 0.98)
+        self.rootPop.ids.swPopError.color = Configs.greenTextColor
         self.rootPop.ids.swPopError.text = "Loaded " + swData[0]
 
         self.dismiss()
@@ -1686,7 +1702,7 @@ class SwDbPopup(PopupBase):
         if(inst.clicked == False):
             self.stagedDelete.append(rowId)
             
-            inst.background_color = (0.62, 0.62, 0.62, 0.62)
+            inst.background_color = (0.42, 0.42, 0.42, 0.42)
             inst.text = "Undo"
             inst.color = (0, 0, 0, 1)
             inst.selectButtonPair.disabled = True
@@ -1699,7 +1715,7 @@ class SwDbPopup(PopupBase):
                     self.stagedDelete.pop(i)
                     break
 
-            inst.background_color = (0.70, 0.135, 0.05, 0.92)
+            inst.background_color = Configs.cancelButtonColor
             inst.text = "Del"
             inst.color = (1, 1, 1, 1)
             inst.selectButtonPair.disabled = False
@@ -2124,7 +2140,7 @@ class StartupTestsPopup(Popup):
         if(testSuite.failed == 0):
             self.dismiss()
         else:
-            self.ids.testStatus.color = (0.9, 0.05, 0.05, 0.85)
+            self.ids.testStatus.color = (0.95, 0.15, 0.15, 0.95)
             self.ids.testStatus.text = "[b]" + str(testSuite.failed) + " INTERNAL TESTING FAILURE/S. OPEN LOGS TO SEE DETAILS[/b]"
             self.ids.openLogButton.bind(on_release=self.openTestLog)
             self.ids.openLogButton.background_color = Configs.inputButtonColor

@@ -286,7 +286,7 @@
                             InputButton:
                                 id: gravityButton
                                 text: "Gravity\n(Optional)"
-                                buttonColor: (0.368, 0.49, 0.60, 1)
+                                buttonColor: root.getGravityButtonColor()
                                 on_release: app.openGravityPop()
 
                         Label:
@@ -463,7 +463,7 @@
                     text: "@SERIES\n\n"
                     foreground_color: 0, 0, 0, 1
                     markup: True
-                    on_focus: self.selection_color = (0.1843, 0.6549, 0.8313, 0.27)
+                    on_focus: self.setSelectionColor()
                     on_text: root.textAdded(self.cursor_row)
 
                 MainErrorText:
@@ -473,9 +473,6 @@
                     background_normal: ''
                     background_active: ''
                     font_name: "./Menlo.ttc"
-                    text: "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
-                    foreground_color: (0.05, 0.65, 0.1, 0.98)
-                    selection_color: (0.1843, 0.6549, 0.8313, 0.27)
                     readonly: True
 
         Label:
@@ -1591,7 +1588,7 @@
         padding: dp(10), dp(10), dp(10), dp(10)
 
         PopupLabel:
-            text: "Font Size"
+            text: "Font Size:"
             size_hint: (1, None)
 
         OrderedText:
@@ -1600,7 +1597,7 @@
             text: root.getFontSize()
 
         PopupLabel:
-            text: "Default File Path"
+            text: "Default File Path:"
             size_hint: (1, None)
 
         BoxLayout:
