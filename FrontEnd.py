@@ -1054,7 +1054,7 @@ class AddSeriesButton(Button):
         if(value == "down"):
             self.background_color = (self.background_color[0]*0.68, self.background_color[1]*0.68, self.background_color[2]*0.68, self.background_color[3])
         elif(value == "normal"):
-            self.background_color = Configs.addSeriesButtonColor
+            self.background_color = Configs.greenButtonColor
 
 class SeriesButton(Button):
     def __init__(self, **kwargs):
