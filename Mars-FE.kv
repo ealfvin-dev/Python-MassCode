@@ -1613,6 +1613,7 @@
                 size_hint: (0.2, None)
                 height: 3 * dp(13)
                 text: "Choose"
+                on_release: root.chooseDefaultPath()
 
         PopupErrorLabel:
             id: settingsError
@@ -1631,6 +1632,45 @@
             WriteButton:
                 text: "Save"
                 on_release: root.saveSettings()
+
+<DefaultPathPopup>:
+    auto_dismiss: False
+    title: "Default File Path"
+    title_size: dp(18)
+    size_hint: (None, None)
+    size: (dp(750), dp(580))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Select a Default File Path:"
+            size_hint: (1, None)
+            color: root.title_color
+
+        FileChooserListView:
+            #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
+            #Line 339 -> height: '24dp' before it was dependent on screen resolution
+            id: settingsFilechooser
+            dirselect: False
+            path: root.getDefaultPath()
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
+
+            WriteButton:
+                text: "Select"
+                size: (dp(150), dp(55))
+                on_release: root.setDefaultPath(settingsFilechooser.path)
+
+            CancelButton:
+                size: (dp(150), dp(55))
+                on_release: root.dismiss()
 
 <StartupTestsPopup>:
     auto_dismiss: False

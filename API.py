@@ -138,7 +138,6 @@ def saveSettings(fontSize, path):
 
     c.execute('''REPLACE INTO settings_table VALUES (?, ?, ?)''', ["settings", fontSize, path])
     insertId = c.lastrowid
-    print(insertId)
 
     conn.commit()
     conn.close()

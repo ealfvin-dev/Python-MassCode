@@ -839,7 +839,12 @@ class OrderedText(TextInput):
         self.text = ""
         self.orderNum = 0
         self.background_normal = ''
-        self.font_size = dp(API.getSettings()[0][0])
+
+        try:
+            self.font_size = dp(API.getSettings()[0][0])
+        except:
+            self.font_size = dp(13)
+
         self.write_tab = False
         self.multiline = False
         self.padding = [dp(5), dp(5), dp(5), dp(5)]
@@ -851,7 +856,11 @@ class OrderedText(TextInput):
 class UserInput(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
-        self.font_size = dp(API.getSettings()[0][0])
+        
+        try:
+            self.font_size = dp(API.getSettings()[0][0])
+        except:
+            self.font_size = dp(13)
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -869,7 +878,12 @@ class UserInput(TextInput):
 class MainErrorText(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
-        self.font_size = dp(API.getSettings()[0][0])
+        
+        try:
+            self.font_size = dp(API.getSettings()[0][0])
+        except:
+            self.font_size = dp(13)
+
         self.text = "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
         self.foreground_color = Configs.greenTextColor
         self.selection_color = Configs.highlightColor
@@ -1919,7 +1933,11 @@ class OpenFilePopup(Popup):
         self.dismiss()
 
     def getDefaultPath(self):
-        return API.getSettings()[0][1]
+        try:
+            filePath = API.getSettings()[0][1]
+            return filePath
+        except:
+            return path.abspath(getcwd())
 
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
@@ -1972,13 +1990,17 @@ class OpenNewFilePopup(Popup):
         fileSavePop.open()
 
 class NewFileSaveLocPopup(Popup):
-    def setSaveLoc(self, path):
-        self.parent.children[1].baseFilePath = path
+    def setSaveLoc(self, filePath):
+        self.parent.children[1].baseFilePath = filePath
         self.parent.children[1].splitSeries("@SERIES\n\n")
         self.dismiss()
 
     def getDefaultPath(self):
-        return API.getSettings()[0][1]
+        try:
+            filePath = API.getSettings()[0][1]
+            return filePath
+        except:
+            return path.abspath(getcwd())
 
 class ValidationPopup(Popup):
     def __init__(self, **kwargs):
@@ -2092,10 +2114,22 @@ class VisualizationPopup(Popup):
 
 class SettingsPopup(PopupBase):
     def getFontSize(self):
-        return str(API.getSettings()[0][0])
+        try:
+            fontSize = str(API.getSettings()[0][0])
+            return fontSize
+        except:
+            return "13"
 
     def getDefaultPath(self):
-        return API.getSettings()[0][1]
+        try:
+            filePath = API.getSettings()[0][1]
+            return filePath
+        except:
+            return path.abspath(getcwd())
+
+    def chooseDefaultPath(self):
+        pathPopup = DefaultPathPopup(self)
+        pathPopup.open()
 
     def saveSettings(self):
         fontSize = self.ids.fontSize.text.strip()
@@ -2121,6 +2155,22 @@ class SettingsPopup(PopupBase):
         self.parent.children[1].ids.notesText.font_size = dp(int(fontSize))
         self.parent.children[1].ids.errors.font_size = dp(int(fontSize))
         self.dismiss()
+
+class DefaultPathPopup(Popup):
+    def __init__(self, rootPop):
+        super().__init__()
+        self.rootPop = rootPop
+
+    def setDefaultPath(self, filePath):
+        self.rootPop.ids.filePath.text = filePath
+        self.dismiss()
+
+    def getDefaultPath(self):
+        try:
+            filePath = API.getSettings()[0][1]
+            return filePath
+        except:
+            return path.abspath(getcwd())
 
 class StartupTestsPopup(Popup):
     def __init__(self, **kwargs):
