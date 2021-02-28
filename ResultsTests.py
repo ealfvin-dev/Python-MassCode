@@ -1,9 +1,10 @@
 import RunFile
+from os import path
 
 def test1AirDesities(suite):
     #Test if calculated air densities match NIST MassCode
     try:
-        data = RunFile.run("./Testing/MARSTest/Test-AirDensity-config.txt", writeOutFile=False)
+        data = RunFile.run(path.join("TestFiles", "Test-AirDensity-config.txt"), writeOutFile=False)
         calculatedDesities = data[0].airDensities
 
         NIST_MC_DENSITIES = [\
@@ -30,7 +31,7 @@ def test1AirDesities(suite):
 def test2FourInOne(suite):
     #Test if calculated 4-1 masses at 1 kg match NIST MassCode
     try:
-        data = RunFile.run("./Testing/MARSTest/Validation-4-1-config.txt", writeOutFile=False)
+        data = RunFile.run(path.join("TestFiles", "Validation-4-1-config.txt"), writeOutFile=False)
         calculatedMasses = data[0].calculatedMasses[0]
 
         NIST_MC_MASSES = [1000.01028169, 1000.00279093, 1000.01020846, 999.99989410]
@@ -51,7 +52,7 @@ def test2FourInOne(suite):
 def test3MetricDissem(suite):
     #Test if full dissemination results from 1 kg - 1 mg (5-1, 532111, 522111) match NIST Masscode
     try:
-        data = RunFile.run("./Testing/MARSTest/Validation-1kg-1mg-config.txt", writeOutFile=False)
+        data = RunFile.run(path.join("TestFiles", "Validation-1kg-1mg-config.txt"), writeOutFile=False)
 
         NIST_MC_MASSES = [\
             [1000.00217499, 1000.00211201, 1000.00101741, 1000.00115097, 1000.00110198],\
@@ -80,7 +81,7 @@ def test3MetricDissem(suite):
 def test4LargeLb(suite):
     #Test it 3-1 results at 3000 lb match NIST Mass Code
     try:
-        data = RunFile.run("./Testing/MARSTest/Validation-3000lb-3-1-config.txt", writeOutFile=False)
+        data = RunFile.run(path.join("TestFiles", "Validation-3000lb-3-1-config.txt"), writeOutFile=False)
         calculatedMasses = data[0].calculatedMasses[0]
 
         NIST_MC_MASS_CORRECTIONS = [9.12199977, 28.36503088, -5.87624665]
@@ -101,7 +102,7 @@ def test4LargeLb(suite):
 def test5LbDissem(suite):
     #Test if pound dissemination from 1 lb to 0.001 lb results match NIST Mass Code
     try:
-        data = RunFile.run("./Testing/MARSTest/Validation-1lb-0.001lb-config.txt", writeOutFile=False)
+        data = RunFile.run(path.join("TestFiles", "Validation-1lb-0.001lb-config.txt"), writeOutFile=False)
 
         NIST_MC_MASS_CORRECTIONS = [\
             [0.00034930, 0.00856124, 0.00274900, 0.00634527],\
@@ -127,7 +128,7 @@ def test5LbDissem(suite):
 def test6OnekgSF(suite):
     #Test if calculated 4-1 masses at 1 kg with a sensitivity factor != 1 match NIST MassCode
     try:
-        data = RunFile.run("./Testing/MARSTest/Validation-1kg-SF-config.txt", writeOutFile=False)
+        data = RunFile.run(path.join("TestFiles", "Validation-1kg-SF-config.txt"), writeOutFile=False)
         calculatedMasses = data[0].calculatedMasses[0]
 
         NIST_MC_MASSES = [999.99806382, 1000.00395937, 999.99806408, 1000.00635463]
@@ -148,7 +149,7 @@ def test6OnekgSF(suite):
 def test7Ascending52211(suite):
     #Test if ascending 52211 masses match NIST MassCode
     try:
-        data = RunFile.run("./Testing/MARSTest/Validation-52211-config.txt", writeOutFile=False)
+        data = RunFile.run(path.join("TestFiles", "Validation-52211-config.txt"), writeOutFile=False)
         calculatedMasses = data[0].calculatedMasses[0]
 
         NIST_MC_MASSES = [4999.99155113, 1999.99996593, 2000.00061565, 1000.00158552, 1000.00134116]
@@ -169,7 +170,7 @@ def test7Ascending52211(suite):
 def test8LineByLineABC(suite):
     #Test if ascending 52211 masses match NIST MassCode
     try:
-        data = RunFile.run("./Testing/MARSTest/Validation-LBL-ABC-config.txt", writeOutFile=False)
+        data = RunFile.run(path.join("TestFiles", "Validation-LBL-ABC-config.txt"), writeOutFile=False)
         calculatedMasses = data[0].calculatedMasses[0]
 
         EXPECTED_MASSES = [999.98995274, 999.99835319, 999.99002598, 999.99989410]

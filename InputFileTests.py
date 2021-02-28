@@ -1,9 +1,10 @@
 import InputChecks
+from os import path
 
 def test01FEGoodFile(suite):
     #Test if a correctly-made input file passes all front end input checks
     try:
-        with open("./Testing/MARSTest/Test-FEGoodFile-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEGoodFile-config.txt")) as file:
             text = file.read()
 
         seriesTexts = text.split("@SERIES")
@@ -35,7 +36,7 @@ def test01FEGoodFile(suite):
 def test02FEGoodSingleSeries(suite):
     #Test if a correctly-made input file with a single series passes all front end input checks
     try:
-        with open("./Testing/MARSTest/Test-FEGoodFile-SingleSeries-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEGoodFile-SingleSeries-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -59,7 +60,7 @@ def test02FEGoodSingleSeries(suite):
 def test03FEBadReportNum(suite):
     testDesc = "REPORT NUMBER FORMAT DETERMINATION -"
     try:
-        with open("./Testing/MARSTest/Test-FEBadReportNum-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEBadReportNum-config.txt")) as file:
             seriesText = file.read()
         
         suite.assertFalse(InputChecks.checkReportNumber(seriesText, suite.sendErrorMock, suite.highlightErrorMock), testDesc)
@@ -70,7 +71,7 @@ def test03FEBadReportNum(suite):
 def test04FEBadStructure(suite):
     testDesc = "INPUT FILE STRUCTURE DETERMINATION -"
     try:
-        with open("./Testing/MARSTest/Test-FEGoodFile-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEGoodFile-config.txt")) as file:
             text = file.read()
 
         seriesTexts = text.split("@SERIES")
@@ -90,7 +91,7 @@ def test04FEBadStructure(suite):
 def test05FEBadTags(suite):
     #Test if unrecognized, duplicate, missing tags are found by Input checks
     try:
-        with open("./Testing/MARSTest/Test-FEBadTags-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEBadTags-config.txt")) as file:
             text = file.read()
 
         seriesTexts = text.split("@SERIES")
@@ -112,7 +113,7 @@ def test05FEBadTags(suite):
 def test06MissedInput(suite):
     testDesc = "CHECK FOR MISSED INPUT -"
     try:
-        with open("./Testing/MARSTest/Test-FEBlankInput-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEBlankInput-config.txt")) as file:
             text = file.read()
         
         seriesTexts = [text]
@@ -125,7 +126,7 @@ def test06MissedInput(suite):
 def test07InputNaN(suite):
     testDesc = "CHECK FOR NaN INPUT -"
     try:
-        with open("./Testing/MARSTest/Test-FEInputNaN-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEInputNaN-config.txt")) as file:
             text = file.read()
         
         seriesTexts = [text]
@@ -138,7 +139,7 @@ def test07InputNaN(suite):
 def test08CheckEqualsRestraint(suite):
     testDesc = "CHECK STANDARD EQUALS RESTRAINT -"
     try:
-        with open("./Testing/MARSTest/Test-FECheckEqualRes-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FECheckEqualRes-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -151,7 +152,7 @@ def test08CheckEqualsRestraint(suite):
 def test09UnequalRestraintPassed(suite):
     testDesc = "CHECK FOR UNEQUAL RESTRAINTS -"
     try:
-        with open("./Testing/MARSTest/Test-BadRestraintPassed-config.txt") as file:
+        with open(path.join("TestFiles", "Test-BadRestraintPassed-config.txt")) as file:
             text = file.read()
 
         seriesTexts = text.split("@SERIES")
@@ -168,7 +169,7 @@ def test09UnequalRestraintPassed(suite):
 def test10ErrorInPosition(suite):
     testDesc = "POSITION WEIGHT_ID -"
     try:
-        with open("./Testing/MARSTest/Test-BadPosition-config.txt") as file:
+        with open(path.join("TestFiles", "Test-BadPosition-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -181,7 +182,7 @@ def test10ErrorInPosition(suite):
 def test11BadDesignVectors(suite):
     testDesc = "CHECK FOR BAD DESIGN VECTOR LENGTH -"
     try:
-        with open("./Testing/MARSTest/Test-FEBadDesignVectorLength-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEBadDesignVectorLength-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -194,7 +195,7 @@ def test11BadDesignVectors(suite):
 def test12BadRestraintVectors(suite):
     testDesc = "CHECK FOR BAD RESTRAINT VECTOR LENGTH -"
     try:
-        with open("./Testing/MARSTest/Test-FEBadRestraintVectorLength-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEBadRestraintVectorLength-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -207,7 +208,7 @@ def test12BadRestraintVectors(suite):
 def test13BadCheckVectors(suite):
     testDesc = "CHECK FOR BAD CHECK VECTOR LENGTH -"
     try:
-        with open("./Testing/MARSTest/Test-FEBadCheckVectorLength-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEBadCheckVectorLength-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -220,7 +221,7 @@ def test13BadCheckVectors(suite):
 def test14BadPassDownVectors(suite):
     testDesc = "CHECK FOR BAD PASS DOWN VECTOR LENGTH -"
     try:
-        with open("./Testing/MARSTest/Test-FEBadPassDownVectorLength-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEBadPassDownVectorLength-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -233,7 +234,7 @@ def test14BadPassDownVectors(suite):
 def test15UnequalBalanceObs(suite):
     testDesc = "CHECK FOR UNEQUAL BALANCE OBSERVATIONS -"
     try:
-        with open("./Testing/MARSTest/Test-UnEqualBalObs-config.txt") as file:
+        with open(path.join("TestFiles", "Test-UnEqualBalObs-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -246,7 +247,7 @@ def test15UnequalBalanceObs(suite):
 def test16UnequalEnvObs(suite):
     testDesc = "CHECK FOR UNEQUAL ENV OBSERVATIONS -"
     try:
-        with open("./Testing/MARSTest/Test-UnEqualEnvObs-config.txt") as file:
+        with open(path.join("TestFiles", "Test-UnEqualEnvObs-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]
@@ -259,7 +260,7 @@ def test16UnequalEnvObs(suite):
 def test17BadDesignLine(suite):
     testDesc = "CHECK FOR INCOMPATIBLE DESIGN LINE -"
     try:
-        with open("./Testing/MARSTest/Test-FEBadDesignLine-config.txt") as file:
+        with open(path.join("TestFiles", "Test-FEBadDesignLine-config.txt")) as file:
             text = file.read()
 
         seriesTexts = [text]

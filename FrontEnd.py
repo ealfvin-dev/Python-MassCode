@@ -835,7 +835,7 @@ class OrderedText(TextInput):
         
         self.bind(size=self._update_rect, pos=self._update_rect)
 
-        self.font_name = "./Menlo.ttc"
+        self.font_name = "Menlo.ttc"
         self.text = ""
         self.orderNum = 0
         self.background_normal = ''
@@ -1094,7 +1094,7 @@ class RemoveSeriesButton(Button):
 class PopupBase(Popup):
     def __init__(self, **kwargs):
         super().__init__()
-        self.background = './Popup_Background.png'
+        self.background = path.join("Images", "Popup_Background.png")
         self.title_color = (0, 0, 0, 1)
         self.title_size = dp(18)
         self.size_hint = (None, None)
@@ -1129,6 +1129,10 @@ class PopupErrorLabel(Label):
 
     def updateLabel(self, inst, value):
         self.text_size = (self.width, None)
+
+class MarsImage(Image):
+    def getImagePath(self, fileName):
+        return path.join("Images", fileName)
 
 class DbEntryLabel(Label):
     def __init__(self, **kwargs):

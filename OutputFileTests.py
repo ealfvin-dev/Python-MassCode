@@ -4,7 +4,7 @@ from os import path, remove
 def test1WriteOutFile(suite):
     testDesc = "WRITE OUT FILE"
     try:
-        data = RunFile.run("./Testing/MARSTest/Test-Writeout-config.txt")
+        data = RunFile.run(path.join("TestFiles", "Test-Writeout-config.txt"))
         if(path.exists("Test-Writeout-out.txt")):
             suite.passTest(testDesc)
         else:
@@ -20,7 +20,7 @@ def test1WriteOutFile(suite):
 def test2OutFileData(suite):
     #Test writing stuff into output file
     try:
-        data = RunFile.run("./Testing/MARSTest/Test-Writeout-config.txt")
+        data = RunFile.run(path.join("TestFiles", "Test-Writeout-config.txt"))
 
         outFileDensities = []
         outFileMasses = []
@@ -98,7 +98,7 @@ def test2OutFileData(suite):
                     outFileTvalue = float(m[1])
 
         #Pull useful stuff out of input file
-        with open("./Testing/MARSTest/Test-Writeout-config.txt", 'r') as configFile:
+        with open(path.join("TestFiles", "Test-Writeout-config.txt"), 'r') as configFile:
             for line in configFile:
                 m = line.strip().split()
                 if(m == []):
