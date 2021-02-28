@@ -1043,7 +1043,7 @@ class AddSeriesButton(Button):
         self.height = dp(60)
         self.background_normal = ''
         self.background_down = ''
-        self.background_color = Configs.addSeriesButtonColor
+        self.background_color = Configs.greenButtonColor
         self.text = "   Add Series"
         self.halign = 'center'
         self.font_size = dp(17)

@@ -207,18 +207,6 @@
                     source: self.getImagePath('PlusIcon.png')
 
             TopMenuButton:
-                id: runTestsButton
-                text: "Run Tests"
-                on_release: app.openValidationPop()
-
-                MarsImage:
-                    size_hint: (None, None)
-                    height: dp(18)
-                    width: dp(18)
-                    pos: self.getImagePosition(runTestsButton.pos, runTestsButton.width, runTestsButton.texture_size[0])
-                    source: self.getImagePath('RunTestsIcon.png')
-
-            TopMenuButton:
                 id: visualizationButton
                 text: "Visualization"
                 on_release: app.openVisualizationPop()
@@ -229,6 +217,18 @@
                     width: dp(18)
                     pos: self.getImagePosition(visualizationButton.pos, visualizationButton.width, visualizationButton.texture_size[0])
                     source: self.getImagePath('VisualizationIcon.png')
+
+            TopMenuButton:
+                id: runTestsButton
+                text: "Run Tests"
+                on_release: app.openValidationPop()
+
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(runTestsButton.pos, runTestsButton.width, runTestsButton.texture_size[0])
+                    source: self.getImagePath('RunTestsIcon.png')
 
             TopMenuButton:
                 id: settingsButton
