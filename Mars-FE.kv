@@ -169,24 +169,64 @@
                     source: self.getImagePath('MarsFELogo.png')
 
             TopMenuButton:
-                text: "Open File"
+                id: openFileButton
                 on_release: app.openFilePop()
+                text: "Open File"
+
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(openFileButton.pos, openFileButton.width, openFileButton.texture_size[0])
+                    source: self.getImagePath('OpenFileIcon.png')
 
             TopMenuButton:
+                id: newFileButton
                 text: "New File"
                 on_release: app.openNewFilePop()
 
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(newFileButton.pos, newFileButton.width, newFileButton.texture_size[0])
+                    source: self.getImagePath('NewFileIcon.png')
+
             TopMenuButton:
+                id: runTestsButton
                 text: "Run Tests"
                 on_release: app.openValidationPop()
 
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(runTestsButton.pos, runTestsButton.width, runTestsButton.texture_size[0])
+                    source: self.getImagePath('RunTestsIcon.png')
+
             TopMenuButton:
+                id: visualizationButton
                 text: "Visualization"
                 on_release: app.openVisualizationPop()
 
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(visualizationButton.pos, visualizationButton.width, visualizationButton.texture_size[0])
+                    source: self.getImagePath('VisualizationIcon.png')
+
             TopMenuButton:
+                id: settingsButton
                 text: "Settings"
                 on_release: app.openSettingPop()
+
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(settingsButton.pos, settingsButton.width, settingsButton.texture_size[0])
+                    source: self.getImagePath('SettingsIcon.png')
 
         BoxLayout:
             id: content
@@ -477,12 +517,12 @@
 
         Label:
             font_size: dp(10)
-            text: "[color=#000000]Copyright Erik Alfvin, 2020[/color]"
+            text: "[color=#000000]MARS 1.0 Copyright Erik Alfvin, 2021[/color]\n"
             markup: True
             text_size: root.width, None
             size: self.texture_size
             halign: 'center'
-            size_hint: (1, 0.01)
+            size_hint: (0.88, 0.01)
 
 <LabInfoPopup>:
     auto_dismiss: False

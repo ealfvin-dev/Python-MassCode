@@ -1,5 +1,6 @@
 Working-Files/
 Logo/
+__pycache__/
 
 dbCommands.py
 mars.db

@@ -910,6 +910,8 @@ class ExtraButton(Button):
 class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint = (1, None)
+        self.height = dp(50)
         self.halign = 'center'
         self.font_size = dp(15)
         self.background_normal = ''
@@ -1133,6 +1135,12 @@ class PopupErrorLabel(Label):
 class MarsImage(Image):
     def getImagePath(self, fileName):
         return path.join("Images", fileName)
+
+    def getImagePosition(self, parentPos, parentWidth, parentTextWidth):
+        posY = parentPos[1] + dp(17)
+        posX = parentPos[0] + (parentWidth - parentTextWidth) / 2 - dp(22)
+
+        return (posX, posY)
 
 class DbEntryLabel(Label):
     def __init__(self, **kwargs):
