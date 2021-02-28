@@ -1041,11 +1041,10 @@ class AddSeriesButton(Button):
         super().__init__()
         self.size_hint = (1, None)
         self.height = dp(60)
-        self.markup = True
         self.background_normal = ''
         self.background_down = ''
         self.background_color = Configs.addSeriesButtonColor
-        self.text = "[b]+[/b] Add Series"
+        self.text = "   Add Series"
         self.halign = 'center'
         self.font_size = dp(17)
 
@@ -1077,11 +1076,10 @@ class RemoveSeriesButton(Button):
         super().__init__()
         self.size_hint = (1, None)
         self.height = dp(50)
-        self.markup = True
         self.background_normal = ''
         self.background_down = ''
         self.halign = 'center'
-        self.text = "[b]-[/b] Remove Last\nSeries"
+        self.text = "    Remove Last\nSeries"
         self.font_size = dp(16)
         self.background_color = Configs.cancelButtonColor
 
@@ -1136,9 +1134,9 @@ class MarsImage(Image):
     def getImagePath(self, fileName):
         return path.join("Images", fileName)
 
-    def getImagePosition(self, parentPos, parentWidth, parentTextWidth):
-        posY = parentPos[1] + dp(17)
-        posX = parentPos[0] + (parentWidth - parentTextWidth) / 2 - dp(22)
+    def getImagePosition(self, parentPos, parentWidth, parentTextWidth, xAdjustment=0, yAdjustment=0):
+        posY = parentPos[1] + dp(17) + yAdjustment
+        posX = parentPos[0] + (parentWidth - parentTextWidth) / 2 - dp(25) + xAdjustment
 
         return (posX, posY)
 

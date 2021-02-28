@@ -20,6 +20,13 @@
             id: addSeriesButton
             on_press: root.addSeries()
 
+            MarsImage:
+                size_hint: (None, None)
+                height: dp(18)
+                width: dp(18)
+                pos: self.getImagePosition(addSeriesButton.pos, addSeriesButton.width, addSeriesButton.texture_size[0], dp(15), dp(4))
+                source: self.getImagePath('PlusIcon.png')
+
         ScrollView:
             id: seriesSelectionSv
             scroll_timeout: 0
@@ -143,8 +150,15 @@
             on_press: root.openOutputFile()
 
         RemoveSeriesButton:
-            id: removeSeries
+            id: removeSeriesButton
             on_release: root.removeLastSeries()
+
+            MarsImage:
+                size_hint: (None, None)
+                height: dp(18)
+                width: dp(18)
+                pos: self.getImagePosition(removeSeriesButton.pos, removeSeriesButton.width, removeSeriesButton.texture_size[0], dp(15), dp(8))
+                source: self.getImagePath('MinusIcon.png')
 
     BoxLayout:
         id: secondaryMainBox
@@ -190,7 +204,7 @@
                     height: dp(18)
                     width: dp(18)
                     pos: self.getImagePosition(newFileButton.pos, newFileButton.width, newFileButton.texture_size[0])
-                    source: self.getImagePath('NewFileIcon.png')
+                    source: self.getImagePath('PlusIcon.png')
 
             TopMenuButton:
                 id: runTestsButton
@@ -424,24 +438,52 @@
                             spacing: dp(30)
 
                             BottomButton:
-                                text: "[b]Debug[/b]"
-                                #buttonColor: (0.96, 0.64, 0.00784314, 1)
+                                id: debugButton
+                                text: "[b]     Debug[/b]"
                                 on_release: root.debug()
 
+                                MarsImage:
+                                    size_hint: (None, None)
+                                    height: dp(15)
+                                    width: dp(15)
+                                    pos: self.getImagePosition(debugButton.pos, debugButton.width, debugButton.texture_size[0], dp(23), dp(1))
+                                    source: self.getImagePath('BugIcon.png')
+
                             BottomButton:
-                                text: "[b]Split[/b]"
-                                #buttonColor: (0.96, 0.64, 0.00784314, 1)
+                                id: splitButton
+                                text: "[b]     Split[/b]"
                                 on_release: root.reSplit()
+
+                                MarsImage:
+                                    size_hint: (None, None)
+                                    height: dp(15)
+                                    width: dp(15)
+                                    pos: self.getImagePosition(splitButton.pos, splitButton.width, splitButton.texture_size[0], dp(23), dp(1))
+                                    source: self.getImagePath('SplitIcon.png')
 
                             BottomButton:
                                 id: saveButton
-                                text: "[b]SAVE[/b]"
+                                text: "[b]     SAVE[/b]"
                                 on_release: root.save()
+
+                                MarsImage:
+                                    size_hint: (None, None)
+                                    height: dp(15)
+                                    width: dp(15)
+                                    pos: self.getImagePosition(saveButton.pos, saveButton.width, saveButton.texture_size[0], dp(23), dp(1))
+                                    source: self.getImagePath('SaveIcon.png')
 
                             RunButton:
                                 id: runButton
-                                text: "[b]RUN[/b]"
+                                text: "[b]     RUN[/b]"
                                 on_release: root.runReduction()
+
+                                MarsImage:
+                                    size_hint: (None, None)
+                                    height: dp(15)
+                                    width: dp(15)
+                                    pos: self.getImagePosition(runButton.pos, runButton.width, runButton.texture_size[0], dp(23), dp(1))
+                                    source: self.getImagePath('MarsIcon.png')
 
                 BoxLayout:
                     id: menuRow6-blank
