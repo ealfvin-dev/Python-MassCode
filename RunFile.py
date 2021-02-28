@@ -1,10 +1,10 @@
-import sys
-import numpy as np
+#import sys
+from numpy import float64, zeros
 
 from SeriesReduction import MatrixSolution
 from WriteOutFile import writeOut
 from MARSException import MARSException
-assert sys.version_info >= (3, 5)
+#assert sys.version_info >= (3, 5)
 
 def parse(fileName):
     notes = []
@@ -119,7 +119,7 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Direct-Reading-SF>":
-                seriesObjects[seriesNumber].directReadingsSF = np.float64(splitLine[1])
+                seriesObjects[seriesNumber].directReadingsSF = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Grams>":
@@ -139,23 +139,23 @@ def parse(fileName):
 
                 #Make weight nominals array and set calculatedMasses to nominals for first-pass estimates. Initialize matrixY:
                 if positionRow == 0:
-                    seriesObjects[seriesNumber].weightNominals = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
-                    seriesObjects[seriesNumber].ogNominals = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
+                    seriesObjects[seriesNumber].weightNominals = zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=float64)
+                    seriesObjects[seriesNumber].ogNominals = zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=float64)
 
-                    seriesObjects[seriesNumber].calculatedMasses = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
-                    seriesObjects[seriesNumber].matrixY = np.zeros(shape=(seriesObjects[seriesNumber].observations, 1), dtype=np.float64)
-                    seriesObjects[seriesNumber].referenceValues = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
+                    seriesObjects[seriesNumber].calculatedMasses = zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=float64)
+                    seriesObjects[seriesNumber].matrixY = zeros(shape=(seriesObjects[seriesNumber].observations, 1), dtype=float64)
+                    seriesObjects[seriesNumber].referenceValues = zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=float64)
 
-                seriesObjects[seriesNumber].weightNominals[0, positionRow] = np.float64(splitLine[2]) * toGrams
-                seriesObjects[seriesNumber].ogNominals[0, positionRow] = np.float64(splitLine[2])
+                seriesObjects[seriesNumber].weightNominals[0, positionRow] = float64(splitLine[2]) * toGrams
+                seriesObjects[seriesNumber].ogNominals[0, positionRow] = float64(splitLine[2])
 
-                seriesObjects[seriesNumber].calculatedMasses[0, positionRow] = np.float64(splitLine[2]) * toGrams
+                seriesObjects[seriesNumber].calculatedMasses[0, positionRow] = float64(splitLine[2]) * toGrams
 
-                seriesObjects[seriesNumber].weightDensities.append(np.float64(splitLine[3]))
-                seriesObjects[seriesNumber].weightCCEs.append(np.float64(splitLine[4]))
+                seriesObjects[seriesNumber].weightDensities.append(float64(splitLine[3]))
+                seriesObjects[seriesNumber].weightCCEs.append(float64(splitLine[4]))
 
                 try:
-                    seriesObjects[seriesNumber].referenceValues[0, positionRow] = np.float64(splitLine[5])
+                    seriesObjects[seriesNumber].referenceValues[0, positionRow] = float64(splitLine[5])
                 except IndexError:
                     seriesObjects[seriesNumber].referenceValues[0, positionRow] = 0
                 positionRow += 1
@@ -164,20 +164,20 @@ def parse(fileName):
             if splitLine[0] == "<Design>":
                 if designRow == 0:
                     seriesObjects[seriesNumber].designMatrix = \
-                        np.zeros(shape=(seriesObjects[seriesNumber].observations, seriesObjects[seriesNumber].positions), dtype=int)
+                        zeros(shape=(seriesObjects[seriesNumber].observations, seriesObjects[seriesNumber].positions), dtype=int)
                 for i in range(1, len(splitLine)):
                     seriesObjects[seriesNumber].designMatrix[designRow, i - 1] = int(splitLine[i])
                 designRow += 1
                 continue
 
             if splitLine[0] == "<Restraint>":
-                seriesObjects[seriesNumber].restraintPos = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=int)
+                seriesObjects[seriesNumber].restraintPos = zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=int)
                 for i in range(1, len(splitLine)):
                     seriesObjects[seriesNumber].restraintPos[0, i - 1] = int(splitLine[i])
                 continue
 
             if splitLine[0] == "<Check-Standard>":
-                seriesObjects[seriesNumber].checkStandardPos = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=int)
+                seriesObjects[seriesNumber].checkStandardPos = zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=int)
                 for i in range(1, len(splitLine)):
                     seriesObjects[seriesNumber].checkStandardPos[0, i - 1] = int(splitLine[i])
                 continue
@@ -190,35 +190,35 @@ def parse(fileName):
             #     continue
 
             if splitLine[0] == "<Pass-Down>":
-                seriesObjects[seriesNumber].nextRestraint = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=int)
+                seriesObjects[seriesNumber].nextRestraint = zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=int)
                 for i in range(1, len(splitLine)):
                     seriesObjects[seriesNumber].nextRestraint[0, i - 1] = int(splitLine[i])
                 continue
 
             if splitLine[0] == "<Sigma-w>":
-                seriesObjects[seriesNumber].sigmaW = np.float64(splitLine[1])
+                seriesObjects[seriesNumber].sigmaW = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Sigma-t>":
-                seriesObjects[seriesNumber].sigmaT = np.float64(splitLine[1])
+                seriesObjects[seriesNumber].sigmaT = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<sw-Mass>":
-                seriesObjects[seriesNumber].swMass = np.float64(splitLine[1])
+                seriesObjects[seriesNumber].swMass = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<sw-Density>":
-                seriesObjects[seriesNumber].swDensity = np.float64(splitLine[1])
+                seriesObjects[seriesNumber].swDensity = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<sw-CCE>":
-                seriesObjects[seriesNumber].swCCE = np.float64(splitLine[1])
+                seriesObjects[seriesNumber].swCCE = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Balance-Reading>":
                 readings = []
                 for i in range(1, len(splitLine)):
-                    readings.append(np.float64(splitLine[i]))
+                    readings.append(float64(splitLine[i]))
                 seriesObjects[seriesNumber].balanceReadings.append(readings)
                 continue
 
@@ -235,19 +235,19 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Gravity-Grad>":
-                seriesObjects[seriesNumber].gravityGradient = np.float64(splitLine[1])
+                seriesObjects[seriesNumber].gravityGradient = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Gravity-Local>":
-                seriesObjects[seriesNumber].localGravity = np.float64(splitLine[1])
+                seriesObjects[seriesNumber].localGravity = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<Height>":
                 if(seriesObjects[seriesNumber].weightHeights.size == 0):
                     #Initialize np matrix
-                    seriesObjects[seriesNumber].weightHeights = np.zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=np.float64)
+                    seriesObjects[seriesNumber].weightHeights = zeros(shape=(1, seriesObjects[seriesNumber].positions), dtype=float64)
 
-                seriesObjects[seriesNumber].weightHeights[0, heightRow] = np.float64(splitLine[1]) / 100
+                seriesObjects[seriesNumber].weightHeights[0, heightRow] = float64(splitLine[1]) / 100
                 heightRow += 1
                 continue
 
@@ -266,6 +266,6 @@ def run(inputFile, basePath=".", writeOutFile=True):
 
     return data
 
-if(__name__ == "__main__"):
-    inputFile = sys.argv[1]
-    run(inputFile)
+# if(__name__ == "__main__"):
+#     inputFile = sys.argv[1]
+#     run(inputFile)

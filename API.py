@@ -115,3 +115,30 @@ def deleteStat(rowId):
 
     conn.commit()
     conn.close()
+
+def getSettings():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT fontSize, defaultPath FROM settings_table WHERE name = ?''', ["settings"])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data
+
+def saveSettings(fontSize, path):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS settings_table (
+        name text NOT NULL UNIQUE,
+        fontSize INTEGER NOT NULL,
+        defaultPath text NOT NULL
+        )''')
+
+    c.execute('''REPLACE INTO settings_table VALUES (?, ?, ?)''', ["settings", fontSize, path])
+    insertId = c.lastrowid
+
+    conn.commit()
+    conn.close()
+    return insertId

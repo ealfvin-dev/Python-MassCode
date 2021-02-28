@@ -6,6 +6,7 @@ from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from kivy.metrics import dp
 
 from kivy.app import App
+from kivy.lang import Builder
 from kivy.core.window import Window, WindowBase
 from kivy.clock import Clock
 
@@ -34,14 +35,13 @@ from Configs import Configs
 from ParsePlotData import *
 from MakePlots import *
 
-import sys
-import os
-import threading
+from os import path, remove, getcwd
+from threading import Thread
 
-import time
+from time import sleep
 
 class MainLayout(BoxLayout):
-    baseFilePath = os.path.abspath(".")
+    baseFilePath  = path.abspath(".")
     configFilePath = ""
 
     numberOfSeries = 1
@@ -164,7 +164,7 @@ class MainLayout(BoxLayout):
             lineNum += 1
 
         endPosition -= 1
-        self.ids.userText.selection_color = (0.1, 0.8, 0.2, 0.20)
+        self.ids.userText.selection_color = Configs.highlightNewTextColor
         self.ids.userText.select_text(startPosition, endPosition)
 
     def highlightError(self, series, startLine, endLine=None):
@@ -192,7 +192,7 @@ class MainLayout(BoxLayout):
             lineNum += 1
 
         endPosition -= 1
-        self.ids.userText.selection_color = (0.9, 0.05, 0.1, 0.28)
+        self.ids.userText.selection_color = Configs.highlightErrorColor
         self.ids.userText.select_text(startPosition, endPosition)
 
     def textAdded(self, cursor_row):
@@ -226,9 +226,9 @@ class MainLayout(BoxLayout):
             if(line.split()[0] == "<Report-Number>"):
                 try:
                     self.reportNum = line.split()[1]
-                    self.configFilePath = os.path.join(self.baseFilePath, self.reportNum + "-config.txt")
-                    baseDir = os.path.split(self.baseFilePath)[1]
-                    self.ids.configFileName.text = os.path.join(baseDir, self.reportNum + "-config.txt")
+                    self.configFilePath = path.join(self.baseFilePath, self.reportNum + "-config.txt")
+                    baseDir = path.split(self.baseFilePath)[1]
+                    self.ids.configFileName.text = path.join(baseDir, self.reportNum + "-config.txt")
                     if(self.currentSeries != None):
                         self.grabOutputFile()
 
@@ -392,6 +392,9 @@ class MainLayout(BoxLayout):
         self.ids.positionVectorsButton.colorGrey()
         self.ids.swButton.colorGrey()
         self.ids.measurementsButton.colorGrey()
+
+    def getGravityButtonColor(self):
+        return Configs.gravityButtonColor
 
     def addSeries(self):
         if(self.numberOfSeries == self.maxSeries):
@@ -613,11 +616,11 @@ class MainLayout(BoxLayout):
 
         notes = self.ids.notesText.text.strip()
         fileName = self.reportNum + "-notes.txt"
-        fileLoc = os.path.join(self.baseFilePath, fileName)
+        fileLoc = path.join(self.baseFilePath, fileName)
 
         if(notes == ""):
-            if(os.path.exists(fileLoc)):
-                os.remove(fileLoc)
+            if(path.exists(fileLoc)):
+                remove(fileLoc)
 
         else:
             f = open(fileLoc, 'w')
@@ -625,11 +628,9 @@ class MainLayout(BoxLayout):
             f.close()
 
     def save(self):
-        if(self.currentSeries == None):
-            return
-
-        #Save current working series Text into self.seriesTexts array
-        self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
+        #Save current working series text into self.seriesTexts array
+        if(self.currentSeries != None):
+            self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
         #Run tests to check the provided report number before saving
         reportNum = self.getReportNum()
@@ -642,7 +643,8 @@ class MainLayout(BoxLayout):
         if(checkReportNum == False):
             return
 
-        self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids["series" + str(self.currentSeries)])
+        if(self.currentSeries != None):
+            self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids["series" + str(self.currentSeries)])
         
         fileText = ""
         for seriesText in self.seriesTexts:
@@ -658,14 +660,16 @@ class MainLayout(BoxLayout):
         self.saved = True
         self.sendSuccess("FILE SAVED AS " + reportNum + "-config.txt")
 
-        self.renderButtons(self.ids.userText.text)
+        if(self.currentSeries != None):
+            self.renderButtons(self.ids.userText.text)
+            
         self.ids.runButton.colorBlue()
         self.ids.saveButton.colorGrey()
 
     def runReduction(self):
         #Perform checks to make sure the input file is in a runnable state
         #######################
-        start = time.time()
+        #start = time.time()
         if(self.currentSeries == None):
             return
 
@@ -711,7 +715,7 @@ class MainLayout(BoxLayout):
         #######################
         self.clearErrors()
 
-        if(os.path.exists(self.configFilePath) == False):
+        if(path.exists(self.configFilePath) == False):
             self.sendError(self.configFilePath + " NOT FOUND")
             return
 
@@ -733,15 +737,15 @@ class MainLayout(BoxLayout):
         except:
             self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
 
-        end = time.time()
-        print(str((end - start)*1000) + " ms")
+        #end = time.time()
+        #print(str((end - start)*1000) + " ms")
 
     def sendError(self, message):
-        self.ids.errors.foreground_color = (0.9, 0.05, 0.05, 0.85)
+        self.ids.errors.foreground_color = Configs.redTextColor
         self.ids.errors.text = "ERROR:\n" + message
 
     def sendSuccess(self, message):
-        self.ids.errors.foreground_color = (0.05, 0.65, 0.1, 0.98)
+        self.ids.errors.foreground_color = Configs.greenTextColor
         self.ids.errors.text = message
 
     def clearErrors(self):
@@ -749,9 +753,9 @@ class MainLayout(BoxLayout):
 
     def grabNotes(self):
         notesFile = self.reportNum + "-notes.txt"
-        notesFileLocation = os.path.join(self.baseFilePath, notesFile)
+        notesFileLocation = path.join(self.baseFilePath, notesFile)
 
-        if(os.path.exists(notesFileLocation)):
+        if(path.exists(notesFileLocation)):
             f = open(notesFileLocation, 'r')
             fileText = f.read()
             f.close()
@@ -762,9 +766,9 @@ class MainLayout(BoxLayout):
 
     def grabOutputFile(self):
         outFile = self.reportNum + "-out.txt"
-        outFileLocation = os.path.join(self.baseFilePath, outFile)
+        outFileLocation = path.join(self.baseFilePath, outFile)
 
-        if(os.path.exists(outFileLocation)):
+        if(path.exists(outFileLocation)):
             f = open(outFileLocation, 'r')
             fileText = f.read()
             f.close()
@@ -823,6 +827,7 @@ class MainLayout(BoxLayout):
 class OrderedText(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
+        self.height = dp(39)
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -830,11 +835,16 @@ class OrderedText(TextInput):
         
         self.bind(size=self._update_rect, pos=self._update_rect)
 
-        self.font_name = "./Menlo.ttc"
+        self.font_name = "Menlo.ttc"
         self.text = ""
         self.orderNum = 0
         self.background_normal = ''
-        self.font_size = dp(13)
+
+        try:
+            self.font_size = dp(API.getSettings()[0][0])
+        except:
+            self.font_size = dp(13)
+
         self.write_tab = False
         self.multiline = False
         self.padding = [dp(5), dp(5), dp(5), dp(5)]
@@ -846,6 +856,11 @@ class OrderedText(TextInput):
 class UserInput(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
+        
+        try:
+            self.font_size = dp(API.getSettings()[0][0])
+        except:
+            self.font_size = dp(13)
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -856,6 +871,22 @@ class UserInput(TextInput):
     def _update_rect(self, instance, value):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
         self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
+
+    def setSelectionColor(self):
+        self.selection_color = Configs.highlightColor
+
+class MainErrorText(TextInput):
+    def __init__(self, **kwargs):
+        super().__init__()
+        
+        try:
+            self.font_size = dp(API.getSettings()[0][0])
+        except:
+            self.font_size = dp(13)
+
+        self.text = "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
+        self.foreground_color = Configs.greenTextColor
+        self.selection_color = Configs.highlightColor
 
 class ExtraButton(Button):
     def __init__(self, **kwargs):
@@ -879,6 +910,8 @@ class ExtraButton(Button):
 class TopMenuButton(Button):
     def __init__(self, **kwargs):
         super().__init__()
+        self.size_hint = (1, None)
+        self.height = dp(50)
         self.halign = 'center'
         self.font_size = dp(15)
         self.background_normal = ''
@@ -902,9 +935,9 @@ class InputButton(Button):
         self.background_normal = ''
         self.background_color = (0, 0, 0, 0)
         self.markup = True
-        self.font_size = dp(13)
+        self.font_size = dp(14)
         self.halign = 'center'
-        self.size = (dp(110), dp(60))
+        self.size = (dp(118), dp(62))
 
         with self.canvas.before:
             self.canvasColor = Color(rgba=self.currentColor)
@@ -930,7 +963,7 @@ class InputButton(Button):
         Clock.schedule_once(self.colorBlue, 0)
 
     def colorGrey(self, *args):
-        self.currentColor = (0.62, 0.62, 0.62, 0.62)
+        self.currentColor = (0.52, 0.52, 0.52, 0.72)
         self.canvasColor.rgba = self.currentColor
 
     def colorBlue(self, *args):
@@ -963,7 +996,7 @@ class CancelButton(Button):
         self.size = (dp(150), dp(45))
         self.background_normal = ''
         self.background_down = ''
-        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.background_color = Configs.cancelButtonColor
         self.font_size = dp(16)
         self.text = kwargs.get("text", "Cancel")
         self.halign = 'center'
@@ -974,7 +1007,7 @@ class CancelButton(Button):
         if(value == "down"):
             self.background_color = (0.70*0.6, 0.135*0.6, 0.05*0.6, 0.92)
         elif(value == "normal"):
-            self.background_color = (0.70, 0.135, 0.05, 0.92)
+            self.background_color = Configs.cancelButtonColor
 
 class WriteButton(Button):
     def __init__(self, **kwargs):
@@ -1008,11 +1041,10 @@ class AddSeriesButton(Button):
         super().__init__()
         self.size_hint = (1, None)
         self.height = dp(60)
-        self.markup = True
         self.background_normal = ''
         self.background_down = ''
-        self.background_color = Configs.addSeriesColor
-        self.text = "[b]+[/b] Add Series"
+        self.background_color = Configs.addSeriesButtonColor
+        self.text = "   Add Series"
         self.halign = 'center'
         self.font_size = dp(17)
 
@@ -1022,7 +1054,7 @@ class AddSeriesButton(Button):
         if(value == "down"):
             self.background_color = (self.background_color[0]*0.68, self.background_color[1]*0.68, self.background_color[2]*0.68, self.background_color[3])
         elif(value == "normal"):
-            self.background_color = Configs.addSeriesColor
+            self.background_color = Configs.addSeriesButtonColor
 
 class SeriesButton(Button):
     def __init__(self, **kwargs):
@@ -1044,13 +1076,12 @@ class RemoveSeriesButton(Button):
         super().__init__()
         self.size_hint = (1, None)
         self.height = dp(50)
-        self.markup = True
         self.background_normal = ''
         self.background_down = ''
         self.halign = 'center'
-        self.text = "[b]-[/b] Remove Last\nSeries"
+        self.text = "    Remove Last\nSeries"
         self.font_size = dp(16)
-        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.background_color = Configs.cancelButtonColor
 
         self.bind(state=self._updateState)
 
@@ -1058,12 +1089,12 @@ class RemoveSeriesButton(Button):
         if(value == "down"):
             self.background_color = (0.70*0.6, 0.135*0.6, 0.05*0.6, 0.92)
         elif(value == "normal"):
-            self.background_color = (0.70, 0.135, 0.05, 0.92)
+            self.background_color = Configs.cancelButtonColor
 
 class PopupBase(Popup):
     def __init__(self, **kwargs):
         super().__init__()
-        self.background = './Popup_Background.png'
+        self.background = path.join("Images", "Popup_Background.png")
         self.title_color = (0, 0, 0, 1)
         self.title_size = dp(18)
         self.size_hint = (None, None)
@@ -1089,7 +1120,7 @@ class PopupErrorLabel(Label):
         self.markup = True
         self.halign = "left"
         self.valign = "bottom"
-        self.color = (0.95, 0.05, 0.09, 1)
+        self.color = Configs.redTextColor
         self.font_size = dp(15)
         self.height = dp(20)
         self.text = ""
@@ -1098,6 +1129,16 @@ class PopupErrorLabel(Label):
 
     def updateLabel(self, inst, value):
         self.text_size = (self.width, None)
+
+class MarsImage(Image):
+    def getImagePath(self, fileName):
+        return path.join("Images", fileName)
+
+    def getImagePosition(self, parentPos, parentWidth, parentTextWidth, xAdjustment=0, yAdjustment=0):
+        posY = parentPos[1] + dp(17) + yAdjustment
+        posX = parentPos[0] + (parentWidth - parentTextWidth) / 2 - dp(25) + xAdjustment
+
+        return (posX, posY)
 
 class DbEntryLabel(Label):
     def __init__(self, **kwargs):
@@ -1120,7 +1161,7 @@ class DBSelectButton(Button):
         self.size_hint = (0.13, None)
         self.height = dp(37)
         self.background_normal = ''
-        self.background_color = (0.00, 0.76, 0.525, 1)
+        self.background_color = Configs.greenButtonColor
         self.text = "Select"
 
         self.rowId = kwargs.get("rowId", "")
@@ -1131,7 +1172,7 @@ class DBDeleteButton(Button):
         self.size_hint = (0.07, None)
         self.height = dp(37)
         self.background_normal = ''
-        self.background_color = (0.70, 0.135, 0.05, 0.92)
+        self.background_color = Configs.cancelButtonColor
         self.text = "Del"
 
         self.clicked = False
@@ -1353,6 +1394,7 @@ class StatisticsPopup(PopupBase):
         sigmatOrder = self.ids.sigmatText.orderNum
 
         if(sigmawText == "" or sigmatText == ""):
+            self.ids.sigmaPopError.color = Configs.redTextColor
             self.ids.sigmaPopError.text = "Enter data for all fields"
             return
 
@@ -1393,16 +1435,18 @@ class SaveStatisticsPopup(PopupBase):
             try:
                 API.saveStats(self.ids.nominalText.text.strip(), self.ids.descriptionText.text.strip(), self.sigw, self.sigt)
 
-                self.ids.statsError.color = (0.05, 0.65, 0.1, 0.98)
+                self.ids.statsError.color = Configs.greenTextColor
                 self.ids.statsError.text = "Added " + self.ids.descriptionText.text.strip() + " stats"
-                threading.Thread(target=self.displaySuccess).start()
+                Thread(target=self.displaySuccess).start()
             except:
+                self.ids.statsError.color = Configs.redTextColor
                 self.ids.statsError.text = "Error adding stats to database"
         else:
+            self.ids.statsError.color = Configs.redTextColor
             self.ids.statsError.text = "Enter all fields"
 
     def displaySuccess(self):
-        time.sleep(1)
+        sleep(1)
         self.dismiss()
 
 class StatsDbPopup(PopupBase):
@@ -1429,13 +1473,14 @@ class StatsDbPopup(PopupBase):
         try:
             statData = API.getStat(inst.rowId)[0]
         except:
+            self.rootPop.ids.sigmaPopError.color = Configs.redTextColor
             self.rootPop.ids.sigmaPopError.text = "Error getting statistics from database"
             return
 
         self.rootPop.ids.sigmawText.text = statData[1]
         self.rootPop.ids.sigmatText.text = statData[2]
 
-        self.rootPop.ids.sigmaPopError.color = (0.05, 0.65, 0.1, 0.98)
+        self.rootPop.ids.sigmaPopError.color = Configs.greenTextColor
         self.rootPop.ids.sigmaPopError.text = "Loaded " + statData[0] + " statistics"
 
         self.dismiss()
@@ -1456,7 +1501,7 @@ class StatsDbPopup(PopupBase):
         if(inst.clicked == False):
             self.stagedDelete.append(rowId)
             
-            inst.background_color = (0.62, 0.62, 0.62, 0.62)
+            inst.background_color = (0.42, 0.42, 0.42, 0.42)
             inst.text = "Undo"
             inst.color = (0, 0, 0, 1)
             inst.selectButtonPair.disabled = True
@@ -1469,7 +1514,7 @@ class StatsDbPopup(PopupBase):
                     self.stagedDelete.pop(i)
                     break
 
-            inst.background_color = (0.70, 0.135, 0.05, 0.92)
+            inst.background_color = Configs.cancelButtonColor
             inst.text = "Del"
             inst.color = (1, 1, 1, 1)
             inst.selectButtonPair.disabled = False
@@ -1564,7 +1609,7 @@ class SwPopup(PopupBase):
         swCCEOrder = self.ids.swCCEText.orderNum
 
         if(swMassText == "" or swDensityText == "" or swCCEText == ""):
-            self.ids.swPopError.color = (0.95, 0.05, 0.09, 1)
+            self.ids.swPopError.color = Configs.redTextColor
             self.ids.swPopError.text = "Enter data for all fields"
             return
 
@@ -1607,20 +1652,22 @@ class SaveSwPopup(PopupBase):
 
     def saveSw(self, inst):
         if(self.ids.swNameText.text.strip() != ""):
-            threading.Thread(target=self.setDebounce).start()
+            Thread(target=self.setDebounce).start()
             try:
                 API.saveSw(self.ids.swNameText.text.strip(), self.swMass, self.swDensity, self.swCCE)
 
-                self.ids.swNameError.color = (0.05, 0.65, 0.1, 0.98)
+                self.ids.swNameError.color = Configs.greenTextColor
                 self.ids.swNameError.text = "Added " + self.ids.swNameText.text.strip()
-                threading.Thread(target=self.pauseSuccess).start()
+                Thread(target=self.pauseSuccess).start()
             except:
+                self.ids.swNameError.color = Configs.redTextColor
                 self.ids.swNameError.text = "Error adding sw to database"
         else:
+            self.ids.swNameError.color = Configs.redTextColor
             self.ids.swNameError.text = "Name required to add sw"
 
     def pauseSuccess(self):
-        time.sleep(1)
+        sleep(1)
         self.dismiss()
 
     def setDebounce(self, *args):
@@ -1650,6 +1697,7 @@ class SwDbPopup(PopupBase):
         try:
             swData = API.getSw(inst.rowId)[0]
         except:
+            self.rootPop.ids.swPopError.color = Configs.redTextColor
             self.rootPop.ids.swPopError.text = "Error getting sw from database"
             return
 
@@ -1657,7 +1705,7 @@ class SwDbPopup(PopupBase):
         self.rootPop.ids.swDensityText.text = swData[2]
         self.rootPop.ids.swCCEText.text = swData[3]
 
-        self.rootPop.ids.swPopError.color = (0.05, 0.65, 0.1, 0.98)
+        self.rootPop.ids.swPopError.color = Configs.greenTextColor
         self.rootPop.ids.swPopError.text = "Loaded " + swData[0]
 
         self.dismiss()
@@ -1678,7 +1726,7 @@ class SwDbPopup(PopupBase):
         if(inst.clicked == False):
             self.stagedDelete.append(rowId)
             
-            inst.background_color = (0.62, 0.62, 0.62, 0.62)
+            inst.background_color = (0.42, 0.42, 0.42, 0.42)
             inst.text = "Undo"
             inst.color = (0, 0, 0, 1)
             inst.selectButtonPair.disabled = True
@@ -1691,7 +1739,7 @@ class SwDbPopup(PopupBase):
                     self.stagedDelete.pop(i)
                     break
 
-            inst.background_color = (0.70, 0.135, 0.05, 0.92)
+            inst.background_color = Configs.cancelButtonColor
             inst.text = "Del"
             inst.color = (1, 1, 1, 1)
             inst.selectButtonPair.disabled = False
@@ -1871,7 +1919,7 @@ class OpenFilePopup(Popup):
     def openFile(self, selection):
         try:
             selection[0]
-            fileName = os.path.split(selection[0])[1]
+            fileName = path.split(selection[0])[1]
             if(not "-config.txt" in fileName):
                 self.parent.children[1].sendError("NO FILE SELECTED")
                 self.dismiss()
@@ -1889,10 +1937,17 @@ class OpenFilePopup(Popup):
             self.dismiss()
             return
 
-        self.parent.children[1].baseFilePath = os.path.split(selection[0])[0]
+        self.parent.children[1].baseFilePath = path.split(selection[0])[0]
         self.parent.children[1].splitSeries(fileText)
         self.parent.children[1].configFilePath = selection
         self.dismiss()
+
+    def getDefaultPath(self):
+        try:
+            filePath = API.getSettings()[0][1]
+            return filePath
+        except:
+            return path.abspath(getcwd())
 
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
@@ -1945,10 +2000,17 @@ class OpenNewFilePopup(Popup):
         fileSavePop.open()
 
 class NewFileSaveLocPopup(Popup):
-    def setSaveLoc(self, path):
-        self.parent.children[1].baseFilePath = path
+    def setSaveLoc(self, filePath):
+        self.parent.children[1].baseFilePath = filePath
         self.parent.children[1].splitSeries("@SERIES\n\n")
         self.dismiss()
+
+    def getDefaultPath(self):
+        try:
+            filePath = API.getSettings()[0][1]
+            return filePath
+        except:
+            return path.abspath(getcwd())
 
 class ValidationPopup(Popup):
     def __init__(self, **kwargs):
@@ -1956,7 +2018,7 @@ class ValidationPopup(Popup):
         self.bind(on_open=self.runTestThread)
 
     def runTestThread(self, e):
-        threading.Thread(target=self.runTestSuite).start()
+        Thread(target=self.runTestSuite).start()
 
     def runTestSuite(self):
         self.ids.testingMessage.text = "Running Tests..."
@@ -1970,7 +2032,7 @@ class ValidationPopup(Popup):
         self.ids.testingMessage.text = ""
         return
 
-class VisualizationPop(Popup):
+class VisualizationPopup(Popup):
     def __init__(self, **kwargs):
         super().__init__()
         self.size_hint = (0.9, 0.9)
@@ -2060,25 +2122,85 @@ class VisualizationPop(Popup):
 
         self.content = mainPopLayout
 
+class SettingsPopup(PopupBase):
+    def getFontSize(self):
+        try:
+            fontSize = str(API.getSettings()[0][0])
+            return fontSize
+        except:
+            return "13"
+
+    def getDefaultPath(self):
+        try:
+            filePath = API.getSettings()[0][1]
+            return filePath
+        except:
+            return path.abspath(getcwd())
+
+    def chooseDefaultPath(self):
+        pathPopup = DefaultPathPopup(self)
+        pathPopup.open()
+
+    def saveSettings(self):
+        fontSize = self.ids.fontSize.text.strip()
+        filePath = self.ids.filePath.text.strip()
+
+        if(fontSize == ""):
+            self.ids.settingsError.text = "Please enter a font size"
+            return
+
+        try:
+            int(fontSize)
+        except:
+            self.ids.settingsError.text = "Please enter a numerical font size"
+            return
+
+        if(filePath == ""):
+            self.ids.settingsError.text = "Please enter a file path"
+            return
+
+        API.saveSettings(int(fontSize), filePath)
+
+        self.parent.children[1].ids.userText.font_size = dp(int(fontSize))
+        self.parent.children[1].ids.notesText.font_size = dp(int(fontSize))
+        self.parent.children[1].ids.errors.font_size = dp(int(fontSize))
+        self.dismiss()
+
+class DefaultPathPopup(Popup):
+    def __init__(self, rootPop):
+        super().__init__()
+        self.rootPop = rootPop
+
+    def setDefaultPath(self, filePath):
+        self.rootPop.ids.filePath.text = filePath
+        self.dismiss()
+
+    def getDefaultPath(self):
+        try:
+            filePath = API.getSettings()[0][1]
+            return filePath
+        except:
+            return path.abspath(getcwd())
+
 class StartupTestsPopup(Popup):
     def __init__(self, **kwargs):
         super().__init__()
         self.bind(on_open=self.runTestThread)
 
     def runTestThread(self, *args):
-        threading.Thread(target=self.runStartupTests).start()
+        Thread(target=self.runStartupTests).start()
 
     def runStartupTests(self):
-        start = time.time()
+        #start = time.time()
         testSuite = TestSuite.TestSuite()
         testSuite.runAll()
-        end = time.time()
-        print(str((end - start)*1000) + " ms")
+        #end = time.time()
+        #print(str((end - start)*1000) + " ms")
 
         if(testSuite.failed == 0):
             self.dismiss()
         else:
-            self.ids.testStatus.color = (0.9, 0.05, 0.05, 0.85)
+            self.ids.testStatus.color = (0.95, 0.15, 0.15, 0.95)
             self.ids.testStatus.text = "[b]" + str(testSuite.failed) + " INTERNAL TESTING FAILURE/S. OPEN LOGS TO SEE DETAILS[/b]"
             self.ids.openLogButton.bind(on_release=self.openTestLog)
             self.ids.openLogButton.background_color = Configs.inputButtonColor
@@ -2095,6 +2217,7 @@ class RequestClosePopUp(Popup):
 
 class Mars(App):
     def build(self):
+        Builder.load_file('Mars-FE.kv')
         Config.set('input', 'mouse', 'mouse,disable_multitouch')
         Config.set('graphics', 'fullscreen', 0)
         Config.set('graphics', 'window_state', 'maximized')
@@ -2265,7 +2388,7 @@ class Mars(App):
 
     def openVisualizationPop(self):
         try:
-            with open(os.path.join(self.root.baseFilePath, self.root.reportNum + "-out.txt"), 'r') as f:
+            with open(path.join(self.root.baseFilePath, self.root.reportNum + "-out.txt"), 'r') as f:
                 fileText = f.read()
         except:
             fileText = ""
@@ -2295,10 +2418,19 @@ class Mars(App):
         except:
             nominals = []
 
-        pop = VisualizationPop(deltas=deltas, sensitivities=sensitivities, temperatures=temperatures, sws=sws, reportNum=self.root.reportNum, nominals=nominals)
+        pop = VisualizationPopup(deltas=deltas, sensitivities=sensitivities, temperatures=temperatures, sws=sws, reportNum=self.root.reportNum, nominals=nominals)
         pop.buildVisPop()
         pop.open()
 
+    def openSettingPop(self):
+        pop = SettingsPopup()
+        pop.open()
+
 if(__name__ == "__main__"):
+    try:
+        API.getSettings()
+    except:
+        API.saveSettings(13, path.abspath(getcwd()))
+
     mainApp = Mars()
     mainApp.run()

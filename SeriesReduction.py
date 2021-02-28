@@ -10,8 +10,8 @@
 # The T-test tests the observed value of the check standard against its accepted value.
 # The F-test tests the within-process standard deviation agianst the accepted standard deviation.
 
-import numpy as np
-import scipy.stats
+from numpy import identity, hstack, vstack, append, linalg, allclose, zeros, float64, copy, matmul, matrix, shape, count_nonzero, multiply, sum
+from scipy.stats import f, t
 from statistics import mean, stdev
 from math import sqrt
 
@@ -91,7 +91,7 @@ class MatrixSolution:
 
         self.localGravity = 9.8
         self.gravityGradient = 0.0 #1/s2
-        self.weightHeights = np.zeros(shape=0) #m
+        self.weightHeights = zeros(shape=0) #m
 
         #Statistics Stuff:
         self.df = 0
@@ -118,7 +118,7 @@ class MatrixSolution:
             obsThree = self.balanceReadings[i][2]
             obsFour = self.balanceReadings[i][3]
 
-            swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((np.float64(self.environmentals[i][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
+            swDensityAdjusted = self.swDensity / (1 + self.swCCE * ((float64(self.environmentals[i][0]) - float64(self.envCorrections[0])) - self.referenceTemperature))
 
             airDensity = calculateAirDensity(\
                 self.environmentals[i][0], self.envCorrections[0], self.environmentals[i][1], self.envCorrections[1], self.environmentals[i][2], self.envCorrections[2])
@@ -149,14 +149,14 @@ class MatrixSolution:
     def calculateLoads(self):
         #Builds a list of working loads for each observation line in the design
         for line in self.designMatrix:
-            positionMassOne = np.copy(line)
+            positionMassOne = copy(line)
             for i in range(len(line)):
                 if(line[i] == 1):
                     positionMassOne[i] = 1
                 else:
                     positionMassOne[i] = 0
 
-            nominal = np.float64(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals)))
+            nominal = float64(matmul(positionMassOne, matrix.transpose(self.weightNominals)))
             nominal = round(nominal, 5)
 
             self.loads.append(nominal)
@@ -174,11 +174,11 @@ class MatrixSolution:
 
             #Estimate Mass1Sum, Mass2Sum for ABC using self.calculatedMasses:
             designLine = self.designMatrix[i:i+1] #Get sigle line of design matrix as an array
-            positionMassOne = np.zeros(shape=(1, self.positions)) #Will be changed below...
-            positionMassTwo = np.zeros(shape=(1, self.positions)) #Will be changed below...
+            positionMassOne = zeros(shape=(1, self.positions)) #Will be changed below...
+            positionMassTwo = zeros(shape=(1, self.positions)) #Will be changed below...
 
             #Modify positionMass arrays in place to store positions of Mass1 and Mass2 for the observation:
-            for position in range(np.shape(designLine)[1]):
+            for position in range(shape(designLine)[1]):
                 if designLine[0, position] == 1:
                     positionMassOne[0, position] = 1
 
@@ -186,19 +186,19 @@ class MatrixSolution:
                     positionMassTwo[0, position] = 1
 
             #Multiply mass position matrix by transpose of estimated masses to get estimated mass of the line:
-            estimatedMassOne = np.float64(np.matmul(positionMassOne, np.matrix.transpose(self.calculatedMasses)))
-            estimatedMassTwo = np.float64(np.matmul(positionMassTwo, np.matrix.transpose(self.calculatedMasses)))
+            estimatedMassOne = float64(matmul(positionMassOne, matrix.transpose(self.calculatedMasses)))
+            estimatedMassTwo = float64(matmul(positionMassTwo, matrix.transpose(self.calculatedMasses)))
 
             #Calculate volume of MassOne and MassTwo:
             volumeMassOne = 0
             volumeMassTwo = 0
-            for position in range(np.shape(positionMassOne)[1]):
+            for position in range(shape(positionMassOne)[1]):
                 volumeMassOne += (positionMassOne[0, position] * self.calculatedMasses[0, position] / self.weightDensities[position]) *\
-                    (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[i][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
+                    (1 + self.weightCCEs[position] * ((float64(self.environmentals[i][0]) - float64(self.envCorrections[0])) - self.referenceTemperature))
 
-            for position in range(np.shape(positionMassTwo)[1]):
+            for position in range(shape(positionMassTwo)[1]):
                 volumeMassTwo += (positionMassTwo[0, position] * self.calculatedMasses[0, position] / self.weightDensities[position]) *\
-                    (1 + self.weightCCEs[position] * ((np.float64(self.environmentals[i][0]) - np.float64(self.envCorrections[0])) - self.referenceTemperature))
+                    (1 + self.weightCCEs[position] * ((float64(self.environmentals[i][0]) - float64(self.envCorrections[0])) - self.referenceTemperature))
 
             #Calculate the difference between masses measured in lab air:
             if self.directReadings == 0:
@@ -208,7 +208,7 @@ class MatrixSolution:
                 obsFour = self.balanceReadings[i][3]
 
                 deltaLab = (((obsTwo - obsOne) + (obsThree - obsFour)) / 2) * \
-                    self.aveSensitivities[round(np.float64(np.matmul(positionMassOne, np.matrix.transpose(self.weightNominals))), 5)]
+                    self.aveSensitivities[round(float64(matmul(positionMassOne, matrix.transpose(self.weightNominals))), 5)]
 
             elif self.directReadings == 1:
                 deltaLab = self.balanceReadings[i][0] * self.aveSensitivities['balance'] / 1000
@@ -218,17 +218,17 @@ class MatrixSolution:
             
             #Gravity corrections
             if(self.weightHeights.size != 0):
-                if(np.count_nonzero(self.weightHeights) == self.positions):
+                if(count_nonzero(self.weightHeights) == self.positions):
                     #Calculate COMs of massOne and massTwo
-                    mass1Array = np.multiply(positionMassOne, self.calculatedMasses)
-                    mass2Array = np.multiply(positionMassTwo, self.calculatedMasses)
+                    mass1Array = multiply(positionMassOne, self.calculatedMasses)
+                    mass2Array = multiply(positionMassTwo, self.calculatedMasses)
 
-                    COM1 = np.matmul(mass1Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass1Array)
-                    COM2 = np.matmul(mass2Array, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(mass2Array)
+                    COM1 = matmul(mass1Array, matrix.transpose(self.weightHeights))[0][0] / sum(mass1Array)
+                    COM2 = matmul(mass2Array, matrix.transpose(self.weightHeights))[0][0] / sum(mass2Array)
 
                     #Calculate reference height (COM of restraint):
-                    massRArray = np.multiply(self.restraintPos, self.calculatedMasses)
-                    COMref = np.matmul(massRArray, np.matrix.transpose(self.weightHeights))[0][0] / np.sum(massRArray)
+                    massRArray = multiply(self.restraintPos, self.calculatedMasses)
+                    COMref = matmul(massRArray, matrix.transpose(self.weightHeights))[0][0] / sum(massRArray)
 
                     #Perform gravitational correction back to reference height
                     deltaLab = deltaLab + (self.gravityGradient / self.localGravity) * \
@@ -245,34 +245,34 @@ class MatrixSolution:
         if(len(self.environmentals) != self.observations or len(self.balanceReadings) != self.observations):
             raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": UNEQUAL NUMBER OF OBSERVATIONS, BALANCE OBSERVATIONS AND ENVIRONMENTALS")
 
-        designTranspose = np.matrix.transpose(self.designMatrix)
-        transposeXdesign = np.matmul(designTranspose, self.designMatrix)
+        designTranspose = matrix.transpose(self.designMatrix)
+        transposeXdesign = matmul(designTranspose, self.designMatrix)
 
         #Build matrix A by stacking restraintPos and restraintPos' on transpose x design matrix:
-        matrixAtemp = np.hstack((transposeXdesign, np.matrix.transpose(self.restraintPos)))
-        matrixA = np.vstack((matrixAtemp, np.append(self.restraintPos, 0)))
+        matrixAtemp = hstack((transposeXdesign, matrix.transpose(self.restraintPos)))
+        matrixA = vstack((matrixAtemp, append(self.restraintPos, 0)))
         
         try:
-            inverseA = np.linalg.inv(matrixA)
+            inverseA = linalg.inv(matrixA)
         except:
             raise MARSException("SERIES " + str(self.seriesNumber + 1) + " DESIGN MATRIX HAS NO INVERSE")
 
         #Check that the inverse of matrixA got calculated correctly within a tolerance:
-        if not np.allclose(np.matmul(matrixA, inverseA), np.identity(transposeXdesign.shape[0] + 1)):
+        if not allclose(matmul(matrixA, inverseA), identity(transposeXdesign.shape[0] + 1)):
             raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": SOMETHING WENT WRONG WITH THE INVERSE MATRIX CALCULATION")
 
-        matrixH = inverseA[np.shape(inverseA)[0] - 1:np.shape(inverseA)[0], 0:np.shape(inverseA)[1] - 1]
-        matrixQ = inverseA[0:np.shape(inverseA)[0] - 1, 0:np.shape(inverseA)[1] - 1]
+        matrixH = inverseA[shape(inverseA)[0] - 1:shape(inverseA)[0], 0:shape(inverseA)[1] - 1]
+        matrixQ = inverseA[0:shape(inverseA)[0] - 1, 0:shape(inverseA)[1] - 1]
 
         #Calculate value of restraint R*:
         if self.seriesNumber == 0:
-            rStar = (np.matmul(self.restraintPos, np.matrix.transpose(self.referenceValues)) / 1000) + np.matmul(self.restraintPos, np.matrix.transpose(self.weightNominals))
+            rStar = (matmul(self.restraintPos, matrix.transpose(self.referenceValues)) / 1000) + matmul(self.restraintPos, matrix.transpose(self.weightNominals))
         else:
-            if np.count_nonzero(seriesObjects[self.seriesNumber - 1].nextRestraint) == 0:
+            if count_nonzero(seriesObjects[self.seriesNumber - 1].nextRestraint) == 0:
                 raise MARSException("NO RESTRAINT PASSED TO SERIES " + str(self.seriesNumber + 1))
 
             #Pull restraint from last series:
-            rStar = np.matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, np.matrix.transpose(seriesObjects[self.seriesNumber - 1].calculatedMasses))
+            rStar = matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, matrix.transpose(seriesObjects[self.seriesNumber - 1].calculatedMasses))
 
         self.calculateLoads()
 
@@ -292,8 +292,8 @@ class MatrixSolution:
             self.airDensities = []
             self.calculateDoubleSubs()
 
-            matrixBHat = np.matmul(np.matmul(matrixQ, designTranspose), self.matrixY) + (np.matrix.transpose(matrixH) * rStar)
-            self.calculatedMasses = np.matrix.transpose(matrixBHat)
+            matrixBHat = matmul(matmul(matrixQ, designTranspose), self.matrixY) + (matrix.transpose(matrixH) * rStar)
+            self.calculatedMasses = matrix.transpose(matrixBHat)
 
         self.matrixBHat = matrixBHat
 
@@ -304,33 +304,33 @@ class MatrixSolution:
     def fTest(self, alpha, matrixQ):
         #Calculate YHat = XQX'Y = the predicted values from the best fit (in grams):
         self.df = (self.observations - self.positions) + 1
-        matrixYHat = np.matmul(np.matmul(np.matmul(self.designMatrix, matrixQ), np.matrix.transpose(self.designMatrix)), self.matrixY)
+        matrixYHat = matmul(matmul(matmul(self.designMatrix, matrixQ), matrix.transpose(self.designMatrix)), self.matrixY)
 
         #Calculate the within process standard deviation (in mg):
         sumOfResiduals = 0 #grams^2
-        for i in range(np.shape(matrixYHat)[0]):
+        for i in range(shape(matrixYHat)[0]):
             sumOfResiduals += (self.matrixY[i, 0] - matrixYHat[i, 0])**2
             self.deltas.append((self.matrixY[i, 0] - matrixYHat[i, 0]) * 1000)
         
         sw = sqrt(sumOfResiduals / self.df) * 1000 #mg
 
-        fCritical = scipy.stats.f.ppf(1 - alpha, self.df, 1000)
-        f = sw**2 / self.sigmaW**2
+        fCritical = f.ppf(1 - alpha, self.df, 1000)
+        fValue = sw**2 / self.sigmaW**2
 
         self.swObs = sw
         self.fCritical = fCritical
-        self.fValue = f
+        self.fValue = fValue
 
-        if f < fCritical:
+        if fValue < fCritical:
             fPass = True
         else:
             fPass = False
 
     def tTest(self, alpha):
-        self.acceptedCheckCorrection = np.matmul(self.checkStandardPos, np.matrix.transpose(self.referenceValues))[0][0]
-        self.calculatedCheckCorrection = (np.matmul(self.checkStandardPos, np.matrix.transpose(self.calculatedMasses))[0][0] \
-                                            - np.matmul(self.checkStandardPos, np.matrix.transpose(self.weightNominals))[0][0]) * 1000
+        self.acceptedCheckCorrection = matmul(self.checkStandardPos, matrix.transpose(self.referenceValues))[0][0]
+        self.calculatedCheckCorrection = (matmul(self.checkStandardPos, matrix.transpose(self.calculatedMasses))[0][0] \
+                                            - matmul(self.checkStandardPos, matrix.transpose(self.weightNominals))[0][0]) * 1000
 
         typeAUnc = self.sigmaT #May be changed
-        self.tCritical = scipy.stats.t.ppf(1 - alpha, 1000)
+        self.tCritical = t.ppf(1 - alpha, 1000)
         self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeAUnc

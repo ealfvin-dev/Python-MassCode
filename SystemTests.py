@@ -1,9 +1,9 @@
-import sys
+from sys import version_info
 
 def test1PythonVersion(suite):
     testDesc = "PYTHON VERSION"
     try:
-        assert sys.version_info >= (3, 5)
+        assert version_info >= (3, 5)
         suite.passTest(testDesc)
     except AssertionError:
         suite.failTest(testDesc)
@@ -24,7 +24,7 @@ def test3SciPy(suite):
     try:
         import scipy
         suite.passTest(testDesc)
-        suite.assertEqual(scipy.__version__, '1.3.1', "SCIPY VERSION")
+        suite.assertEqual(scipy.__version__, '1.6.1', "SCIPY VERSION")
     except:
         suite.failTest(testDesc)
         suite.logFailure(["Could not import SciPy"], testDesc)

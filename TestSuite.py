@@ -4,9 +4,6 @@ import InputChecks
 from MARSException import MARSException
 import API
 
-import sys
-import os
-
 import SystemTests
 import RuntimeTests
 import InputFileTests

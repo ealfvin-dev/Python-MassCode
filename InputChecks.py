@@ -1,6 +1,6 @@
 #Module to hold functions that perform checks on user input data and results
 
-import numpy as np
+from numpy import asarray, matmul, matrix
 
 #determineIfDirectReadings (helper)
 #checkReportNumber
@@ -515,7 +515,7 @@ def checkDesignVsWeights(seriesTexts, sendError, highlightError, goToSeries):
                 continue
 
             if(line[0] == "<Design>"):
-                nominalsArr = np.asarray(nominals)
+                nominalsArr = asarray(nominals)
                 designLine = line[1:]
 
                 mass1Pos = [0] * len(designLine)
@@ -527,11 +527,11 @@ def checkDesignVsWeights(seriesTexts, sendError, highlightError, goToSeries):
                     if(designLine[p] == "-1"):
                         mass2Pos[p] = 1
 
-                mass1Arr = np.asarray(mass1Pos)
-                mass2Arr = np.asarray(mass2Pos)
+                mass1Arr = asarray(mass1Pos)
+                mass2Arr = asarray(mass2Pos)
 
-                mass1 = np.matmul(mass1Arr, np.matrix.transpose(nominalsArr))
-                mass2 = np.matmul(mass2Arr, np.matrix.transpose(nominalsArr))
+                mass1 = matmul(mass1Arr, matrix.transpose(nominalsArr))
+                mass2 = matmul(mass2Arr, matrix.transpose(nominalsArr))
 
                 if(abs(mass1 - mass2) > 1e-6):
                     sendError("SERIES " + str(seriesNum) + ": DESIGN LINE IS NOT COMPATIBLE WITH WEIGHT NOMINALS")
@@ -612,11 +612,11 @@ def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goTo
                     return False
 
         #Check restraint nominal vs restraint passed down
-        nominalsArr = np.asarray(nominals)
-        restraintPosArr = np.asarray(restraintPos)
+        nominalsArr = asarray(nominals)
+        restraintPosArr = asarray(restraintPos)
 
         if(seriesNum > 1):
-            d = np.matmul(restraintPosArr, np.matrix.transpose(nominalsArr)) - previousPassDownNominal
+            d = matmul(restraintPosArr, matrix.transpose(nominalsArr)) - previousPassDownNominal
             
             if(abs(d) > 1e-6):
                 sendError("SERIES " + str(seriesNum) + ": RESTRAINT NOMINAL DOES NOT MATCH RESTRAINT PASSED DOWN FROM SERIES " + str(seriesNum - 1))
@@ -624,8 +624,8 @@ def checkRestraints(seriesTexts, numberOfSeries, sendError, highlightError, goTo
                 return False
 
         if(seriesNum < numberOfSeries):
-            passDownPosArr = np.asarray(passDownPos)
-            previousPassDownNominal = np.matmul(passDownPosArr, np.matrix.transpose(nominalsArr))
+            passDownPosArr = asarray(passDownPos)
+            previousPassDownNominal = matmul(passDownPosArr, matrix.transpose(nominalsArr))
 
     return True
 

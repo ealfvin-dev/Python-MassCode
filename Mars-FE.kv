@@ -20,6 +20,13 @@
             id: addSeriesButton
             on_press: root.addSeries()
 
+            MarsImage:
+                size_hint: (None, None)
+                height: dp(18)
+                width: dp(18)
+                pos: self.getImagePosition(addSeriesButton.pos, addSeriesButton.width, addSeriesButton.texture_size[0], dp(15), dp(4))
+                source: self.getImagePath('PlusIcon.png')
+
         ScrollView:
             id: seriesSelectionSv
             scroll_timeout: 0
@@ -35,7 +42,7 @@
                     id: series1
                     seriesNum: 1
                     text: "[color=#000000]Series 1[/color]"
-                    background_color: (0.936, 0.938, 0.946, 1)
+                    background_color: (0.956, 0.958, 0.964, 1)
                     exists: True
                     on_press: root.goToSeries(self.seriesNum, self.exists)
 
@@ -143,8 +150,15 @@
             on_press: root.openOutputFile()
 
         RemoveSeriesButton:
-            id: removeSeries
+            id: removeSeriesButton
             on_release: root.removeLastSeries()
+
+            MarsImage:
+                size_hint: (None, None)
+                height: dp(18)
+                width: dp(18)
+                pos: self.getImagePosition(removeSeriesButton.pos, removeSeriesButton.width, removeSeriesButton.texture_size[0], dp(15), dp(8))
+                source: self.getImagePath('MinusIcon.png')
 
     BoxLayout:
         id: secondaryMainBox
@@ -154,7 +168,7 @@
         BoxLayout:
             id: navBar
             orientation: 'horizontal'
-            size_hint: (1.0, None)
+            size_hint: (1, None)
             height: dp(50)
             padding: (0, 0, 0, 0)
 
@@ -164,28 +178,69 @@
                 orientation: 'horizontal'
                 padding: (0, dp(5), dp(20), 0)
 
-                Image:
+                MarsImage:
                     size_hint: (1, 1)
-                    source: './Logo/MarsFELogo.png'
+                    source: self.getImagePath('MarsFELogo.png')
 
             TopMenuButton:
-                text: "Open File"
+                id: openFileButton
                 on_release: app.openFilePop()
+                text: "Open File"
+
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(openFileButton.pos, openFileButton.width, openFileButton.texture_size[0])
+                    source: self.getImagePath('OpenFileIcon.png')
 
             TopMenuButton:
+                id: newFileButton
                 text: "New File"
                 on_release: app.openNewFilePop()
 
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(newFileButton.pos, newFileButton.width, newFileButton.texture_size[0])
+                    source: self.getImagePath('PlusIcon.png')
+
             TopMenuButton:
+                id: runTestsButton
                 text: "Run Tests"
                 on_release: app.openValidationPop()
 
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(runTestsButton.pos, runTestsButton.width, runTestsButton.texture_size[0])
+                    source: self.getImagePath('RunTestsIcon.png')
+
             TopMenuButton:
+                id: visualizationButton
                 text: "Visualization"
                 on_release: app.openVisualizationPop()
 
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(visualizationButton.pos, visualizationButton.width, visualizationButton.texture_size[0])
+                    source: self.getImagePath('VisualizationIcon.png')
+
             TopMenuButton:
-                text: "About MARS"
+                id: settingsButton
+                text: "Settings"
+                on_release: app.openSettingPop()
+
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(settingsButton.pos, settingsButton.width, settingsButton.texture_size[0])
+                    source: self.getImagePath('SettingsIcon.png')
 
         BoxLayout:
             id: content
@@ -285,7 +340,7 @@
                             InputButton:
                                 id: gravityButton
                                 text: "Gravity\n(Optional)"
-                                buttonColor: (0.368, 0.49, 0.60, 1)
+                                buttonColor: root.getGravityButtonColor()
                                 on_release: app.openGravityPop()
 
                         Label:
@@ -383,24 +438,52 @@
                             spacing: dp(30)
 
                             BottomButton:
-                                text: "[b]Debug[/b]"
-                                #buttonColor: (0.96, 0.64, 0.00784314, 1)
+                                id: debugButton
+                                text: "[b]     Debug[/b]"
                                 on_release: root.debug()
 
+                                MarsImage:
+                                    size_hint: (None, None)
+                                    height: dp(15)
+                                    width: dp(15)
+                                    pos: self.getImagePosition(debugButton.pos, debugButton.width, debugButton.texture_size[0], dp(23), dp(1))
+                                    source: self.getImagePath('BugIcon.png')
+
                             BottomButton:
-                                text: "[b]Split[/b]"
-                                #buttonColor: (0.96, 0.64, 0.00784314, 1)
+                                id: splitButton
+                                text: "[b]     Split[/b]"
                                 on_release: root.reSplit()
+
+                                MarsImage:
+                                    size_hint: (None, None)
+                                    height: dp(15)
+                                    width: dp(15)
+                                    pos: self.getImagePosition(splitButton.pos, splitButton.width, splitButton.texture_size[0], dp(23), dp(1))
+                                    source: self.getImagePath('SplitIcon.png')
 
                             BottomButton:
                                 id: saveButton
-                                text: "[b]SAVE[/b]"
+                                text: "[b]     SAVE[/b]"
                                 on_release: root.save()
+
+                                MarsImage:
+                                    size_hint: (None, None)
+                                    height: dp(15)
+                                    width: dp(15)
+                                    pos: self.getImagePosition(saveButton.pos, saveButton.width, saveButton.texture_size[0], dp(23), dp(1))
+                                    source: self.getImagePath('SaveIcon.png')
 
                             RunButton:
                                 id: runButton
-                                text: "[b]RUN[/b]"
+                                text: "[b]     RUN[/b]"
                                 on_release: root.runReduction()
+
+                                MarsImage:
+                                    size_hint: (None, None)
+                                    height: dp(15)
+                                    width: dp(15)
+                                    pos: self.getImagePosition(runButton.pos, runButton.width, runButton.texture_size[0], dp(23), dp(1))
+                                    source: self.getImagePath('MarsIcon.png')
 
                 BoxLayout:
                     id: menuRow6-blank
@@ -426,11 +509,10 @@
                     id: notesText
                     size_hint: (1, 0.1)
                     size_hint_min_y: dp(70)
-                    font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
                     background_color: (1, 1, 1, 1)
-                    font_name: "./Menlo.ttc"
+                    font_name: "Menlo.ttc"
                     foreground_color: 0, 0, 0, 1
                     markup: True
                     selection_color: (0.1843, 0.6549, 0.8313, 0.27)
@@ -456,38 +538,33 @@
                 UserInput:
                     id: userText
                     size_hint: (1, 0.87)
-                    font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
                     background_color: (1, 1, 1, 1)
-                    font_name: "./Menlo.ttc"
+                    font_name: "Menlo.ttc"
                     text: "@SERIES\n\n"
                     foreground_color: 0, 0, 0, 1
                     markup: True
-                    on_focus: self.selection_color = (0.1843, 0.6549, 0.8313, 0.27)
+                    on_focus: self.setSelectionColor()
                     on_text: root.textAdded(self.cursor_row)
 
-                TextInput:
+                MainErrorText:
                     id: errors
                     size_hint: (1, 0.13)
-                    font_size: '12sp'
                     padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                     background_normal: ''
                     background_active: ''
-                    font_name: "./Menlo.ttc"
-                    text: "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
-                    foreground_color: (0.05, 0.65, 0.1, 0.98)
-                    selection_color: (0.1843, 0.6549, 0.8313, 0.27)
+                    font_name: "Menlo.ttc"
                     readonly: True
 
         Label:
             font_size: dp(10)
-            text: "[color=#000000]Copyright Erik Alfvin, 2020[/color]"
+            text: "[color=#000000]MARS 1.0 Copyright Erik Alfvin, 2021[/color]\n"
             markup: True
             text_size: root.width, None
             size: self.texture_size
             halign: 'center'
-            size_hint: (1.0, 0.01)
+            size_hint: (0.88, 0.01)
 
 <LabInfoPopup>:
     auto_dismiss: False
@@ -520,7 +597,6 @@
         OrderedText:
             id: reportNumText
             size_hint: (0.5, None)
-            height: 3 * self.font_size
             hint_text: "999999a"
             orderNum: 1
 
@@ -543,7 +619,7 @@
 <RestraintPopup>:
     auto_dismiss: False
     title: "Series 1 Restraint"
-    size: (dp(400), dp(330))
+    size: (dp(400), dp(310))
 
     BoxLayout:
         orientation: "vertical"
@@ -557,7 +633,6 @@
         OrderedText:
             id: restraintIDText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "049"
             orderNum: 2
 
@@ -568,13 +643,8 @@
         OrderedText:
             id: restraintUncertaintyText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0.062"
             orderNum: 3
-
-        PopupLabel:
-            text: "Random Error (mg):"
-            size_hint: (1, None)
 
         PopupErrorLabel:
             id: restraintPopError
@@ -621,7 +691,6 @@
                 OrderedText:
                     id: dateText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     hint_text: "MM DD YYYY"
                     orderNum: 6
 
@@ -632,7 +701,6 @@
                 OrderedText:
                     id: techIDText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     hint_text: "019"
                     orderNum: 7
 
@@ -657,7 +725,6 @@
                 OrderedText:
                     id: balanceIDText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     hint_text: "14"
                     orderNum: 8
 
@@ -668,7 +735,6 @@
                 OrderedText:
                     id: directReadingsText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     text: "0"
                     hint_text: "0"
                     orderNum: 9
@@ -681,7 +747,6 @@
                 OrderedText:
                     id: directReadingsSFText
                     size_hint: (1, None)
-                    height: 3 * self.font_size
                     text: "1.0"
                     hint_text: "1.0"
                     orderNum: 10
@@ -803,7 +868,6 @@
         OrderedText:
             id: designIDText
             size_hint: (0.4, None)
-            height: 3 * self.font_size
             hint_text: "112"
             orderNum: 17
 
@@ -870,7 +934,6 @@
             OrderedText:
                 id: nominalsText
                 size_hint: (0.5, None)
-                height: 3 * self.font_size
                 hint_text: "1"
                 text: "1"
                 orderNum: 15
@@ -878,7 +941,6 @@
             OrderedText:
                 id: checkIDText
                 size_hint: (0.5, None)
-                height: 3 * self.font_size
                 hint_text: "54"
                 orderNum: 14
 
@@ -915,7 +977,6 @@
         OrderedText:
             id: restraintVectorText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "1 1 0 0"
             orderNum: 19
 
@@ -926,7 +987,6 @@
         OrderedText:
             id: checkVectorText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "1 -1 0 0"
             orderNum: 20
 
@@ -937,7 +997,6 @@
         OrderedText:
             id: nextRestraintText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0 0 0 0"
             orderNum: 21
 
@@ -1005,7 +1064,6 @@
         OrderedText:
             id: sigmawText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0.012"
             on_text: root.evalSaveButtons(saveStatsButton.disabled)
             orderNum: 22
@@ -1017,7 +1075,6 @@
         OrderedText:
             id: sigmatText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0.008"
             on_text: root.evalSaveButtons(saveStatsButton.disabled)
             orderNum: 23
@@ -1063,7 +1120,6 @@
         OrderedText:
             id: nominalText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "100 mg"
 
         PopupLabel:
@@ -1073,7 +1129,6 @@
         OrderedText:
             id: descriptionText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "AT1006 4-1"
 
         PopupErrorLabel:
@@ -1154,7 +1209,6 @@
         OrderedText:
             id: swMassText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "50.1023"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 24
@@ -1166,7 +1220,6 @@
         OrderedText:
             id: swDensityText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "7.95"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 25
@@ -1178,7 +1231,6 @@
         OrderedText:
             id: swCCEText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "0.000045"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
             orderNum: 26
@@ -1224,7 +1276,6 @@
         OrderedText:
             id: swNameText
             size_hint: (1, None)
-            height: 3 * self.font_size
             hint_text: "sw5g"
 
         PopupErrorLabel:
@@ -1350,7 +1401,6 @@
             OrderedText:
                 id: envCorrectionsText
                 size_hint: (0.35, None)
-                height: 3 * self.font_size
                 hint_text: "0.05 0.105 -0.07"
                 orderNum: 28
 
@@ -1415,7 +1465,6 @@
         OrderedText:
             id: gradientText
             size_hint: (0.5, None)
-            height: 3 * self.font_size
             hint_text: "0.0000031"
             orderNum: 11
 
@@ -1426,7 +1475,6 @@
         OrderedText:
             id: localGravityText
             size_hint: (0.5, None)
-            height: 3 * self.font_size
             hint_text: "9.8"
             orderNum: 12
 
@@ -1467,8 +1515,8 @@
             #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
             #Line 339 -> height: '24dp' before it was dependent on screen resolution
             id: filechooser
-            dirselect: True
-            path: "."
+            dirselect: False
+            path: root.getDefaultPath()
             filters: ["*-config.txt"]
 
         BoxLayout:
@@ -1542,9 +1590,9 @@
             #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
             #Line 339 -> height: '24dp' before it was dependent on screen resolution
             id: filechooserSaveLoc
-            path: "."
+            path: root.getDefaultPath()
             filters: ["*-config.txt"]
-            dirselect: True
+            dirselect: False
 
         BoxLayout:
             orientation: "horizontal"
@@ -1610,6 +1658,101 @@
             PopupErrorLabel:
                 size_hint: (1, None)
                 height: testingCloseButton.height
+
+<SettingsPopup>:
+    auto_dismiss: False
+    title: "MARS Settings"
+    size: (dp(440), dp(305))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Font Size:"
+            size_hint: (1, None)
+
+        OrderedText:
+            id: fontSize
+            size_hint: (1, None)
+            text: root.getFontSize()
+
+        PopupLabel:
+            text: "Default File Path:"
+            size_hint: (1, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(8)
+
+            OrderedText:
+                id: filePath
+                size_hint: (0.8, None)
+                text: root.getDefaultPath()
+
+            ExtraButton:
+                size_hint: (0.2, None)
+                height: 3 * dp(13)
+                text: "Choose"
+                on_release: root.chooseDefaultPath()
+
+        PopupErrorLabel:
+            id: settingsError
+            size_hint: (1, None)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(50)
+
+            CancelButton:
+                text: "Back"
+                on_release: root.dismiss()
+
+            WriteButton:
+                text: "Save"
+                on_release: root.saveSettings()
+
+<DefaultPathPopup>:
+    auto_dismiss: False
+    title: "Default File Path"
+    title_size: dp(18)
+    size_hint: (None, None)
+    size: (dp(750), dp(580))
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(10), dp(10), dp(10), dp(10)
+
+        PopupLabel:
+            text: "Select a Default File Path:"
+            size_hint: (1, None)
+            color: root.title_color
+
+        FileChooserListView:
+            #Edited /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/kivy/data/style.kv
+            #Line 339 -> height: '24dp' before it was dependent on screen resolution
+            id: settingsFilechooser
+            dirselect: False
+            path: root.getDefaultPath()
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: self.width - 2*dp(150)
+            size_hint: (1, None)
+            height: dp(60)
+
+            WriteButton:
+                text: "Select"
+                size: (dp(150), dp(55))
+                on_release: root.setDefaultPath(settingsFilechooser.path)
+
+            CancelButton:
+                size: (dp(150), dp(55))
+                on_release: root.dismiss()
 
 <StartupTestsPopup>:
     auto_dismiss: False
