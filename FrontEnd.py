@@ -41,8 +41,9 @@ from threading import Thread
 from time import sleep
 
 class MainLayout(BoxLayout):
-    baseFilePath  = path.abspath(".")
     configFilePath = ""
+    outFilePath = ""
+    notesFilePath = ""
 
     numberOfSeries = 1
     currentSeries = 1
@@ -203,9 +204,6 @@ class MainLayout(BoxLayout):
 
             if(self.ids.errors.text != "" and self.ids.errors.text.split()[1] == "SAVED"):
                 self.clearErrors()
-            
-        if(self.currentSeries == 1):
-            self.getReportNum(self.ids.userText.text)
 
     def noteTextAdded(self):
         if(self.saved):
@@ -215,32 +213,6 @@ class MainLayout(BoxLayout):
 
             if(self.ids.errors.text != "" and self.ids.errors.text.split()[1] == "SAVED"):
                 self.clearErrors()
-
-    def getReportNum(self, text=None):
-        if(text == None): text = self.seriesTexts[0]
-
-        for line in text.splitlines():
-            if(line.split() == []):
-                continue
-
-            if(line.split()[0] == "<Report-Number>"):
-                try:
-                    self.reportNum = line.split()[1]
-                    self.configFilePath = path.join(self.baseFilePath, self.reportNum + "-config.txt")
-                    baseDir = path.split(self.baseFilePath)[1]
-                    self.ids.configFileName.text = path.join(baseDir, self.reportNum + "-config.txt")
-                    if(self.currentSeries != None):
-                        self.grabOutputFile()
-
-                    return self.reportNum
-                except IndexError:
-                    self.reportNum = ""
-                    self.ids.configFileName.text = ""
-                    return False
-
-        self.reportNum = ""
-        self.ids.configFileName.text = ""
-        return False
 
     def displaySeriesNominal(self, inputText, seriesButton):
         #Call this from save(), gotoseries(), addpositionscallback()
@@ -463,7 +435,6 @@ class MainLayout(BoxLayout):
             targetButton.background_color = Configs.backgroundColor
             targetButton.text = "[color=#000000]" + targetButton.text[15:]
 
-            self.getReportNum()
             self.renderButtons(self.ids.userText.text)
 
     def removeLastSeries(self):
@@ -535,7 +506,6 @@ class MainLayout(BoxLayout):
             self.ids.userText.text = splitTexts[i].strip()
 
         self.goToSeries(1, True)
-        self.getReportNum()
         self.grabOutputFile()
         self.grabNotes()
 
@@ -557,12 +527,6 @@ class MainLayout(BoxLayout):
 
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
-
-        reportNum = self.getReportNum()
-        if(reportNum == False):
-            self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1")
-            self.goToSeries(1, True)
-            return
 
         checkReportNum = InputChecks.checkReportNumber(self.seriesTexts[0], self.sendError, self.highlightError)
         if(checkReportNum == False):
@@ -611,37 +575,30 @@ class MainLayout(BoxLayout):
         self.sendSuccess("INPUT FILE CHECKS PASSED")
 
     def saveNotes(self):
-        if(self.reportNum == ""):
+        if(self.configFilePath == ""):
             return
 
         notes = self.ids.notesText.text.strip()
-        fileName = self.reportNum + "-notes.txt"
-        fileLoc = path.join(self.baseFilePath, fileName)
 
         if(notes == ""):
-            if(path.exists(fileLoc)):
-                remove(fileLoc)
+            if(path.exists(self.notesFilePath)):
+                remove(self.notesFilePath)
 
         else:
-            f = open(fileLoc, 'w')
+            f = open(self.notesFilePath, 'w')
             f.write(notes)
             f.close()
 
     def save(self):
+        #Save new file
+        if(self.configFilePath == ""):
+            saveLocPop = NewFileSaveLocPopup()
+            saveLocPop.open()
+            return
+
         #Save current working series text into self.seriesTexts array
         if(self.currentSeries != None):
             self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
-
-        #Run tests to check the provided report number before saving
-        reportNum = self.getReportNum()
-        if(reportNum == False):
-            self.sendError("NO REPORT NUMBER PROVIDED IN SERIES 1, CANNOT SAVE")
-            self.goToSeries(1, True)
-            return
-
-        checkReportNum = InputChecks.checkReportNumber(self.seriesTexts[0], self.sendError, self.highlightError)
-        if(checkReportNum == False):
-            return
 
         if(self.currentSeries != None):
             self.displaySeriesNominal(self.seriesTexts[self.currentSeries - 1], self.ids["series" + str(self.currentSeries)])
@@ -658,7 +615,7 @@ class MainLayout(BoxLayout):
         self.saveNotes()
 
         self.saved = True
-        self.sendSuccess("FILE SAVED AS " + reportNum + "-config.txt")
+        self.sendSuccess("FILE SAVED")
 
         if(self.currentSeries != None):
             self.renderButtons(self.ids.userText.text)
@@ -670,8 +627,6 @@ class MainLayout(BoxLayout):
         #Perform checks to make sure the input file is in a runnable state
         #######################
         #start = time.time()
-        if(self.currentSeries == None):
-            return
 
         if(not self.saved):
             self.sendError("FILE MUST BE SAVED BEFORE RUNNING")
@@ -716,13 +671,13 @@ class MainLayout(BoxLayout):
         self.clearErrors()
 
         if(path.exists(self.configFilePath) == False):
-            self.sendError(self.configFilePath + " NOT FOUND")
+            self.sendError(self.configFilePath + " NOT FOUND IN THE CURRENT FOLDER\nREOPEN " + self.configFilePath + " IN ITS CURRENT LOCATION")
             return
 
         try:
-            results = RunFile.run(self.configFilePath, basePath=self.baseFilePath)
+            results = RunFile.run(self.configFilePath, outFilePath=self.outFilePath)
             self.grabOutputFile()
-            self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + str(self.reportNum) + "-out.txt")
+            self.sendSuccess("FILE SUCCESSFULLY RUN\nOUTPUT SAVED AS " + path.split(self.outFilePath)[1])
 
             secondaryChecks = InputChecks.runSecondaryChecks(self.seriesTexts, self.reportNum, self.sendError, self.highlightError)
             if(secondaryChecks):
@@ -735,7 +690,7 @@ class MainLayout(BoxLayout):
         except AssertionError:
             self.sendError("REQUIRED PYTHON 3.5 OR LATER")
         except:
-            self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUT")
+            self.sendError("UNCAUGHT ERROR RUNNING INPUT FILE. CHECK INPUTS")
 
         #end = time.time()
         #print(str((end - start)*1000) + " ms")
@@ -752,11 +707,8 @@ class MainLayout(BoxLayout):
         self.ids.errors.text = ""
 
     def grabNotes(self):
-        notesFile = self.reportNum + "-notes.txt"
-        notesFileLocation = path.join(self.baseFilePath, notesFile)
-
-        if(path.exists(notesFileLocation)):
-            f = open(notesFileLocation, 'r')
+        if(path.exists(self.notesFilePath)):
+            f = open(self.notesFilePath, 'r')
             fileText = f.read()
             f.close()
 
@@ -765,18 +717,20 @@ class MainLayout(BoxLayout):
             self.ids.notesText.text = ""
 
     def grabOutputFile(self):
-        outFile = self.reportNum + "-out.txt"
-        outFileLocation = path.join(self.baseFilePath, outFile)
-
-        if(path.exists(outFileLocation)):
-            f = open(outFileLocation, 'r')
+        if(path.exists(self.outFilePath)):
+            f = open(self.outFilePath, 'r')
             fileText = f.read()
             f.close()
 
             self.outputText = fileText
             
             #Render output button/tab
-            self.ids.outputFileTab.text = "[color=#FFFFFF][b]Output[/b][/color]"
+            if(self.currentSeries != None):
+                self.ids.outputFileTab.text = "[color=#FFFFFF][b]Output[/b][/color]"
+            else:
+                self.ids.userText.text = fileText
+                self.ids.userText.cursor = (0, 0)
+
             self.ids.outputFileTab.exists = True
         else:
             self.ids.outputFileTab.text = ""
@@ -1213,8 +1167,6 @@ class LabInfoPopup(PopupBase):
 
         #Highlight the text block added
         self.parent.children[1].highlight(rowStart1, rowEnd2)
-
-        self.parent.children[1].getReportNum(text=self.parent.children[1].ids.userText.text)
 
         self.dismiss()
 
@@ -1937,9 +1889,15 @@ class OpenFilePopup(Popup):
             self.dismiss()
             return
 
-        self.parent.children[1].baseFilePath = path.split(selection[0])[0]
+        basePath = selection[0][: len(selection[0]) - 11]
+
+        self.parent.children[1].configFilePath = selection[0]
+        self.parent.children[1].outFilePath = basePath + "-out.txt"
+        self.parent.children[1].notesFilePath = basePath + "-notes.txt"
+
         self.parent.children[1].splitSeries(fileText)
-        self.parent.children[1].configFilePath = selection
+        self.parent.children[1].ids.configFileName.text = path.split(selection[0])[1]
+
         self.dismiss()
 
     def getDefaultPath(self):
@@ -1952,28 +1910,19 @@ class OpenFilePopup(Popup):
 class OpenNewFilePopup(Popup):
     def setMessage(self, newFile):
         seriesNum = self.parent.children[1].currentSeries
-        rep = self.parent.children[1].getReportNum()
 
         if(seriesNum != None):
             self.parent.children[1].seriesTexts[seriesNum - 1] = self.parent.children[1].ids.userText.text
 
-        if(rep == False):
-            self.ids.newFileMessage.text = "No report number provided in Series 1,\nfile cannot be saved. Open new file anyway?"
-            self.ids.openNewFileButton.text = "Don't Save &\nOpen"
-            if(newFile == True):
-                self.ids.openNewFileButton.bind(on_release=self.openNewFileNoSave)
-            else:
-                self.ids.openNewFileButton.bind(on_release=self.openFileSearchNoSave)
+        self.ids.newFileMessage.text = "Save before opening new file?"
+        self.ids.openNewFileButton.text = "Save & Open"
+        self.ids.cancelNewFileButton.text = "Don't Save\n& Open"
+        if(newFile == True):
+            self.ids.openNewFileButton.bind(on_release=self.openNewFile)
+            self.ids.cancelNewFileButton.bind(on_release=self.openNewFileNoSave)
         else:
-            self.ids.newFileMessage.text = "Save before opening new file?"
-            self.ids.openNewFileButton.text = "Save & Open"
-            self.ids.cancelNewFileButton.text = "Don't Save\n& Open"
-            if(newFile == True):
-                self.ids.openNewFileButton.bind(on_release=self.openNewFile)
-                self.ids.cancelNewFileButton.bind(on_release=self.openNewFileNoSave)
-            else:
-                self.ids.openNewFileButton.bind(on_release=self.openFileSearch)
-                self.ids.cancelNewFileButton.bind(on_release=self.openFileSearchNoSave)
+            self.ids.openNewFileButton.bind(on_release=self.openFileSearch)
+            self.ids.cancelNewFileButton.bind(on_release=self.openFileSearchNoSave)
 
     def openFileSearch(self, e):
         self.parent.children[1].save()
@@ -2000,9 +1949,28 @@ class OpenNewFilePopup(Popup):
         fileSavePop.open()
 
 class NewFileSaveLocPopup(Popup):
-    def setSaveLoc(self, filePath):
-        self.parent.children[1].baseFilePath = filePath
-        self.parent.children[1].splitSeries("@SERIES\n\n")
+    def setSaveLoc(self, filePath, fileNameInput):
+        configFilePath = path.join(filePath, fileNameInput.strip() + "-config.txt")
+        outFilePath = path.join(filePath, fileNameInput.strip() + "-out.txt")
+        notesFilePath = path.join(filePath, fileNameInput.strip() + "-notes.txt")
+
+        if(fileNameInput.strip() == ""):
+            self.ids.saveFileMessage.text = "Please provide a file name"
+            return
+
+        if(path.exists(configFilePath)):
+            self.ids.saveFileMessage.text = fileNameInput.strip() + "-config.txt" + " already exists in this folder"
+            return
+
+        if(self.parent.children[1].configFilePath != ""):
+            self.parent.children[1].splitSeries("@SERIES\n\n")
+
+        self.parent.children[1].configFilePath = configFilePath
+        self.parent.children[1].outFilePath = outFilePath
+        self.parent.children[1].notesFilePath = notesFilePath
+
+        self.parent.children[1].save()
+        self.parent.children[1].ids.configFileName.text = path.split(configFilePath)[1]
         self.dismiss()
 
     def getDefaultPath(self):
@@ -2388,7 +2356,7 @@ class Mars(App):
 
     def openVisualizationPop(self):
         try:
-            with open(path.join(self.root.baseFilePath, self.root.reportNum + "-out.txt"), 'r') as f:
+            with open(self.root.outFilePath, 'r') as f:
                 fileText = f.read()
         except:
             fileText = ""

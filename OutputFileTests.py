@@ -4,7 +4,7 @@ from os import path, remove
 def test1WriteOutFile(suite):
     testDesc = "WRITE OUT FILE"
     try:
-        data = RunFile.run(path.join("TestFiles", "Test-Writeout-config.txt"))
+        data = RunFile.run(path.join("TestFiles", "Test-Writeout-config.txt"), outFilePath="Test-Writeout-out.txt")
         if(path.exists("Test-Writeout-out.txt")):
             suite.passTest(testDesc)
         else:
@@ -20,7 +20,7 @@ def test1WriteOutFile(suite):
 def test2OutFileData(suite):
     #Test writing stuff into output file
     try:
-        data = RunFile.run(path.join("TestFiles", "Test-Writeout-config.txt"))
+        data = RunFile.run(path.join("TestFiles", "Test-Writeout-config.txt"), outFilePath="Test-Writeout-out.txt")
 
         outFileDensities = []
         outFileMasses = []

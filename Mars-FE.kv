@@ -1596,6 +1596,29 @@
 
         BoxLayout:
             orientation: "horizontal"
+            spacing: dp(5)
+            size_hint: (1, None)
+            height: dp(40)
+
+            OrderedText:
+                id: saveFileName
+                size_hint: (None, None)
+                width: dp(250)
+                padding: [dp(5), dp(17) - int(self.font_size/2), dp(5), dp(5)]
+                halign: 'right'
+            
+            Label:
+                size_hint: (None, 1)
+                text: "-config.txt"
+                width: self.texture_size[0]
+
+        PopupErrorLabel:
+            id: saveFileMessage
+            size_hint: (1, None)
+            height: dp(20)
+
+        BoxLayout:
+            orientation: "horizontal"
             spacing: self.width - 2*dp(150)
             size_hint: (1, None)
             height: dp(60)
@@ -1603,7 +1626,7 @@
             WriteButton:
                 text: "Save"
                 size: (dp(150), dp(55))
-                on_release: root.setSaveLoc(filechooserSaveLoc.path)
+                on_release: root.setSaveLoc(filechooserSaveLoc.path, saveFileName.text)
 
             CancelButton:
                 id: cancelNewFileButton
