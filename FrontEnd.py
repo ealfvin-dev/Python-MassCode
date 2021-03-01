@@ -17,6 +17,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.filechooser import FileSystemLocal
+from kivy.uix.checkbox import CheckBox
 
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -2169,6 +2170,10 @@ class StartupTestsPopup(Popup):
 class RequestClosePopUp(Popup):
     pass
 
+class NotesCheckBox(CheckBox):
+    def getNotesValue(self):
+        return True
+
 class Mars(App):
     def build(self):
         Builder.load_file('Mars-FE.kv')
@@ -2384,7 +2389,7 @@ if(__name__ == "__main__"):
     try:
         API.getSettings()
     except:
-        API.saveSettings(13, path.abspath(getcwd()))
+        API.saveSettings(12, path.abspath(getcwd()))
 
     mainApp = Mars()
     mainApp.run()

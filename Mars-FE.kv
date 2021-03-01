@@ -2,7 +2,6 @@
 
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
 
-#:set labelSizer 1.23
 #:set buttonSpacing dp(33)
 #:set buttonHeight dp(60)
 
@@ -1685,7 +1684,7 @@
 <SettingsPopup>:
     auto_dismiss: False
     title: "MARS Settings"
-    size: (dp(440), dp(305))
+    size: (dp(440), dp(335))
 
     BoxLayout:
         orientation: "vertical"
@@ -1706,6 +1705,8 @@
             size_hint: (1, None)
 
         BoxLayout:
+            size_hint: (1, None)
+            height: filePath.height
             orientation: "horizontal"
             spacing: dp(8)
 
@@ -1719,6 +1720,23 @@
                 height: 3 * dp(13)
                 text: "Choose"
                 on_release: root.chooseDefaultPath()
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: dp(20)
+            orientation: "horizontal"
+            spacing: dp(8)
+            padding: 0, 0, dp(1), 0
+
+            PopupLabel:
+                size_hint: (1, None)
+                text: "Write out notes as {filename}-notes.txt"
+
+            NotesCheckBox:
+                id: notesCheckBox
+                size_hint: (None, None)
+                size: (dp(10), dp(10))
+                active: self.getNotesValue()
 
         PopupErrorLabel:
             id: settingsError
