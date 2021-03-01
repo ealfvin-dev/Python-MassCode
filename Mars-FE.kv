@@ -207,18 +207,6 @@
                     source: self.getImagePath('PlusIcon.png')
 
             TopMenuButton:
-                id: runTestsButton
-                text: "Run Tests"
-                on_release: app.openValidationPop()
-
-                MarsImage:
-                    size_hint: (None, None)
-                    height: dp(18)
-                    width: dp(18)
-                    pos: self.getImagePosition(runTestsButton.pos, runTestsButton.width, runTestsButton.texture_size[0])
-                    source: self.getImagePath('RunTestsIcon.png')
-
-            TopMenuButton:
                 id: visualizationButton
                 text: "Visualization"
                 on_release: app.openVisualizationPop()
@@ -229,6 +217,18 @@
                     width: dp(18)
                     pos: self.getImagePosition(visualizationButton.pos, visualizationButton.width, visualizationButton.texture_size[0])
                     source: self.getImagePath('VisualizationIcon.png')
+
+            TopMenuButton:
+                id: runTestsButton
+                text: "Run Tests"
+                on_release: app.openValidationPop()
+
+                MarsImage:
+                    size_hint: (None, None)
+                    height: dp(18)
+                    width: dp(18)
+                    pos: self.getImagePosition(runTestsButton.pos, runTestsButton.width, runTestsButton.texture_size[0])
+                    source: self.getImagePath('RunTestsIcon.png')
 
             TopMenuButton:
                 id: settingsButton
@@ -1596,6 +1596,29 @@
 
         BoxLayout:
             orientation: "horizontal"
+            spacing: dp(5)
+            size_hint: (1, None)
+            height: dp(40)
+
+            OrderedText:
+                id: saveFileName
+                size_hint: (None, None)
+                width: dp(250)
+                padding: [dp(5), dp(17) - int(self.font_size/2), dp(5), dp(5)]
+                halign: 'right'
+            
+            Label:
+                size_hint: (None, 1)
+                text: "-config.txt"
+                width: self.texture_size[0]
+
+        PopupErrorLabel:
+            id: saveFileMessage
+            size_hint: (1, None)
+            height: dp(20)
+
+        BoxLayout:
+            orientation: "horizontal"
             spacing: self.width - 2*dp(150)
             size_hint: (1, None)
             height: dp(60)
@@ -1603,7 +1626,7 @@
             WriteButton:
                 text: "Save"
                 size: (dp(150), dp(55))
-                on_release: root.setSaveLoc(filechooserSaveLoc.path)
+                on_release: root.setSaveLoc(filechooserSaveLoc.path, saveFileName.text)
 
             CancelButton:
                 id: cancelNewFileButton
