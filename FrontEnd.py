@@ -1914,34 +1914,20 @@ class OpenNewFilePopup(Popup):
         if(seriesNum != None):
             self.parent.children[1].seriesTexts[seriesNum - 1] = self.parent.children[1].ids.userText.text
 
-        self.ids.newFileMessage.text = "Save before opening new file?"
-        self.ids.openNewFileButton.text = "Save & Open"
+        self.ids.newFileMessage.text = "Opening new file without saving?"
+        self.ids.openNewFileButton.text = "Back"
         self.ids.cancelNewFileButton.text = "Don't Save\n& Open"
         if(newFile == True):
-            self.ids.openNewFileButton.bind(on_release=self.openNewFile)
+            self.ids.openNewFileButton.bind(on_release=self.dismiss)
             self.ids.cancelNewFileButton.bind(on_release=self.openNewFileNoSave)
         else:
-            self.ids.openNewFileButton.bind(on_release=self.openFileSearch)
+            self.ids.openNewFileButton.bind(on_release=self.dismiss)
             self.ids.cancelNewFileButton.bind(on_release=self.openFileSearchNoSave)
-
-    def openFileSearch(self, e):
-        self.parent.children[1].save()
-
-        fileSearchPop = OpenFilePopup()
-        self.dismiss()
-        fileSearchPop.open()
 
     def openFileSearchNoSave(self, e):
         fileSearchPop = OpenFilePopup()
         self.dismiss()
         fileSearchPop.open()
-
-    def openNewFile(self, e):
-        self.parent.children[1].save()
-
-        fileSavePop = NewFileSaveLocPopup()
-        self.dismiss()
-        fileSavePop.open()
 
     def openNewFileNoSave(self, e):
         fileSavePop = NewFileSaveLocPopup()
