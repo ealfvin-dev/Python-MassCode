@@ -796,9 +796,9 @@ class OrderedText(TextInput):
         self.background_normal = ''
 
         try:
-            self.font_size = dp(API.getSettings()[0][0])
+            self.font_size = dp(API.getFontSize()[0][0])
         except:
-            self.font_size = dp(13)
+            self.font_size = dp(12)
 
         self.write_tab = False
         self.multiline = False
@@ -813,9 +813,9 @@ class UserInput(TextInput):
         super().__init__()
         
         try:
-            self.font_size = dp(API.getSettings()[0][0])
+            self.font_size = dp(API.getFontSize()[0][0])
         except:
-            self.font_size = dp(13)
+            self.font_size = dp(12)
 
         with self.canvas.before:
             Color(rgba=Configs.menuColor)
@@ -835,9 +835,9 @@ class MainErrorText(TextInput):
         super().__init__()
         
         try:
-            self.font_size = dp(API.getSettings()[0][0])
+            self.font_size = dp(API.getFontSize()[0][0])
         except:
-            self.font_size = dp(13)
+            self.font_size = dp(12)
 
         self.text = "WELCOME TO MARS: MASS REDUCTION SOFTWARE!"
         self.foreground_color = Configs.greenTextColor
@@ -999,7 +999,7 @@ class AddSeriesButton(Button):
         self.background_normal = ''
         self.background_down = ''
         self.background_color = Configs.greenButtonColor
-        self.text = "   Add Series"
+        self.text = "    Add Series"
         self.halign = 'center'
         self.font_size = dp(17)
 
@@ -1868,6 +1868,12 @@ class GravityPopup(PopupBase):
 
         self.ids.gravityWeightIds.text = "\n".join(ids)
 
+    def getUserFontSize(self):
+        try:
+            return dp(API.getFontSize()[0][0])
+        except:
+            return dp(12)
+
 class OpenFilePopup(Popup):
     def openFile(self, selection):
         try:
@@ -1903,7 +1909,7 @@ class OpenFilePopup(Popup):
 
     def getDefaultPath(self):
         try:
-            filePath = API.getSettings()[0][1]
+            filePath = API.getDefaultPath()[0][0]
             return filePath
         except:
             return path.abspath(getcwd())
@@ -1962,7 +1968,7 @@ class NewFileSaveLocPopup(Popup):
 
     def getDefaultPath(self):
         try:
-            filePath = API.getSettings()[0][1]
+            filePath = API.getDefaultPath()[0][0]
             return filePath
         except:
             return path.abspath(getcwd())
@@ -2080,14 +2086,14 @@ class VisualizationPopup(Popup):
 class SettingsPopup(PopupBase):
     def getFontSize(self):
         try:
-            fontSize = str(API.getSettings()[0][0])
+            fontSize = str(API.getFontSize()[0][0])
             return fontSize
         except:
-            return "13"
+            return "12"
 
     def getDefaultPath(self):
         try:
-            filePath = API.getSettings()[0][1]
+            filePath = API.getDefaultPath()[0][0]
             return filePath
         except:
             return path.abspath(getcwd())
@@ -2132,7 +2138,7 @@ class DefaultPathPopup(Popup):
 
     def getDefaultPath(self):
         try:
-            filePath = API.getSettings()[0][1]
+            filePath = API.getDefaultPath()[0][0]
             return filePath
         except:
             return path.abspath(getcwd())
@@ -2172,6 +2178,10 @@ class RequestClosePopUp(Popup):
 
 class NotesCheckBox(CheckBox):
     def getNotesValue(self):
+        return False
+
+class StartupTestsCheckBox(CheckBox):
+    def getStartupTestsValue(self):
         return True
 
 class Mars(App):

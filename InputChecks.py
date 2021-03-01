@@ -73,7 +73,7 @@ def checkStructure(seriesTexts, sendError, highlightError, goToSeries):
 
                 #Check if more than 1 series is entered in each text block
                 if(numSeries > 1):
-                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENTER ONE @SERIES BLOCK PER SERIES\nUSING OPEN FILE FROM THE MENU WILL AUTOMATICALLY SPLIT INPUT TEXT INTO INDIVIDUAL SERIES")
+                    sendError("SERIES " + str(seriesNum) + " LINE " + str(lineNum) + ": ENTER ONE @SERIES BLOCK PER TAB\nUSE THE SPLIT BUTTON TO SPLIT INPUT INTO INDIVIDUAL SERIES")
                     highlightError(seriesNum, lineNum)
                     return False
 

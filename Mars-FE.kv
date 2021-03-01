@@ -1452,7 +1452,7 @@
                 height: heightText.height
                 text_size: (self.width, self.height)
                 color: labelColor
-                font_size: dp(13)
+                font_size: root.getUserFontSize()
                 padding: (dp(5), dp(5) + 0.5 * (heightText.height - 2*dp(5)) % heightText.line_height)
                 halign: "left"
                 valign: "top"
@@ -1684,7 +1684,7 @@
 <SettingsPopup>:
     auto_dismiss: False
     title: "MARS Settings"
-    size: (dp(440), dp(335))
+    size: (dp(440), dp(360))
 
     BoxLayout:
         orientation: "vertical"
@@ -1726,16 +1726,35 @@
             height: dp(20)
             orientation: "horizontal"
             spacing: dp(8)
-            padding: 0, 0, dp(1), 0
+            padding: dp(1), 0, dp(1), 0
 
             PopupLabel:
                 size_hint: (1, None)
-                text: "Write out notes as {filename}-notes.txt"
+                text: "Run internal tests on startup"
+
+            StartupTestsCheckBox:
+                id: notesCheckBox
+                size_hint: (None, None)
+                size: (dp(10), dp(10))
+                color: (0.105, 0.165, 0.23, 1)
+                active: self.getStartupTestsValue()
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: dp(20)
+            orientation: "horizontal"
+            spacing: dp(8)
+            padding: dp(1), 0, dp(1), 0
+
+            PopupLabel:
+                size_hint: (1, None)
+                text: "Write notes to {filename}-notes.txt"
 
             NotesCheckBox:
                 id: notesCheckBox
                 size_hint: (None, None)
                 size: (dp(10), dp(10))
+                color: (0.105, 0.165, 0.23, 1)
                 active: self.getNotesValue()
 
         PopupErrorLabel:

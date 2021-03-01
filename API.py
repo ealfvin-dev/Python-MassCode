@@ -127,6 +127,28 @@ def getSettings():
     conn.close()
     return data
 
+def getFontSize():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT fontSize FROM settings_table WHERE name = ?''', ["settings"])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data
+
+def getDefaultPath():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT defaultPath FROM settings_table WHERE name = ?''', ["settings"])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data
+
 def saveSettings(fontSize, path):
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
