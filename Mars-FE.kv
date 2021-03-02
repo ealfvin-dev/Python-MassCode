@@ -328,7 +328,7 @@
 
                             InputButton:
                                 id: dateButton
-                                text: "Balance &\nDate"
+                                text: "Balance &\nSetup"
                                 on_release: app.openDatePop()
 
                             InputButton:
@@ -663,7 +663,7 @@
 
 <DatePopup>:
     auto_dismiss: False
-    title: "Date and Balance"
+    title: "Balance and Setup"
     size: (dp(570), dp(410))
 
     BoxLayout:
@@ -705,11 +705,7 @@
 
                 PopupErrorLabel:
                     size_hint: (1, None)
-                    height: SFLabel.height
-
-                PopupErrorLabel:
-                    size_hint: (1, None)
-                    height: techIDText.height
+                    height: dp(86)
 
             BoxLayout:
                 orientation: "vertical"
@@ -727,16 +723,43 @@
                     hint_text: "14"
                     orderNum: 8
 
-                PopupLabel:
-                    text: "Direct Readings (1 = Yes, 0 = No):"
+                BoxLayout:
+                    orientation: "horizontal"
                     size_hint: (1, None)
+                    height: dp(30)
+                    spacing: dp(8)
+                    padding: dp(1), dp(10), dp(1), 0
 
-                OrderedText:
-                    id: directReadingsText
+                    CheckBox:
+                        id: manualReadingsCheckBox
+                        size_hint: (None, None)
+                        size: (dp(20), dp(20))
+                        color: (0.105, 0.165, 0.23, 1)
+                        active: True
+                        group: 'directReadings'
+
+                    PopupLabel:
+                        text: "Manual Readings"
+                        size_hint: (1, None)
+
+                BoxLayout:
+                    orientation: "horizontal"
                     size_hint: (1, None)
-                    text: "0"
-                    hint_text: "0"
-                    orderNum: 9
+                    height: dp(30)
+                    spacing: dp(8)
+                    padding: dp(1), 0, dp(1), dp(10)
+
+                    CheckBox:
+                        id: directReadingsCheckBox
+                        size_hint: (None, None)
+                        size: (dp(20), dp(20))
+                        color: (0.105, 0.165, 0.23, 1)
+                        active: False
+                        group: 'directReadings'
+
+                    PopupLabel:
+                        text: "Direct Readings (B - A)"
+                        size_hint: (1, None)
 
                 PopupLabel:
                     id: SFLabel
@@ -749,6 +772,7 @@
                     text: "1.0"
                     hint_text: "1.0"
                     orderNum: 10
+                    disabled: manualReadingsCheckBox.active
 
         PopupErrorLabel:
             id: datePopError
@@ -806,7 +830,7 @@
 
                 ExtraButton:
                     id: dropDownMain
-                    text: "Presets"
+                    text: "Designs"
                     size_hint: (None, None)
                     size: (dp(140), dp(50))
                     on_release: dropDownn.open(self)
@@ -1684,7 +1708,7 @@
 <SettingsPopup>:
     auto_dismiss: False
     title: "MARS Settings"
-    size: (dp(440), dp(360))
+    size: (dp(440), dp(370))
 
     BoxLayout:
         orientation: "vertical"
@@ -1723,10 +1747,10 @@
 
         BoxLayout:
             size_hint: (1, None)
-            height: dp(20)
+            height: dp(30)
             orientation: "horizontal"
             spacing: dp(8)
-            padding: dp(1), 0, dp(1), 0
+            padding: dp(1), dp(10), dp(1), 0
 
             PopupLabel:
                 size_hint: (1, None)
@@ -1735,7 +1759,7 @@
             StartupTestsCheckBox:
                 id: testsCheckBox
                 size_hint: (None, None)
-                size: (dp(10), dp(10))
+                size: (dp(20), dp(20))
                 color: (0.105, 0.165, 0.23, 1)
                 active: self.getStartupTestsValue()
 
@@ -1753,7 +1777,7 @@
             NotesCheckBox:
                 id: notesCheckBox
                 size_hint: (None, None)
-                size: (dp(10), dp(10))
+                size: (dp(20), dp(20))
                 color: (0.105, 0.165, 0.23, 1)
                 active: self.getNotesValue()
 

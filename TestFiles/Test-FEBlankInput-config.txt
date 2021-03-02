@@ -84,7 +84,6 @@
     <Technician-ID>  019
        <Balance-ID>  99
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
      <Gravity-Grad>  0.0000031
     <Gravity-Local>  9.8
@@ -160,7 +159,6 @@
     <Technician-ID>  019
        <Balance-ID>  099
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  23
            <Grams>  1
@@ -220,7 +218,6 @@
 
        <Balance-ID>  
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
         <Design-ID>  310
            <Design>  1 -1 -1 -1 -1  1

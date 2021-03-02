@@ -185,7 +185,6 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Check-ID>": False, \
                         "<Balance-ID>": False, \
                         "<Direct-Readings>": False, \
-                        "<Direct-Reading-SF>": False, \
                         "<Design-ID>": False, \
                         "<Design>": False, \
                         "<Grams>": False, \

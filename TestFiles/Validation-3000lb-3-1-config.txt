@@ -9,7 +9,6 @@
     <Technician-ID>  019
        <Balance-ID>  14
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  457
             <Grams>  0
@@ -43,4 +42,3 @@
   <Balance-Reading>  0.5  11.0  511.4 500.6
   <Balance-Reading>  13   -1.5  498.8 513.2
   <Balance-Reading>  1   -38.0  462.1 500.8
-

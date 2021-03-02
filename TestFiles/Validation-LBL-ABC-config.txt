@@ -67,4 +67,3 @@
   <Balance-Reading>  -7.87299
   <Balance-Reading>  2.22243
   <Balance-Reading>  10.10000
-

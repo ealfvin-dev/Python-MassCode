@@ -10,7 +10,6 @@
     <Technician-ID>  019
        <Balance-ID>  020
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  43
             <Grams>  1
@@ -74,7 +73,6 @@
     <Technician-ID>  019
        <Balance-ID>  20
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  20
             <Grams>  1
@@ -141,9 +139,9 @@
 
              <Date>  04 03 2020
     <Technician-ID>  019
+
        <Balance-ID>  007
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  024
             <Grams>  1
@@ -202,7 +200,6 @@
     <Technician-ID>  019
        <Balance-ID>  005
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  028
             <Grams>  1
@@ -261,7 +258,6 @@
     <Technician-ID>  019
        <Balance-ID>  005
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  032
             <Grams>  1
@@ -329,7 +325,6 @@
     <Technician-ID>  019
        <Balance-ID>  005
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  036
             <Grams>  1
@@ -397,7 +392,6 @@
     <Technician-ID>  019
        <Balance-ID>  005
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  040
             <Grams>  1
@@ -458,4 +452,3 @@
   <Balance-Reading>  0        0.0026 4.9843 4.9820
   <Balance-Reading>  0.0001   0.0357 5.0177 4.9826
   <Balance-Reading>  0.0001   0.0326 5.0143 4.9823
-

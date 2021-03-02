@@ -295,6 +295,8 @@ class MainLayout(BoxLayout):
             except KeyError:
                 pass
 
+        directReadings = InputChecks.determineIfDirectReadings(seriesText)
+
         #Lab Info Button
         if(self.currentSeries == 1 and tags["<Report-Number>"] == False):
             self.ids.labInfoButton.colorBlue()
@@ -308,7 +310,8 @@ class MainLayout(BoxLayout):
             self.ids.restraintButton.colorGrey()
 
         #Date Button
-        if(tags["<Date>"] and tags["<Technician-ID>"] and tags["<Balance-ID>"] and tags["<Direct-Readings>"] and tags["<Direct-Reading-SF>"]):
+        if(tags["<Date>"] and tags["<Technician-ID>"] and tags["<Balance-ID>"] and tags["<Direct-Readings>"] and \
+            (tags["<Direct-Reading-SF>"] or directReadings == False)):
             self.ids.dateButton.colorGrey()
         else:
             self.ids.dateButton.colorBlue()
@@ -344,7 +347,7 @@ class MainLayout(BoxLayout):
             self.ids.statisticsButton.colorBlue()
 
         #Sensitivity Weight Button
-        if((tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]) or InputChecks.determineIfDirectReadings(seriesText)):
+        if((tags["<sw-Mass>"] and tags["<sw-Density>"] and tags["<sw-CCE>"]) or directReadings):
             self.ids.swButton.colorGrey()
         else:
             self.ids.swButton.colorBlue()
@@ -528,6 +531,8 @@ class MainLayout(BoxLayout):
         #Save current working series Text into self.seriesTexts array
         self.seriesTexts[self.currentSeries - 1] = self.ids.userText.text
 
+        self.renderButtons(self.ids.userText.text)
+
         checkReportNum = InputChecks.checkReportNumber(self.seriesTexts[0], self.sendError, self.highlightError)
         if(checkReportNum == False):
             return
@@ -598,7 +603,7 @@ class MainLayout(BoxLayout):
     def save(self):
         #Save new file
         if(self.configFilePath == ""):
-            saveLocPop = NewFileSaveLocPopup()
+            saveLocPop = NewFileSaveLocPopup(mainLayout=self)
             saveLocPop.open()
             return
 
@@ -1155,6 +1160,10 @@ class DbScrollView(ScrollView):
         self.backgroundRect.size = instance.size
 
 class LabInfoPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def submit(self):
         #Check if all fields have been entered
         labInfoText = self.ids.labInfoText.text
@@ -1168,15 +1177,19 @@ class LabInfoPopup(PopupBase):
             return
 
         #Call the writeText function in the MainLayout to write text into input file
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(labInfoText, labInfoOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(reportNumText, reportNumOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(labInfoText, labInfoOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(reportNumText, reportNumOrder)
 
         #Highlight the text block added
-        self.parent.children[1].highlight(rowStart1, rowEnd2)
+        self.mainLayout.highlight(rowStart1, rowEnd2)
 
         self.dismiss()
 
 class RestraintPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def submit(self):
         restraintIDText = self.ids.restraintIDText.text
         restraintUncertaintyText = self.ids.restraintUncertaintyText.text
@@ -1190,43 +1203,61 @@ class RestraintPopup(PopupBase):
             self.ids.restraintPopError.text = "Enter data for all fields"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(restraintIDText, restraintIDOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(restraintUncertaintyText, restraintUncertaintyOrder)
-        #rowStart3, rowEnd3 = self.parent.children[1].writeText(randomErrorText, randomErrorOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(restraintIDText, restraintIDOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(restraintUncertaintyText, restraintUncertaintyOrder)
+        #rowStart3, rowEnd3 = self.mainLayout.writeText(randomErrorText, randomErrorOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd2)
+        self.mainLayout.highlight(rowStart1, rowEnd2)
 
         self.dismiss()
 
 class DatePopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def submit(self):
         dateText = self.ids.dateText.text
         techIDText = self.ids.techIDText.text
         balanceIDText = self.ids.balanceIDText.text
-        directReadingsText = self.ids.directReadingsText.text
+        directReadingsText = "1" if self.ids.directReadingsCheckBox.active else "0"
         directReadingsSFText = self.ids.directReadingsSFText.text
 
         dateOrder = self.ids.dateText.orderNum
         techIDOrder = self.ids.techIDText.orderNum
         balanceOrder = self.ids.balanceIDText.orderNum
-        directReadingsOrder = self.ids.directReadingsText.orderNum
+        directReadingsOrder = 9
         directReadingsSFOrder = self.ids.directReadingsSFText.orderNum
 
-        if(dateText == "" or techIDText == "" or balanceIDText == "" or directReadingsText == "" or directReadingsSFText == ""):
+        if(self.ids.directReadingsCheckBox.active and directReadingsSFText == ""):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(dateText, dateOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(techIDText, techIDOrder)
-        rowStart3, rowEnd3 = self.parent.children[1].writeText(balanceIDText, balanceOrder)
-        rowStart4, rowEnd4 = self.parent.children[1].writeText(directReadingsText, directReadingsOrder)
-        rowStart5, rowEnd5 = self.parent.children[1].writeText(directReadingsSFText, directReadingsSFOrder)
+        if(dateText == "" or techIDText == "" or balanceIDText == "" or directReadingsText == ""):
+            self.ids.datePopError.text = "Enter data for all fields"
+            return
 
-        self.parent.children[1].highlight(rowStart1, rowEnd5)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(dateText, dateOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(techIDText, techIDOrder)
+        rowStart3, rowEnd3 = self.mainLayout.writeText(balanceIDText, balanceOrder)
+        rowStart4, rowEnd4 = self.mainLayout.writeText(directReadingsText, directReadingsOrder)
+
+        if(self.ids.directReadingsCheckBox.active):
+            rowStart5, rowEnd5 = self.mainLayout.writeText(directReadingsSFText, directReadingsSFOrder)
+        else:
+            self.mainLayout.writeText("", 1000)
+            rowStart5 = rowStart4
+            rowEnd5 = rowEnd4
+
+        self.mainLayout.highlight(rowStart1, rowEnd5)
 
         self.dismiss()
 
 class DesignPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def writeDesign(self, design):
         if(design == "3-1"):
             self.ids.designText.text = "1 -1  0\n1  0 -1\n0  1 -1"
@@ -1288,14 +1319,18 @@ class DesignPopup(PopupBase):
             self.ids.designPopError.text = "Enter data for all fields"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(designIDText, designIDOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(designText, designOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(designIDText, designIDOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(designText, designOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd2)
+        self.mainLayout.highlight(rowStart1, rowEnd2)
 
         self.dismiss()
 
 class WeightsPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def submit(self):
         checkIDText = self.ids.checkIDText.text
         nominalsText = self.ids.nominalsText.text
@@ -1309,19 +1344,23 @@ class WeightsPopup(PopupBase):
             self.ids.weightsPopError.text = "Enter data for all fields"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(checkIDText, checkIDOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(nominalsText, nominalsOrder)
-        rowStart3, rowEnd3 = self.parent.children[1].writeText(weightsText, weightsOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(checkIDText, checkIDOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(nominalsText, nominalsOrder)
+        rowStart3, rowEnd3 = self.mainLayout.writeText(weightsText, weightsOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd3)
+        self.mainLayout.highlight(rowStart1, rowEnd3)
 
         #Render series nominal
-        seriesButtonId = "series" + str(self.parent.children[1].currentSeries)
-        self.parent.children[1].displaySeriesNominal(self.parent.children[1].ids.userText.text, self.parent.children[1].ids[seriesButtonId])
+        seriesButtonId = "series" + str(self.mainLayout.currentSeries)
+        self.mainLayout.displaySeriesNominal(self.mainLayout.ids.userText.text, self.mainLayout.ids[seriesButtonId])
 
         self.dismiss()
 
 class VectorsPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def submit(self):
         restraintText = self.ids.restraintVectorText.text
         checkText = self.ids.checkVectorText.text
@@ -1335,15 +1374,19 @@ class VectorsPopup(PopupBase):
             self.ids.vectorsPopError.text = "Enter data for all fields"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(restraintText, restraintOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(checkText, checkOrder)
-        rowStart3, rowEnd3 = self.parent.children[1].writeText(nextRestraintText, nextRestraintOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(restraintText, restraintOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(checkText, checkOrder)
+        rowStart3, rowEnd3 = self.mainLayout.writeText(nextRestraintText, nextRestraintOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd3)
+        self.mainLayout.highlight(rowStart1, rowEnd3)
 
         self.dismiss()
 
 class StatisticsPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def submit(self):
         sigmawText = self.ids.sigmawText.text.strip()
         sigmatText = self.ids.sigmatText.text.strip()
@@ -1356,10 +1399,10 @@ class StatisticsPopup(PopupBase):
             self.ids.sigmaPopError.text = "Enter data for all fields"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(sigmawText, sigmawOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(sigmatText, sigmatOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(sigmawText, sigmawOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(sigmatText, sigmatOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd2)
+        self.mainLayout.highlight(rowStart1, rowEnd2)
 
         self.dismiss()
 
@@ -1557,6 +1600,10 @@ class StatsDbPopup(PopupBase):
         self.content = mainPopLayout
 
 class SwPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def submit(self):
         swMassText = self.ids.swMassText.text
         swDensityText = self.ids.swDensityText.text
@@ -1571,11 +1618,11 @@ class SwPopup(PopupBase):
             self.ids.swPopError.text = "Enter data for all fields"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(swMassText, swMassOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(swDensityText, swDensityOrder)
-        rowStart3, rowEnd3 = self.parent.children[1].writeText(swCCEText, swCCEOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(swMassText, swMassOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(swDensityText, swDensityOrder)
+        rowStart3, rowEnd3 = self.mainLayout.writeText(swCCEText, swCCEOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd3)
+        self.mainLayout.highlight(rowStart1, rowEnd3)
 
         self.dismiss()
 
@@ -1782,6 +1829,10 @@ class SwDbPopup(PopupBase):
         self.content = mainPopLayout
 
 class MeasurementsPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def submit(self):
         envText = self.ids.envText.text
         envCorrectionsText = self.ids.envCorrectionsText.text
@@ -1815,11 +1866,11 @@ class MeasurementsPopup(PopupBase):
             self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required, " + str(numEnvReadings) + " provided"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(envText, envOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(envCorrectionsText, envCorrectionsOrder)
-        rowStart3, rowEnd3 = self.parent.children[1].writeText(balanceReadingsText, balanceReadingsOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(envText, envOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(envCorrectionsText, envCorrectionsOrder)
+        rowStart3, rowEnd3 = self.mainLayout.writeText(balanceReadingsText, balanceReadingsOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd3)
+        self.mainLayout.highlight(rowStart1, rowEnd3)
 
         self.dismiss()
 
@@ -1841,6 +1892,7 @@ class GravityPopup(PopupBase):
     def __init__(self, **kwargs):
         super().__init__()
         self.bind(on_open=self.setWeightIds)
+        self.mainLayout = kwargs.get("mainLayout", None)
 
     def submit(self):
         gradientText = self.ids.gradientText.text
@@ -1855,16 +1907,16 @@ class GravityPopup(PopupBase):
             self.ids.gravityPopError.text = "Enter data for all fields"
             return
 
-        rowStart1, rowEnd1 = self.parent.children[1].writeText(gradientText, gradientOrder)
-        rowStart2, rowEnd2 = self.parent.children[1].writeText(localGravText, localGravOrder)
-        rowStart3, rowEnd3 = self.parent.children[1].writeText(heightText, heightOrder)
+        rowStart1, rowEnd1 = self.mainLayout.writeText(gradientText, gradientOrder)
+        rowStart2, rowEnd2 = self.mainLayout.writeText(localGravText, localGravOrder)
+        rowStart3, rowEnd3 = self.mainLayout.writeText(heightText, heightOrder)
 
-        self.parent.children[1].highlight(rowStart1, rowEnd3)
+        self.mainLayout.highlight(rowStart1, rowEnd3)
         self.dismiss()
 
     def setWeightIds(self, e):
         ids = []
-        userText = self.parent.children[1].ids.userText.text
+        userText = self.mainLayout.ids.userText.text
         for line in userText.splitlines():
             if(line.split() == []):
                 continue
@@ -1880,16 +1932,20 @@ class GravityPopup(PopupBase):
             return dp(12)
 
 class OpenFilePopup(Popup):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def openFile(self, selection):
         try:
             selection[0]
             fileName = path.split(selection[0])[1]
             if(not "-config.txt" in fileName):
-                self.parent.children[1].sendError("NO FILE SELECTED")
+                self.mainLayout.sendError("NO FILE SELECTED")
                 self.dismiss()
                 return
         except IndexError:
-            self.parent.children[1].sendError("NO FILE SELECTED")
+            self.mainLayout.sendError("NO FILE SELECTED")
             self.dismiss()
             return
 
@@ -1897,22 +1953,22 @@ class OpenFilePopup(Popup):
             with open(selection[0]) as configFile:
                 fileText = configFile.read()
         except:
-            self.parent.children[1].sendError("ERROR OPENING SELECTED FILE " + selection[0])
+            self.mainLayout.sendError("ERROR OPENING SELECTED FILE " + selection[0])
             self.dismiss()
             return
 
         basePath = selection[0][: len(selection[0]) - 11]
 
-        self.parent.children[1].fileName = fileName[: len(fileName) - 11]
-        self.parent.children[1].configFilePath = selection[0]
-        self.parent.children[1].outFilePath = basePath + "-out.txt"
-        self.parent.children[1].notesFilePath = basePath + "-notes.txt"
+        self.mainLayout.fileName = fileName[: len(fileName) - 11]
+        self.mainLayout.configFilePath = selection[0]
+        self.mainLayout.outFilePath = basePath + "-out.txt"
+        self.mainLayout.notesFilePath = basePath + "-notes.txt"
 
-        self.parent.children[1].splitSeries(fileText)
-        self.parent.children[1].grabOutputFile()
-        self.parent.children[1].grabNotes()
+        self.mainLayout.splitSeries(fileText)
+        self.mainLayout.grabOutputFile()
+        self.mainLayout.grabNotes()
 
-        self.parent.children[1].ids.configFileName.text = path.split(selection[0])[1]
+        self.mainLayout.ids.configFileName.text = path.split(selection[0])[1]
 
         self.dismiss()
 
@@ -1924,11 +1980,15 @@ class OpenFilePopup(Popup):
             return path.abspath(getcwd())
 
 class OpenNewFilePopup(Popup):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def setMessage(self, newFile):
-        seriesNum = self.parent.children[1].currentSeries
+        seriesNum = self.mainLayout.currentSeries
 
         if(seriesNum != None):
-            self.parent.children[1].seriesTexts[seriesNum - 1] = self.parent.children[1].ids.userText.text
+            self.mainLayout.seriesTexts[seriesNum - 1] = self.mainLayout.ids.userText.text
 
         self.ids.newFileMessage.text = "Opening new file without saving?"
         self.ids.openNewFileButton.text = "Back"
@@ -1941,16 +2001,20 @@ class OpenNewFilePopup(Popup):
             self.ids.cancelNewFileButton.bind(on_release=self.openFileSearchNoSave)
 
     def openFileSearchNoSave(self, e):
-        fileSearchPop = OpenFilePopup()
+        fileSearchPop = OpenFilePopup(mainLayout=self.mainLayout)
         self.dismiss()
         fileSearchPop.open()
 
     def openNewFileNoSave(self, e):
-        fileSavePop = NewFileSaveLocPopup()
+        fileSavePop = NewFileSaveLocPopup(mainLayout=self.mainLayout)
         self.dismiss()
         fileSavePop.open()
 
 class NewFileSaveLocPopup(Popup):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def setSaveLoc(self, filePath, fileNameInput):
         configFilePath = path.join(filePath, fileNameInput.strip() + "-config.txt")
         outFilePath = path.join(filePath, fileNameInput.strip() + "-out.txt")
@@ -1964,29 +2028,29 @@ class NewFileSaveLocPopup(Popup):
             self.ids.saveFileMessage.text = fileNameInput.strip() + "-config.txt" + " already exists in this folder"
             return
 
-        if(self.parent.children[1].configFilePath == ""):
-            self.parent.children[1].fileName = fileNameInput.strip()
-            self.parent.children[1].configFilePath = configFilePath
-            self.parent.children[1].outFilePath = outFilePath
-            self.parent.children[1].notesFilePath = notesFilePath
+        if(self.mainLayout.configFilePath == ""):
+            self.mainLayout.fileName = fileNameInput.strip()
+            self.mainLayout.configFilePath = configFilePath
+            self.mainLayout.outFilePath = outFilePath
+            self.mainLayout.notesFilePath = notesFilePath
 
-            self.parent.children[1].save()
-            self.parent.children[1].ids.configFileName.text = path.split(configFilePath)[1]
+            self.mainLayout.save()
+            self.mainLayout.ids.configFileName.text = path.split(configFilePath)[1]
             self.dismiss()
 
         else:
-            self.parent.children[1].fileName = fileNameInput.strip()
-            self.parent.children[1].configFilePath = configFilePath
-            self.parent.children[1].outFilePath = outFilePath
-            self.parent.children[1].notesFilePath = notesFilePath
+            self.mainLayout.fileName = fileNameInput.strip()
+            self.mainLayout.configFilePath = configFilePath
+            self.mainLayout.outFilePath = outFilePath
+            self.mainLayout.notesFilePath = notesFilePath
 
             #Reset output file, notes, and usertext
-            self.parent.children[1].grabOutputFile()
-            self.parent.children[1].grabNotes()
-            self.parent.children[1].splitSeries("@SERIES\n\n")
+            self.mainLayout.grabOutputFile()
+            self.mainLayout.grabNotes()
+            self.mainLayout.splitSeries("@SERIES\n\n")
 
-            self.parent.children[1].save()
-            self.parent.children[1].ids.configFileName.text = path.split(configFilePath)[1]
+            self.mainLayout.save()
+            self.mainLayout.ids.configFileName.text = path.split(configFilePath)[1]
             self.dismiss()
 
     def getDefaultPath(self):
@@ -2107,6 +2171,10 @@ class VisualizationPopup(Popup):
         self.content = mainPopLayout
 
 class SettingsPopup(PopupBase):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mainLayout = kwargs.get("mainLayout", None)
+
     def getFontSize(self):
         try:
             fontSize = str(API.getFontSize())
@@ -2147,9 +2215,9 @@ class SettingsPopup(PopupBase):
 
         API.saveSettings(int(fontSize), filePath, runTests, writeNotes)
 
-        self.parent.children[1].ids.userText.font_size = dp(int(fontSize))
-        self.parent.children[1].ids.notesText.font_size = dp(int(fontSize))
-        self.parent.children[1].ids.errors.font_size = dp(int(fontSize))
+        self.mainLayout.ids.userText.font_size = dp(int(fontSize))
+        self.mainLayout.ids.notesText.font_size = dp(int(fontSize))
+        self.mainLayout.ids.errors.font_size = dp(int(fontSize))
         self.dismiss()
 
 class DefaultPathPopup(Popup):
@@ -2254,7 +2322,7 @@ class Mars(App):
 
             if(checkOK):
                 self.root.clearErrors()
-                pop = LabInfoPopup()
+                pop = LabInfoPopup(mainLayout=self.root)
                 pop.open()
 
     def openRestraintPop(self):
@@ -2265,7 +2333,7 @@ class Mars(App):
             
             if(checkOK):
                 self.root.clearErrors()
-                pop = RestraintPopup()
+                pop = RestraintPopup(mainLayout=self.root)
                 pop.open()
 
     def openDatePop(self):
@@ -2276,7 +2344,7 @@ class Mars(App):
             
             if(checkOK):
                 self.root.clearErrors()
-                pop = DatePopup()
+                pop = DatePopup(mainLayout=self.root)
                 pop.open()
 
     def openDesignPop(self):
@@ -2287,7 +2355,7 @@ class Mars(App):
             
             if(checkOK):
                 self.root.clearErrors()
-                pop = DesignPopup()
+                pop = DesignPopup(mainLayout=self.root)
                 pop.open()
                 pop.ids.dropDownn.dismiss()
 
@@ -2299,7 +2367,7 @@ class Mars(App):
 
             if(checkOK):
                 self.root.clearErrors()
-                pop = WeightsPopup()
+                pop = WeightsPopup(mainLayout=self.root)
                 pop.open()
 
     def openVectorsPop(self):
@@ -2310,7 +2378,7 @@ class Mars(App):
 
             if(checkOK):
                 self.root.clearErrors()
-                pop = VectorsPopup()
+                pop = VectorsPopup(mainLayout=self.root)
                 pop.open()
 
     def openStatisticsPop(self):
@@ -2321,7 +2389,7 @@ class Mars(App):
 
             if(checkOK):
                 self.root.clearErrors()
-                pop = StatisticsPopup()
+                pop = StatisticsPopup(mainLayout=self.root)
                 pop.open()
 
     def openSwPop(self):
@@ -2332,7 +2400,7 @@ class Mars(App):
 
             if(checkOK):
                 self.root.clearErrors()
-                pop = SwPopup()
+                pop = SwPopup(mainLayout=self.root)
                 pop.open()
 
     def openMeasurementsPop(self):
@@ -2343,7 +2411,7 @@ class Mars(App):
 
             if(checkOK):
                 self.root.clearErrors()
-                pop = MeasurementsPopup()
+                pop = MeasurementsPopup(mainLayout=self.root)
                 pop.open()
 
     def openGravityPop(self):
@@ -2354,31 +2422,31 @@ class Mars(App):
 
             if(checkOK):
                 self.root.clearErrors()
-                pop = GravityPopup()
+                pop = GravityPopup(mainLayout=self.root)
                 pop.open()
 
     def openFilePop(self):
         freshOpen = self.root.numberOfSeries == 1 and self.root.ids.userText.text.strip() == "@SERIES"
         if(self.root.saved == False and freshOpen == False):
             self.root.clearErrors()
-            pop = OpenNewFilePopup()
+            pop = OpenNewFilePopup(mainLayout=self.root)
             pop.open()
             pop.setMessage(False)
         else:
             self.root.clearErrors()
-            pop = OpenFilePopup()
+            pop = OpenFilePopup(mainLayout=self.root)
             pop.open()
 
     def openNewFilePop(self):
         freshOpen = self.root.numberOfSeries == 1 and self.root.ids.userText.text.strip() == "@SERIES"
         if(self.root.saved == False and freshOpen == False):
             self.root.clearErrors()
-            pop = OpenNewFilePopup()
+            pop = OpenNewFilePopup(mainLayout=self.root)
             pop.open()
             pop.setMessage(True)
         else:
             self.root.clearErrors()
-            saveLocPop = NewFileSaveLocPopup()
+            saveLocPop = NewFileSaveLocPopup(mainLayout=self.root)
             saveLocPop.open()
 
     def openValidationPop(self):
@@ -2422,7 +2490,7 @@ class Mars(App):
         pop.open()
 
     def openSettingPop(self):
-        pop = SettingsPopup()
+        pop = SettingsPopup(mainLayout=self.root)
         pop.open()
 
 if(__name__ == "__main__"):
