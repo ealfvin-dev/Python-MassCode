@@ -796,7 +796,7 @@ class OrderedText(TextInput):
         self.background_normal = ''
 
         try:
-            self.font_size = dp(API.getFontSize()[0][0])
+            self.font_size = dp(API.getFontSize())
         except:
             self.font_size = dp(12)
 
@@ -813,7 +813,7 @@ class UserInput(TextInput):
         super().__init__()
         
         try:
-            self.font_size = dp(API.getFontSize()[0][0])
+            self.font_size = dp(API.getFontSize())
         except:
             self.font_size = dp(12)
 
@@ -835,7 +835,7 @@ class MainErrorText(TextInput):
         super().__init__()
         
         try:
-            self.font_size = dp(API.getFontSize()[0][0])
+            self.font_size = dp(API.getFontSize())
         except:
             self.font_size = dp(12)
 
@@ -1870,7 +1870,7 @@ class GravityPopup(PopupBase):
 
     def getUserFontSize(self):
         try:
-            return dp(API.getFontSize()[0][0])
+            return dp(API.getFontSize())
         except:
             return dp(12)
 
@@ -1909,7 +1909,7 @@ class OpenFilePopup(Popup):
 
     def getDefaultPath(self):
         try:
-            filePath = API.getDefaultPath()[0][0]
+            filePath = API.getDefaultPath()
             return filePath
         except:
             return path.abspath(getcwd())
@@ -1968,7 +1968,7 @@ class NewFileSaveLocPopup(Popup):
 
     def getDefaultPath(self):
         try:
-            filePath = API.getDefaultPath()[0][0]
+            filePath = API.getDefaultPath()
             return filePath
         except:
             return path.abspath(getcwd())
@@ -2086,14 +2086,14 @@ class VisualizationPopup(Popup):
 class SettingsPopup(PopupBase):
     def getFontSize(self):
         try:
-            fontSize = str(API.getFontSize()[0][0])
+            fontSize = str(API.getFontSize())
             return fontSize
         except:
             return "12"
 
     def getDefaultPath(self):
         try:
-            filePath = API.getDefaultPath()[0][0]
+            filePath = API.getDefaultPath()
             return filePath
         except:
             return path.abspath(getcwd())
@@ -2105,6 +2105,8 @@ class SettingsPopup(PopupBase):
     def saveSettings(self):
         fontSize = self.ids.fontSize.text.strip()
         filePath = self.ids.filePath.text.strip()
+        runTests = 1 if self.ids.testsCheckBox.active else 0
+        writeNotes = 1 if self.ids.notesCheckBox.active else 0
 
         if(fontSize == ""):
             self.ids.settingsError.text = "Please enter a font size"
@@ -2120,7 +2122,7 @@ class SettingsPopup(PopupBase):
             self.ids.settingsError.text = "Please enter a file path"
             return
 
-        API.saveSettings(int(fontSize), filePath)
+        API.saveSettings(int(fontSize), filePath, runTests, writeNotes)
 
         self.parent.children[1].ids.userText.font_size = dp(int(fontSize))
         self.parent.children[1].ids.notesText.font_size = dp(int(fontSize))
@@ -2138,7 +2140,7 @@ class DefaultPathPopup(Popup):
 
     def getDefaultPath(self):
         try:
-            filePath = API.getDefaultPath()[0][0]
+            filePath = API.getDefaultPath()
             return filePath
         except:
             return path.abspath(getcwd())
@@ -2176,13 +2178,19 @@ class StartupTestsPopup(Popup):
 class RequestClosePopUp(Popup):
     pass
 
-class NotesCheckBox(CheckBox):
-    def getNotesValue(self):
-        return False
-
 class StartupTestsCheckBox(CheckBox):
     def getStartupTestsValue(self):
-        return True
+        if(API.getRunInternalTests() == 1):
+            return True
+        else:
+            return False
+
+class NotesCheckBox(CheckBox):
+    def getNotesValue(self):
+        if(API.getWriteNotes() == 1):
+            return True
+        else:
+            return False
 
 class Mars(App):
     def build(self):
@@ -2190,15 +2198,14 @@ class Mars(App):
         Config.set('input', 'mouse', 'mouse,disable_multitouch')
         Config.set('graphics', 'fullscreen', 0)
         Config.set('graphics', 'window_state', 'maximized')
-        #Config.set('graphics', 'minimum_width', 0)
-        #Config.set('graphics', 'minimum_height', 0)
         Config.write()
 
         Window.bind(on_request_close=self.on_request_close)
         return MainLayout()
 
     def on_start(self):
-        Clock.schedule_once(self.openStartTests, 0)
+        if(API.getRunInternalTests() == 1):
+            Clock.schedule_once(self.openStartTests, 0)
 
     def openStartTests(self, dt):
         startTestsPop = StartupTestsPopup()
@@ -2399,7 +2406,7 @@ if(__name__ == "__main__"):
     try:
         API.getSettings()
     except:
-        API.saveSettings(12, path.abspath(getcwd()))
+        API.saveSettings(12, path.abspath(getcwd()), 1, 0)
 
     mainApp = Mars()
     mainApp.run()
