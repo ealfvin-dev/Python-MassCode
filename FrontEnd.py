@@ -42,20 +42,21 @@ from threading import Thread
 from time import sleep
 
 class MainLayout(BoxLayout):
-    configFilePath = ""
-    outFilePath = ""
-    notesFilePath = ""
-
-    numberOfSeries = 1
-    currentSeries = 1
-    maxSeries = 20
-
-    reportNum = ""
-    seriesTexts = ["@SERIES\n\n"]
-    outputText = ""
-
     def __init__(self, **kwargs):
         super().__init__()
+        
+        self.fileName = ""
+        self.configFilePath = ""
+        self.outFilePath = ""
+        self.notesFilePath = ""
+
+        self.numberOfSeries = 1
+        self.currentSeries = 1
+        self.maxSeries = 20
+
+        self.reportNum = ""
+        self.seriesTexts = ["@SERIES\n\n"]
+        self.outputText = ""
 
         with self.canvas.before:
             Color(rgba=Configs.backgroundColor)
@@ -507,8 +508,6 @@ class MainLayout(BoxLayout):
             self.ids.userText.text = splitTexts[i].strip()
 
         self.goToSeries(1, True)
-        self.grabOutputFile()
-        self.grabNotes()
 
     def reSplit(self):
         #If in the output tab, return
@@ -576,19 +575,25 @@ class MainLayout(BoxLayout):
         self.sendSuccess("INPUT FILE CHECKS PASSED")
 
     def saveNotes(self):
-        if(self.configFilePath == ""):
-            return
-
         notes = self.ids.notesText.text.strip()
 
         if(notes == ""):
-            if(path.exists(self.notesFilePath)):
-                remove(self.notesFilePath)
-
+            try:
+                API.deleteNote(self.fileName)
+            except:
+                pass
         else:
-            f = open(self.notesFilePath, 'w')
-            f.write(notes)
-            f.close()
+            API.saveNote(self.fileName, notes)
+
+        if(API.getWriteNotes() == 1):
+            if(notes == ""):
+                if(path.exists(self.notesFilePath)):
+                    remove(self.notesFilePath)
+
+            else:
+                f = open(self.notesFilePath, 'w')
+                f.write(notes)
+                f.close()
 
     def save(self):
         #Save new file
@@ -613,7 +618,10 @@ class MainLayout(BoxLayout):
         f.write(fileText)
         f.close()
 
-        self.saveNotes()
+        try:
+            self.saveNotes()
+        except:
+            self.sendError("COULD NOT SAVE NOTES")
 
         self.saved = True
         self.sendSuccess("FILE SAVED")
@@ -708,13 +716,10 @@ class MainLayout(BoxLayout):
         self.ids.errors.text = ""
 
     def grabNotes(self):
-        if(path.exists(self.notesFilePath)):
-            f = open(self.notesFilePath, 'r')
-            fileText = f.read()
-            f.close()
-
-            self.ids.notesText.text = fileText
-        else:
+        try:
+            notes = API.getNote(self.fileName)
+            self.ids.notesText.text = notes
+        except:
             self.ids.notesText.text = ""
 
     def grabOutputFile(self):
@@ -999,7 +1004,7 @@ class AddSeriesButton(Button):
         self.background_normal = ''
         self.background_down = ''
         self.background_color = Configs.greenButtonColor
-        self.text = "    Add Series"
+        self.text = "   Add Series"
         self.halign = 'center'
         self.font_size = dp(17)
 
@@ -1898,11 +1903,15 @@ class OpenFilePopup(Popup):
 
         basePath = selection[0][: len(selection[0]) - 11]
 
+        self.parent.children[1].fileName = fileName[: len(fileName) - 11]
         self.parent.children[1].configFilePath = selection[0]
         self.parent.children[1].outFilePath = basePath + "-out.txt"
         self.parent.children[1].notesFilePath = basePath + "-notes.txt"
 
         self.parent.children[1].splitSeries(fileText)
+        self.parent.children[1].grabOutputFile()
+        self.parent.children[1].grabNotes()
+
         self.parent.children[1].ids.configFileName.text = path.split(selection[0])[1]
 
         self.dismiss()
@@ -1955,16 +1964,30 @@ class NewFileSaveLocPopup(Popup):
             self.ids.saveFileMessage.text = fileNameInput.strip() + "-config.txt" + " already exists in this folder"
             return
 
-        if(self.parent.children[1].configFilePath != ""):
+        if(self.parent.children[1].configFilePath == ""):
+            self.parent.children[1].fileName = fileNameInput.strip()
+            self.parent.children[1].configFilePath = configFilePath
+            self.parent.children[1].outFilePath = outFilePath
+            self.parent.children[1].notesFilePath = notesFilePath
+
+            self.parent.children[1].save()
+            self.parent.children[1].ids.configFileName.text = path.split(configFilePath)[1]
+            self.dismiss()
+
+        else:
+            self.parent.children[1].fileName = fileNameInput.strip()
+            self.parent.children[1].configFilePath = configFilePath
+            self.parent.children[1].outFilePath = outFilePath
+            self.parent.children[1].notesFilePath = notesFilePath
+
+            #Reset output file, notes, and usertext
+            self.parent.children[1].grabOutputFile()
+            self.parent.children[1].grabNotes()
             self.parent.children[1].splitSeries("@SERIES\n\n")
 
-        self.parent.children[1].configFilePath = configFilePath
-        self.parent.children[1].outFilePath = outFilePath
-        self.parent.children[1].notesFilePath = notesFilePath
-
-        self.parent.children[1].save()
-        self.parent.children[1].ids.configFileName.text = path.split(configFilePath)[1]
-        self.dismiss()
+            self.parent.children[1].save()
+            self.parent.children[1].ids.configFileName.text = path.split(configFilePath)[1]
+            self.dismiss()
 
     def getDefaultPath(self):
         try:
