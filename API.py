@@ -222,18 +222,3 @@ def deleteNote(fileName):
 
     conn.commit()
     conn.close()
-
-
-
-
-
-def getNotes():
-    conn = sqlite3.connect('mars.db')
-    c = conn.cursor()
-    c.execute('''SELECT * FROM notes_table''')
-
-    data = c.fetchall()
-
-    conn.commit()
-    conn.close()
-    return data
