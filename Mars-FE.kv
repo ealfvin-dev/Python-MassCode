@@ -772,7 +772,7 @@
                     text: "1.0"
                     hint_text: "1.0"
                     orderNum: 10
-                    disabled: manualReadingsCheckBox.active
+                    disabled: not directReadingsCheckBox.active
 
         PopupErrorLabel:
             id: datePopError
@@ -941,7 +941,7 @@
             height: dp(20)
 
             PopupLabel:
-                text: "Nominal Units (1 = g, 0 = lb):"
+                text: "Nominal Units:"
                 size_hint: (0.5, None)
 
             PopupLabel:
@@ -954,12 +954,36 @@
             spacing: dp(20)
             height: dp(42)
 
-            OrderedText:
-                id: nominalsText
+            BoxLayout:
+                orientation: "horizontal"
                 size_hint: (0.5, None)
-                hint_text: "1"
-                text: "1"
-                orderNum: 15
+                height: dp(30)
+                spacing: dp(8)
+                padding: 0, 0, dp(60), dp(10)
+
+                CheckBox:
+                    id: gramsCheckBox
+                    size_hint: (None, None)
+                    size: (dp(20), dp(20))
+                    color: (0.105, 0.165, 0.23, 1)
+                    active: True
+                    group: 'nominalUnits'
+
+                PopupLabel:
+                    text: "Grams"
+                    size_hint: (1, None)
+
+                CheckBox:
+                    id: poundsCheckBox
+                    size_hint: (None, None)
+                    size: (dp(20), dp(20))
+                    color: (0.105, 0.165, 0.23, 1)
+                    active: True
+                    group: 'nominalUnits'
+
+                PopupLabel:
+                    text: "Pounds"
+                    size_hint: (1, None)
 
             OrderedText:
                 id: checkIDText

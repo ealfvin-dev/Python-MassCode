@@ -1233,7 +1233,8 @@ class DatePopup(PopupBase):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
-        if(dateText == "" or techIDText == "" or balanceIDText == "" or directReadingsText == ""):
+        if(dateText == "" or techIDText == "" or balanceIDText == "" or \
+            (self.ids.directReadingsCheckBox.active == False and self.ids.manualReadingsCheckBox.active == False)):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
@@ -1333,14 +1334,15 @@ class WeightsPopup(PopupBase):
 
     def submit(self):
         checkIDText = self.ids.checkIDText.text
-        nominalsText = self.ids.nominalsText.text
+        nominalsText = "1" if self.ids.gramsCheckBox.active else "0"
         weightsText = self.ids.weightsText.text
 
         checkIDOrder = self.ids.checkIDText.orderNum
-        nominalsOrder = self.ids.nominalsText.orderNum
+        nominalsOrder = 15
         weightsOrder = self.ids.weightsText.orderNum
 
-        if(checkIDText == "" or nominalsText == "" or weightsText == ""):
+        if(checkIDText == "" or weightsText == "" or \
+            (self.ids.gramsCheckBox.active == False and self.ids.poundsCheckBox.active == False)):
             self.ids.weightsPopError.text = "Enter data for all fields"
             return
 
