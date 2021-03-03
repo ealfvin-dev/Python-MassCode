@@ -2,7 +2,6 @@
 
 #:set labelColor (0.095, 0.095, 0.096, 0.9)
 
-#:set labelSizer 1.23
 #:set buttonSpacing dp(33)
 #:set buttonHeight dp(60)
 
@@ -22,9 +21,9 @@
 
             MarsImage:
                 size_hint: (None, None)
-                height: dp(18)
-                width: dp(18)
-                pos: self.getImagePosition(addSeriesButton.pos, addSeriesButton.width, addSeriesButton.texture_size[0], dp(15), dp(4))
+                height: dp(17)
+                width: dp(17)
+                pos: self.getImagePosition(addSeriesButton.pos, addSeriesButton.width, addSeriesButton.texture_size[0], dp(15), dp(5))
                 source: self.getImagePath('PlusIcon.png')
 
         ScrollView:
@@ -155,9 +154,9 @@
 
             MarsImage:
                 size_hint: (None, None)
-                height: dp(18)
-                width: dp(18)
-                pos: self.getImagePosition(removeSeriesButton.pos, removeSeriesButton.width, removeSeriesButton.texture_size[0], dp(15), dp(8))
+                height: dp(17)
+                width: dp(17)
+                pos: self.getImagePosition(removeSeriesButton.pos, removeSeriesButton.width, removeSeriesButton.texture_size[0], dp(15), dp(10))
                 source: self.getImagePath('MinusIcon.png')
 
     BoxLayout:
@@ -201,9 +200,9 @@
 
                 MarsImage:
                     size_hint: (None, None)
-                    height: dp(18)
-                    width: dp(18)
-                    pos: self.getImagePosition(newFileButton.pos, newFileButton.width, newFileButton.texture_size[0])
+                    height: dp(17)
+                    width: dp(17)
+                    pos: self.getImagePosition(newFileButton.pos, newFileButton.width, newFileButton.texture_size[0], 0, dp(1))
                     source: self.getImagePath('PlusIcon.png')
 
             TopMenuButton:
@@ -329,7 +328,7 @@
 
                             InputButton:
                                 id: dateButton
-                                text: "Balance &\nDate"
+                                text: "Balance &\nSetup"
                                 on_release: app.openDatePop()
 
                             InputButton:
@@ -664,7 +663,7 @@
 
 <DatePopup>:
     auto_dismiss: False
-    title: "Date and Balance"
+    title: "Balance and Setup"
     size: (dp(570), dp(410))
 
     BoxLayout:
@@ -706,11 +705,7 @@
 
                 PopupErrorLabel:
                     size_hint: (1, None)
-                    height: SFLabel.height
-
-                PopupErrorLabel:
-                    size_hint: (1, None)
-                    height: techIDText.height
+                    height: dp(86)
 
             BoxLayout:
                 orientation: "vertical"
@@ -728,16 +723,43 @@
                     hint_text: "14"
                     orderNum: 8
 
-                PopupLabel:
-                    text: "Direct Readings (1 = Yes, 0 = No):"
+                BoxLayout:
+                    orientation: "horizontal"
                     size_hint: (1, None)
+                    height: dp(30)
+                    spacing: dp(8)
+                    padding: dp(1), dp(10), dp(1), 0
 
-                OrderedText:
-                    id: directReadingsText
+                    CheckBox:
+                        id: manualReadingsCheckBox
+                        size_hint: (None, None)
+                        size: (dp(20), dp(20))
+                        color: (0.105, 0.165, 0.23, 1)
+                        active: True
+                        group: 'directReadings'
+
+                    PopupLabel:
+                        text: "Manual Readings"
+                        size_hint: (1, None)
+
+                BoxLayout:
+                    orientation: "horizontal"
                     size_hint: (1, None)
-                    text: "0"
-                    hint_text: "0"
-                    orderNum: 9
+                    height: dp(30)
+                    spacing: dp(8)
+                    padding: dp(1), 0, dp(1), dp(10)
+
+                    CheckBox:
+                        id: directReadingsCheckBox
+                        size_hint: (None, None)
+                        size: (dp(20), dp(20))
+                        color: (0.105, 0.165, 0.23, 1)
+                        active: False
+                        group: 'directReadings'
+
+                    PopupLabel:
+                        text: "Direct Readings (B - A)"
+                        size_hint: (1, None)
 
                 PopupLabel:
                     id: SFLabel
@@ -750,6 +772,7 @@
                     text: "1.0"
                     hint_text: "1.0"
                     orderNum: 10
+                    disabled: not directReadingsCheckBox.active
 
         PopupErrorLabel:
             id: datePopError
@@ -807,7 +830,7 @@
 
                 ExtraButton:
                     id: dropDownMain
-                    text: "Presets"
+                    text: "Designs"
                     size_hint: (None, None)
                     size: (dp(140), dp(50))
                     on_release: dropDownn.open(self)
@@ -918,7 +941,7 @@
             height: dp(20)
 
             PopupLabel:
-                text: "Nominal Units (1 = g, 0 = lb):"
+                text: "Nominal Units:"
                 size_hint: (0.5, None)
 
             PopupLabel:
@@ -931,12 +954,36 @@
             spacing: dp(20)
             height: dp(42)
 
-            OrderedText:
-                id: nominalsText
+            BoxLayout:
+                orientation: "horizontal"
                 size_hint: (0.5, None)
-                hint_text: "1"
-                text: "1"
-                orderNum: 15
+                height: dp(30)
+                spacing: dp(8)
+                padding: 0, 0, dp(60), dp(10)
+
+                CheckBox:
+                    id: gramsCheckBox
+                    size_hint: (None, None)
+                    size: (dp(20), dp(20))
+                    color: (0.105, 0.165, 0.23, 1)
+                    active: True
+                    group: 'nominalUnits'
+
+                PopupLabel:
+                    text: "Grams"
+                    size_hint: (1, None)
+
+                CheckBox:
+                    id: poundsCheckBox
+                    size_hint: (None, None)
+                    size: (dp(20), dp(20))
+                    color: (0.105, 0.165, 0.23, 1)
+                    active: True
+                    group: 'nominalUnits'
+
+                PopupLabel:
+                    text: "Pounds"
+                    size_hint: (1, None)
 
             OrderedText:
                 id: checkIDText
@@ -1453,7 +1500,7 @@
                 height: heightText.height
                 text_size: (self.width, self.height)
                 color: labelColor
-                font_size: dp(13)
+                font_size: root.getUserFontSize()
                 padding: (dp(5), dp(5) + 0.5 * (heightText.height - 2*dp(5)) % heightText.line_height)
                 halign: "left"
                 valign: "top"
@@ -1685,7 +1732,7 @@
 <SettingsPopup>:
     auto_dismiss: False
     title: "MARS Settings"
-    size: (dp(440), dp(305))
+    size: (dp(440), dp(370))
 
     BoxLayout:
         orientation: "vertical"
@@ -1706,6 +1753,8 @@
             size_hint: (1, None)
 
         BoxLayout:
+            size_hint: (1, None)
+            height: filePath.height
             orientation: "horizontal"
             spacing: dp(8)
 
@@ -1719,6 +1768,42 @@
                 height: 3 * dp(13)
                 text: "Choose"
                 on_release: root.chooseDefaultPath()
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: dp(30)
+            orientation: "horizontal"
+            spacing: dp(8)
+            padding: dp(1), dp(10), dp(1), 0
+
+            PopupLabel:
+                size_hint: (1, None)
+                text: "Run internal tests on startup"
+
+            StartupTestsCheckBox:
+                id: testsCheckBox
+                size_hint: (None, None)
+                size: (dp(20), dp(20))
+                color: (0.105, 0.165, 0.23, 1)
+                active: self.getStartupTestsValue()
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: dp(20)
+            orientation: "horizontal"
+            spacing: dp(8)
+            padding: dp(1), 0, dp(1), 0
+
+            PopupLabel:
+                size_hint: (1, None)
+                text: "Write notes to {filename}-notes.txt"
+
+            NotesCheckBox:
+                id: notesCheckBox
+                size_hint: (None, None)
+                size: (dp(20), dp(20))
+                color: (0.105, 0.165, 0.23, 1)
+                active: self.getNotesValue()
 
         PopupErrorLabel:
             id: settingsError

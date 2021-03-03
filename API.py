@@ -119,7 +119,7 @@ def deleteStat(rowId):
 def getSettings():
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
-    c.execute('''SELECT fontSize, defaultPath FROM settings_table WHERE name = ?''', ["settings"])
+    c.execute('''SELECT * FROM settings_table''')
 
     data = c.fetchall()
 
@@ -127,18 +127,98 @@ def getSettings():
     conn.close()
     return data
 
-def saveSettings(fontSize, path):
+def getFontSize():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT fontSize FROM settings_table WHERE name = ?''', ["settings"])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data[0][0]
+
+def getDefaultPath():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT defaultPath FROM settings_table WHERE name = ?''', ["settings"])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data[0][0]
+
+def getRunInternalTests():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT runInternalTests FROM settings_table WHERE name = ?''', ["settings"])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data[0][0]
+
+def getWriteNotes():
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT writeNotes FROM settings_table WHERE name = ?''', ["settings"])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data[0][0]
+
+def saveSettings(fontSize, path, runInternalTests, writeNotes):
     conn = sqlite3.connect('mars.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS settings_table (
         name text NOT NULL UNIQUE,
         fontSize INTEGER NOT NULL,
-        defaultPath text NOT NULL
+        defaultPath text NOT NULL,
+        runInternalTests INTEGER NOT NULL,
+        writeNotes INTEGER NOT NULL
         )''')
 
-    c.execute('''REPLACE INTO settings_table VALUES (?, ?, ?)''', ["settings", fontSize, path])
+    c.execute('''REPLACE INTO settings_table VALUES (?, ?, ?, ?, ?)''', ["settings", fontSize, path, runInternalTests, writeNotes])
     insertId = c.lastrowid
 
     conn.commit()
     conn.close()
     return insertId
+
+def saveNote(fileName, noteText):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS notes_table (
+        fileName text NOT NULL UNIQUE,
+        note text NOT NULL
+        )''')
+
+    c.execute('''REPLACE INTO notes_table VALUES (?, ?)''', [fileName, noteText])
+    insertId = c.lastrowid
+
+    conn.commit()
+    conn.close()
+    return insertId
+
+def getNote(fileName):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''SELECT note FROM notes_table WHERE fileName = ?''', [fileName])
+
+    data = c.fetchall()
+
+    conn.commit()
+    conn.close()
+    return data[0][0]
+
+def deleteNote(fileName):
+    conn = sqlite3.connect('mars.db')
+    c = conn.cursor()
+    c.execute('''DELETE FROM notes_table WHERE fileName = ?''', [fileName])
+
+    conn.commit()
+    conn.close()

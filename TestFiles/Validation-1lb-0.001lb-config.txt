@@ -11,7 +11,7 @@
     <Technician-ID>  019
        <Balance-ID>  020
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
+
          <Check-ID>  344
             <Grams>  0
 
@@ -61,7 +61,6 @@
     <Technician-ID>  019
        <Balance-ID>  020
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  314
             <Grams>  0
@@ -129,7 +128,6 @@
     <Technician-ID>  019
        <Balance-ID>  007
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  318
             <Grams>  0
@@ -197,7 +195,6 @@
     <Technician-ID>  019
        <Balance-ID>  005
   <Direct-Readings>  0
-<Direct-Reading-SF>  1.0
 
          <Check-ID>  322
             <Grams>  0
@@ -258,4 +255,3 @@
   <Balance-Reading>  0      -0.0019 10.0789 10.0809
   <Balance-Reading>  0.0000  0.0129 10.0935 10.0807
   <Balance-Reading>  0.0000  0.0498 10.1301 10.0810
-
