@@ -587,6 +587,7 @@
             write_tab: True
             multiline: True
             height: dp(200)
+            text: self.getInputText(root.mainLayout.ids.userText.text, "#")
             orderNum: 0
 
         PopupLabel:
@@ -597,6 +598,7 @@
             id: reportNumText
             size_hint: (0.5, None)
             hint_text: "999999a"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Report-Number>")
             orderNum: 1
 
         PopupErrorLabel:
@@ -633,6 +635,7 @@
             id: restraintIDText
             size_hint: (1, None)
             hint_text: "049"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Restraint-ID>")
             orderNum: 2
 
         PopupLabel:
@@ -643,6 +646,7 @@
             id: restraintUncertaintyText
             size_hint: (1, None)
             hint_text: "0.062"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Unc-Restraint>")
             orderNum: 3
 
         PopupErrorLabel:
@@ -691,6 +695,7 @@
                     id: dateText
                     size_hint: (1, None)
                     hint_text: "MM DD YYYY"
+                    text: self.getInputText(root.mainLayout.ids.userText.text, "<Date>")
                     orderNum: 6
 
                 PopupLabel:
@@ -701,6 +706,7 @@
                     id: techIDText
                     size_hint: (1, None)
                     hint_text: "019"
+                    text: self.getInputText(root.mainLayout.ids.userText.text, "<Technician-ID>")
                     orderNum: 7
 
                 PopupErrorLabel:
@@ -721,6 +727,7 @@
                     id: balanceIDText
                     size_hint: (1, None)
                     hint_text: "14"
+                    text: self.getInputText(root.mainLayout.ids.userText.text, "<Balance-ID>")
                     orderNum: 8
 
                 BoxLayout:
@@ -730,12 +737,12 @@
                     spacing: dp(8)
                     padding: dp(1), dp(10), dp(1), 0
 
-                    CheckBox:
+                    CreateInputCheckBox:
                         id: manualReadingsCheckBox
                         size_hint: (None, None)
                         size: (dp(20), dp(20))
                         color: (0.105, 0.165, 0.23, 1)
-                        active: True
+                        active: not self.getInputBoolean(root.mainLayout.ids.userText.text, "<Direct-Readings>")
                         group: 'directReadings'
 
                     PopupLabel:
@@ -749,12 +756,12 @@
                     spacing: dp(8)
                     padding: dp(1), 0, dp(1), dp(10)
 
-                    CheckBox:
+                    CreateInputCheckBox:
                         id: directReadingsCheckBox
                         size_hint: (None, None)
                         size: (dp(20), dp(20))
                         color: (0.105, 0.165, 0.23, 1)
-                        active: False
+                        active: self.getInputBoolean(root.mainLayout.ids.userText.text, "<Direct-Readings>")
                         group: 'directReadings'
 
                     PopupLabel:
@@ -769,8 +776,8 @@
                 OrderedText:
                     id: directReadingsSFText
                     size_hint: (1, None)
-                    text: "1.0"
                     hint_text: "1.0"
+                    text: self.getInputText(root.mainLayout.ids.userText.text, "<Direct-Reading-SF>")
                     orderNum: 10
                     disabled: not directReadingsCheckBox.active
 
@@ -819,6 +826,7 @@
                 write_tab: True
                 multiline: True
                 on_text: root.evalDesign()
+                text: self.getInputText(root.mainLayout.ids.userText.text, "<Design>")
                 orderNum: 18
 
             BoxLayout:
@@ -892,6 +900,7 @@
             id: designIDText
             size_hint: (0.4, None)
             hint_text: "112"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Design-ID>")
             orderNum: 17
 
         PopupErrorLabel:
@@ -932,6 +941,7 @@
             write_tab: True
             multiline: True
             height: dp(200)
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Position>")
             orderNum: 16
 
         BoxLayout:
@@ -961,24 +971,24 @@
                 spacing: dp(8)
                 padding: 0, 0, dp(60), dp(10)
 
-                CheckBox:
+                CreateInputCheckBox:
                     id: gramsCheckBox
                     size_hint: (None, None)
                     size: (dp(20), dp(20))
                     color: (0.105, 0.165, 0.23, 1)
-                    active: True
+                    active: not self.getNotInputBoolean(root.mainLayout.ids.userText.text, "<Grams>")
                     group: 'nominalUnits'
 
                 PopupLabel:
                     text: "Grams"
                     size_hint: (1, None)
 
-                CheckBox:
+                CreateInputCheckBox:
                     id: poundsCheckBox
                     size_hint: (None, None)
                     size: (dp(20), dp(20))
                     color: (0.105, 0.165, 0.23, 1)
-                    active: True
+                    active: self.getNotInputBoolean(root.mainLayout.ids.userText.text, "<Grams>")
                     group: 'nominalUnits'
 
                 PopupLabel:
@@ -989,6 +999,7 @@
                 id: checkIDText
                 size_hint: (0.5, None)
                 hint_text: "54"
+                text: self.getInputText(root.mainLayout.ids.userText.text, "<Check-ID>")
                 orderNum: 14
 
         PopupErrorLabel:
@@ -1025,6 +1036,7 @@
             id: restraintVectorText
             size_hint: (1, None)
             hint_text: "1 1 0 0"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Restraint>")
             orderNum: 19
 
         PopupLabel:
@@ -1035,6 +1047,7 @@
             id: checkVectorText
             size_hint: (1, None)
             hint_text: "1 -1 0 0"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Check-Standard>")
             orderNum: 20
 
         PopupLabel:
@@ -1045,6 +1058,7 @@
             id: nextRestraintText
             size_hint: (1, None)
             hint_text: "0 0 0 0"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Pass-Down>")
             orderNum: 21
 
         PopupErrorLabel:
@@ -1113,6 +1127,7 @@
             size_hint: (1, None)
             hint_text: "0.012"
             on_text: root.evalSaveButtons(saveStatsButton.disabled)
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Sigma-w>")
             orderNum: 22
 
         PopupLabel:
@@ -1124,6 +1139,7 @@
             size_hint: (1, None)
             hint_text: "0.008"
             on_text: root.evalSaveButtons(saveStatsButton.disabled)
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Sigma-t>")
             orderNum: 23
 
         ExtraButton:
@@ -1258,6 +1274,7 @@
             size_hint: (1, None)
             hint_text: "50.1023"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<sw-Mass>")
             orderNum: 24
 
         PopupLabel:
@@ -1269,6 +1286,7 @@
             size_hint: (1, None)
             hint_text: "7.95"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<sw-Density>")
             orderNum: 25
 
         PopupLabel:
@@ -1280,6 +1298,7 @@
             size_hint: (1, None)
             hint_text: "0.000045"
             on_text: root.evalSaveButtons(saveSwButton.disabled)
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<sw-CCE>")
             orderNum: 26
 
         ExtraButton:
@@ -1408,6 +1427,7 @@
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 write_tab: True
                 multiline: True
+                text: self.getInputText(root.mainLayout.ids.userText.text, "<Balance-Reading>")
                 orderNum: 29
             
             OrderedText:
@@ -1417,6 +1437,7 @@
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
                 write_tab: True
                 multiline: True
+                text: self.getInputText(root.mainLayout.ids.userText.text, "<Environmentals>")
                 orderNum: 27
 
         BoxLayout:
@@ -1449,6 +1470,7 @@
                 id: envCorrectionsText
                 size_hint: (0.35, None)
                 hint_text: "0.05 0.105 -0.07"
+                text: self.getInputText(root.mainLayout.ids.userText.text, "<Env-Corrections>")
                 orderNum: 28
 
         PopupErrorLabel:
@@ -1492,6 +1514,7 @@
                 hint_text: "10.3\n10.5\n14.0\n9.7"
                 multiline: True
                 padding: [dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height, dp(5), dp(5) + 0.5 * (self.height - 2*dp(5)) % self.line_height]
+                text: self.getInputText(root.mainLayout.ids.userText.text, "<Height>")
                 orderNum: 13
 
             Label:
@@ -1513,6 +1536,7 @@
             id: gradientText
             size_hint: (0.5, None)
             hint_text: "0.0000031"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Gravity-Grad>")
             orderNum: 11
 
         PopupLabel:
@@ -1523,6 +1547,7 @@
             id: localGravityText
             size_hint: (0.5, None)
             hint_text: "9.8"
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Gravity-Local>")
             orderNum: 12
 
         PopupErrorLabel:
