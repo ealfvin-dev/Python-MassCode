@@ -146,6 +146,21 @@ class MainLayout(BoxLayout):
 
         return rowStart, rowEnd
 
+    def removeLines(self, tags):
+        filteredText = ""
+        previousLine = ""
+
+        for line in self.ids.userText.text.splitlines():
+            if(line.split() == []):
+                if(previousLine != ""):
+                    filteredText += "\n"
+                    previousLine = ""
+            elif(line.split()[0] not in tags):
+                filteredText += line + "\n"
+                previousLine = line
+
+        self.ids.userText.text = filteredText
+
     def getTag(self, orderNum):
         for tag, order in self.orderOfTags.items():
             if(order == orderNum):
@@ -195,6 +210,8 @@ class MainLayout(BoxLayout):
             lineNum += 1
 
         endPosition -= 1
+
+        self.ids.userText.cursor = (0, endLine - 1)
         self.ids.userText.selection_color = Configs.highlightErrorColor
         self.ids.userText.select_text(startPosition, endPosition)
 
@@ -821,7 +838,7 @@ class OrderedText(TextInput):
     def getInputText(self, userText, tag):
         inputLines = []
         for line in userText.splitlines():
-            if(tag in line):
+            if(len(line.split()) > 0 and line.split()[0] == tag):
                 inputLines.append(tag.join(line.split(tag)[1:]).strip())
 
         if(inputLines == []):
@@ -1189,6 +1206,8 @@ class LabInfoPopup(PopupBase):
             return
 
         #Call the writeText function in the MainLayout to write text into input file
+        self.mainLayout.removeLines(["#", "<Report-Number>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(labInfoText, labInfoOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(reportNumText, reportNumOrder)
 
@@ -1214,6 +1233,8 @@ class RestraintPopup(PopupBase):
         if(restraintIDText == "" or restraintUncertaintyText == ""):
             self.ids.restraintPopError.text = "Enter data for all fields"
             return
+
+        self.mainLayout.removeLines(["<Restraint-ID>", "<Unc-Restraint>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(restraintIDText, restraintIDOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(restraintUncertaintyText, restraintUncertaintyOrder)
@@ -1250,6 +1271,8 @@ class DatePopup(PopupBase):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
+        self.mainLayout.removeLines(["<Date>", "<Technician-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(dateText, dateOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(techIDText, techIDOrder)
         rowStart3, rowEnd3 = self.mainLayout.writeText(balanceIDText, balanceOrder)
@@ -1258,7 +1281,7 @@ class DatePopup(PopupBase):
         if(self.ids.directReadingsCheckBox.active):
             rowStart5, rowEnd5 = self.mainLayout.writeText(directReadingsSFText, directReadingsSFOrder)
         else:
-            self.mainLayout.writeText("", 1000)
+            self.mainLayout.writeText("", 10)
             rowStart5 = rowStart4
             rowEnd5 = rowEnd4
 
@@ -1332,6 +1355,8 @@ class DesignPopup(PopupBase):
             self.ids.designPopError.text = "Enter data for all fields"
             return
 
+        self.mainLayout.removeLines(["<Design-ID>", "<Design>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(designIDText, designIDOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(designText, designOrder)
 
@@ -1357,6 +1382,8 @@ class WeightsPopup(PopupBase):
             (self.ids.gramsCheckBox.active == False and self.ids.poundsCheckBox.active == False)):
             self.ids.weightsPopError.text = "Enter data for all fields"
             return
+
+        self.mainLayout.removeLines(["<Check-ID>", "<Grams>", "<Position>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(checkIDText, checkIDOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(nominalsText, nominalsOrder)
@@ -1388,6 +1415,8 @@ class VectorsPopup(PopupBase):
             self.ids.vectorsPopError.text = "Enter data for all fields"
             return
 
+        self.mainLayout.removeLines(["<Restraint>", "<Check-Standard>", "<Pass-Down>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(restraintText, restraintOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(checkText, checkOrder)
         rowStart3, rowEnd3 = self.mainLayout.writeText(nextRestraintText, nextRestraintOrder)
@@ -1412,6 +1441,8 @@ class StatisticsPopup(PopupBase):
             self.ids.sigmaPopError.color = Configs.redTextColor
             self.ids.sigmaPopError.text = "Enter data for all fields"
             return
+
+        self.mainLayout.removeLines(["<Sigma-w>", "<Sigma-t>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(sigmawText, sigmawOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(sigmatText, sigmatOrder)
@@ -1631,6 +1662,8 @@ class SwPopup(PopupBase):
             self.ids.swPopError.color = Configs.redTextColor
             self.ids.swPopError.text = "Enter data for all fields"
             return
+
+        self.mainLayout.removeLines(["<sw-Mass>", "<sw-Density>", "<sw-CCE>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(swMassText, swMassOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(swDensityText, swDensityOrder)
@@ -1880,6 +1913,8 @@ class MeasurementsPopup(PopupBase):
             self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required, " + str(numEnvReadings) + " provided"
             return
 
+        self.mainLayout.removeLines(["<Environmentals>", "<Env-Corrections>", "<Balance-Reading>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(envText, envOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(envCorrectionsText, envCorrectionsOrder)
         rowStart3, rowEnd3 = self.mainLayout.writeText(balanceReadingsText, balanceReadingsOrder)
@@ -1920,6 +1955,8 @@ class GravityPopup(PopupBase):
         if(gradientText == "" or heightText == "" or localGravText == ""):
             self.ids.gravityPopError.text = "Enter data for all fields"
             return
+
+        self.mainLayout.removeLines(["<Gravity-Grad>", "<Gravity-Local>", "<Height>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(gradientText, gradientOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(localGravText, localGravOrder)
