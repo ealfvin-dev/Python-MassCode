@@ -146,6 +146,21 @@ class MainLayout(BoxLayout):
 
         return rowStart, rowEnd
 
+    def removeLines(self, tags):
+        filteredText = ""
+        previousLine = ""
+
+        for line in self.ids.userText.text.splitlines():
+            if(line.split() == []):
+                if(previousLine != ""):
+                    filteredText += "\n"
+                    previousLine = ""
+            elif(line.split()[0] not in tags):
+                filteredText += line + "\n"
+                previousLine = line
+
+        self.ids.userText.text = filteredText
+
     def getTag(self, orderNum):
         for tag, order in self.orderOfTags.items():
             if(order == orderNum):
@@ -195,6 +210,8 @@ class MainLayout(BoxLayout):
             lineNum += 1
 
         endPosition -= 1
+
+        self.ids.userText.cursor = (0, endLine - 1)
         self.ids.userText.selection_color = Configs.highlightErrorColor
         self.ids.userText.select_text(startPosition, endPosition)
 
@@ -818,6 +835,18 @@ class OrderedText(TextInput):
         self.borderRect.pos = (instance.pos[0] - dp(1), instance.pos[1] - dp(1))
         self.borderRect.size = (instance.size[0] + dp(2), instance.size[1] + dp(2))
 
+    def getInputText(self, userText, tag):
+        inputLines = []
+        for line in userText.splitlines():
+            if(len(line.split()) > 0 and line.split()[0] == tag):
+                inputLines.append(tag.join(line.split(tag)[1:]).strip())
+
+        if(inputLines == []):
+            if(tag == "<Direct-Reading-SF>"):
+                return "1.0"
+
+        return "\n".join(inputLines)
+
 class UserInput(TextInput):
     def __init__(self, **kwargs):
         super().__init__()
@@ -1161,8 +1190,8 @@ class DbScrollView(ScrollView):
 
 class LabInfoPopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def submit(self):
         #Check if all fields have been entered
@@ -1177,6 +1206,8 @@ class LabInfoPopup(PopupBase):
             return
 
         #Call the writeText function in the MainLayout to write text into input file
+        self.mainLayout.removeLines(["#", "<Report-Number>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(labInfoText, labInfoOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(reportNumText, reportNumOrder)
 
@@ -1187,8 +1218,8 @@ class LabInfoPopup(PopupBase):
 
 class RestraintPopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def submit(self):
         restraintIDText = self.ids.restraintIDText.text
@@ -1203,6 +1234,8 @@ class RestraintPopup(PopupBase):
             self.ids.restraintPopError.text = "Enter data for all fields"
             return
 
+        self.mainLayout.removeLines(["<Restraint-ID>", "<Unc-Restraint>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(restraintIDText, restraintIDOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(restraintUncertaintyText, restraintUncertaintyOrder)
         #rowStart3, rowEnd3 = self.mainLayout.writeText(randomErrorText, randomErrorOrder)
@@ -1213,8 +1246,8 @@ class RestraintPopup(PopupBase):
 
 class DatePopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def submit(self):
         dateText = self.ids.dateText.text
@@ -1238,6 +1271,8 @@ class DatePopup(PopupBase):
             self.ids.datePopError.text = "Enter data for all fields"
             return
 
+        self.mainLayout.removeLines(["<Date>", "<Technician-ID>", "<Balance-ID>", "<Direct-Readings>", "<Direct-Reading-SF>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(dateText, dateOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(techIDText, techIDOrder)
         rowStart3, rowEnd3 = self.mainLayout.writeText(balanceIDText, balanceOrder)
@@ -1246,7 +1281,7 @@ class DatePopup(PopupBase):
         if(self.ids.directReadingsCheckBox.active):
             rowStart5, rowEnd5 = self.mainLayout.writeText(directReadingsSFText, directReadingsSFOrder)
         else:
-            self.mainLayout.writeText("", 1000)
+            self.mainLayout.writeText("", 10)
             rowStart5 = rowStart4
             rowEnd5 = rowEnd4
 
@@ -1256,8 +1291,8 @@ class DatePopup(PopupBase):
 
 class DesignPopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def writeDesign(self, design):
         if(design == "3-1"):
@@ -1320,6 +1355,8 @@ class DesignPopup(PopupBase):
             self.ids.designPopError.text = "Enter data for all fields"
             return
 
+        self.mainLayout.removeLines(["<Design-ID>", "<Design>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(designIDText, designIDOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(designText, designOrder)
 
@@ -1329,8 +1366,8 @@ class DesignPopup(PopupBase):
 
 class WeightsPopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def submit(self):
         checkIDText = self.ids.checkIDText.text
@@ -1346,6 +1383,8 @@ class WeightsPopup(PopupBase):
             self.ids.weightsPopError.text = "Enter data for all fields"
             return
 
+        self.mainLayout.removeLines(["<Check-ID>", "<Grams>", "<Position>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(checkIDText, checkIDOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(nominalsText, nominalsOrder)
         rowStart3, rowEnd3 = self.mainLayout.writeText(weightsText, weightsOrder)
@@ -1360,8 +1399,8 @@ class WeightsPopup(PopupBase):
 
 class VectorsPopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def submit(self):
         restraintText = self.ids.restraintVectorText.text
@@ -1376,6 +1415,8 @@ class VectorsPopup(PopupBase):
             self.ids.vectorsPopError.text = "Enter data for all fields"
             return
 
+        self.mainLayout.removeLines(["<Restraint>", "<Check-Standard>", "<Pass-Down>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(restraintText, restraintOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(checkText, checkOrder)
         rowStart3, rowEnd3 = self.mainLayout.writeText(nextRestraintText, nextRestraintOrder)
@@ -1386,8 +1427,8 @@ class VectorsPopup(PopupBase):
 
 class StatisticsPopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def submit(self):
         sigmawText = self.ids.sigmawText.text.strip()
@@ -1400,6 +1441,8 @@ class StatisticsPopup(PopupBase):
             self.ids.sigmaPopError.color = Configs.redTextColor
             self.ids.sigmaPopError.text = "Enter data for all fields"
             return
+
+        self.mainLayout.removeLines(["<Sigma-w>", "<Sigma-t>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(sigmawText, sigmawOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(sigmatText, sigmatOrder)
@@ -1603,8 +1646,8 @@ class StatsDbPopup(PopupBase):
 
 class SwPopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def submit(self):
         swMassText = self.ids.swMassText.text
@@ -1619,6 +1662,8 @@ class SwPopup(PopupBase):
             self.ids.swPopError.color = Configs.redTextColor
             self.ids.swPopError.text = "Enter data for all fields"
             return
+
+        self.mainLayout.removeLines(["<sw-Mass>", "<sw-Density>", "<sw-CCE>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(swMassText, swMassOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(swDensityText, swDensityOrder)
@@ -1832,8 +1877,8 @@ class SwDbPopup(PopupBase):
 
 class MeasurementsPopup(PopupBase):
     def __init__(self, **kwargs):
-        super().__init__()
         self.mainLayout = kwargs.get("mainLayout", None)
+        super().__init__()
 
     def submit(self):
         envText = self.ids.envText.text
@@ -1868,6 +1913,8 @@ class MeasurementsPopup(PopupBase):
             self.ids.measurementsPopError.text = str(numBalReadings) + " lines of environmentals required, " + str(numEnvReadings) + " provided"
             return
 
+        self.mainLayout.removeLines(["<Environmentals>", "<Env-Corrections>", "<Balance-Reading>"])
+
         rowStart1, rowEnd1 = self.mainLayout.writeText(envText, envOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(envCorrectionsText, envCorrectionsOrder)
         rowStart3, rowEnd3 = self.mainLayout.writeText(balanceReadingsText, balanceReadingsOrder)
@@ -1892,9 +1939,9 @@ class MeasurementsPopup(PopupBase):
 
 class GravityPopup(PopupBase):
     def __init__(self, **kwargs):
+        self.mainLayout = kwargs.get("mainLayout", None)
         super().__init__()
         self.bind(on_open=self.setWeightIds)
-        self.mainLayout = kwargs.get("mainLayout", None)
 
     def submit(self):
         gradientText = self.ids.gradientText.text
@@ -1908,6 +1955,8 @@ class GravityPopup(PopupBase):
         if(gradientText == "" or heightText == "" or localGravText == ""):
             self.ids.gravityPopError.text = "Enter data for all fields"
             return
+
+        self.mainLayout.removeLines(["<Gravity-Grad>", "<Gravity-Local>", "<Height>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(gradientText, gradientOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(localGravText, localGravOrder)
@@ -2284,6 +2333,27 @@ class NotesCheckBox(CheckBox):
             return True
         else:
             return False
+
+class CreateInputCheckBox(CheckBox):
+    def getInputBoolean(self, userText, tag):
+        for line in userText.splitlines():
+            if(tag in line):
+                if(line.split(tag)[1].strip() == "1"):
+                    return True
+                else:
+                    return False
+        
+        return False
+
+    def getNotInputBoolean(self, userText, tag):
+        for line in userText.splitlines():
+            if(tag in line):
+                if(line.split(tag)[1].strip() == "0"):
+                    return True
+                else:
+                    return False
+        
+        return False
 
 class Mars(App):
     def build(self):
