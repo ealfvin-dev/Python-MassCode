@@ -299,7 +299,7 @@ class MatrixSolution:
 
         alpha = 0.05
         self.fTest(alpha, matrixQ)
-        self.tTest(alpha)
+        self.tTest(alpha, seriesObjects)
 
     def fTest(self, alpha, matrixQ):
         #Calculate YHat = XQX'Y = the predicted values from the best fit (in grams):
@@ -326,11 +326,16 @@ class MatrixSolution:
         else:
             fPass = False
 
-    def tTest(self, alpha):
+    def tTest(self, alpha, seriesObjects):
         self.acceptedCheckCorrection = matmul(self.checkStandardPos, matrix.transpose(self.referenceValues))[0][0]
         self.calculatedCheckCorrection = (matmul(self.checkStandardPos, matrix.transpose(self.calculatedMasses))[0][0] \
                                             - matmul(self.checkStandardPos, matrix.transpose(self.weightNominals))[0][0]) * 1000
 
-        typeAUnc = self.sigmaT #May be changed
+        typeAUnc = self.sigmaT
+
+        #Add type-A of restraint
+        if(self.seriesNumber > 0):
+            pass
+
         self.tCritical = t.ppf(1 - alpha, 1000)
         self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeAUnc

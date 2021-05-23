@@ -72,7 +72,7 @@ def writeDesignData(series, f):
 
 def writeEnvironmentals(series, f):
     f.write("##ENVIRONMENTALS (CORRECTED)##\n")
-    f.write("        T(DEG C) P(mmHg) RH(%)  AIR DENSITY(g/cm)\n")
+    f.write("     T(DEG C) P(mmHg) RH(%)  AIR DENSITY(g/cm)\n")
     table = []
     for i in range(len(series.environmentals)):
         line = []
@@ -178,7 +178,7 @@ def writeTTest(series, f):
     if(abs(series.tValue) <= series.tCritical):
         f.write("--------\n| PASS |\n--------\n\n")
     else:
-        f.write("--------\n| FAIL |\n--------\n")
+        f.write("--------\n| FAIL |\n--------\n\n")
 
     if(series.tValue > series.tCritical):
         f.write("################################################################\n\n")
