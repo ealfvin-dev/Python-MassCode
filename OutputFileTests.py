@@ -22,9 +22,13 @@ def test2OutFileData(suite):
     try:
         data = RunFile.run(path.join("TestFiles", "Test-Writeout-config.txt"), outFilePath="Test-Writeout-out.txt")
 
+        outFileIDs = []
+        outFileNominals = []
         outFileDensities = []
-        outFileMasses = []
+        outFileCCEs = []
         outFileTypeAs = []
+        outFileMasses = []
+        outFileCorrections = []
         outFileRestraintID = ""
         outFileCheckID = ""
         outFileBalanceID = ""
@@ -49,7 +53,10 @@ def test2OutFileData(suite):
         calculatedMasses = data[0].calculatedMasses[0]
         calculatedTypeAs = data[0].typeAs
 
+        inputIDs = []
+        inputNominals = []
         inputDensities = []
+        inputCCEs = []
         inputRestraintID = ""
         inputCheckID = ""
         inputBalanceID = ""
@@ -67,9 +74,14 @@ def test2OutFileData(suite):
                     continue
 
                 if(m[0] == "W500g" or m[0] == "W300g" or m[0] == "W200g" or m[0] == "W100g" or m[0] == "P100g" or m[0] == "Wsum"):
+                    outFileIDs.append(m[0])
+                    outFileNominals.append(m[1])
                     outFileDensities.append(float(m[2]))
+                    outFileCCEs.append(float(m[3]))
                     outFileTypeAs.append(float(m[4]))
                     outFileMasses.append(float(m[5]))
+                    outFileCorrections.append(float(m[6]))
+                    print(float(m[6]))
                 elif(m[0] == "RESTRAINT_ID"):
                     outFileRestraintID = m[1]
                 elif(m[0] == "CHECK_STANDARD_ID"):
@@ -121,7 +133,10 @@ def test2OutFileData(suite):
                 elif(m[0] == "<Sigma-w>"):
                     inputSw = float(m[1])
                 elif(m[0] == "<Position>"):
+                    inputIDs.append(m[1])
+                    inputNominals.append(m[2])
                     inputDensities.append(float(m[3]))
+                    inputCCEs.append(float(m[4]))
                     if(m[1] == "P100g"):
                         inputAcceptedCSCorr = float(m[5])
 
@@ -132,9 +147,21 @@ def test2OutFileData(suite):
         suite.assertEqual(outFileOperatorID, inputOperatorID, "DATA WRITING TO OUTPUT FILE TECHNICIAN ID")
         suite.assertEqual(outFileDesignID, inputDesignID, "DATA WRITING TO OUTPUT FILE DESIGN ID")
 
+        #Test if weight IDs in output file match input
+        for i in range(len(inputIDs)):
+            suite.assertEqual(inputIDs[i], outFileIDs[i], "DATA WRITING TO OUTPUT FILE WEIGHT ID CHECK " + str(i + 1))
+
+        #Test if weight nomials in output file match input
+        for i in range(len(inputNominals)):
+            suite.assertEqual(inputNominals[i], outFileNominals[i], "DATA WRITING TO OUTPUT FILE WEIGHT NOMINAL CHECK " + str(i + 1))
+
         #Test if densities in output file match input
         for i in range(len(inputDensities)):
             suite.assertEqual(inputDensities[i], outFileDensities[i], "DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
+
+        #Test if CCEs in output file match input
+        for i in range(len(inputCCEs)):
+            suite.assertEqual(inputCCEs[i], outFileCCEs[i], "DATA WRITING TO OUTPUT FILE CCE CHECK " + str(i + 1))
 
         #Test if type As in output file match calculated values
         for i in range(len(calculatedTypeAs)):
@@ -143,6 +170,11 @@ def test2OutFileData(suite):
         #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
         for i in range(len(calculatedMasses)):
             suite.assertEqual(outFileMasses[i], round(calculatedMasses[i], 8), "DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
+
+        #Test if calculated mass corrections match masses written into the output file and that the rounding is handled correctly
+        for i in range(len(outFileCorrections)):
+            calculatedCorrection = (calculatedMasses[i] - float(inputNominals[i])) * 1000
+            suite.assertEqual(outFileCorrections[i], round(calculatedCorrection, 5), "DATA WRITING TO OUTPUT FILE MASS CORRECTION CHECK " + str(i + 1))
 
         #Test if statistics were written out correctly
         suite.assertEqual(outFilesw, calculatedSw, "DATA WRITING TO OUTPUT FILE SW OBSERVED")
