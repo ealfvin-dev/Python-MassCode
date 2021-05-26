@@ -24,6 +24,7 @@ def test2OutFileData(suite):
 
         outFileDensities = []
         outFileMasses = []
+        outFileTypeAs = []
         outFileRestraintID = ""
         outFileCheckID = ""
         outFileBalanceID = ""
@@ -45,6 +46,8 @@ def test2OutFileData(suite):
         calculatedCheckStd = round(data[0].calculatedCheckCorrection, 6)
         calculatedTcrit = round(data[0].tCritical, 2)
         calculatedTvalue = round(data[0].tValue, 2)
+        calculatedMasses = data[0].calculatedMasses[0]
+        calculatedTypeAs = data[0].typeAs
 
         inputDensities = []
         inputRestraintID = ""
@@ -56,8 +59,6 @@ def test2OutFileData(suite):
         inputSt = 0.0
         inputAcceptedCSCorr = 0.0
 
-        expectedMasses = data[0].calculatedMasses[0]
-
         #Pull useful stuff out of output file
         with open("Test-Writeout-out.txt", 'r') as outFile:
             for line in outFile:
@@ -66,8 +67,9 @@ def test2OutFileData(suite):
                     continue
 
                 if(m[0] == "W500g" or m[0] == "W300g" or m[0] == "W200g" or m[0] == "W100g" or m[0] == "P100g" or m[0] == "Wsum"):
-                    outFileMasses.append(float(m[4]))
                     outFileDensities.append(float(m[2]))
+                    outFileTypeAs.append(float(m[4]))
+                    outFileMasses.append(float(m[5]))
                 elif(m[0] == "RESTRAINT_ID"):
                     outFileRestraintID = m[1]
                 elif(m[0] == "CHECK_STANDARD_ID"):
@@ -130,13 +132,17 @@ def test2OutFileData(suite):
         suite.assertEqual(outFileOperatorID, inputOperatorID, "DATA WRITING TO OUTPUT FILE TECHNICIAN ID")
         suite.assertEqual(outFileDesignID, inputDesignID, "DATA WRITING TO OUTPUT FILE DESIGN ID")
 
-        #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
-        for i in range(len(expectedMasses)):
-            suite.assertEqual(outFileMasses[i], round(expectedMasses[i], 8), "DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
-
         #Test if densities in output file match input
         for i in range(len(inputDensities)):
             suite.assertEqual(inputDensities[i], outFileDensities[i], "DATA WRITING TO OUTPUT FILE DENSITY CHECK " + str(i + 1))
+
+        #Test if type As in output file match calculated values
+        for i in range(len(calculatedTypeAs)):
+            suite.assertEqual(outFileTypeAs[i], round(calculatedTypeAs[i], 5), "DATA WRITING TO OUTPUT FILE TYPE A CHECK " + str(i + 1))
+
+        #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
+        for i in range(len(calculatedMasses)):
+            suite.assertEqual(outFileMasses[i], round(calculatedMasses[i], 8), "DATA WRITING TO OUTPUT FILE MASS CHECK " + str(i + 1))
 
         #Test if statistics were written out correctly
         suite.assertEqual(outFilesw, calculatedSw, "DATA WRITING TO OUTPUT FILE SW OBSERVED")

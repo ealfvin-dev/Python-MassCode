@@ -967,7 +967,6 @@ class InputButton(Button):
 class BottomButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
-        self.size_hint: (None, None)
         self.size = (dp(82), dp(50))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
@@ -975,7 +974,6 @@ class BottomButton(InputButton):
 class RunButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
-        self.size_hint: (None, None)
         self.size = (dp(82), dp(50))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)

@@ -1,4 +1,4 @@
-from statistics import mean, stdev
+from statistics import mean
 from tabulate import tabulate
 from os import path
 
@@ -151,8 +151,8 @@ def writeFTest(series, f):
         f.write("################################################################\n")
 
     f.write("#F-TEST\n")
-    f.write("ACCEPTED_SW  " + str(round(series.sigmaW, 6)) + " MG\n")
-    f.write("OBSERVED_SW  " + str(round(series.swObs, 6)) + " MG\n")
+    f.write("ACCEPTED_SW  " + str(round(series.sigmaW, 6)) + " mg\n")
+    f.write("OBSERVED_SW  " + str(round(series.swObs, 6)) + " mg\n")
     f.write("CRITICAL_F-VALUE  " + str(round(series.fCritical, 2)) + "\n")
     f.write("OBSERVED_F-VALUE  " + str(round(series.fValue, 2)) + "\n")
 
@@ -169,9 +169,9 @@ def writeTTest(series, f):
         f.write("################################################################\n")
 
     f.write("#T-TEST\n")
-    f.write("ACCEPTED_CHECK_STANDARD_CORRECTION  " + str(round(series.acceptedCheckCorrection, 6)) + " MG\n")
-    f.write("OBSERVED_CHECK_STANDARD_CORRECTION  " + str(round(series.calculatedCheckCorrection, 6)) + " MG\n")
-    f.write("ACCEPTED_ST  " + str(round(series.sigmaT, 6)) + " MG\n")
+    f.write("ACCEPTED_CHECK_STANDARD_CORRECTION  " + str(round(series.acceptedCheckCorrection, 6)) + " mg\n")
+    f.write("OBSERVED_CHECK_STANDARD_CORRECTION  " + str(round(series.calculatedCheckCorrection, 6)) + " mg\n")
+    f.write("ACCEPTED_ST  " + str(round(series.sigmaT, 6)) + " mg\n")
     f.write("CRITICAL_T-VALUE  " + str(round(series.tCritical, 2)) + "\n")
     f.write("OBSERVED_T-VALUE  " + str(round(series.tValue, 2)) + "\n")
 
@@ -200,11 +200,12 @@ def writeMasses(series, f):
 
         line.append(series.weightDensities[i])
         line.append(series.weightCCEs[i])
+        line.append(series.typeAs[i])
         line.append(float(series.calculatedMasses[0][i]))
         line.append(float(series.calculatedMasses[0][i] - series.weightNominals[0][i]) * 1000)
         
         table.append(line)
 
-    f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL\n(" + units + ")", "DENSITY\n(g/cm)", "CCE\n(/DEG C)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
-        floatfmt=("", "", ".5f", ".7f", ".8f", ".5f"),\
-        colalign=("left", "center", "center", "center", "decimal", "decimal")) + "\n\n")
+    f.write(tabulate(table, headers=["ID", "NOMINAL\n(" + units + ")", "DENSITY\n(g/cm)", "CCE\n(/DEG C)", "TYPE A UNC\n(mg)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
+        floatfmt=("", "", ".5f", ".7f", ".5f", ".8f", ".5f"),\
+        colalign=("left", "center", "center", "center", "center", "decimal", "decimal")) + "\n\n")

@@ -12,7 +12,7 @@
 
 from numpy import identity, hstack, vstack, append, linalg, allclose, zeros, float64, copy, matmul, matrix, shape, count_nonzero, multiply, sum
 from scipy.stats import f, t
-from statistics import mean, stdev
+from statistics import mean
 from math import sqrt
 
 from MARSException import MARSException
@@ -101,6 +101,7 @@ class MatrixSolution:
         self.tCritical = 0
         self.tValue = 0
         self.deltas = [] #mg
+        self.typeAs = []
 
     def calculateSensitivities(self):
         #Calculate the average sensitivity factors for each load in the weighing design if doing double subs. Function is called in solution function if doing double substitutions.
@@ -281,7 +282,7 @@ class MatrixSolution:
             for i in range(self.observations):
                 self.sensitivities.append(self.directReadingsSF)
 
-            self.aveSensitivities = {'balance':self.directReadingsSF}
+            self.aveSensitivities = {'balance': self.directReadingsSF}
         
         #If doing double subs:
         else:
@@ -297,9 +298,10 @@ class MatrixSolution:
 
         self.matrixBHat = matrixBHat
 
-        alpha = 0.05
-        self.fTest(alpha, matrixQ)
-        self.tTest(alpha, seriesObjects)
+        self.calculateTypeAs(seriesObjects)
+
+        self.fTest(0.05, matrixQ)
+        self.tTest(0.05, seriesObjects)
 
     def fTest(self, alpha, matrixQ):
         #Calculate YHat = XQX'Y = the predicted values from the best fit (in grams):
@@ -339,3 +341,7 @@ class MatrixSolution:
 
         self.tCritical = t.ppf(1 - alpha, 1000)
         self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeAUnc
+
+    def calculateTypeAs(self, seriesObjects):
+        for weight in self.weightIds:
+            self.typeAs.append(1)
