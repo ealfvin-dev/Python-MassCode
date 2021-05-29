@@ -301,7 +301,7 @@ class MatrixSolution:
         self.calculateTypeAs(seriesObjects)
 
         self.fTest(0.05, matrixQ)
-        self.tTest(0.05, seriesObjects)
+        self.tTest(0.05, matrixQ, seriesObjects)
 
     def fTest(self, alpha, matrixQ):
         #Calculate YHat = XQX'Y = the predicted values from the best fit (in grams):
@@ -328,11 +328,13 @@ class MatrixSolution:
         else:
             fPass = False
 
-    def tTest(self, alpha, seriesObjects):
+    def tTest(self, alpha, matrixQ, seriesObjects):
         self.acceptedCheckCorrection = matmul(self.checkStandardPos, matrix.transpose(self.referenceValues))[0][0]
         self.calculatedCheckCorrection = (matmul(self.checkStandardPos, matrix.transpose(self.calculatedMasses))[0][0] \
                                             - matmul(self.checkStandardPos, matrix.transpose(self.weightNominals))[0][0]) * 1000
 
+        u1 = self.sigmaW**2 * matmul(matmul(self.checkStandardPos, matrixQ), matrix.transpose(self.checkStandardPos))
+        u2 = matmul(self.checkStandardPos, matrix.transpose(self.nominalsInGrams))**2 / matmul(self.restraintPos, matrix.transpose(self.nominalsInGrams))**2
         typeAUnc = self.sigmaT
 
         #Add type-A of restraint

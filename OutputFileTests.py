@@ -81,7 +81,6 @@ def test2OutFileData(suite):
                     outFileTypeAs.append(float(m[4]))
                     outFileMasses.append(float(m[5]))
                     outFileCorrections.append(float(m[6]))
-                    print(float(m[6]))
                 elif(m[0] == "RESTRAINT_ID"):
                     outFileRestraintID = m[1]
                 elif(m[0] == "CHECK_STANDARD_ID"):
