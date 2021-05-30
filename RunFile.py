@@ -268,4 +268,4 @@ def run(inputFile, outFilePath=".", writeOutFile=True):
 
 if(__name__ == "__main__"):
     inputFile = sys.argv[1]
-    run(inputFile, writeOutFile=False)
+    run(inputFile, writeOutFile=True)

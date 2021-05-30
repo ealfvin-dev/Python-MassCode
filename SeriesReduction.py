@@ -66,9 +66,6 @@ class MatrixSolution:
         self.swDensity = "NA"
         self.swCCE = "NA"
 
-        self.sigmaW = 0
-        self.sigmaT = 0
-
         self.date = [] #[MM, DD, YYYY]
         self.technicianId = 0
         self.balanceId = 0
@@ -94,6 +91,10 @@ class MatrixSolution:
         self.weightHeights = zeros(shape=0) #m
 
         #Statistics Stuff:
+        self.sigmaW = 0
+        self.sigmaT = 0
+        self.sigmaB = 0
+
         self.df = 0
         self.swObs = 0
         self.fCritical = 0
@@ -103,7 +104,7 @@ class MatrixSolution:
         self.deltas = [] #mg
         self.k1s = []
         self.k2s = []
-        self.typeAs = []
+        self.typeAs = None
 
     def calculateSensitivities(self):
         #Calculate the average sensitivity factors for each load in the weighing design if doing double subs. Function is called in solution function if doing double substitutions.
@@ -337,12 +338,7 @@ class MatrixSolution:
         self.calculatedCheckCorrection = (matmul(self.checkStandardPos, matrix.transpose(self.calculatedMasses))[0][0] \
                                             - matmul(self.checkStandardPos, matrix.transpose(self.weightNominals))[0][0]) * 1000
 
-        if(self.seriesNumber == 0):
-            passDownTypeA = 0
-        else:
-            passDownTypeA = self.typeAs
-
-        typeAUnc = self.sigmaT
+        typeAUnc = self.sigmaT + 1
 
         #Add type-A of restraint
         if(self.seriesNumber > 0):
@@ -362,5 +358,19 @@ class MatrixSolution:
             self.k2s.append(sqrt(value))
 
     def calculateTypeAs(self, seriesObjects):
-        for weight in self.weightIds:
-            self.typeAs.append(1)
+        self.typeAs = zeros(shape=(1, self.positions))
+
+        intrinsicTypeAs = []
+        #Testing:
+        self.sigmaB = self.sigmaT
+        for i in range(len(self.weightIds)):
+            typeA = sqrt((self.k1s[i] * self.sigmaW)**2 + (self.k2s[i] * self.sigmaB)**2)
+
+            if(self.seriesNumber > 0):
+                passDownTypeA = matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, matrix.transpose(seriesObjects[self.seriesNumber - 1].typeAs))
+                passDownMass = matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, matrix.transpose(seriesObjects[self.seriesNumber - 1].weightNominals))
+                currentNominal = self.weightNominals[0][i]
+                
+                typeA = sqrt(typeA**2 + (passDownTypeA * (currentNominal / passDownMass))**2)
+
+            self.typeAs[0][i] = typeA

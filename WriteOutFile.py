@@ -200,7 +200,7 @@ def writeMasses(series, f):
 
         line.append(series.weightDensities[i])
         line.append(series.weightCCEs[i])
-        line.append(series.typeAs[i])
+        line.append(series.typeAs[0][i])
         line.append(float(series.calculatedMasses[0][i]))
         line.append(float(series.calculatedMasses[0][i] - series.weightNominals[0][i]) * 1000)
         
