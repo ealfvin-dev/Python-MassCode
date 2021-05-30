@@ -34,7 +34,7 @@ def test2OutFileData(suite):
         outFileBalanceID = ""
         outFileOperatorID = ""
         outFileDesignID = ""
-        outFilest = 0.0
+        outFileTypeACheck = 0.0
         outFilesw = 0.0
         outFileswAccepted = 0.0
         outFileFcrit = 0.0
@@ -52,6 +52,7 @@ def test2OutFileData(suite):
         calculatedTvalue = round(data[0].tValue, 2)
         calculatedMasses = data[0].calculatedMasses[0]
         calculatedTypeAs = data[0].typeAs
+        calculatedTypeACheck = round(data[0].typeACheck, 6)
 
         inputIDs = []
         inputNominals = []
@@ -63,7 +64,6 @@ def test2OutFileData(suite):
         inputOperatorID = ""
         inputDesignID = ""
         inputSw = 0.0
-        inputSt = 0.0
         inputAcceptedCSCorr = 0.0
 
         #Pull useful stuff out of output file
@@ -91,8 +91,8 @@ def test2OutFileData(suite):
                     outFileOperatorID = m[1]
                 elif(m[0] == "DESIGN_ID"):
                     outFileDesignID = m[1]
-                elif(m[0] == "ACCEPTED_ST"):
-                    outFilest = float(m[1])
+                elif(m[0] == "CHECK_STANDARD_TYPE_A_UNC"):
+                    outFileTypeACheck = float(m[1])
                 elif(m[0] == "ACCEPTED_SW"):
                     outFileswAccepted = float(m[1])
                 elif(m[0] == "OBSERVED_SW"):
@@ -127,8 +127,6 @@ def test2OutFileData(suite):
                     inputOperatorID = m[1]
                 elif(m[0] == "<Design-ID>"):
                     inputDesignID = m[1]
-                elif(m[0] == "<Sigma-t>"):
-                    inputSt = float(m[1])
                 elif(m[0] == "<Sigma-w>"):
                     inputSw = float(m[1])
                 elif(m[0] == "<Position>"):
@@ -164,7 +162,7 @@ def test2OutFileData(suite):
 
         #Test if type As in output file match calculated values
         for i in range(len(calculatedTypeAs)):
-            suite.assertEqual(outFileTypeAs[i], round(calculatedTypeAs[i], 5), "DATA WRITING TO OUTPUT FILE TYPE A CHECK " + str(i + 1))
+            suite.assertEqual(outFileTypeAs[i], round(calculatedTypeAs[0][i], 5), "DATA WRITING TO OUTPUT FILE TYPE A CHECK " + str(i + 1))
 
         #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
         for i in range(len(calculatedMasses)):
@@ -178,7 +176,7 @@ def test2OutFileData(suite):
         #Test if statistics were written out correctly
         suite.assertEqual(outFilesw, calculatedSw, "DATA WRITING TO OUTPUT FILE SW OBSERVED")
         suite.assertEqual(outFileswAccepted, inputSw, "DATA WRITING TO OUTPUT FILE SW ACCEPTED")
-        suite.assertEqual(outFilest, inputSt, "DATA WRITING TO OUTPUT FILE ST")
+        suite.assertEqual(outFileTypeACheck, calculatedTypeACheck, "DATA WRITING TO OUTPUT FILE CHECK STANDARD TYPE A UNC")
         suite.assertEqual(outFileFcrit, calculatedFcrit, "DATA WRITING TO OUTPUT FILE F-CRITICAL")
         suite.assertEqual(outFileFvalue, calculatedFvalue, "DATA WRITING TO OUTPUT FILE F-VALUE")
         suite.assertEqual(outFileCheckStd, calculatedCheckStd, "DATA WRITING TO OUTPUT FILE CALCULATED CHECK STANDARD CORRECTION")

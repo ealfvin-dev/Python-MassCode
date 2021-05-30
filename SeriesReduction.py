@@ -101,6 +101,7 @@ class MatrixSolution:
         self.fValue = 0
         self.tCritical = 0
         self.tValue = 0
+        self.typeACheck = 0
         self.deltas = [] #mg
         self.k1s = []
         self.k2s = []
@@ -306,7 +307,7 @@ class MatrixSolution:
         self.calculateTypeAs(seriesObjects)
 
         self.fTest(0.05, matrixQ)
-        self.tTest(0.05, matrixQ, seriesObjects)
+        self.tTest(0.05)
 
     def fTest(self, alpha, matrixQ):
         #Calculate YHat = XQX'Y = the predicted values from the best fit (in grams):
@@ -333,19 +334,16 @@ class MatrixSolution:
         else:
             fPass = False
 
-    def tTest(self, alpha, matrixQ, seriesObjects):
+    def tTest(self, alpha):
         self.acceptedCheckCorrection = matmul(self.checkStandardPos, matrix.transpose(self.referenceValues))[0][0]
         self.calculatedCheckCorrection = (matmul(self.checkStandardPos, matrix.transpose(self.calculatedMasses))[0][0] \
                                             - matmul(self.checkStandardPos, matrix.transpose(self.weightNominals))[0][0]) * 1000
 
-        typeAUnc = self.sigmaT + 1
-
-        #Add type-A of restraint
-        if(self.seriesNumber > 0):
-            pass
+        typeACheck = matmul(abs(self.checkStandardPos), matrix.transpose(self.typeAs))[0][0]
+        self.typeACheck = typeACheck
 
         self.tCritical = t.ppf(1 - alpha, 1000)
-        self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeAUnc
+        self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeACheck
 
     def calculateK1s(self, matrixQ):
         for value in diagonal(matrixQ):
@@ -359,8 +357,6 @@ class MatrixSolution:
 
     def calculateTypeAs(self, seriesObjects):
         self.typeAs = zeros(shape=(1, self.positions))
-
-        intrinsicTypeAs = []
         #Testing:
         self.sigmaB = self.sigmaT
         for i in range(len(self.weightIds)):

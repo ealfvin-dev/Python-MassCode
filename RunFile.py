@@ -255,7 +255,7 @@ def parse(fileName):
 
     return seriesObjects
 
-def run(inputFile, outFilePath=".", writeOutFile=True):
+def run(inputFile, outFilePath="./Working-Files/test-config.txt", writeOutFile=True):
     data = parse(inputFile)
     
     for series in data:
