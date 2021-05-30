@@ -27,6 +27,7 @@ def test2OutFileData(suite):
         outFileDensities = []
         outFileCCEs = []
         outFileTypeAs = []
+        outFileTypeBs = []
         outFileMasses = []
         outFileCorrections = []
         outFileRestraintID = ""
@@ -52,6 +53,7 @@ def test2OutFileData(suite):
         calculatedTvalue = round(data[0].tValue, 2)
         calculatedMasses = data[0].calculatedMasses[0]
         calculatedTypeAs = data[0].typeAs
+        calculatedTypeBs = data[0].typeBs
         calculatedTypeACheck = round(data[0].typeACheck, 6)
 
         inputIDs = []
@@ -79,8 +81,9 @@ def test2OutFileData(suite):
                     outFileDensities.append(float(m[2]))
                     outFileCCEs.append(float(m[3]))
                     outFileTypeAs.append(float(m[4]))
-                    outFileMasses.append(float(m[5]))
-                    outFileCorrections.append(float(m[6]))
+                    outFileTypeBs.append(float(m[5]))
+                    outFileMasses.append(float(m[6]))
+                    outFileCorrections.append(float(m[7]))
                 elif(m[0] == "RESTRAINT_ID"):
                     outFileRestraintID = m[1]
                 elif(m[0] == "CHECK_STANDARD_ID"):
@@ -163,6 +166,10 @@ def test2OutFileData(suite):
         #Test if type As in output file match calculated values
         for i in range(len(calculatedTypeAs)):
             suite.assertEqual(outFileTypeAs[i], round(calculatedTypeAs[0][i], 5), "DATA WRITING TO OUTPUT FILE TYPE A CHECK " + str(i + 1))
+
+        #Test if type Bs in output file match calculated values
+        for i in range(len(calculatedTypeBs)):
+            suite.assertEqual(outFileTypeBs[i], round(calculatedTypeBs[0][i], 5), "DATA WRITING TO OUTPUT FILE TYPE B CHECK " + str(i + 1))
 
         #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
         for i in range(len(calculatedMasses)):

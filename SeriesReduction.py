@@ -106,6 +106,7 @@ class MatrixSolution:
         self.k1s = []
         self.k2s = []
         self.typeAs = None
+        self.typeBs = None
 
     def calculateSensitivities(self):
         #Calculate the average sensitivity factors for each load in the weighing design if doing double subs. Function is called in solution function if doing double substitutions.
@@ -304,7 +305,10 @@ class MatrixSolution:
 
         self.calculateK1s(matrixQ)
         self.calculateK2s(matrixQ)
+
+        self.calculateSb()
         self.calculateTypeAs(seriesObjects)
+        self.calculateTypeBs(seriesObjects[0])
 
         self.fTest(0.05, matrixQ)
         self.tTest(0.05)
@@ -355,10 +359,12 @@ class MatrixSolution:
         for value in diagonal(matmul(QXprimeX, QXprimeX_QXprimeXT)):
             self.k2s.append(sqrt(value))
 
+    def calculateSb(self):
+        self.sigmaB = self.sigmaT
+
     def calculateTypeAs(self, seriesObjects):
         self.typeAs = zeros(shape=(1, self.positions))
-        #Testing:
-        self.sigmaB = self.sigmaT
+
         for i in range(len(self.weightIds)):
             typeA = sqrt((self.k1s[i] * self.sigmaW)**2 + (self.k2s[i] * self.sigmaB)**2)
 
@@ -370,3 +376,10 @@ class MatrixSolution:
                 typeA = sqrt(typeA**2 + (passDownTypeA * (currentNominal / passDownMass))**2)
 
             self.typeAs[0][i] = typeA
+
+    def calculateTypeBs(self, firstSeries):
+        self.typeBs = zeros(shape=(1, self.positions))
+        massRestraint = matmul(firstSeries.restraintPos, matrix.transpose(firstSeries.weightNominals))[0][0]
+        
+        for i in range(len(self.weightIds)):
+            self.typeBs[0][i] = firstSeries.uncRestraint * (self.weightNominals[0][i] / massRestraint)

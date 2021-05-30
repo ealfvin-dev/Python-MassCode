@@ -32,7 +32,8 @@ def writeHeader(series, f):
     f.write("\n")
 
     f.write("REPORT_NUMBER  " + series.reportNumber + "\n")
-    f.write("RESTRAINT_ID  " + series.restraintID + "\n\n")
+    f.write("RESTRAINT_ID  " + series.restraintID + "\n")
+    f.write("RESTRAINT_UNC  " + str(series.uncRestraint) + " mg\n\n")
 
 def writeSeriesMetaData(series, f):
     f.write("DATE  " + " ".join(series.date) + "\n\n")
@@ -201,11 +202,12 @@ def writeMasses(series, f):
         line.append(series.weightDensities[i])
         line.append(series.weightCCEs[i])
         line.append(series.typeAs[0][i])
+        line.append(series.typeBs[0][i])
         line.append(float(series.calculatedMasses[0][i]))
         line.append(float(series.calculatedMasses[0][i] - series.weightNominals[0][i]) * 1000)
         
         table.append(line)
 
-    f.write(tabulate(table, headers=["ID", "NOMINAL\n(" + units + ")", "DENSITY\n(g/cm)", "CCE\n(/DEG C)", "TYPE A UNC\n(mg)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
-        floatfmt=("", "", ".5f", ".7f", ".5f", ".8f", ".5f"),\
-        colalign=("left", "center", "center", "center", "center", "decimal", "decimal")) + "\n\n")
+    f.write(tabulate(table, headers=["ID", "NOMINAL\n(" + units + ")", "DENSITY\n(g/cm)", "CCE\n(/DEG C)", "TYPE A UNC\n(mg)", "TYPE B UNC\n(mg)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
+        floatfmt=("", "", ".5f", ".7f", ".5f", ".5f", ".8f", ".5f"),\
+        colalign=("left", "center", "center", "center", "center", "center", "decimal", "decimal")) + "\n\n")

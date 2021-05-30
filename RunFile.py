@@ -49,7 +49,7 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Unc-Restraint>" and header["uncRestraint"] == 0:
-                header["uncRestraint"] = splitLine[1]
+                header["uncRestraint"] = float(splitLine[1])
                 continue
 
             # if splitLine[0] == "<Random-Error>":
