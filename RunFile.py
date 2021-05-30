@@ -1,4 +1,4 @@
-#import sys
+import sys
 from numpy import float64, zeros
 
 from SeriesReduction import MatrixSolution
@@ -266,6 +266,6 @@ def run(inputFile, outFilePath=".", writeOutFile=True):
 
     return data
 
-# if(__name__ == "__main__"):
-#     inputFile = sys.argv[1]
-#     run(inputFile)
+if(__name__ == "__main__"):
+    inputFile = sys.argv[1]
+    run(inputFile, writeOutFile=False)

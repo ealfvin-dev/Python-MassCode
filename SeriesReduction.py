@@ -10,7 +10,7 @@
 # The T-test tests the observed value of the check standard against its accepted value.
 # The F-test tests the within-process standard deviation agianst the accepted standard deviation.
 
-from numpy import identity, hstack, vstack, append, linalg, allclose, zeros, float64, copy, matmul, matrix, shape, count_nonzero, multiply, sum
+from numpy import identity, hstack, vstack, append, linalg, allclose, zeros, float64, copy, matmul, matrix, shape, count_nonzero, multiply, diagonal, sum
 from scipy.stats import f, t
 from statistics import mean
 from math import sqrt
@@ -101,6 +101,8 @@ class MatrixSolution:
         self.tCritical = 0
         self.tValue = 0
         self.deltas = [] #mg
+        self.k1s = []
+        self.k2s = []
         self.typeAs = []
 
     def calculateSensitivities(self):
@@ -258,8 +260,8 @@ class MatrixSolution:
         except:
             raise MARSException("SERIES " + str(self.seriesNumber + 1) + " DESIGN MATRIX HAS NO INVERSE")
 
-        #Check that the inverse of matrixA got calculated correctly within a tolerance:
-        if not allclose(matmul(matrixA, inverseA), identity(transposeXdesign.shape[0] + 1)):
+        #Check that the inverse of matrixA got calculated correctly within 0.01 * sigma_w:
+        if not allclose(matmul(matrixA, inverseA), identity(transposeXdesign.shape[0] + 1), atol=0.01*self.sigmaW):
             raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": SOMETHING WENT WRONG WITH THE INVERSE MATRIX CALCULATION")
 
         matrixH = inverseA[shape(inverseA)[0] - 1:shape(inverseA)[0], 0:shape(inverseA)[1] - 1]
@@ -298,6 +300,8 @@ class MatrixSolution:
 
         self.matrixBHat = matrixBHat
 
+        self.calculateK1s(matrixQ)
+        self.calculateK2s(matrixQ)
         self.calculateTypeAs(seriesObjects)
 
         self.fTest(0.05, matrixQ)
@@ -333,8 +337,11 @@ class MatrixSolution:
         self.calculatedCheckCorrection = (matmul(self.checkStandardPos, matrix.transpose(self.calculatedMasses))[0][0] \
                                             - matmul(self.checkStandardPos, matrix.transpose(self.weightNominals))[0][0]) * 1000
 
-        u1 = self.sigmaW**2 * matmul(matmul(self.checkStandardPos, matrixQ), matrix.transpose(self.checkStandardPos))
-        u2 = matmul(self.checkStandardPos, matrix.transpose(self.nominalsInGrams))**2 / matmul(self.restraintPos, matrix.transpose(self.nominalsInGrams))**2
+        if(self.seriesNumber == 0):
+            passDownTypeA = 0
+        else:
+            passDownTypeA = self.typeAs
+
         typeAUnc = self.sigmaT
 
         #Add type-A of restraint
@@ -343,6 +350,16 @@ class MatrixSolution:
 
         self.tCritical = t.ppf(1 - alpha, 1000)
         self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeAUnc
+
+    def calculateK1s(self, matrixQ):
+        for value in diagonal(matrixQ):
+            self.k1s.append(sqrt(value))
+
+    def calculateK2s(self, matrixQ):
+        QXprimeX = matmul(matmul(matrixQ, matrix.transpose(self.designMatrix)), self.designMatrix)
+        QXprimeX_QXprimeXT = matrix.transpose(QXprimeX)
+        for value in diagonal(matmul(QXprimeX, QXprimeX_QXprimeXT)):
+            self.k2s.append(sqrt(value))
 
     def calculateTypeAs(self, seriesObjects):
         for weight in self.weightIds:
