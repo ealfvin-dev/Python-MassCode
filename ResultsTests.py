@@ -1,7 +1,7 @@
 import RunFile
 from os import path
 
-def test1AirDesities(suite):
+def test10AirDesities(suite):
     #Test if calculated air densities match NIST MassCode
     try:
         data = RunFile.run(path.join("TestFiles", "Test-AirDensity-config.txt"), writeOutFile=False)
@@ -28,7 +28,7 @@ def test1AirDesities(suite):
         suite.failTest("CALCULATE AIR DENSITIES")
         suite.logFailure(["Air densities were not calculated"], "CALCULATE AIR DENSITIES")
 
-def test2FourInOne(suite):
+def test11FourInOne(suite):
     #Test if calculated 4-1 masses at 1 kg match NIST MassCode
     try:
         data = RunFile.run(path.join("TestFiles", "Validation-4-1-config.txt"), writeOutFile=False)
@@ -49,7 +49,7 @@ def test2FourInOne(suite):
         suite.failTest("VALIDATE 4-1")
         suite.logFailure(["Error running 4-1 input file"], "VALIDATE 4-1")
 
-def test3MetricDissem(suite):
+def test12MetricDissem(suite):
     #Test if full dissemination results from 1 kg - 1 mg (5-1, 532111, 522111) match NIST Masscode
     try:
         data = RunFile.run(path.join("TestFiles", "Validation-1kg-1mg-config.txt"), writeOutFile=False)
@@ -78,7 +78,7 @@ def test3MetricDissem(suite):
         suite.failTest("VALIDATE 1KG - 1MG DISSEMINATION")
         suite.logFailure(["Error running 1kg - 1mg dissemination input file"], "VALIDATE 1KG - 1MG DISSEMINATION")
 
-def test4LargeLb(suite):
+def test13LargeLb(suite):
     #Test it 3-1 results at 3000 lb match NIST Mass Code
     try:
         data = RunFile.run(path.join("TestFiles", "Validation-3000lb-3-1-config.txt"), writeOutFile=False)
@@ -99,7 +99,7 @@ def test4LargeLb(suite):
         suite.failTest("VALIDATE 3-1 at 3000 LB")
         suite.logFailure(["Error running 3000 lb 3-1 input file"], "VALIDATE 3-1 at 3000 LB")
 
-def test5LbDissem(suite):
+def test14LbDissem(suite):
     #Test if pound dissemination from 1 lb to 0.001 lb results match NIST Mass Code
     try:
         data = RunFile.run(path.join("TestFiles", "Validation-1lb-0.001lb-config.txt"), writeOutFile=False)
@@ -125,7 +125,7 @@ def test5LbDissem(suite):
         suite.failTest("VALIDATE 1LB - 0.001LB DISSEMINATION")
         suite.logFailure(["Error running 1lb - 0.001lb dissemination input file"], "VALIDATE 1LB - 0.001LB DISSEMINATION")
 
-def test6OnekgSF(suite):
+def test15OnekgSF(suite):
     #Test if calculated 4-1 masses at 1 kg with a sensitivity factor != 1 match NIST MassCode
     try:
         data = RunFile.run(path.join("TestFiles", "Validation-1kg-SF-config.txt"), writeOutFile=False)
@@ -146,7 +146,7 @@ def test6OnekgSF(suite):
         suite.failTest("VALIDATE 4-1 WITH SF")
         suite.logFailure(["Error running 4-1 SF input file"], "VALIDATE 4-1 WITH SF")
 
-def test7Ascending52211(suite):
+def test16Ascending52211(suite):
     #Test if ascending 52211 masses match NIST MassCode
     try:
         data = RunFile.run(path.join("TestFiles", "Validation-52211-config.txt"), writeOutFile=False)
@@ -167,7 +167,7 @@ def test7Ascending52211(suite):
         suite.failTest("ASCENDING 52211 MASS CALCULATION")
         suite.logFailure(["Error running ascending 52211 input file"], "ASCENDING 52211 MASS CALCULATION")
 
-def test8LineByLineABC(suite):
+def test17LineByLineABC(suite):
     #Test if ascending 52211 masses match NIST MassCode
     try:
         data = RunFile.run(path.join("TestFiles", "Validation-LBL-ABC-config.txt"), writeOutFile=False)
@@ -181,3 +181,55 @@ def test8LineByLineABC(suite):
     except:
         suite.failTest("LINE-BY-LINE AIR BUOYANCY CORRECTIONS")
         suite.logFailure(["Error running line-by-line ABC input file"], "LINE-BY-LINE AIR BUOYANCY CORRECTIONS")
+
+def test18TypeAUncertainties(suite):
+    #Test if type A uncertainties are calculated correctly. Tested at 1 kg, 50 g, 500 mg
+    try:
+        data = RunFile.run(path.join("TestFiles", "Validation-1kg-1mg-config.txt"), writeOutFile=False)
+
+        NIST_MC_TYPE_AS_1kg = [0.01109, 0.01109, 0.01921, 0.01921, 0.01921]
+        NIST_MC_TYPE_AS_50g = [0.00485, 0.00233, 0.00233, 0.00180, 0.00192, 0.00192]
+        NIST_MC_TYPE_AS_500mg = [0.00028, 0.00021, 0.00018, 0.00019, 0.00019, 0.00019]
+
+        typeACalculated1kg = data[0].typeAs
+        typeACalculated50g = data[2].typeAs
+        typeACalculated500mg = data[4].typeAs
+
+        for i in range(len(NIST_MC_TYPE_AS_1kg)):
+            suite.assertClose(NIST_MC_TYPE_AS_1kg[i], typeACalculated1kg[0][i], 2e-5, "1 kg TYPE A UNCERTAINTY CALCULATION " + str(i + 1))
+
+        for i in range(len(NIST_MC_TYPE_AS_50g)):
+            suite.assertClose(NIST_MC_TYPE_AS_50g[i], typeACalculated50g[0][i], 2e-5, "50 g TYPE A UNCERTAINTY CALCULATION " + str(i + 1))
+
+        for i in range(len(NIST_MC_TYPE_AS_500mg)):
+            suite.assertClose(NIST_MC_TYPE_AS_500mg[i], typeACalculated500mg[0][i], 2e-5, "500 mg TYPE A UNCERTAINTY CALCULATION " + str(i + 1))
+
+    except:
+        suite.failTest("TYPE A UNCERTAINTY CALCULATIONS")
+        suite.logFailure(["Error running validate type A uncertainties input file"], "TYPE A UNCERTAINTY CALCULATIONS")
+
+def test19TypeBUncertainties(suite):
+    #Test if type B uncertainties are calculated correctly. Tested at 1 kg, 50 g, 500 mg
+    try:
+        data = RunFile.run(path.join("TestFiles", "Validation-1kg-1mg-config.txt"), writeOutFile=False)
+
+        NIST_MC_TYPE_BS_1kg = [0.03050, 0.03050, 0.03050, 0.03050, 0.03050]
+        NIST_MC_TYPE_BS_50g = [0.00153, 0.00061, 0.00061, 0.00031, 0.00031, 0.00031]
+        NIST_MC_TYPE_BS_500mg = [0.00002, 0.00001, 0.00001, 0.00000, 0.00000, 0.00000]
+
+        typeBCalculated1kg = data[0].typeBs
+        typeBCalculated50g = data[2].typeBs
+        typeBCalculated500mg = data[4].typeBs
+
+        for i in range(len(NIST_MC_TYPE_BS_1kg)):
+            suite.assertClose(NIST_MC_TYPE_BS_1kg[i], typeBCalculated1kg[0][i], 2e-5, "1 kg TYPE B UNCERTAINTY CALCULATION " + str(i + 1))
+
+        for i in range(len(NIST_MC_TYPE_BS_50g)):
+            suite.assertClose(NIST_MC_TYPE_BS_50g[i], typeBCalculated50g[0][i], 2e-5, "50 g TYPE B UNCERTAINTY CALCULATION " + str(i + 1))
+
+        for i in range(len(NIST_MC_TYPE_BS_500mg)):
+            suite.assertClose(NIST_MC_TYPE_BS_500mg[i], typeBCalculated500mg[0][i], 2e-5, "500 mg TYPE B UNCERTAINTY CALCULATION " + str(i + 1))
+
+    except:
+        suite.failTest("TYPE B UNCERTAINTY CALCULATIONS")
+        suite.logFailure(["Error running validate type B uncertainties input file"], "TYPE B UNCERTAINTY CALCULATIONS")

@@ -346,7 +346,8 @@ class MatrixSolution:
         typeACheck = matmul(abs(self.checkStandardPos), matrix.transpose(self.typeAs))[0][0]
         self.typeACheck = typeACheck
 
-        self.tCritical = t.ppf(1 - alpha, 1000)
+        #self.tCritical = t.ppf(1 - alpha, 50)
+        self.tCritical = 1.96
         self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeACheck
 
     def calculateK1s(self, matrixQ):

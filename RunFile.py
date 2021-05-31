@@ -255,7 +255,7 @@ def parse(fileName):
 
     return seriesObjects
 
-def run(inputFile, outFilePath="./Working-Files/test-config.txt", writeOutFile=True):
+def run(inputFile, outFilePath=".", writeOutFile=True):
     data = parse(inputFile)
     
     for series in data:
@@ -268,4 +268,4 @@ def run(inputFile, outFilePath="./Working-Files/test-config.txt", writeOutFile=T
 
 if(__name__ == "__main__"):
     inputFile = sys.argv[1]
-    run(inputFile, writeOutFile=True)
+    run(inputFile, writeOutFile=False)

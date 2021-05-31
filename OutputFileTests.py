@@ -164,11 +164,11 @@ def test2OutFileData(suite):
             suite.assertEqual(inputCCEs[i], outFileCCEs[i], "DATA WRITING TO OUTPUT FILE CCE CHECK " + str(i + 1))
 
         #Test if type As in output file match calculated values
-        for i in range(len(calculatedTypeAs)):
+        for i in range(len(calculatedTypeAs[0])):
             suite.assertEqual(outFileTypeAs[i], round(calculatedTypeAs[0][i], 5), "DATA WRITING TO OUTPUT FILE TYPE A CHECK " + str(i + 1))
 
         #Test if type Bs in output file match calculated values
-        for i in range(len(calculatedTypeBs)):
+        for i in range(len(calculatedTypeBs[0])):
             suite.assertEqual(outFileTypeBs[i], round(calculatedTypeBs[0][i], 5), "DATA WRITING TO OUTPUT FILE TYPE B CHECK " + str(i + 1))
 
         #Test if calculated masses match masses written into the output file and that the rounding is handled correctly. Not testing acuracy of results yet
