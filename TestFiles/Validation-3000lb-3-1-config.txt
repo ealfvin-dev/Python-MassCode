@@ -27,7 +27,7 @@
         <Pass-Down>  0 0 0
 
           <Sigma-w>  3900
-          <Sigma-t>  7116.2
+          <Sigma-b>  4500
 
           <sw-Mass>  500004.958
        <sw-Density>  7.84
@@ -42,3 +42,4 @@
   <Balance-Reading>  0.5  11.0  511.4 500.6
   <Balance-Reading>  13   -1.5  498.8 513.2
   <Balance-Reading>  1   -38.0  462.1 500.8
+

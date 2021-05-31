@@ -1,4 +1,4 @@
-from statistics import mean, stdev
+from statistics import mean
 from tabulate import tabulate
 from os import path
 
@@ -32,7 +32,8 @@ def writeHeader(series, f):
     f.write("\n")
 
     f.write("REPORT_NUMBER  " + series.reportNumber + "\n")
-    f.write("RESTRAINT_ID  " + series.restraintID + "\n\n")
+    f.write("RESTRAINT_ID  " + series.restraintID + "\n")
+    f.write("RESTRAINT_UNC  " + str(series.uncRestraint) + " mg\n\n")
 
 def writeSeriesMetaData(series, f):
     f.write("DATE  " + " ".join(series.date) + "\n\n")
@@ -72,7 +73,7 @@ def writeDesignData(series, f):
 
 def writeEnvironmentals(series, f):
     f.write("##ENVIRONMENTALS (CORRECTED)##\n")
-    f.write("        T(DEG C) P(mmHg) RH(%)  AIR DENSITY(g/cm)\n")
+    f.write("     T(DEG C) P(mmHg) RH(%)  AIR DENSITY(g/cm)\n")
     table = []
     for i in range(len(series.environmentals)):
         line = []
@@ -151,8 +152,8 @@ def writeFTest(series, f):
         f.write("################################################################\n")
 
     f.write("#F-TEST\n")
-    f.write("ACCEPTED_SW  " + str(round(series.sigmaW, 6)) + " MG\n")
-    f.write("OBSERVED_SW  " + str(round(series.swObs, 6)) + " MG\n")
+    f.write("ACCEPTED_SW  " + str(round(series.sigmaW, 6)) + " mg\n")
+    f.write("OBSERVED_SW  " + str(round(series.swObs, 6)) + " mg\n")
     f.write("CRITICAL_F-VALUE  " + str(round(series.fCritical, 2)) + "\n")
     f.write("OBSERVED_F-VALUE  " + str(round(series.fValue, 2)) + "\n")
 
@@ -169,16 +170,16 @@ def writeTTest(series, f):
         f.write("################################################################\n")
 
     f.write("#T-TEST\n")
-    f.write("ACCEPTED_CHECK_STANDARD_CORRECTION  " + str(round(series.acceptedCheckCorrection, 6)) + " MG\n")
-    f.write("OBSERVED_CHECK_STANDARD_CORRECTION  " + str(round(series.calculatedCheckCorrection, 6)) + " MG\n")
-    f.write("ACCEPTED_ST  " + str(round(series.sigmaT, 6)) + " MG\n")
+    f.write("ACCEPTED_CHECK_STANDARD_CORRECTION  " + str(round(series.acceptedCheckCorrection, 6)) + " mg\n")
+    f.write("OBSERVED_CHECK_STANDARD_CORRECTION  " + str(round(series.calculatedCheckCorrection, 6)) + " mg\n")
+    f.write("CHECK_STANDARD_TYPE_A_UNC  " + str(round(series.typeACheck, 6)) + " mg\n")
     f.write("CRITICAL_T-VALUE  " + str(round(series.tCritical, 2)) + "\n")
     f.write("OBSERVED_T-VALUE  " + str(round(series.tValue, 2)) + "\n")
 
     if(abs(series.tValue) <= series.tCritical):
         f.write("--------\n| PASS |\n--------\n\n")
     else:
-        f.write("--------\n| FAIL |\n--------\n")
+        f.write("--------\n| FAIL |\n--------\n\n")
 
     if(series.tValue > series.tCritical):
         f.write("################################################################\n\n")
@@ -200,11 +201,13 @@ def writeMasses(series, f):
 
         line.append(series.weightDensities[i])
         line.append(series.weightCCEs[i])
+        line.append(series.typeAs[0][i])
+        line.append(series.typeBs[0][i])
         line.append(float(series.calculatedMasses[0][i]))
         line.append(float(series.calculatedMasses[0][i] - series.weightNominals[0][i]) * 1000)
         
         table.append(line)
 
-    f.write(tabulate(table, headers=["WEIGHT ID", "NOMINAL\n(" + units + ")", "DENSITY\n(g/cm)", "CCE\n(/DEG C)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
-        floatfmt=("", "", ".5f", ".7f", ".8f", ".5f"),\
-        colalign=("left", "center", "center", "center", "decimal", "decimal")) + "\n\n")
+    f.write(tabulate(table, headers=["ID", "NOMINAL\n(" + units + ")", "DENSITY\n(g/cm)", "CCE\n(/DEG C)", "TYPE A UNC\n(mg)", "TYPE B UNC\n(mg)", "TRUE MASS\n(g)", "CORRECTION\n(mg)"],\
+        floatfmt=("", "", ".5f", ".7f", ".5f", ".5f", ".8f", ".5f"),\
+        colalign=("left", "center", "center", "center", "center", "center", "decimal", "decimal")) + "\n\n")

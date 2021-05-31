@@ -40,7 +40,7 @@
    <Check-Standard>  0 -1 0 1
         <Pass-Down>  0 0 1 0
 
-          <Sigma-t>  0.003
+          <Sigma-b>  0.003
           <Sigma-w>  0.0013
 
    <Environmentals>  19.80 737.86 46.96
@@ -105,7 +105,7 @@
    <Check-Standard>  0 0 0 0 1 0
         <Pass-Down>  0 0 0 0 0 1
 
-          <Sigma-t>  0.035
+          <Sigma-b>  0.035
           <Sigma-w>  0.0255
 
           <sw-Mass>  99.98989
@@ -168,7 +168,7 @@
    <Check-Standard>  0 0 0 0 1 0
         <Pass-Down>  0 0 0 0 0 1
 
-          <Sigma-t>  0.0035
+          <Sigma-b>  0.0035
           <Sigma-w>  0.0025
 
           <sw-Mass>  19.99885
@@ -228,7 +228,7 @@
    <Check-Standard>  0 0 0 0 1 0
         <Pass-Down>  0 0 0 0 0 0
 
-          <Sigma-t>  0.0009
+          <Sigma-b>  0.0009
           <Sigma-w>  0.00072
 
           <sw-Mass>  10.08039

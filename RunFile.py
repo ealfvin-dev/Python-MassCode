@@ -1,4 +1,4 @@
-#import sys
+import sys
 from numpy import float64, zeros
 
 from SeriesReduction import MatrixSolution
@@ -49,7 +49,7 @@ def parse(fileName):
                 continue
 
             if splitLine[0] == "<Unc-Restraint>" and header["uncRestraint"] == 0:
-                header["uncRestraint"] = splitLine[1]
+                header["uncRestraint"] = float(splitLine[1])
                 continue
 
             # if splitLine[0] == "<Random-Error>":
@@ -199,8 +199,8 @@ def parse(fileName):
                 seriesObjects[seriesNumber].sigmaW = float64(splitLine[1])
                 continue
 
-            if splitLine[0] == "<Sigma-t>":
-                seriesObjects[seriesNumber].sigmaT = float64(splitLine[1])
+            if splitLine[0] == "<Sigma-b>":
+                seriesObjects[seriesNumber].sigmaB = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<sw-Mass>":
@@ -266,6 +266,6 @@ def run(inputFile, outFilePath=".", writeOutFile=True):
 
     return data
 
-# if(__name__ == "__main__"):
-#     inputFile = sys.argv[1]
-#     run(inputFile)
+if(__name__ == "__main__"):
+    inputFile = sys.argv[1]
+    run(inputFile, writeOutFile=False)

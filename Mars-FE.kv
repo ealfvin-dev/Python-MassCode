@@ -1131,7 +1131,7 @@
             orderNum: 22
 
         PopupLabel:
-            text: chr(963) + "[size=8dp]t[/size] (mg):"
+            text: chr(963) + "[size=8dp]b[/size] (mg):"
             size_hint: (1, None)
 
         OrderedText:
@@ -1139,7 +1139,7 @@
             size_hint: (1, None)
             hint_text: "0.008"
             on_text: root.evalSaveButtons(saveStatsButton.disabled)
-            text: self.getInputText(root.mainLayout.ids.userText.text, "<Sigma-t>")
+            text: self.getInputText(root.mainLayout.ids.userText.text, "<Sigma-b>")
             orderNum: 23
 
         ExtraButton:
@@ -1203,7 +1203,7 @@
             size_hint: (1, None)
 
         PopupLabel:
-            text: chr(963) + "[size=8dp]t[/size]: " + root.sigt + " mg"
+            text: chr(963) + "[size=8dp]b[/size]: " + root.sigt + " mg"
             size_hint: (1, None)
 
         PopupErrorLabel:
@@ -1821,7 +1821,7 @@
 
             PopupLabel:
                 size_hint: (1, None)
-                text: "Write notes to {filename}-notes.txt"
+                text: "Write notes out to {filename}-notes.txt"
 
             NotesCheckBox:
                 id: notesCheckBox

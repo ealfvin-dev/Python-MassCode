@@ -10,9 +10,9 @@
 # The T-test tests the observed value of the check standard against its accepted value.
 # The F-test tests the within-process standard deviation agianst the accepted standard deviation.
 
-from numpy import identity, hstack, vstack, append, linalg, allclose, zeros, float64, copy, matmul, matrix, shape, count_nonzero, multiply, sum
+from numpy import identity, hstack, vstack, append, linalg, allclose, zeros, float64, copy, matmul, matrix, shape, count_nonzero, multiply, diagonal, sum
 from scipy.stats import f, t
-from statistics import mean, stdev
+from statistics import mean
 from math import sqrt
 
 from MARSException import MARSException
@@ -66,9 +66,6 @@ class MatrixSolution:
         self.swDensity = "NA"
         self.swCCE = "NA"
 
-        self.sigmaW = 0
-        self.sigmaT = 0
-
         self.date = [] #[MM, DD, YYYY]
         self.technicianId = 0
         self.balanceId = 0
@@ -94,13 +91,22 @@ class MatrixSolution:
         self.weightHeights = zeros(shape=0) #m
 
         #Statistics Stuff:
+        self.sigmaW = 0
+        #self.sigmaT = 0
+        self.sigmaB = 0
+
         self.df = 0
         self.swObs = 0
         self.fCritical = 0
         self.fValue = 0
         self.tCritical = 0
         self.tValue = 0
+        self.typeACheck = 0
         self.deltas = [] #mg
+        self.k1s = []
+        self.k2s = []
+        self.typeAs = None
+        self.typeBs = None
 
     def calculateSensitivities(self):
         #Calculate the average sensitivity factors for each load in the weighing design if doing double subs. Function is called in solution function if doing double substitutions.
@@ -257,8 +263,8 @@ class MatrixSolution:
         except:
             raise MARSException("SERIES " + str(self.seriesNumber + 1) + " DESIGN MATRIX HAS NO INVERSE")
 
-        #Check that the inverse of matrixA got calculated correctly within a tolerance:
-        if not allclose(matmul(matrixA, inverseA), identity(transposeXdesign.shape[0] + 1)):
+        #Check that the inverse of matrixA got calculated correctly within 0.01 * sigma_w:
+        if not allclose(matmul(matrixA, inverseA), identity(transposeXdesign.shape[0] + 1), atol=0.01*self.sigmaW):
             raise MARSException("SERIES " + str(self.seriesNumber + 1) + ": SOMETHING WENT WRONG WITH THE INVERSE MATRIX CALCULATION")
 
         matrixH = inverseA[shape(inverseA)[0] - 1:shape(inverseA)[0], 0:shape(inverseA)[1] - 1]
@@ -281,7 +287,7 @@ class MatrixSolution:
             for i in range(self.observations):
                 self.sensitivities.append(self.directReadingsSF)
 
-            self.aveSensitivities = {'balance':self.directReadingsSF}
+            self.aveSensitivities = {'balance': self.directReadingsSF}
         
         #If doing double subs:
         else:
@@ -297,9 +303,15 @@ class MatrixSolution:
 
         self.matrixBHat = matrixBHat
 
-        alpha = 0.05
-        self.fTest(alpha, matrixQ)
-        self.tTest(alpha)
+        self.calculateK1s(matrixQ)
+        self.calculateK2s(matrixQ)
+
+        #self.calculateSb()
+        self.calculateTypeAs(seriesObjects)
+        self.calculateTypeBs(seriesObjects[0])
+
+        self.fTest(0.05, matrixQ)
+        self.tTest(0.05)
 
     def fTest(self, alpha, matrixQ):
         #Calculate YHat = XQX'Y = the predicted values from the best fit (in grams):
@@ -331,6 +343,44 @@ class MatrixSolution:
         self.calculatedCheckCorrection = (matmul(self.checkStandardPos, matrix.transpose(self.calculatedMasses))[0][0] \
                                             - matmul(self.checkStandardPos, matrix.transpose(self.weightNominals))[0][0]) * 1000
 
-        typeAUnc = self.sigmaT #May be changed
-        self.tCritical = t.ppf(1 - alpha, 1000)
-        self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeAUnc
+        typeACheck = matmul(abs(self.checkStandardPos), matrix.transpose(self.typeAs))[0][0]
+        self.typeACheck = typeACheck
+
+        #self.tCritical = t.ppf(1 - alpha, 50)
+        self.tCritical = 1.96
+        self.tValue = (self.calculatedCheckCorrection - self.acceptedCheckCorrection) / typeACheck
+
+    def calculateK1s(self, matrixQ):
+        for value in diagonal(matrixQ):
+            self.k1s.append(sqrt(value))
+
+    def calculateK2s(self, matrixQ):
+        QXprimeX = matmul(matmul(matrixQ, matrix.transpose(self.designMatrix)), self.designMatrix)
+        QXprimeX_QXprimeXT = matrix.transpose(QXprimeX)
+        for value in diagonal(matmul(QXprimeX, QXprimeX_QXprimeXT)):
+            self.k2s.append(sqrt(value))
+
+    # def calculateSb(self):
+    #     self.sigmaB = self.sigmaT
+
+    def calculateTypeAs(self, seriesObjects):
+        self.typeAs = zeros(shape=(1, self.positions))
+
+        for i in range(len(self.weightIds)):
+            typeA = sqrt((self.k1s[i] * self.sigmaW)**2 + (self.k2s[i] * self.sigmaB)**2)
+
+            if(self.seriesNumber > 0):
+                passDownTypeA = matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, matrix.transpose(seriesObjects[self.seriesNumber - 1].typeAs))
+                passDownMass = matmul(seriesObjects[self.seriesNumber - 1].nextRestraint, matrix.transpose(seriesObjects[self.seriesNumber - 1].weightNominals))
+                currentNominal = self.weightNominals[0][i]
+                
+                typeA = sqrt(typeA**2 + (passDownTypeA * (currentNominal / passDownMass))**2)
+
+            self.typeAs[0][i] = typeA
+
+    def calculateTypeBs(self, firstSeries):
+        self.typeBs = zeros(shape=(1, self.positions))
+        massRestraint = matmul(firstSeries.restraintPos, matrix.transpose(firstSeries.weightNominals))[0][0]
+        
+        for i in range(len(self.weightIds)):
+            self.typeBs[0][i] = firstSeries.uncRestraint * (self.weightNominals[0][i] / massRestraint)

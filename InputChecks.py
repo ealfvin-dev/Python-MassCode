@@ -105,7 +105,7 @@ def checkTags(seriesTexts, seriesNum, highlightError, sendError):
                     "<Restraint>": False, \
                     "<Check-Standard>": False, \
                     "<Pass-Down>": False, \
-                    "<Sigma-t>": False, \
+                    "<Sigma-b>": False, \
                     "<Sigma-w>": False, \
                     "<sw-Mass>": False, \
                     "<sw-Density>": False, \
@@ -170,7 +170,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Restraint>": False, \
                         "<Check-Standard>": False, \
                         "<Pass-Down>": False, \
-                        "<Sigma-t>": False, \
+                        "<Sigma-b>": False, \
                         "<Sigma-w>": False, \
                         "<Balance-Reading>": False, \
                         "<Environmentals>": False, \
@@ -192,7 +192,7 @@ def checkIfAllTags(seriesTexts, sendError, goToSeries):
                         "<Restraint>": False, \
                         "<Check-Standard>": False, \
                         "<Pass-Down>": False, \
-                        "<Sigma-t>": False, \
+                        "<Sigma-b>": False, \
                         "<Sigma-w>": False, \
                         "<sw-Mass>": False, \
                         "<sw-Density>": False, \
@@ -246,7 +246,7 @@ def checkForRepeats(seriesTexts, sendError, highlightError):
         "<Restraint>": 0,\
         "<Check-Standard>": 0,\
         "<Pass-Down>": 0,\
-        "<Sigma-t>": 0,\
+        "<Sigma-b>": 0,\
         "<Sigma-w>": 0,\
         "<sw-Mass>": 0,\
         "<sw-Density>": 0,\
@@ -396,7 +396,7 @@ def checkInputValues(seriesTexts, sendError, highlightError):
             line[0] == "<Restraint>" or\
             line[0] == "<Check-Standard>" or\
             line[0] == "<Pass-Down>" or\
-            line[0] == "<Sigma-t>" or\
+            line[0] == "<Sigma-b>" or\
             line[0] == "<Sigma-w>" or\
             line[0] == "<sw-Mass>" or\
             line[0] == "<sw-Density>" or\

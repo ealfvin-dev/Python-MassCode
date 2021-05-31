@@ -88,7 +88,7 @@ class MainLayout(BoxLayout):
             "<Check-Standard>": 20, \
             "<Pass-Down>": 21, \
             "<Sigma-w>": 22, \
-            "<Sigma-t>": 23, \
+            "<Sigma-b>": 23, \
             "<sw-Mass>": 24, \
             "<sw-Density>": 25, \
             "<sw-CCE>": 26, \
@@ -294,7 +294,7 @@ class MainLayout(BoxLayout):
             "<Check-Standard>": False, \
             "<Pass-Down>": False, \
             "<Sigma-w>": False, \
-            "<Sigma-t>": False, \
+            "<Sigma-b>": False, \
             "<sw-Mass>": False, \
             "<sw-Density>": False, \
             "<sw-CCE>": False, \
@@ -358,7 +358,7 @@ class MainLayout(BoxLayout):
             self.ids.positionVectorsButton.colorBlue()
 
         #Statistics Buttons
-        if(tags["<Sigma-t>"] and tags["<Sigma-w>"]):
+        if(tags["<Sigma-b>"] and tags["<Sigma-w>"]):
             self.ids.statisticsButton.colorGrey()
         else:
             self.ids.statisticsButton.colorBlue()
@@ -967,7 +967,6 @@ class InputButton(Button):
 class BottomButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
-        self.size_hint: (None, None)
         self.size = (dp(82), dp(50))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
@@ -975,7 +974,6 @@ class BottomButton(InputButton):
 class RunButton(InputButton):
     def __init__(self, **kwargs):
         super().__init__()
-        self.size_hint: (None, None)
         self.size = (dp(82), dp(50))
         self.buttonColor = Configs.greenButtonColor
         self.font_size = dp(14)
@@ -1442,7 +1440,7 @@ class StatisticsPopup(PopupBase):
             self.ids.sigmaPopError.text = "Enter data for all fields"
             return
 
-        self.mainLayout.removeLines(["<Sigma-w>", "<Sigma-t>"])
+        self.mainLayout.removeLines(["<Sigma-w>", "<Sigma-b>"])
 
         rowStart1, rowEnd1 = self.mainLayout.writeText(sigmawText, sigmawOrder)
         rowStart2, rowEnd2 = self.mainLayout.writeText(sigmatText, sigmatOrder)
@@ -1599,7 +1597,7 @@ class StatsDbPopup(PopupBase):
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.14, None), text="[b]Nominal[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.27, None), text="[b]Description[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.12, None), text="[b]" + chr(963) + "[size=8dp]w[/size][/b]"))
-        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.12, None), text="[b]" + chr(963) + "[size=8dp]t[/size][/b]"))
+        dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.12, None), text="[b]" + chr(963) + "[size=8dp]b[/size][/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.15, None), text="[b]Entered On[/b]"))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.13, None), text=""))
         dbEntryLayout.add_widget(DbEntryLabel(size_hint=(0.07, None), text=""))

@@ -37,7 +37,7 @@
         <Pass-Down>  0 0 0 0 1
 
           <Sigma-w>  0.025
-          <Sigma-t>  0.0222
+          <Sigma-b>  0.011
 
           <sw-Mass>  99.98989
        <sw-Density>  7.95
@@ -103,7 +103,7 @@
 
 
           <Sigma-w>  0.0255
-          <Sigma-t>  0.00905
+          <Sigma-b>  0.0
 
           <sw-Mass>  99.98989
        <sw-Density>  7.95
@@ -168,7 +168,7 @@
         <Pass-Down>  0 0 0 0 0 1
 
           <Sigma-w>  0.0025
-          <Sigma-t>  0.00169
+          <Sigma-b>  0.0012
 
           <sw-Mass>  19.99885
        <sw-Density>  7.95
@@ -226,7 +226,7 @@
         <Pass-Down>  0 0 0 0 0 1
 
           <Sigma-w>  0.00072
-          <Sigma-t>  0.000446
+          <Sigma-b>  0.00029
 
           <sw-Mass>  10.08039
        <sw-Density>  7.95
@@ -287,7 +287,7 @@
         <Pass-Down>  0 0 0 0 0 1
 
           <Sigma-w>  0.00022
-          <Sigma-t>  0.00018
+          <Sigma-b>  0.00016
 
           <sw-Mass>  10.08039
        <sw-Density>  7.95
@@ -354,7 +354,7 @@
         <Pass-Down>  0 0 0 0 0 1
 
           <Sigma-w>  0.00029
-          <Sigma-t>  0.000152
+          <Sigma-b>  0.00011
 
           <sw-Mass>  4.98244
        <sw-Density>  7.95
@@ -421,7 +421,7 @@
         <Pass-Down>  0 0 0 0 0 0
 
           <Sigma-w>  0.00025
-          <Sigma-t>  0.000143
+          <Sigma-b>  0.00011
 
           <sw-Mass>  4.98244
        <sw-Density>  7.95
@@ -452,3 +452,4 @@
   <Balance-Reading>  0        0.0026 4.9843 4.9820
   <Balance-Reading>  0.0001   0.0357 5.0177 4.9826
   <Balance-Reading>  0.0001   0.0326 5.0143 4.9823
+
