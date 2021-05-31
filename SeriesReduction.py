@@ -92,7 +92,7 @@ class MatrixSolution:
 
         #Statistics Stuff:
         self.sigmaW = 0
-        self.sigmaT = 0
+        #self.sigmaT = 0
         self.sigmaB = 0
 
         self.df = 0
@@ -306,7 +306,7 @@ class MatrixSolution:
         self.calculateK1s(matrixQ)
         self.calculateK2s(matrixQ)
 
-        self.calculateSb()
+        #self.calculateSb()
         self.calculateTypeAs(seriesObjects)
         self.calculateTypeBs(seriesObjects[0])
 
@@ -360,8 +360,8 @@ class MatrixSolution:
         for value in diagonal(matmul(QXprimeX, QXprimeX_QXprimeXT)):
             self.k2s.append(sqrt(value))
 
-    def calculateSb(self):
-        self.sigmaB = self.sigmaT
+    # def calculateSb(self):
+    #     self.sigmaB = self.sigmaT
 
     def calculateTypeAs(self, seriesObjects):
         self.typeAs = zeros(shape=(1, self.positions))

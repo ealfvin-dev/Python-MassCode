@@ -38,7 +38,7 @@
         <Pass-Down>  0 0 0 0
 
           <Sigma-w>  0.0013
-          <Sigma-t>  0.01304
+          <Sigma-b>  0.0092
 
    <Environmentals>  19.522 728.237 47.104
    <Environmentals>  19.522 728.237 47.104
@@ -67,3 +67,4 @@
   <Balance-Reading>  7.8720
   <Balance-Reading>  -2.2185
   <Balance-Reading>  -10.0897
+

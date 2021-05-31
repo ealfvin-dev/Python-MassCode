@@ -38,7 +38,7 @@
 <Check-Standard>  0 0 1 -1
 <Pass-Down>  0 0 0 0
 
-<Sigma-t>  139.75
+<Sigma-b>  139.75
 <Sigma-w>  110
 
 <sw-Mass>  100003.1936

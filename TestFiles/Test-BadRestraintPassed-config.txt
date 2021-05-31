@@ -40,7 +40,7 @@
    <Check-Standard>  0 -1 0 1
         <Pass-Down>  0 0 0 1
 
-          <Sigma-t>  0.003
+          <Sigma-b>  0.003
           <Sigma-w>  0.0013
 
           <sw-Mass>  50
@@ -108,7 +108,7 @@
    <Check-Standard>  0 -1 0 1
         <Pass-Down>  0 0 0 0
 
-          <Sigma-t>  0.003
+          <Sigma-b>  0.003
           <Sigma-w>  0.0013
 
           <sw-Mass>  50

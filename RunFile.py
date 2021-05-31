@@ -199,8 +199,8 @@ def parse(fileName):
                 seriesObjects[seriesNumber].sigmaW = float64(splitLine[1])
                 continue
 
-            if splitLine[0] == "<Sigma-t>":
-                seriesObjects[seriesNumber].sigmaT = float64(splitLine[1])
+            if splitLine[0] == "<Sigma-b>":
+                seriesObjects[seriesNumber].sigmaB = float64(splitLine[1])
                 continue
 
             if splitLine[0] == "<sw-Mass>":

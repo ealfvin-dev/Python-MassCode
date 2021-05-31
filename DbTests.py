@@ -63,7 +63,7 @@ def test2CrudStatsDb(suite):
         statData = API.getStat(insertId)
         suite.assertEqual(nominal, statData[0][0], "ACCURATE STORAGE & RETRIEVAL OF STATISTICS FROM DATABASE: NOMINAL")
         suite.assertEqual(sigw, statData[0][1], "ACCURATE STORAGE & RETRIEVAL OF STATISTICS FROM DATABASE: SIGMA-W")
-        suite.assertEqual(sigt, statData[0][2], "ACCURATE STORAGE & RETRIEVAL OF STATISTICS FROM DATABASE: SIGMA-T")
+        suite.assertEqual(sigt, statData[0][2], "ACCURATE STORAGE & RETRIEVAL OF STATISTICS FROM DATABASE: SIGMA-B")
     except:
         suite.failTest("GET SELECTED STATISTICS FROM DATABASE")
         suite.logFailure(["Error getting selected statistics", "from the database"], "GET SELECTED STATISTICS FROM DATABASE")

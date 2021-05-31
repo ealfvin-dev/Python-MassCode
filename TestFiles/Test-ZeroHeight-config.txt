@@ -39,7 +39,7 @@
    <Check-Standard>  0 0 1 0
         <Pass-Down>  0 0 0 0
 
-          <Sigma-t>  1
+          <Sigma-b>  1
           <Sigma-w>  1
 
    <Environmentals>  20 740 50
